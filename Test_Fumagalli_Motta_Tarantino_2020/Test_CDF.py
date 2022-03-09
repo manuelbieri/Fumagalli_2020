@@ -6,7 +6,7 @@ import Fumagalli_Motta_Tarantino_2020.CDF
 
 
 class TestAbstractCDF(abc.ABC, unittest.TestCase):
-    tolerance: float = 10**-8
+    tolerance: float = 10 ** -8
 
     def setUp(self) -> None:
         self.test_cdf = self.setUpCDF()
@@ -21,11 +21,11 @@ class TestAbstractCDF(abc.ABC, unittest.TestCase):
 
     @staticmethod
     def isEqualFloat(float_1, float_2) -> bool:
-        return abs(float_1-float_2) < TestAbstractCDF.tolerance
+        return abs(float_1 - float_2) < TestAbstractCDF.tolerance
 
     def test_isEqualFloat_true(self):
         a: float = 1
-        b: float = a + TestAbstractCDF.tolerance/2
+        b: float = a + TestAbstractCDF.tolerance / 2
         self.assertTrue(self.isEqualFloat(a, b))
 
     def test_random_draw(self):
