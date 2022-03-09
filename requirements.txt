@@ -1,7 +1,10 @@
 # necessary for the package
 scipy~=1.8.0
-numpy~=1.22.2
+numpy==1.22.3
 
 # necessary for the jupyter notebook
 ipython>=8.1.1
 jupyter>=1.0.0
+
+# necessary for the documentation
+pdoc>=10.0.3
