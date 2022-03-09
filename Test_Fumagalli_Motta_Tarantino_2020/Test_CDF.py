@@ -1,21 +1,20 @@
-import abc
 import unittest
 
 import scipy.stats
 import Fumagalli_Motta_Tarantino_2020.CDF
 
 
-class TestAbstractCDF(abc.ABC, unittest.TestCase):
+class TestAbstractCDF(unittest.TestCase):
     tolerance: float = 10 ** -8
 
     def setUp(self) -> None:
         self.test_cdf = self.setUpCDF()
 
-    @abc.abstractmethod
+    @unittest.skip("Abstract method")
     def getIdealFA(self, A: float) -> float:
         pass
 
-    @abc.abstractmethod
+    @unittest.skip("Abstract method")
     def setUpCDF(self) -> Fumagalli_Motta_Tarantino_2020.CDF.AbstractCDF:
         pass
 
