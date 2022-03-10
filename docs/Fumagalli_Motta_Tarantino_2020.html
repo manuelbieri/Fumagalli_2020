@@ -59,12 +59,69 @@
                     <h1 class="modulename">
 Fumagalli_Motta_Tarantino_2020    </h1>
 
-                        <div class="docstring"><h3 id="generate-documentation">Generate Documentation</h3>
+                        <div class="docstring"><p><img src="https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/CI.yml/badge.svg" alt="CI" /></p>
+
+<h3 id="basic-usage">Basic Usage</h3>
+
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn"><a href="Fumagalli_Motta_Tarantino_2020/Model.html">Fumagalli_Motta_Tarantino_2020.Model</a></span> <span class="k">as</span> <span class="nn">Model</span>
+
+<span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="o">.</span><span class="n">BaseModel</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="dependencies">Dependencies</h3>
+
+<p>These packages include all the needed imports for the functionality of this package.</p>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:left;">Package &emsp;</th>
+  <th style="text-align:center;">Version &emsp;</th>
+  <th style="text-align:left;">Annotation &emsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:left;">scipy</td>
+  <td style="text-align:center;">1.8.0</td>
+  <td style="text-align:left;">Always needed</td>
+</tr>
+<tr>
+  <td style="text-align:left;">numpy</td>
+  <td style="text-align:center;">1.22.3</td>
+  <td style="text-align:left;">Always needed</td>
+</tr>
+<tr>
+  <td style="text-align:left;">jupyter</td>
+  <td style="text-align:center;">1.0.0</td>
+  <td style="text-align:left;">Just for the demonstration in demo.ipynb</td>
+</tr>
+<tr>
+  <td style="text-align:left;">IPython</td>
+  <td style="text-align:center;">8.1.1</td>
+  <td style="text-align:left;">Just for the demonstration in demo.ipynb</td>
+</tr>
+<tr>
+  <td style="text-align:left;">pdoc</td>
+  <td style="text-align:center;">10.0.3</td>
+  <td style="text-align:left;">Only to generate the documentation from scratch</td>
+</tr>
+</tbody>
+</table>
+
+<p>Install the dependencies with the following command:</p>
+
+<div class="pdoc-code codehilite"><pre><span></span><code>$ pip install -r requirements.txt
+</code></pre></div>
+
+<p>(Note: Make sure you are operating in the same directory, where the <code>requirements.txt</code> is located.)</p>
+
+<h3 id="generate-documentation">Generate Documentation</h3>
 
 <p>Generate the documentation with the following command:</p>
 
-<pre><code>pdoc -o docs Fumagalli_Motta_Tarantino_2020 --docformat numpy --math
-</code></pre>
+<div class="pdoc-code codehilite"><pre><span></span><code>$ pdoc -o docs Fumagalli_Motta_Tarantino_2020 --docformat numpy --math
+</code></pre></div>
 
 <p>or run the shell-script <code>docs.sh</code> in the terminal.</p>
 </div>
