@@ -5,6 +5,8 @@
 ```python
 import Fumagalli_Motta_Tarantino_2020.Model as Model
 
+# initialize the model (here you can adjust the parameters of the model)
+# if the parameters are not valid for the model an assertion-error with a corresponding message will be displayed
 model: Model.BaseModel = Model.BaseModel()
 ```
 
@@ -12,13 +14,13 @@ model: Model.BaseModel = Model.BaseModel()
 
 These packages include all the needed imports for the functionality of this package.
 
-| Package &emsp; | Version &emsp; | Annotation &emsp;                               |
-|:---------------|:--------------:|:------------------------------------------------|
-| scipy          |     1.8.0      | Always needed                                   |
-| numpy          |     1.22.3     | Always needed                                   |
-| jupyter        |     1.0.0      | Just for the demonstration in demo.ipynb        |
-| IPython        |     8.1.1      | Just for the demonstration in demo.ipynb        |
-| pdoc           |     10.0.3     | Only to generate the documentation from scratch |
+| Package &emsp; | Version &emsp; | Annotation &emsp;                          |
+|:---------------|:--------------:|:-------------------------------------------|
+| scipy          |     1.8.0      | Always                                     |
+| numpy          |     1.22.3     | Always                                     |
+| jupyter        |     1.0.0      | For the demonstration in jupyter Notebooks |
+| IPython        |     8.1.1      | For the demonstration in jupyter Notebooks |
+| pdoc           |     10.0.3     | To generate the documentation from scratch |
 
 Install the dependencies with the following command:
 
@@ -34,4 +36,4 @@ Generate the documentation with the following command:
 $ pdoc -o docs Fumagalli_Motta_Tarantino_2020 --docformat numpy --math
 ```
 
-or run the shell-script `docs.sh` in the terminal.
+or run the shell-script `docs/build.sh` in the terminal.

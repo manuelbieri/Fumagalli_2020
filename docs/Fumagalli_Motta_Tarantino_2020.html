@@ -65,6 +65,8 @@ Fumagalli_Motta_Tarantino_2020    </h1>
 
 <div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn"><a href="Fumagalli_Motta_Tarantino_2020/Model.html">Fumagalli_Motta_Tarantino_2020.Model</a></span> <span class="k">as</span> <span class="nn">Model</span>
 
+<span class="c1"># initialize the model (here you can adjust the parameters of the model)</span>
+<span class="c1"># if the parameters are not valid for the model an assertion-error with a corresponding message will be displayed</span>
 <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="o">.</span><span class="n">BaseModel</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">()</span>
 </code></pre></div>
 
@@ -84,27 +86,27 @@ Fumagalli_Motta_Tarantino_2020    </h1>
 <tr>
   <td style="text-align:left;">scipy</td>
   <td style="text-align:center;">1.8.0</td>
-  <td style="text-align:left;">Always needed</td>
+  <td style="text-align:left;">Always</td>
 </tr>
 <tr>
   <td style="text-align:left;">numpy</td>
   <td style="text-align:center;">1.22.3</td>
-  <td style="text-align:left;">Always needed</td>
+  <td style="text-align:left;">Always</td>
 </tr>
 <tr>
   <td style="text-align:left;">jupyter</td>
   <td style="text-align:center;">1.0.0</td>
-  <td style="text-align:left;">Just for the demonstration in demo.ipynb</td>
+  <td style="text-align:left;">For the demonstration in jupyter Notebooks</td>
 </tr>
 <tr>
   <td style="text-align:left;">IPython</td>
   <td style="text-align:center;">8.1.1</td>
-  <td style="text-align:left;">Just for the demonstration in demo.ipynb</td>
+  <td style="text-align:left;">For the demonstration in jupyter Notebooks</td>
 </tr>
 <tr>
   <td style="text-align:left;">pdoc</td>
   <td style="text-align:center;">10.0.3</td>
-  <td style="text-align:left;">Only to generate the documentation from scratch</td>
+  <td style="text-align:left;">To generate the documentation from scratch</td>
 </tr>
 </tbody>
 </table>
@@ -123,7 +125,7 @@ Fumagalli_Motta_Tarantino_2020    </h1>
 <div class="pdoc-code codehilite"><pre><span></span><code>$ pdoc -o docs Fumagalli_Motta_Tarantino_2020 --docformat numpy --math
 </code></pre></div>
 
-<p>or run the shell-script <code>docs.sh</code> in the terminal.</p>
+<p>or run the shell-script <code>docs/build.sh</code> in the terminal.</p>
 </div>
 
                         <details>

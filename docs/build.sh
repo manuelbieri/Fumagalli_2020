@@ -1,0 +1,1 @@
+pdoc -o ../docs ../Fumagalli_Motta_Tarantino_2020 --docformat numpy --math
