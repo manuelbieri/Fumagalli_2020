@@ -1,4 +1,4 @@
-name: Black Formatter
+name: Code Style Check
 
 on: [push, pull_request]
 
@@ -13,7 +13,7 @@ jobs:
         uses: rickstaa/action-black@v1
         id: action_black
         with:
-          black_args: "./Fumagalli_Motta_Tarantino_2020 --check --diff"
+          black_args: "/Fumagalli_Motta_Tarantino_2020 --check --diff"
 
       - name: Check Code Style
         if: steps.action_black.outputs.is_formatted == 'true'
