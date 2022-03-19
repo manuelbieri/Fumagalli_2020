@@ -29,6 +29,7 @@ jobs:
       run: |
         pip install coverage
         coverage run -m unittest Test_Fumagalli_Motta_Tarantino_2020/Test_*.py
+        coverage xml
         
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2
