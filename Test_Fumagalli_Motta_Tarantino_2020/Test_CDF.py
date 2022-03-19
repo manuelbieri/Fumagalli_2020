@@ -5,7 +5,7 @@ import Fumagalli_Motta_Tarantino_2020.CDF
 
 
 class TestAbstractCDF(unittest.TestCase):
-    tolerance: float = 10 ** -8
+    tolerance: float = 10**-8
 
     def setUp(self) -> None:
         self.test_cdf = self.setUpCDF()
