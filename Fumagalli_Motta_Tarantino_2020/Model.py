@@ -116,32 +116,32 @@ class BaseModel:
             success_probability * startup_profit_duopoly - development_costs
         ), "A5 not satisfied (p.8)"
 
-        self.tolerated_harm = tolerated_level_of_harm
-        self.development_costs = development_costs
-        self.startup_assets = startup_assets
-        self.success_probability = success_probability
-        self.private_benefit = private_benefit
+        self._tolerated_harm = tolerated_level_of_harm
+        self._development_costs = development_costs
+        self._startup_assets = startup_assets
+        self._success_probability = success_probability
+        self._private_benefit = private_benefit
 
         # product market payoffs (p.6ff.)
         # with innovation
-        self.incumbent_profit_with_innovation = incumbent_profit_with_innovation
-        self.cs_with_innovation = consumer_surplus_monopoly_with_innovation
-        self.w_with_innovation = self.cs_with_innovation + self.incumbent_profit_with_innovation
+        self._incumbent_profit_with_innovation = incumbent_profit_with_innovation
+        self._cs_with_innovation = consumer_surplus_monopoly_with_innovation
+        self._w_with_innovation = self._cs_with_innovation + self._incumbent_profit_with_innovation
         # without innovation
-        self.incumbent_profit_without_innovation = incumbent_profit_without_innovation
-        self.cs_without_innovation = consumer_surplus_monopoly_without_innovation
-        self.w_without_innovation = self.cs_without_innovation + self.incumbent_profit_without_innovation
+        self._incumbent_profit_without_innovation = incumbent_profit_without_innovation
+        self._cs_without_innovation = consumer_surplus_monopoly_without_innovation
+        self._w_without_innovation = self._cs_without_innovation + self._incumbent_profit_without_innovation
         # with duopoly
-        self.startup_profit_duopoly = startup_profit_duopoly
-        self.incumbent_profit_duopoly = incumbent_profit_duopoly
-        self.cs_duopoly = consumer_surplus_duopoly
-        self.w_duopoly = self.cs_duopoly + self.startup_profit_duopoly + self.incumbent_profit_duopoly
+        self._startup_profit_duopoly = startup_profit_duopoly
+        self._incumbent_profit_duopoly = incumbent_profit_duopoly
+        self._cs_duopoly = consumer_surplus_duopoly
+        self._w_duopoly = self._cs_duopoly + self._startup_profit_duopoly + self._incumbent_profit_duopoly
 
         # post-condition given (p.6-8)
         assert 0 < startup_assets < development_costs, "Startup has not enough assets for development"
         assert (
-            self.w_without_innovation < self.w_with_innovation < self.w_duopoly
+            self._w_without_innovation < self._w_with_innovation < self._w_duopoly
         ), "Ranking of total welfare not valid (p.7)"
         assert (
-            success_probability * (self.w_with_innovation - self.w_without_innovation) > development_costs
+            success_probability * (self._w_with_innovation - self._w_without_innovation) > development_costs
         ), "A4 not satisfied (p.8)"
