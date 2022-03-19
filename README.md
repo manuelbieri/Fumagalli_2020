@@ -6,11 +6,11 @@
 [![Code Style Check](https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/Black.yml/badge.svg)](https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/Black.yml)
 ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/manuelbieri/Fumagalli_2020)
 [![CodeFactor](https://www.codefactor.io/repository/github/manuelbieri/fumagalli_2020/badge)](https://www.codefactor.io/repository/github/manuelbieri/fumagalli_2020)
-![GitHub repo size](https://img.shields.io/github/repo-size/manuelbieri/Fumagalli_2020)
-![GitHub](https://img.shields.io/github/license/manuelbieri/Fumagalli_2020)
+[![GitHub repo size](https://img.shields.io/github/repo-size/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020)
+![GitHub license](https://img.shields.io/github/license/manuelbieri/Fumagalli_2020)
 ![GitHub last commit](https://img.shields.io/github/last-commit/manuelbieri/Fumagalli_2020)
 ![GitHub Release Date](https://img.shields.io/github/release-date/manuelbieri/Fumagalli_2020)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/manuelbieri/Fumagalli_2020)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/manuelbieri/Fumagalli_2020)](https://pypi.org/project/Fumagalli-Motta-Tarantino-2020/)
 
 
 ### Basic Usage
