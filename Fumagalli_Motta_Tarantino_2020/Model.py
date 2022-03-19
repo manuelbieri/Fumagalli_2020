@@ -20,7 +20,7 @@ class BaseModel:
     | Time | Action                                                                                                                                                 |
     |------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
     | 0    | The AA commits to the standard for merger approval, $\\bar{H}$.                                                                                        |
-    | 1(a) | $\t{I}$ can make a takeover offer to $\t{SI}$, which can accept or reject.                                                                             |
+    | 1(a) | $\t{I}$ can make a takeover offer to $\t{S}$, which can accept or reject.                                                                              |
     | 1(b) | The AA approves or blocks the takeover proposal.                                                                                                       |
     | 1(c) | The firm ($\t{I}$ or $\t{S}$) that owns the prototype decides whether to develop or shelve it.                                                         |
     | 1(d) | The owner of the prototype engages in financial contracting (if needed). After that, uncertainty about the success or failure of the project resolves. |
@@ -29,19 +29,21 @@ class BaseModel:
     | 3    | Active firms sell in the product market, payoffs are realised and contracts are honored.
     """
 
-    def __init__(self, tolerated_level_of_harm: float = 1,
-                 development_costs: float = 0.1,
-                 startup_assets: float = 0.05,
-                 success_probability: float = 0.75,
-                 private_benefit: float = 0.05,
-                 consumer_surplus_monopoly_without_innovation: float = 0.2,
-                 incumbent_profit_without_innovation: float = 0.4,
-                 consumer_surplus_duopoly: float = 0.5,
-                 incumbent_profit_duopoly: float = 0.2,
-                 startup_profit_duopoly: float = 0.2,
-                 consumer_surplus_monopoly_with_innovation: float = 0.3,
-                 incumbent_profit_with_innovation: float = 0.5,
-                 ):
+    def __init__(
+        self,
+        tolerated_level_of_harm: float = 1,
+        development_costs: float = 0.1,
+        startup_assets: float = 0.05,
+        success_probability: float = 0.75,
+        private_benefit: float = 0.05,
+        consumer_surplus_monopoly_without_innovation: float = 0.2,
+        incumbent_profit_without_innovation: float = 0.4,
+        consumer_surplus_duopoly: float = 0.5,
+        incumbent_profit_duopoly: float = 0.2,
+        startup_profit_duopoly: float = 0.2,
+        consumer_surplus_monopoly_with_innovation: float = 0.3,
+        incumbent_profit_with_innovation: float = 0.5,
+    ):
         """
         Initializes a valid base model according to the assumptions given in the paper.
 
@@ -93,23 +95,26 @@ class BaseModel:
         # preconditions given (p.6-8)
         assert tolerated_level_of_harm >= 0, "Level of harm has to be bigger than 0"
         assert private_benefit > 0, "Private benefit has to be bigger than 0"
-        assert incumbent_profit_without_innovation > incumbent_profit_duopoly,\
-            "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
-        assert incumbent_profit_with_innovation > incumbent_profit_without_innovation,\
-            "Profit of the incumbent has to be bigger with the innovation than without the innovation"
-        assert consumer_surplus_monopoly_with_innovation >= consumer_surplus_monopoly_without_innovation,\
-            "Consumer surplus with the innovation has to weakly bigger than without the innovation"
-        assert incumbent_profit_with_innovation > incumbent_profit_duopoly + startup_profit_duopoly, \
-            "A1 not satisfied (p.7)"
-        assert startup_profit_duopoly > incumbent_profit_with_innovation - incumbent_profit_without_innovation, \
-            "A2 not satisfied (p.7)"
-        assert 0 < success_probability <= 1, \
-            "Success probability of development has to be between 0 and 1"
-        assert success_probability * startup_profit_duopoly > development_costs, \
-            "A3 not satisfied (p.8)"
-        assert private_benefit - development_costs < 0 and \
-            0 < private_benefit * (success_probability * startup_profit_duopoly - development_costs), \
-            "A5 not satisfied (p.8)"
+        assert (
+            incumbent_profit_without_innovation > incumbent_profit_duopoly
+        ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
+        assert (
+            incumbent_profit_with_innovation > incumbent_profit_without_innovation
+        ), "Profit of the incumbent has to be bigger with the innovation than without the innovation"
+        assert (
+            consumer_surplus_monopoly_with_innovation >= consumer_surplus_monopoly_without_innovation
+        ), "Consumer surplus with the innovation has to weakly bigger than without the innovation"
+        assert (
+            incumbent_profit_with_innovation > incumbent_profit_duopoly + startup_profit_duopoly
+        ), "A1 not satisfied (p.7)"
+        assert (
+            startup_profit_duopoly > incumbent_profit_with_innovation - incumbent_profit_without_innovation
+        ), "A2 not satisfied (p.7)"
+        assert 0 < success_probability <= 1, "Success probability of development has to be between 0 and 1"
+        assert success_probability * startup_profit_duopoly > development_costs, "A3 not satisfied (p.8)"
+        assert private_benefit - development_costs < 0 and 0 < private_benefit * (
+            success_probability * startup_profit_duopoly - development_costs
+        ), "A5 not satisfied (p.8)"
 
         self.tolerated_harm = tolerated_level_of_harm
         self.development_costs = development_costs
@@ -133,9 +138,10 @@ class BaseModel:
         self.w_duopoly = self.cs_duopoly + self.startup_profit_duopoly + self.incumbent_profit_duopoly
 
         # post-condition given (p.6-8)
-        assert 0 < startup_assets < development_costs, \
-            "Startup has not enough assets for development"
-        assert self.w_without_innovation < self.w_with_innovation < self.w_duopoly, \
-            "Ranking of total welfare not valid (p.7)"
-        assert success_probability * (self.w_with_innovation - self.w_without_innovation) > development_costs, \
-            "A4 not satisfied (p.8)"
+        assert 0 < startup_assets < development_costs, "Startup has not enough assets for development"
+        assert (
+            self.w_without_innovation < self.w_with_innovation < self.w_duopoly
+        ), "Ranking of total welfare not valid (p.7)"
+        assert (
+            success_probability * (self.w_with_innovation - self.w_without_innovation) > development_costs
+        ), "A4 not satisfied (p.8)"

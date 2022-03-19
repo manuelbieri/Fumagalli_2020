@@ -97,7 +97,7 @@
 <span class="sd">    | Time | Action                                                                                                                                                 |</span>
 <span class="sd">    |------|--------------------------------------------------------------------------------------------------------------------------------------------------------|</span>
 <span class="sd">    | 0    | The AA commits to the standard for merger approval, $\\bar{H}$.                                                                                        |</span>
-<span class="sd">    | 1(a) | $\t{I}$ can make a takeover offer to $\t{SI}$, which can accept or reject.                                                                             |</span>
+<span class="sd">    | 1(a) | $\t{I}$ can make a takeover offer to $\t{S}$, which can accept or reject.                                                                              |</span>
 <span class="sd">    | 1(b) | The AA approves or blocks the takeover proposal.                                                                                                       |</span>
 <span class="sd">    | 1(c) | The firm ($\t{I}$ or $\t{S}$) that owns the prototype decides whether to develop or shelve it.                                                         |</span>
 <span class="sd">    | 1(d) | The owner of the prototype engages in financial contracting (if needed). After that, uncertainty about the success or failure of the project resolves. |</span>
@@ -106,19 +106,21 @@
 <span class="sd">    | 3    | Active firms sell in the product market, payoffs are realised and contracts are honored.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerated_level_of_harm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                 <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
-                 <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                 <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tolerated_level_of_harm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
+        <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a valid base model according to the assumptions given in the paper.</span>
 
@@ -170,23 +172,26 @@
         <span class="c1"># preconditions given (p.6-8)</span>
         <span class="k">assert</span> <span class="n">tolerated_level_of_harm</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Level of harm has to be bigger than 0&quot;</span>
         <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Private benefit has to be bigger than 0&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_without_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span><span class="p">,</span>\
-            <span class="s2">&quot;Profit of the incumbent has to be bigger without the innovation than in the duopoly&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span>\
-            <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
-        <span class="k">assert</span> <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">,</span>\
-            <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span><span class="p">,</span> \
-            <span class="s2">&quot;A1 not satisfied (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">-</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span> \
-            <span class="s2">&quot;A2 not satisfied (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">success_probability</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> \
-            <span class="s2">&quot;Success probability of development has to be between 0 and 1&quot;</span>
-        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;A3 not satisfied (p.8)&quot;</span>
-        <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">-</span> <span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> \
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">private_benefit</span> <span class="o">*</span> <span class="p">(</span><span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">-</span> <span class="n">development_costs</span><span class="p">),</span> \
-            <span class="s2">&quot;A5 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_without_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger without the innovation than in the duopoly&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;A1 not satisfied (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">-</span> <span class="n">incumbent_profit_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;A2 not satisfied (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">success_probability</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Success probability of development has to be between 0 and 1&quot;</span>
+        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> <span class="s2">&quot;A3 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">-</span> <span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">private_benefit</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">-</span> <span class="n">development_costs</span>
+        <span class="p">),</span> <span class="s2">&quot;A5 not satisfied (p.8)&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">=</span> <span class="n">tolerated_level_of_harm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">=</span> <span class="n">development_costs</span>
@@ -210,12 +215,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs_duopoly</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
 
         <span class="c1"># post-condition given (p.6-8)</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;Startup has not enough assets for development&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span><span class="p">,</span> \
-            <span class="s2">&quot;Ranking of total welfare not valid (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="n">development_costs</span><span class="p">,</span> <span class="s2">&quot;Startup has not enough assets for development&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;Ranking of total welfare not valid (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span>
+        <span class="p">),</span> <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
 </pre></div>
 
         </details>
@@ -254,7 +260,7 @@
 <span class="sd">    | Time | Action                                                                                                                                                 |</span>
 <span class="sd">    |------|--------------------------------------------------------------------------------------------------------------------------------------------------------|</span>
 <span class="sd">    | 0    | The AA commits to the standard for merger approval, $\\bar{H}$.                                                                                        |</span>
-<span class="sd">    | 1(a) | $\t{I}$ can make a takeover offer to $\t{SI}$, which can accept or reject.                                                                             |</span>
+<span class="sd">    | 1(a) | $\t{I}$ can make a takeover offer to $\t{S}$, which can accept or reject.                                                                              |</span>
 <span class="sd">    | 1(b) | The AA approves or blocks the takeover proposal.                                                                                                       |</span>
 <span class="sd">    | 1(c) | The firm ($\t{I}$ or $\t{S}$) that owns the prototype decides whether to develop or shelve it.                                                         |</span>
 <span class="sd">    | 1(d) | The owner of the prototype engages in financial contracting (if needed). After that, uncertainty about the success or failure of the project resolves. |</span>
@@ -263,19 +269,21 @@
 <span class="sd">    | 3    | Active firms sell in the product market, payoffs are realised and contracts are honored.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerated_level_of_harm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                 <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
-                 <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                 <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tolerated_level_of_harm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
+        <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a valid base model according to the assumptions given in the paper.</span>
 
@@ -327,23 +335,26 @@
         <span class="c1"># preconditions given (p.6-8)</span>
         <span class="k">assert</span> <span class="n">tolerated_level_of_harm</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Level of harm has to be bigger than 0&quot;</span>
         <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Private benefit has to be bigger than 0&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_without_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span><span class="p">,</span>\
-            <span class="s2">&quot;Profit of the incumbent has to be bigger without the innovation than in the duopoly&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span>\
-            <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
-        <span class="k">assert</span> <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">,</span>\
-            <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span><span class="p">,</span> \
-            <span class="s2">&quot;A1 not satisfied (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">-</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span> \
-            <span class="s2">&quot;A2 not satisfied (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">success_probability</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> \
-            <span class="s2">&quot;Success probability of development has to be between 0 and 1&quot;</span>
-        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;A3 not satisfied (p.8)&quot;</span>
-        <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">-</span> <span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> \
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">private_benefit</span> <span class="o">*</span> <span class="p">(</span><span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">-</span> <span class="n">development_costs</span><span class="p">),</span> \
-            <span class="s2">&quot;A5 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_without_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger without the innovation than in the duopoly&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;A1 not satisfied (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">-</span> <span class="n">incumbent_profit_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;A2 not satisfied (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">success_probability</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Success probability of development has to be between 0 and 1&quot;</span>
+        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> <span class="s2">&quot;A3 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">-</span> <span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">private_benefit</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">-</span> <span class="n">development_costs</span>
+        <span class="p">),</span> <span class="s2">&quot;A5 not satisfied (p.8)&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">=</span> <span class="n">tolerated_level_of_harm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">=</span> <span class="n">development_costs</span>
@@ -367,12 +378,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs_duopoly</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
 
         <span class="c1"># post-condition given (p.6-8)</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;Startup has not enough assets for development&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span><span class="p">,</span> \
-            <span class="s2">&quot;Ranking of total welfare not valid (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="n">development_costs</span><span class="p">,</span> <span class="s2">&quot;Startup has not enough assets for development&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;Ranking of total welfare not valid (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span>
+        <span class="p">),</span> <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
 </pre></div>
 
         </details>
@@ -408,7 +420,7 @@ from the merger, if any.</p>
 </tr>
 <tr>
   <td>1(a)</td>
-  <td>$  {I}$ can make a takeover offer to $     {SI}$, which can accept or reject.</td>
+  <td>$  {I}$ can make a takeover offer to $     {S}$, which can accept or reject.</td>
 </tr>
 <tr>
   <td>1(b)</td>
@@ -461,19 +473,21 @@ from the merger, if any.</p>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerated_level_of_harm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                 <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
-                 <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                 <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
-                 <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                 <span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tolerated_level_of_harm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
+        <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a valid base model according to the assumptions given in the paper.</span>
 
@@ -525,23 +539,26 @@ from the merger, if any.</p>
         <span class="c1"># preconditions given (p.6-8)</span>
         <span class="k">assert</span> <span class="n">tolerated_level_of_harm</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Level of harm has to be bigger than 0&quot;</span>
         <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Private benefit has to be bigger than 0&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_without_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span><span class="p">,</span>\
-            <span class="s2">&quot;Profit of the incumbent has to be bigger without the innovation than in the duopoly&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span>\
-            <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
-        <span class="k">assert</span> <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">,</span>\
-            <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
-        <span class="k">assert</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span><span class="p">,</span> \
-            <span class="s2">&quot;A1 not satisfied (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">-</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span> \
-            <span class="s2">&quot;A2 not satisfied (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">success_probability</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> \
-            <span class="s2">&quot;Success probability of development has to be between 0 and 1&quot;</span>
-        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;A3 not satisfied (p.8)&quot;</span>
-        <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">-</span> <span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> \
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">private_benefit</span> <span class="o">*</span> <span class="p">(</span><span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">-</span> <span class="n">development_costs</span><span class="p">),</span> \
-            <span class="s2">&quot;A5 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_without_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger without the innovation than in the duopoly&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;A1 not satisfied (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_with_innovation</span> <span class="o">-</span> <span class="n">incumbent_profit_without_innovation</span>
+        <span class="p">),</span> <span class="s2">&quot;A2 not satisfied (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">success_probability</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Success probability of development has to be between 0 and 1&quot;</span>
+        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> <span class="s2">&quot;A3 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="n">private_benefit</span> <span class="o">-</span> <span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">private_benefit</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">success_probability</span> <span class="o">*</span> <span class="n">startup_profit_duopoly</span> <span class="o">-</span> <span class="n">development_costs</span>
+        <span class="p">),</span> <span class="s2">&quot;A5 not satisfied (p.8)&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">=</span> <span class="n">tolerated_level_of_harm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">=</span> <span class="n">development_costs</span>
@@ -565,12 +582,13 @@ from the merger, if any.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs_duopoly</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
 
         <span class="c1"># post-condition given (p.6-8)</span>
-        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;Startup has not enough assets for development&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span><span class="p">,</span> \
-            <span class="s2">&quot;Ranking of total welfare not valid (p.7)&quot;</span>
-        <span class="k">assert</span> <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span><span class="p">,</span> \
-            <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="n">development_costs</span><span class="p">,</span> <span class="s2">&quot;Startup has not enough assets for development&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span>
+        <span class="p">),</span> <span class="s2">&quot;Ranking of total welfare not valid (p.7)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span>
+        <span class="p">),</span> <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
 </pre></div>
 
         </details>
