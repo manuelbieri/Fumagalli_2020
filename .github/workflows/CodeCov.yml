@@ -11,12 +11,12 @@ jobs:
       PYTHON: '3.8'
     steps:
     
-    - uses: checkout@v2
+    - uses: actions/checkout@v2
       with:
         fetch-depth: ‘2’
 
     - name: Setup Python
-      uses: actions/setup-python@master
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
         
@@ -32,3 +32,5 @@ jobs:
         
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
