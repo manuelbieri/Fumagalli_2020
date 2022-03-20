@@ -36,12 +36,12 @@ class BaseModel:
         startup_assets: float = 0.05,
         success_probability: float = 0.75,
         private_benefit: float = 0.05,
-        consumer_surplus_monopoly_without_innovation: float = 0.2,
+        consumer_surplus_without_innovation: float = 0.2,
         incumbent_profit_without_innovation: float = 0.4,
         consumer_surplus_duopoly: float = 0.5,
         incumbent_profit_duopoly: float = 0.2,
         startup_profit_duopoly: float = 0.2,
-        consumer_surplus_monopoly_with_innovation: float = 0.3,
+        consumer_surplus_with_innovation: float = 0.3,
         incumbent_profit_with_innovation: float = 0.5,
     ):
         """
@@ -76,7 +76,7 @@ class BaseModel:
             ($p$) Probability of success in case of effort (otherwise the projects fails for sure).
         private_benefit : float
             ($B$) Private benefit of the entrepreneur in case of failure.
-        consumer_surplus_monopoly_without_innovation : float
+        consumer_surplus_without_innovation : float
             ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.
         incumbent_profit_without_innovation : float
             ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).
@@ -86,7 +86,7 @@ class BaseModel:
             ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.
         startup_profit_duopoly : float
             ($\\pi^d_S$) Profit of the startup in the case of a duopoly.
-        consumer_surplus_monopoly_with_innovation : float
+        consumer_surplus_with_innovation : float
              ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.
         incumbent_profit_with_innovation : float
             ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).
@@ -102,7 +102,7 @@ class BaseModel:
             incumbent_profit_with_innovation > incumbent_profit_without_innovation
         ), "Profit of the incumbent has to be bigger with the innovation than without the innovation"
         assert (
-            consumer_surplus_monopoly_with_innovation >= consumer_surplus_monopoly_without_innovation
+            consumer_surplus_with_innovation >= consumer_surplus_without_innovation
         ), "Consumer surplus with the innovation has to weakly bigger than without the innovation"
         assert (
             incumbent_profit_with_innovation > incumbent_profit_duopoly + startup_profit_duopoly
@@ -125,11 +125,11 @@ class BaseModel:
         # product market payoffs (p.6ff.)
         # with innovation
         self._incumbent_profit_with_innovation = incumbent_profit_with_innovation
-        self._cs_with_innovation = consumer_surplus_monopoly_with_innovation
+        self._cs_with_innovation = consumer_surplus_with_innovation
         self._w_with_innovation = self._cs_with_innovation + self._incumbent_profit_with_innovation
         # without innovation
         self._incumbent_profit_without_innovation = incumbent_profit_without_innovation
-        self._cs_without_innovation = consumer_surplus_monopoly_without_innovation
+        self._cs_without_innovation = consumer_surplus_without_innovation
         self._w_without_innovation = self._cs_without_innovation + self._incumbent_profit_without_innovation
         # with duopoly
         self._startup_profit_duopoly = startup_profit_duopoly
@@ -145,3 +145,68 @@ class BaseModel:
         assert (
             success_probability * (self._w_with_innovation - self._w_without_innovation) > development_costs
         ), "A4 not satisfied (p.8)"
+
+    @property
+    def tolerated_harm(self):
+        return self._tolerated_harm
+
+    @property
+    def development_costs(self):
+        return self._development_costs
+
+    @property
+    def startup_assets(self):
+        return self._startup_assets
+
+    @property
+    def success_probability(self):
+        return self._success_probability
+
+    @property
+    def private_benefit(self):
+        return self._private_benefit
+
+    @property
+    def incumbent_profit_with_innovation(self):
+        return self._incumbent_profit_with_innovation
+
+    @property
+    def cs_with_innovation(self):
+        return self._cs_with_innovation
+
+    @property
+    def w_with_innovation(self):
+        return self._w_with_innovation
+
+    @property
+    def incumbent_profit_without_innovation(self):
+        return self._incumbent_profit_without_innovation
+
+    @property
+    def cs_without_innovation(self):
+        return self._cs_without_innovation
+
+    @property
+    def w_without_innovation(self):
+        return self._w_without_innovation
+
+    @property
+    def startup_profit_duopoly(self):
+        return self._startup_profit_duopoly
+
+    @property
+    def incumbent_profit_duopoly(self):
+        return self._incumbent_profit_duopoly
+
+    @property
+    def cs_duopoly(self):
+        return self._cs_duopoly
+
+    @property
+    def w_duopoly(self):
+        return self._w_duopoly
+
+
+class Outcome(BaseModel):
+    def __init__(self, **kwargs):
+        super(Outcome, self).__init__(**kwargs)
