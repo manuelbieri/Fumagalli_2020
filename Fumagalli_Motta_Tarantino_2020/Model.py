@@ -10,7 +10,7 @@ class BaseModel:
     prototype or shelve it), conditional on the AA’s approval of the acquisition. We assume that the takeover
     involves a negligible but positive transaction cost. The AA commits at the beginning of the game to a merger
     policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate. Harm from a proposed merger
-    consists of the di↵erence between the expected welfare levels if the merger goes ahead, and in the counterfactual
+    consists of the difference between the expected welfare levels if the merger goes ahead, and in the counterfactual
     where it does not take place (derived of course by correctly anticipating the continuation equilibrium of the
     game). A proposed merger will be prohibited only if the tolerated harm level H is lower than the expected harm
     from the merger, if any.
@@ -207,6 +207,6 @@ class BaseModel:
         return self._w_duopoly
 
 
-class Outcome(BaseModel):
+class MergerPolicyModel(BaseModel):
     def __init__(self, **kwargs):
-        super(Outcome, self).__init__(**kwargs)
+        super(MergerPolicyModel, self).__init__(**kwargs)

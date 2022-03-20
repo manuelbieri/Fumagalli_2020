@@ -92,5 +92,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(self.get_welfare_value("with_innovation"), self.model.w_with_innovation)
 
 
-class TestOutcome(TestBaseModel):
-    pass
+class TestMergerPolicyModel(TestBaseModel):
+    def test_valid_setup_default_values(self):
+        Model.MergerPolicyModel()

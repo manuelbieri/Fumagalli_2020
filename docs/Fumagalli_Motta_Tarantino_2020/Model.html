@@ -54,6 +54,60 @@
                         <li>
                                 <a class="function" href="#BaseModel.__init__">BaseModel</a>
                         </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.tolerated_harm">tolerated_harm</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.development_costs">development_costs</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.startup_assets">startup_assets</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.success_probability">success_probability</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.private_benefit">private_benefit</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.incumbent_profit_with_innovation">incumbent_profit_with_innovation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.cs_with_innovation">cs_with_innovation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.w_with_innovation">w_with_innovation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.incumbent_profit_without_innovation">incumbent_profit_without_innovation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.cs_without_innovation">cs_without_innovation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.w_without_innovation">w_without_innovation</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.startup_profit_duopoly">startup_profit_duopoly</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.incumbent_profit_duopoly">incumbent_profit_duopoly</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.cs_duopoly">cs_duopoly</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#BaseModel.w_duopoly">w_duopoly</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#MergerPolicyModel">MergerPolicyModel</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#MergerPolicyModel.__init__">MergerPolicyModel</a>
+                        </li>
                 </ul>
 
             </li>
@@ -88,7 +142,7 @@
 <span class="sd">    prototype or shelve it), conditional on the AA’s approval of the acquisition. We assume that the takeover</span>
 <span class="sd">    involves a negligible but positive transaction cost. The AA commits at the beginning of the game to a merger</span>
 <span class="sd">    policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate. Harm from a proposed merger</span>
-<span class="sd">    consists of the di↵erence between the expected welfare levels if the merger goes ahead, and in the counterfactual</span>
+<span class="sd">    consists of the difference between the expected welfare levels if the merger goes ahead, and in the counterfactual</span>
 <span class="sd">    where it does not take place (derived of course by correctly anticipating the continuation equilibrium of the</span>
 <span class="sd">    game). A proposed merger will be prohibited only if the tolerated harm level H is lower than the expected harm</span>
 <span class="sd">    from the merger, if any.</span>
@@ -114,12 +168,12 @@
         <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
         <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-        <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
         <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">consumer_surplus_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
         <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -154,7 +208,7 @@
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
-<span class="sd">        consumer_surplus_monopoly_without_innovation : float</span>
+<span class="sd">        consumer_surplus_without_innovation : float</span>
 <span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</span>
 <span class="sd">        incumbent_profit_without_innovation : float</span>
 <span class="sd">            ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
@@ -164,7 +218,7 @@
 <span class="sd">            ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
 <span class="sd">        startup_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
-<span class="sd">        consumer_surplus_monopoly_with_innovation : float</span>
+<span class="sd">        consumer_surplus_with_innovation : float</span>
 <span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</span>
 <span class="sd">        incumbent_profit_with_innovation : float</span>
 <span class="sd">            ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
@@ -180,7 +234,7 @@
             <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span>
         <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+            <span class="n">consumer_surplus_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_without_innovation</span>
         <span class="p">),</span> <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span>
@@ -203,11 +257,11 @@
         <span class="c1"># product market payoffs (p.6ff.)</span>
         <span class="c1"># with innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span> <span class="o">=</span> <span class="n">incumbent_profit_with_innovation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_monopoly_with_innovation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_with_innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
         <span class="c1"># without innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span> <span class="o">=</span> <span class="n">incumbent_profit_without_innovation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_without_innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
         <span class="c1"># with duopoly</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span> <span class="o">=</span> <span class="n">startup_profit_duopoly</span>
@@ -223,6 +277,71 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span>
         <span class="p">),</span> <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tolerated_harm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tolerated_harm</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">development_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">startup_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">success_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">private_benefit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">incumbent_profit_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cs_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">incumbent_profit_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cs_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">startup_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">incumbent_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_duopoly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cs_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_duopoly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_duopoly</span>
+
+
+<span class="k">class</span> <span class="nc">MergerPolicyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -251,7 +370,7 @@
 <span class="sd">    prototype or shelve it), conditional on the AA’s approval of the acquisition. We assume that the takeover</span>
 <span class="sd">    involves a negligible but positive transaction cost. The AA commits at the beginning of the game to a merger</span>
 <span class="sd">    policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate. Harm from a proposed merger</span>
-<span class="sd">    consists of the di↵erence between the expected welfare levels if the merger goes ahead, and in the counterfactual</span>
+<span class="sd">    consists of the difference between the expected welfare levels if the merger goes ahead, and in the counterfactual</span>
 <span class="sd">    where it does not take place (derived of course by correctly anticipating the continuation equilibrium of the</span>
 <span class="sd">    game). A proposed merger will be prohibited only if the tolerated harm level H is lower than the expected harm</span>
 <span class="sd">    from the merger, if any.</span>
@@ -277,12 +396,12 @@
         <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
         <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-        <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
         <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">consumer_surplus_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
         <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -317,7 +436,7 @@
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
-<span class="sd">        consumer_surplus_monopoly_without_innovation : float</span>
+<span class="sd">        consumer_surplus_without_innovation : float</span>
 <span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</span>
 <span class="sd">        incumbent_profit_without_innovation : float</span>
 <span class="sd">            ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
@@ -327,7 +446,7 @@
 <span class="sd">            ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
 <span class="sd">        startup_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
-<span class="sd">        consumer_surplus_monopoly_with_innovation : float</span>
+<span class="sd">        consumer_surplus_with_innovation : float</span>
 <span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</span>
 <span class="sd">        incumbent_profit_with_innovation : float</span>
 <span class="sd">            ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
@@ -343,7 +462,7 @@
             <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span>
         <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+            <span class="n">consumer_surplus_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_without_innovation</span>
         <span class="p">),</span> <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span>
@@ -366,11 +485,11 @@
         <span class="c1"># product market payoffs (p.6ff.)</span>
         <span class="c1"># with innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span> <span class="o">=</span> <span class="n">incumbent_profit_with_innovation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_monopoly_with_innovation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_with_innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
         <span class="c1"># without innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span> <span class="o">=</span> <span class="n">incumbent_profit_without_innovation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_without_innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
         <span class="c1"># with duopoly</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span> <span class="o">=</span> <span class="n">startup_profit_duopoly</span>
@@ -386,6 +505,66 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">development_costs</span>
         <span class="p">),</span> <span class="s2">&quot;A4 not satisfied (p.8)&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tolerated_harm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tolerated_harm</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">development_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">startup_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">success_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">private_benefit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">incumbent_profit_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cs_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">incumbent_profit_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cs_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">startup_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">incumbent_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_duopoly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cs_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_duopoly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_duopoly</span>
 </pre></div>
 
         </details>
@@ -400,7 +579,7 @@ acquire the start-up (and if it does so before product development, it has to de
 prototype or shelve it), conditional on the AA’s approval of the acquisition. We assume that the takeover
 involves a negligible but positive transaction cost. The AA commits at the beginning of the game to a merger
 policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate. Harm from a proposed merger
-consists of the di↵erence between the expected welfare levels if the merger goes ahead, and in the counterfactual
+consists of the difference between the expected welfare levels if the merger goes ahead, and in the counterfactual
 where it does not take place (derived of course by correctly anticipating the continuation equilibrium of the
 game). A proposed merger will be prohibited only if the tolerated harm level H is lower than the expected harm
 from the merger, if any.</p>
@@ -462,12 +641,12 @@ from the merger, if any.</p>
     startup_assets: float = 0.05,
     success_probability: float = 0.75,
     private_benefit: float = 0.05,
-    consumer_surplus_monopoly_without_innovation: float = 0.2,
+    consumer_surplus_without_innovation: float = 0.2,
     incumbent_profit_without_innovation: float = 0.4,
     consumer_surplus_duopoly: float = 0.5,
     incumbent_profit_duopoly: float = 0.2,
     startup_profit_duopoly: float = 0.2,
-    consumer_surplus_monopoly_with_innovation: float = 0.3,
+    consumer_surplus_with_innovation: float = 0.3,
     incumbent_profit_with_innovation: float = 0.5
 )</span>
     </div>
@@ -481,12 +660,12 @@ from the merger, if any.</p>
         <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span>
         <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-        <span class="n">consumer_surplus_monopoly_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
         <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">consumer_surplus_monopoly_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">consumer_surplus_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
         <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -521,7 +700,7 @@ from the merger, if any.</p>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
-<span class="sd">        consumer_surplus_monopoly_without_innovation : float</span>
+<span class="sd">        consumer_surplus_without_innovation : float</span>
 <span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</span>
 <span class="sd">        incumbent_profit_without_innovation : float</span>
 <span class="sd">            ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
@@ -531,7 +710,7 @@ from the merger, if any.</p>
 <span class="sd">            ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
 <span class="sd">        startup_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
-<span class="sd">        consumer_surplus_monopoly_with_innovation : float</span>
+<span class="sd">        consumer_surplus_with_innovation : float</span>
 <span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</span>
 <span class="sd">        incumbent_profit_with_innovation : float</span>
 <span class="sd">            ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
@@ -547,7 +726,7 @@ from the merger, if any.</p>
             <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_without_innovation</span>
         <span class="p">),</span> <span class="s2">&quot;Profit of the incumbent has to be bigger with the innovation than without the innovation&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">consumer_surplus_monopoly_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+            <span class="n">consumer_surplus_with_innovation</span> <span class="o">&gt;=</span> <span class="n">consumer_surplus_without_innovation</span>
         <span class="p">),</span> <span class="s2">&quot;Consumer surplus with the innovation has to weakly bigger than without the innovation&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">incumbent_profit_with_innovation</span> <span class="o">&gt;</span> <span class="n">incumbent_profit_duopoly</span> <span class="o">+</span> <span class="n">startup_profit_duopoly</span>
@@ -570,11 +749,11 @@ from the merger, if any.</p>
         <span class="c1"># product market payoffs (p.6ff.)</span>
         <span class="c1"># with innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span> <span class="o">=</span> <span class="n">incumbent_profit_with_innovation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_monopoly_with_innovation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_with_innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
         <span class="c1"># without innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span> <span class="o">=</span> <span class="n">incumbent_profit_without_innovation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_monopoly_without_innovation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">=</span> <span class="n">consumer_surplus_without_innovation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
         <span class="c1"># with duopoly</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span> <span class="o">=</span> <span class="n">startup_profit_duopoly</span>
@@ -683,7 +862,7 @@ from the merger, if any.</p>
 ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</li>
 <li><strong>private_benefit</strong> (float):
 ($B$) Private benefit of the entrepreneur in case of failure.</li>
-<li><strong>consumer_surplus_monopoly_without_innovation</strong> (float):
+<li><strong>consumer_surplus_without_innovation</strong> (float):
 ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</li>
 <li><strong>incumbent_profit_without_innovation</strong> (float):
 ($\pi^m_I$) Profit of the monopolist with a single product (without innovation).</li>
@@ -693,7 +872,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
 ($\pi^d_I$) Profit of the incumbent in the case of a duopoly.</li>
 <li><strong>startup_profit_duopoly</strong> (float):
 ($\pi^d_S$) Profit of the startup in the case of a duopoly.</li>
-<li><strong>consumer_surplus_monopoly_with_innovation</strong> (float):
+<li><strong>consumer_surplus_with_innovation</strong> (float):
 ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</li>
 <li><strong>incumbent_profit_with_innovation</strong> (float):
 ($\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</li>
@@ -701,6 +880,383 @@ Consumer surplus for the case that the innovation is introduced into the market 
 </div>
 
 
+                            </div>
+                            <div id="BaseModel.tolerated_harm" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.tolerated_harm">#&nbsp;&nbsp</a>
+
+        <span class="name">tolerated_harm</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.development_costs" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.development_costs">#&nbsp;&nbsp</a>
+
+        <span class="name">development_costs</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.startup_assets" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.startup_assets">#&nbsp;&nbsp</a>
+
+        <span class="name">startup_assets</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.success_probability" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.success_probability">#&nbsp;&nbsp</a>
+
+        <span class="name">success_probability</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.private_benefit" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.private_benefit">#&nbsp;&nbsp</a>
+
+        <span class="name">private_benefit</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.incumbent_profit_with_innovation" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.incumbent_profit_with_innovation">#&nbsp;&nbsp</a>
+
+        <span class="name">incumbent_profit_with_innovation</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.cs_with_innovation" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.cs_with_innovation">#&nbsp;&nbsp</a>
+
+        <span class="name">cs_with_innovation</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.w_with_innovation" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.w_with_innovation">#&nbsp;&nbsp</a>
+
+        <span class="name">w_with_innovation</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.incumbent_profit_without_innovation" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.incumbent_profit_without_innovation">#&nbsp;&nbsp</a>
+
+        <span class="name">incumbent_profit_without_innovation</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.cs_without_innovation" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.cs_without_innovation">#&nbsp;&nbsp</a>
+
+        <span class="name">cs_without_innovation</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.w_without_innovation" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.w_without_innovation">#&nbsp;&nbsp</a>
+
+        <span class="name">w_without_innovation</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.startup_profit_duopoly" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.startup_profit_duopoly">#&nbsp;&nbsp</a>
+
+        <span class="name">startup_profit_duopoly</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.incumbent_profit_duopoly" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.incumbent_profit_duopoly">#&nbsp;&nbsp</a>
+
+        <span class="name">incumbent_profit_duopoly</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.cs_duopoly" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.cs_duopoly">#&nbsp;&nbsp</a>
+
+        <span class="name">cs_duopoly</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.w_duopoly" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.w_duopoly">#&nbsp;&nbsp</a>
+
+        <span class="name">w_duopoly</span>
+    </div>
+
+    
+    
+
+                            </div>
+                </section>
+                <section id="MergerPolicyModel">
+                                <div class="attr class">
+        <a class="headerlink" href="#MergerPolicyModel">#&nbsp;&nbsp</a>
+
+        
+        <span class="def">class</span>
+        <span class="name">MergerPolicyModel</span><wbr>(<span class="base"><a href="#BaseModel">BaseModel</a></span>):
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MergerPolicyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>There are three players in our game: an Antitrust Authority (AA), which at the beginning of the game decides its
+merger policy; a monopolist $       {I}$ncumbent; and a $   {S}$tart-up. The start-up owns a “prototype” (or project)
+that, if developed, can give rise to an innovation: for instance a substitute/higher quality product to the
+incumbent’s existing product, or a more efficient production process. The start-up does not have enough own
+resources to develop the project. It has two options: it can either obtain additional funds from competitive
+capital markets, or sell out to the incumbent. The incumbent will have to decide whether and when it wants to
+acquire the start-up (and if it does so before product development, it has to decide whether to develop the
+prototype or shelve it), conditional on the AA’s approval of the acquisition. We assume that the takeover
+involves a negligible but positive transaction cost. The AA commits at the beginning of the game to a merger
+policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate. Harm from a proposed merger
+consists of the difference between the expected welfare levels if the merger goes ahead, and in the counterfactual
+where it does not take place (derived of course by correctly anticipating the continuation equilibrium of the
+game). A proposed merger will be prohibited only if the tolerated harm level H is lower than the expected harm
+from the merger, if any.</p>
+
+<p>Timing of the game:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Time</th>
+  <th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>0</td>
+  <td>The AA commits to the standard for merger approval, $\bar{H}$.</td>
+</tr>
+<tr>
+  <td>1(a)</td>
+  <td>$  {I}$ can make a takeover offer to $     {S}$, which can accept or reject.</td>
+</tr>
+<tr>
+  <td>1(b)</td>
+  <td>The AA approves or blocks the takeover proposal.</td>
+</tr>
+<tr>
+  <td>1(c)</td>
+  <td>The firm ($        {I}$ or $       {S}$) that owns the prototype decides whether to develop or shelve it.</td>
+</tr>
+<tr>
+  <td>1(d)</td>
+  <td>The owner of the prototype engages in financial contracting (if needed). After that, uncertainty about the success or failure of the project resolves.</td>
+</tr>
+<tr>
+  <td>2(a)</td>
+  <td>$  {I}$ can make a take-it-or-leave-it offer to $  {S}$ (if it did not already buy it at t = 1, and if the development of the project was successful).</td>
+</tr>
+<tr>
+  <td>2(b)</td>
+  <td>The AA approves or blocks the takeover proposal.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>Active firms sell in the product market, payoffs are realised and contracts are honored.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+                            <div id="MergerPolicyModel.__init__" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#MergerPolicyModel.__init__">#&nbsp;&nbsp</a>
+
+        
+            <span class="name">MergerPolicyModel</span><span class="signature">(**kwargs)</span>
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Initializes a valid base model according to the assumptions given in the paper.</p>
+
+<p>The following assumptions have to be met:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Condition</th>
+  <th>Remark</th>
+  <th>Page (Assumption)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>$\bar{H} \ge 0$</td>
+  <td>The tolerated level of harm has to be bigger than 0.</td>
+  <td>p.6</td>
+</tr>
+<tr>
+  <td>$p \in (0,1]$</td>
+  <td>Probability that the prototype is developed successfully depends on the non-contractible effort exerted by the entrepreneur of the firm that owns the project. In case of no effort the project fails for sure, but the entrepreneur obtains a positive private benefit. In case of failure the project yields no profit.</td>
+  <td>p.8</td>
+</tr>
+<tr>
+  <td>$B>0$</td>
+  <td>Private benefit of the entrepreneur in case of failure.</td>
+  <td>p.8</td>
+</tr>
+<tr>
+  <td>$A \in (0,K)$</td>
+  <td>The startup does not hold sufficient assets at the beginning to cover the costs.</td>
+  <td>p.8</td>
+</tr>
+<tr>
+  <td>$\pi^m_I>\pi^d_I$</td>
+  <td>Profit of the incumbent has to be bigger without the innovation than in the duopoly.</td>
+  <td>p.7</td>
+</tr>
+<tr>
+  <td>$\pi^M_I>\pi^m_I$</td>
+  <td>Industry profits are higher with a multi-product monopolist than a single product monopolist.</td>
+  <td>p.7</td>
+</tr>
+<tr>
+  <td>$CS^M \ge CS^m$</td>
+  <td>Consumer surplus with the innovation has to weakly bigger than without the innovation.</td>
+  <td>p.7</td>
+</tr>
+<tr>
+  <td>$\pi^M_I>\pi^d_I+\pi^d_S$</td>
+  <td>Industry profits are higher under monopoly than under duopoly. If this assumption did not hold, the takeover would not take place.</td>
+  <td>p.7 (A1)</td>
+</tr>
+<tr>
+  <td>$\pi^d_S>\pi^M_I-\pi^m_I$</td>
+  <td>An incumbent has less incentive to innovate (in a new/better product or a more efficient production process) than a potential entrant because the innovation would cannibalise the incumbent’s current profits. (Corresponds to Arrow's replacement effect)</td>
+  <td>p.7 (A2)</td>
+</tr>
+<tr>
+  <td>$p\pi^d_S>K$</td>
+  <td>In case of effort it is efficient to develop the prototype, i.e., development has a positive net present value (NPV) for the start-up</td>
+  <td>p.8 (A3)</td>
+</tr>
+<tr>
+  <td>$p(W^M-W^m)&gt;K$</td>
+  <td>The development of the project is not only privately beneficial for the start-up, but also for society as a whole, whether undertaken by the incumbent or the start-up.</td>
+  <td>p.8 (A4)</td>
+</tr>
+<tr>
+  <td>$B-K&lt;0$$B-(p\pi^d_S-K)&gt;0$</td>
+  <td>The first inequality implies that if S shirks the project has negative value; thus, no financial contract could be signed unless the startup makes effort. The second implies that the start-up may be financially constrained, that is, it may hold insufficient assets to fund the development of the prototype even though the project has a positive NPV.</td>
+  <td>p.8 (A5)</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>tolerated_level_of_harm</strong> (float):
+($\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.</li>
+<li><strong>development_costs</strong> (float):
+($K$) Fixed costs to invest for development.</li>
+<li><strong>startup_assets</strong> (float):
+($A$) Assets of the startup at the beginning.</li>
+<li><strong>success_probability</strong> (float):
+($p$) Probability of success in case of effort (otherwise the projects fails for sure).</li>
+<li><strong>private_benefit</strong> (float):
+($B$) Private benefit of the entrepreneur in case of failure.</li>
+<li><strong>consumer_surplus_without_innovation</strong> (float):
+($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</li>
+<li><strong>incumbent_profit_without_innovation</strong> (float):
+($\pi^m_I$) Profit of the monopolist with a single product (without innovation).</li>
+<li><strong>consumer_surplus_duopoly</strong> (float):
+Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</li>
+<li><strong>incumbent_profit_duopoly</strong> (float):
+($\pi^d_I$) Profit of the incumbent in the case of a duopoly.</li>
+<li><strong>startup_profit_duopoly</strong> (float):
+($\pi^d_S$) Profit of the startup in the case of a duopoly.</li>
+<li><strong>consumer_surplus_with_innovation</strong> (float):
+($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</li>
+<li><strong>incumbent_profit_with_innovation</strong> (float):
+($\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#BaseModel">BaseModel</a></dt>
+                                <dd id="MergerPolicyModel.tolerated_harm" class="variable"><a href="#BaseModel.tolerated_harm">tolerated_harm</a></dd>
+                <dd id="MergerPolicyModel.development_costs" class="variable"><a href="#BaseModel.development_costs">development_costs</a></dd>
+                <dd id="MergerPolicyModel.startup_assets" class="variable"><a href="#BaseModel.startup_assets">startup_assets</a></dd>
+                <dd id="MergerPolicyModel.success_probability" class="variable"><a href="#BaseModel.success_probability">success_probability</a></dd>
+                <dd id="MergerPolicyModel.private_benefit" class="variable"><a href="#BaseModel.private_benefit">private_benefit</a></dd>
+                <dd id="MergerPolicyModel.incumbent_profit_with_innovation" class="variable"><a href="#BaseModel.incumbent_profit_with_innovation">incumbent_profit_with_innovation</a></dd>
+                <dd id="MergerPolicyModel.cs_with_innovation" class="variable"><a href="#BaseModel.cs_with_innovation">cs_with_innovation</a></dd>
+                <dd id="MergerPolicyModel.w_with_innovation" class="variable"><a href="#BaseModel.w_with_innovation">w_with_innovation</a></dd>
+                <dd id="MergerPolicyModel.incumbent_profit_without_innovation" class="variable"><a href="#BaseModel.incumbent_profit_without_innovation">incumbent_profit_without_innovation</a></dd>
+                <dd id="MergerPolicyModel.cs_without_innovation" class="variable"><a href="#BaseModel.cs_without_innovation">cs_without_innovation</a></dd>
+                <dd id="MergerPolicyModel.w_without_innovation" class="variable"><a href="#BaseModel.w_without_innovation">w_without_innovation</a></dd>
+                <dd id="MergerPolicyModel.startup_profit_duopoly" class="variable"><a href="#BaseModel.startup_profit_duopoly">startup_profit_duopoly</a></dd>
+                <dd id="MergerPolicyModel.incumbent_profit_duopoly" class="variable"><a href="#BaseModel.incumbent_profit_duopoly">incumbent_profit_duopoly</a></dd>
+                <dd id="MergerPolicyModel.cs_duopoly" class="variable"><a href="#BaseModel.cs_duopoly">cs_duopoly</a></dd>
+                <dd id="MergerPolicyModel.w_duopoly" class="variable"><a href="#BaseModel.w_duopoly">w_duopoly</a></dd>
+
+            </div>
+                                </dl>
                             </div>
                 </section>
     </main>
