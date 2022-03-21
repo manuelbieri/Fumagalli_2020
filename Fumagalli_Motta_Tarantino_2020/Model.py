@@ -1,3 +1,8 @@
+from typing import Literal, Dict
+
+from Fumagalli_Motta_Tarantino_2020.CDF import NormCDF
+
+
 class BaseModel:
     """
     There are three players in our game: an Antitrust Authority (AA), which at the beginning of the game decides its
@@ -31,10 +36,10 @@ class BaseModel:
 
     def __init__(
         self,
-        tolerated_level_of_harm: float = 1,
+        tolerated_level_of_harm: float = 0,
         development_costs: float = 0.1,
         startup_assets: float = 0.05,
-        success_probability: float = 0.75,
+        success_probability: float = 0.7,
         private_benefit: float = 0.05,
         consumer_surplus_without_innovation: float = 0.2,
         incumbent_profit_without_innovation: float = 0.4,
@@ -91,31 +96,6 @@ class BaseModel:
         incumbent_profit_with_innovation : float
             ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).
         """
-
-        # preconditions given (p.6-8)
-        assert tolerated_level_of_harm >= 0, "Level of harm has to be bigger than 0"
-        assert private_benefit > 0, "Private benefit has to be bigger than 0"
-        assert (
-            incumbent_profit_without_innovation > incumbent_profit_duopoly
-        ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
-        assert (
-            incumbent_profit_with_innovation > incumbent_profit_without_innovation
-        ), "Profit of the incumbent has to be bigger with the innovation than without the innovation"
-        assert (
-            consumer_surplus_with_innovation >= consumer_surplus_without_innovation
-        ), "Consumer surplus with the innovation has to weakly bigger than without the innovation"
-        assert (
-            incumbent_profit_with_innovation > incumbent_profit_duopoly + startup_profit_duopoly
-        ), "A1 not satisfied (p.7)"
-        assert (
-            startup_profit_duopoly > incumbent_profit_with_innovation - incumbent_profit_without_innovation
-        ), "A2 not satisfied (p.7)"
-        assert 0 < success_probability <= 1, "Success probability of development has to be between 0 and 1"
-        assert success_probability * startup_profit_duopoly > development_costs, "A3 not satisfied (p.8)"
-        assert private_benefit - development_costs < 0 and 0 < private_benefit * (
-            success_probability * startup_profit_duopoly - development_costs
-        ), "A5 not satisfied (p.8)"
-
         self._tolerated_harm = tolerated_level_of_harm
         self._development_costs = development_costs
         self._startup_assets = startup_assets
@@ -126,25 +106,83 @@ class BaseModel:
         # with innovation
         self._incumbent_profit_with_innovation = incumbent_profit_with_innovation
         self._cs_with_innovation = consumer_surplus_with_innovation
-        self._w_with_innovation = self._cs_with_innovation + self._incumbent_profit_with_innovation
+        self._w_with_innovation = (
+            self._cs_with_innovation + self._incumbent_profit_with_innovation
+        )
         # without innovation
         self._incumbent_profit_without_innovation = incumbent_profit_without_innovation
         self._cs_without_innovation = consumer_surplus_without_innovation
-        self._w_without_innovation = self._cs_without_innovation + self._incumbent_profit_without_innovation
+        self._w_without_innovation = (
+            self._cs_without_innovation + self._incumbent_profit_without_innovation
+        )
         # with duopoly
         self._startup_profit_duopoly = startup_profit_duopoly
         self._incumbent_profit_duopoly = incumbent_profit_duopoly
         self._cs_duopoly = consumer_surplus_duopoly
-        self._w_duopoly = self._cs_duopoly + self._startup_profit_duopoly + self._incumbent_profit_duopoly
+        self._w_duopoly = (
+            self._cs_duopoly
+            + self._startup_profit_duopoly
+            + self._incumbent_profit_duopoly
+        )
+
+        # pre-conditions given for the parameters (p.6-8)
+        self._check_preconditions()
 
         # post-condition given (p.6-8)
-        assert 0 < startup_assets < development_costs, "Startup has not enough assets for development"
+        self._check_post_conditions()
+
+    def _check_post_conditions(self):
         assert (
             self._w_without_innovation < self._w_with_innovation < self._w_duopoly
         ), "Ranking of total welfare not valid (p.7)"
         assert (
-            success_probability * (self._w_with_innovation - self._w_without_innovation) > development_costs
+            self._success_probability
+            * (self._w_with_innovation - self._w_without_innovation)
+            > self._development_costs
         ), "A4 not satisfied (p.8)"
+
+    def _check_preconditions(self):
+        # preconditions given (p.6-8)
+        assert self._tolerated_harm >= 0, "Level of harm has to be bigger than 0"
+        assert self._private_benefit > 0, "Private benefit has to be bigger than 0"
+        assert (
+            self._incumbent_profit_without_innovation > self._incumbent_profit_duopoly
+        ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
+        assert (
+            self._incumbent_profit_with_innovation
+            > self._incumbent_profit_without_innovation
+        ), "Profit of the incumbent has to be bigger with the innovation than without the innovation"
+        assert (
+            self._cs_with_innovation >= self._cs_without_innovation
+        ), "Consumer surplus with the innovation has to weakly bigger than without the innovation"
+        assert (
+            self._incumbent_profit_with_innovation
+            > self._incumbent_profit_duopoly + self._startup_profit_duopoly
+        ), "A1 not satisfied (p.7)"
+        assert (
+            self._startup_profit_duopoly
+            > self._incumbent_profit_with_innovation
+            - self._incumbent_profit_without_innovation
+        ), "A2 not satisfied (p.7)"
+        assert (
+            0 < self._success_probability <= 1
+        ), "Success probability of development has to be between 0 and 1"
+        assert (
+            self._success_probability * self._startup_profit_duopoly
+            > self._development_costs
+        ), "A3 not satisfied (p.8)"
+        assert (
+            self._private_benefit - self._development_costs < 0
+            and 0
+            < self._private_benefit
+            * (
+                self._success_probability * self._startup_profit_duopoly
+                - self._development_costs
+            )
+        ), "A5 not satisfied (p.8)"
+        assert (
+            0 < self._startup_assets < self._development_costs
+        ), "Startup has not enough assets for development"
 
     @property
     def tolerated_harm(self):
@@ -210,3 +248,143 @@ class BaseModel:
 class MergerPolicyModel(BaseModel):
     def __init__(self, **kwargs):
         super(MergerPolicyModel, self).__init__(**kwargs)
+        self._asset_threshold = self.private_benefit - (
+            self.success_probability * self.startup_profit_duopoly
+            - self.development_costs
+        )
+        self._probability_credit_constrained = (
+            self.success_probability
+            * (self.w_duopoly - self.w_with_innovation)
+            / (
+                self.success_probability
+                * (self.w_duopoly - self.incumbent_profit_without_innovation)
+                - self.development_costs
+            )
+        )
+        self._probability_pooling_bid = (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_duopoly
+                - self.startup_profit_duopoly
+            )
+            / (
+                self.success_probability
+                * (
+                    self.incumbent_profit_with_innovation
+                    - self.incumbent_profit_duopoly
+                )
+                - self.development_costs
+            )
+        )
+
+        self._bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
+        self._antitrust_agency_block_takeover: bool = False
+        self._owner_invests_in_development: bool = False
+        self._startup_credit_rationed: bool = False
+        self._takeover_first_time: bool = False
+        self._takeover_second_time: bool = False
+        assert (
+            0 < self._probability_credit_constrained < 1
+        ), "Violates A.1 (has to be between 0 and 1)"
+        assert (
+            0 < self._probability_pooling_bid < 1
+        ), "Violates A.2 (has to be between 0 and 1)"
+        self._solve_game()
+
+    @property
+    def asset_threshold(self):
+        return self._asset_threshold
+
+    @property
+    def get_incumbent_bid_type(self):
+        return self._bid_attempt
+
+    @property
+    def is_takeover_blocked(self):
+        return self._antitrust_agency_block_takeover
+
+    @property
+    def is_owner_investing(self):
+        return self._owner_invests_in_development
+
+    @property
+    def is_startup_credit_rationed(self):
+        return self._startup_credit_rationed
+
+    @property
+    def probability_credit_constrained(self):
+        return self._probability_credit_constrained
+
+    @property
+    def probability_pooling_bid(self):
+        return self._probability_pooling_bid
+
+    @property
+    def is_takeover_first_time(self):
+        return self._takeover_first_time
+
+    @property
+    def is_takeover_second_time(self):
+        return self._takeover_second_time
+
+    def _solve_game(self):
+        if self.tolerated_harm == 0:
+            self._solve_game_strict_merger_policy()
+
+    def _solve_game_strict_merger_policy(self):
+        # financial contracting (chapter 3.2)
+        if self.startup_assets < self.asset_threshold:
+            self._startup_credit_rationed = True
+
+        # investment decision (chapter 3.3)
+        if (
+            not self._startup_credit_rationed
+            or (
+                self.success_probability
+                * (
+                    self.incumbent_profit_with_innovation
+                    - self.incumbent_profit_without_innovation
+                )
+            )
+            >= self.development_costs
+        ):
+            self._owner_invests_in_development = True
+
+        # takeover bid of the incumbent (chapter 3.4.2)
+        if (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
+            )
+        ) < self.development_costs:
+            self._bid_attempt = "No"
+        else:
+            if (
+                self.probability_credit_constrained
+                < NormCDF().get_cdf_value(self.asset_threshold)
+                < self.probability_pooling_bid
+            ):
+                self._bid_attempt = "Pooling"
+            else:
+                self._bid_attempt = "Separating"
+
+        # decision of the AA and the startup (chapter 3.4.1)
+        if self.get_incumbent_bid_type == "Pooling":
+            self._takeover_first_time = True
+        elif (
+            self.get_incumbent_bid_type == "Separating"
+            and self.is_startup_credit_rationed
+        ):
+            self._takeover_first_time = True
+
+    def get_outcome(self) -> Dict[str, any]:
+        return {
+            "credit_rationed": self.is_startup_credit_rationed,
+            "bidding_type": self.get_incumbent_bid_type,
+            "development": self.is_owner_investing,
+            "takeover_blocked": self.is_takeover_blocked,
+            "takeover_first_time": self.is_takeover_first_time,
+            "takeover_second_time": self.is_takeover_second_time,
+        }

@@ -38,6 +38,12 @@ class TestAbstractCDF(unittest.TestCase):
         f_a_ideal = self.getIdealFA(a_test)
         self.assertTrue(self.isEqualFloat(f_a_test, f_a_ideal))
 
+    def test_get_cdf_value(self):
+        a_test: float = 0.5
+        f_ideal: float = self.getIdealFA(a_test)
+        f_test: float = self.test_cdf.get_cdf_value(a_test)
+        self.assertTrue(self.isEqualFloat(f_test, f_ideal))
+
 
 class TestNormCDF(TestAbstractCDF):
     def getIdealFA(self, A: float) -> float:
