@@ -2,9 +2,12 @@
 scipy~=1.8.0
 numpy==1.22.3
 
+# nesseary for code formatting
+black>=22.1.0
+
 # necessary for the jupyter notebook
-ipython>=8.1.1
+ipython==8.2.0
 jupyter>=1.0.0
 
 # necessary for the documentation
-pdoc>=10.0.3
+pdoc==10.0.4
