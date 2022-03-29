@@ -1,6 +1,6 @@
 from typing import Literal, Dict
 
-from Fumagalli_Motta_Tarantino_2020.CDF import NormCDF
+import scipy.stats
 
 
 class BaseModel:
@@ -172,8 +172,8 @@ class BaseModel:
             > self._development_costs
         ), "A3 not satisfied (p.8)"
         assert (
-            self._private_benefit - self._development_costs < 0
-            and 0
+            self._private_benefit - self._development_costs
+            < 0
             < self._private_benefit
             * (
                 self._success_probability * self._startup_profit_duopoly
@@ -185,23 +185,23 @@ class BaseModel:
         ), "Startup has not enough assets for development"
 
     @property
-    def tolerated_harm(self):
+    def tolerated_harm(self) -> float:
         return self._tolerated_harm
 
     @property
-    def development_costs(self):
+    def development_costs(self) -> float:
         return self._development_costs
 
     @property
-    def startup_assets(self):
+    def startup_assets(self) -> float:
         return self._startup_assets
 
     @property
-    def success_probability(self):
+    def success_probability(self) -> float:
         return self._success_probability
 
     @property
-    def private_benefit(self):
+    def private_benefit(self) -> float:
         return self._private_benefit
 
     @property
@@ -209,39 +209,39 @@ class BaseModel:
         return self._incumbent_profit_with_innovation
 
     @property
-    def cs_with_innovation(self):
+    def cs_with_innovation(self) -> float:
         return self._cs_with_innovation
 
     @property
-    def w_with_innovation(self):
+    def w_with_innovation(self) -> float:
         return self._w_with_innovation
 
     @property
-    def incumbent_profit_without_innovation(self):
+    def incumbent_profit_without_innovation(self) -> float:
         return self._incumbent_profit_without_innovation
 
     @property
-    def cs_without_innovation(self):
+    def cs_without_innovation(self) -> float:
         return self._cs_without_innovation
 
     @property
-    def w_without_innovation(self):
+    def w_without_innovation(self) -> float:
         return self._w_without_innovation
 
     @property
-    def startup_profit_duopoly(self):
+    def startup_profit_duopoly(self) -> float:
         return self._startup_profit_duopoly
 
     @property
-    def incumbent_profit_duopoly(self):
+    def incumbent_profit_duopoly(self) -> float:
         return self._incumbent_profit_duopoly
 
     @property
-    def cs_duopoly(self):
+    def cs_duopoly(self) -> float:
         return self._cs_duopoly
 
     @property
-    def w_duopoly(self):
+    def w_duopoly(self) -> float:
         return self._w_duopoly
 
 
@@ -252,6 +252,18 @@ class MergerPolicyModel(BaseModel):
             self.success_probability * self.startup_profit_duopoly
             - self.development_costs
         )
+        self._asset_threshold_cdf = MergerPolicyModel._get_cdf_value(
+            self.asset_threshold
+        )
+
+        self._asset_threshold_laissez_faire = self.private_benefit - (
+            self.success_probability * self.incumbent_profit_with_innovation
+            - self.development_costs
+        )
+        self._asset_threshold_laissez_faire_cdf = self._get_cdf_value(
+            self.asset_threshold_laissez_faire
+        )
+
         self._probability_credit_constrained = (
             self.success_probability
             * (self.w_duopoly - self.w_with_innovation)
@@ -261,22 +273,7 @@ class MergerPolicyModel(BaseModel):
                 - self.development_costs
             )
         )
-        self._probability_pooling_bid = (
-            self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_duopoly
-                - self.startup_profit_duopoly
-            )
-            / (
-                self.success_probability
-                * (
-                    self.incumbent_profit_with_innovation
-                    - self.incumbent_profit_duopoly
-                )
-                - self.development_costs
-            )
-        )
+        self._probability_pooling_bid: float = 0
 
         self._bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
         self._antitrust_agency_block_takeover: bool = False
@@ -287,70 +284,169 @@ class MergerPolicyModel(BaseModel):
         assert (
             0 < self._probability_credit_constrained < 1
         ), "Violates A.1 (has to be between 0 and 1)"
-        assert (
-            0 < self._probability_pooling_bid < 1
-        ), "Violates A.2 (has to be between 0 and 1)"
         self._solve_game()
 
-    @property
-    def asset_threshold(self):
-        return self._asset_threshold
-
-    @property
-    def get_incumbent_bid_type(self):
-        return self._bid_attempt
-
-    @property
-    def is_takeover_blocked(self):
-        return self._antitrust_agency_block_takeover
-
-    @property
-    def is_owner_investing(self):
-        return self._owner_invests_in_development
-
-    @property
-    def is_startup_credit_rationed(self):
-        return self._startup_credit_rationed
-
-    @property
-    def probability_credit_constrained(self):
-        return self._probability_credit_constrained
-
-    @property
-    def probability_pooling_bid(self):
-        return self._probability_pooling_bid
-
-    @property
-    def is_takeover_first_time(self):
-        return self._takeover_first_time
-
-    @property
-    def is_takeover_second_time(self):
-        return self._takeover_second_time
-
-    def _solve_game(self):
-        if self.tolerated_harm == 0:
-            self._solve_game_strict_merger_policy()
-
-    def _solve_game_strict_merger_policy(self):
-        # financial contracting (chapter 3.2)
-        if self.startup_assets < self.asset_threshold:
-            self._startup_credit_rationed = True
-
-        # investment decision (chapter 3.3)
-        if (
-            not self._startup_credit_rationed
-            or (
-                self.success_probability
-                * (
-                    self.incumbent_profit_with_innovation
-                    - self.incumbent_profit_without_innovation
-                )
+    def _calculate_probability_pooling_bid(self, strict_merger_policy: bool) -> None:
+        if strict_merger_policy or (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
             )
             >= self.development_costs
         ):
-            self._owner_invests_in_development = True
+            self._probability_pooling_bid = (
+                self.success_probability
+                * (
+                    self.incumbent_profit_with_innovation
+                    - self.incumbent_profit_duopoly
+                    - self.startup_profit_duopoly
+                )
+                / (
+                    self.success_probability
+                    * (
+                        self.incumbent_profit_with_innovation
+                        - self.incumbent_profit_duopoly
+                    )
+                    - self.development_costs
+                )
+            )
+        else:
+            self._probability_pooling_bid = (
+                self.success_probability
+                * (
+                    self.incumbent_profit_without_innovation
+                    - self.incumbent_profit_with_innovation
+                )
+                + self.development_costs
+            ) / (
+                self.success_probability
+                * (
+                    self.incumbent_profit_without_innovation
+                    + self.startup_profit_duopoly
+                    - self.incumbent_profit_with_innovation
+                )
+            )
 
+        assert (
+            0 < self._probability_pooling_bid < 1
+        ), "Violates A.2 (has to be between 0 and 1)"
+
+    @property
+    def asset_threshold(self) -> float:
+        return self._asset_threshold
+
+    @property
+    def asset_threshold_laissez_faire(self) -> float:
+        return self._asset_threshold_laissez_faire
+
+    @property
+    def get_incumbent_bid_type(self) -> Literal["No", "Separating", "Pooling"]:
+        return self._bid_attempt
+
+    @property
+    def is_takeover_blocked(self) -> bool:
+        return self._antitrust_agency_block_takeover
+
+    @property
+    def is_owner_investing(self) -> bool:
+        return self._owner_invests_in_development
+
+    @property
+    def is_startup_credit_rationed(self) -> bool:
+        return self._startup_credit_rationed
+
+    @property
+    def probability_credit_constrained(self) -> float:
+        return self._probability_credit_constrained
+
+    @property
+    def probability_pooling_bid(self) -> float:
+        return self._probability_pooling_bid
+
+    @property
+    def is_early_takeover(self) -> bool:
+        return self._takeover_first_time
+
+    @property
+    def is_late_takeover(self) -> bool:
+        return self._takeover_second_time
+
+    @staticmethod
+    def _get_cdf_value(value: float):
+        return float(scipy.stats.norm.cdf(value))
+
+    def _calculate_h0(self) -> float:
+        return max(
+            (1 - self._asset_threshold_cdf)
+            * (self.success_probability * (self.w_duopoly - self.w_with_innovation))
+            - self._asset_threshold_cdf
+            * (
+                self.success_probability
+                * (self.w_with_innovation - self.w_without_innovation)
+                - self.development_costs
+            ),
+            0,
+        )
+
+    def _calculate_h1(self) -> float:
+        return (1 - self._asset_threshold_cdf) * (
+            self.success_probability * (self.w_duopoly - self.w_without_innovation)
+            - self.development_costs
+        )
+
+    def _calculate_h2(self) -> float:
+        return max(
+            self.w_duopoly - self.w_with_innovation,
+            (1 - self._asset_threshold_laissez_faire_cdf)
+            * (
+                self.success_probability
+                * (self.w_with_innovation - self.w_without_innovation)
+                - self.development_costs
+            ),
+        )
+
+    def _solve_game(self):
+        """
+        Solves the game according to the policies given by the thresholds for tolerated harm.
+
+        The levels of tolerated harm are defined in A.4 (p.36ff.).
+        """
+        if self.tolerated_harm <= self._calculate_h0():
+            self._solve_game_strict_merger_policy()
+        elif self.tolerated_harm < self._calculate_h1():
+            self._solve_game_late_takeover_prohibited()
+        elif self.tolerated_harm < self._calculate_h2():
+            self._solve_game_late_takeover_allowed()
+        else:
+            self._solve_game_laissez_faire()
+
+    def _solve_game_laissez_faire(self):
+        self._calculate_probability_pooling_bid(strict_merger_policy=False)
+        self._calculate_startup_credit_rationed_laissez_faire()
+        self._calculate_takeover_decision_laissez_faire()
+        self._calculate_investment_decision_laissez_faire()
+
+    def _solve_game_late_takeover_allowed(self):
+        self._calculate_probability_pooling_bid(strict_merger_policy=False)
+        self._calculate_startup_credit_rationed_late_takeover_allowed()
+        self._calculate_takeover_decision_late_takeover_allowed()
+        self._calculate_investment_decision_late_takeover_allowed()
+
+    def _solve_game_late_takeover_prohibited(self):
+        self._calculate_probability_pooling_bid(strict_merger_policy=False)
+        self._calculate_startup_credit_rationed_late_takeover_prohibited()
+        self._calculate_takeover_decision_late_takeover_prohibited()
+        self._calculate_investment_decision_late_takeover_prohibited()
+
+    def _solve_game_strict_merger_policy(self):
+        self._calculate_probability_pooling_bid(strict_merger_policy=True)
+        self._calculate_startup_credit_rationed_strict_merger_policy()
+        self._calculate_takeover_decision_strict_merger_policy()
+        self._calculate_investment_decision_strict_merger_policy()
+
+    def _calculate_takeover_decision_strict_merger_policy(self):
+        # decision of the AA and the startup (chapter 3.4.1)
         # takeover bid of the incumbent (chapter 3.4.2)
         if (
             self.success_probability
@@ -363,21 +459,87 @@ class MergerPolicyModel(BaseModel):
         else:
             if (
                 self.probability_credit_constrained
-                < NormCDF().get_cdf_value(self.asset_threshold)
-                < self.probability_pooling_bid
+                < self._asset_threshold_cdf
+                < max(self.probability_pooling_bid, self.probability_credit_constrained)
             ):
                 self._bid_attempt = "Pooling"
+                self._takeover_first_time = True
             else:
                 self._bid_attempt = "Separating"
+                if self.is_startup_credit_rationed:
+                    self._takeover_first_time = True
 
-        # decision of the AA and the startup (chapter 3.4.1)
-        if self.get_incumbent_bid_type == "Pooling":
-            self._takeover_first_time = True
-        elif (
-            self.get_incumbent_bid_type == "Separating"
-            and self.is_startup_credit_rationed
+    def _calculate_takeover_decision_late_takeover_allowed(self):
+        pass
+
+    def _calculate_takeover_decision_late_takeover_prohibited(self):
+        pass
+
+    def _calculate_takeover_decision_laissez_faire(self):
+        if (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
+            )
+            < self.development_costs
         ):
-            self._takeover_first_time = True
+            if self._asset_threshold_laissez_faire_cdf >= self.probability_pooling_bid:
+                if not self.is_startup_credit_rationed:
+                    self._takeover_second_time = True
+                    self._bid_attempt = "Pooling"
+            else:
+                self._takeover_first_time = True
+                self._bid_attempt = "Pooling"
+                self._owner_invests_in_development = False
+        else:
+            if self.is_startup_credit_rationed:
+                self._takeover_first_time = True
+                self._bid_attempt = "Separating"
+            else:
+                self._takeover_second_time = True
+                self._bid_attempt = "Pooling"
+
+    def _calculate_investment_decision_strict_merger_policy(self):
+        # investment decision (chapter 3.3)
+        if (not self.is_startup_credit_rationed and not self.is_early_takeover) or (
+            (
+                self.success_probability
+                * (
+                    self.incumbent_profit_with_innovation
+                    - self.incumbent_profit_without_innovation
+                )
+            )
+            >= self.development_costs
+            and self.is_early_takeover
+        ):
+            self._owner_invests_in_development = True
+
+    def _calculate_investment_decision_late_takeover_prohibited(self):
+        pass
+
+    def _calculate_investment_decision_late_takeover_allowed(self):
+        pass
+
+    def _calculate_investment_decision_laissez_faire(self):
+        # decision does not change compared with the strict merger policy (chapter 3.3)
+        self._calculate_investment_decision_strict_merger_policy()
+
+    def _calculate_startup_credit_rationed_strict_merger_policy(self):
+        # financial contracting (chapter 3.2)
+        if self.startup_assets < self.asset_threshold:
+            self._startup_credit_rationed = True
+
+    def _calculate_startup_credit_rationed_late_takeover_prohibited(self):
+        pass
+
+    def _calculate_startup_credit_rationed_late_takeover_allowed(self):
+        pass
+
+    def _calculate_startup_credit_rationed_laissez_faire(self):
+        # financial contracting (chapter 4.2)
+        if self.startup_assets < self.asset_threshold_laissez_faire:
+            self._startup_credit_rationed = True
 
     def get_outcome(self) -> Dict[str, any]:
         return {
@@ -385,6 +547,6 @@ class MergerPolicyModel(BaseModel):
             "bidding_type": self.get_incumbent_bid_type,
             "development": self.is_owner_investing,
             "takeover_blocked": self.is_takeover_blocked,
-            "takeover_first_time": self.is_takeover_first_time,
-            "takeover_second_time": self.is_takeover_second_time,
+            "takeover_first_time": self.is_early_takeover,
+            "takeover_second_time": self.is_late_takeover,
         }

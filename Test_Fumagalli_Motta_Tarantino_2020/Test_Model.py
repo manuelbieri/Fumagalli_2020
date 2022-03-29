@@ -5,9 +5,6 @@ import Fumagalli_Motta_Tarantino_2020.Model as Model
 
 
 class TestBaseModel(unittest.TestCase):
-    def setUp(self) -> None:
-        self.model = Model.BaseModel()
-
     def test_valid_setup_default_values(self):
         Model.BaseModel()
 
@@ -93,6 +90,7 @@ class TestBaseModel(unittest.TestCase):
         )
 
     def test_properties(self):
+        self.model = Model.BaseModel()
         self.assertEqual(
             self.get_default_value("tolerated_level_of_harm"), self.model.tolerated_harm
         )
@@ -138,6 +136,7 @@ class TestBaseModel(unittest.TestCase):
         )
 
     def test_welfare_properties(self):
+        self.model = Model.BaseModel()
         self.assertEqual(self.get_welfare_value("duopoly"), self.model.w_duopoly)
         self.assertEqual(
             self.get_welfare_value("without_innovation"),
@@ -149,32 +148,132 @@ class TestBaseModel(unittest.TestCase):
 
 
 class TestMergerPolicyModel(TestBaseModel):
-    def setUp(self) -> None:
-        self.model = Model.MergerPolicyModel()
-
     def test_valid_setup_default_values(self):
         Model.MergerPolicyModel()
 
-    def test_default_outcome(self):
+
+class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
+    def test_laissez_faire_default_outcome(self):
+        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=1)
         outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
         self.assertFalse(outcome["credit_rationed"])
-        self.assertEqual(outcome["bidding_type"], "No")
+        self.assertEqual("Pooling", outcome["bidding_type"])
+        self.assertFalse(outcome["development"])
+        self.assertTrue(outcome["takeover_first_time"])
+        self.assertFalse(outcome["takeover_second_time"])
+
+    def test_laissez_faire_no_early_takeover_credit_rationed(self):
+        self.model = Model.MergerPolicyModel(
+            tolerated_level_of_harm=1,
+            startup_assets=0.01,
+            private_benefit=0.099,
+            success_probability=0.51,
+            development_costs=0.1,
+            startup_profit_duopoly=0.339,
+            incumbent_profit_duopoly=0.01,
+            incumbent_profit_with_innovation=0.35,
+            consumer_surplus_with_innovation=0.4,
+            incumbent_profit_without_innovation=0.3,
+        )
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertTrue(outcome["credit_rationed"])
+        self.assertEqual("No", outcome["bidding_type"])
+        self.assertFalse(outcome["development"])
+        self.assertFalse(outcome["takeover_first_time"])
+        self.assertFalse(outcome["takeover_second_time"])
+
+    def test_laissez_faire_no_early_takeover_not_credit_rationed(self):
+        self.model = Model.MergerPolicyModel(
+            tolerated_level_of_harm=1, private_benefit=0.075
+        )
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertFalse(outcome["credit_rationed"])
+        self.assertEqual("Pooling", outcome["bidding_type"])
+        self.assertTrue(outcome["development"])
+        self.assertFalse(outcome["takeover_first_time"])
+        self.assertTrue(outcome["takeover_second_time"])
+
+    def test_laissez_faire_early_takeover_credit_rationed(self):
+        self.model = Model.MergerPolicyModel(
+            tolerated_level_of_harm=1,
+            private_benefit=0.075,
+            startup_assets=0.005,
+            development_costs=0.076,
+            success_probability=0.79,
+            incumbent_profit_with_innovation=0.179,
+            incumbent_profit_without_innovation=0.08,
+            incumbent_profit_duopoly=0.05,
+            startup_profit_duopoly=0.1,
+        )
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertTrue(outcome["credit_rationed"])
+        self.assertEqual("Separating", outcome["bidding_type"])
+        self.assertTrue(outcome["development"])
+        self.assertTrue(outcome["takeover_first_time"])
+        self.assertFalse(outcome["takeover_second_time"])
+
+    def test_laissez_faire_early_takeover_not_credit_rationed(self):
+        self.model = Model.MergerPolicyModel(
+            tolerated_level_of_harm=1,
+            private_benefit=0.075,
+            development_costs=0.076,
+            success_probability=0.76,
+            incumbent_profit_with_innovation=0.51,
+        )
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertFalse(outcome["credit_rationed"])
+        self.assertEqual("Pooling", outcome["bidding_type"])
+        self.assertTrue(outcome["development"])
+        self.assertFalse(outcome["takeover_first_time"])
+        self.assertTrue(outcome["takeover_second_time"])
+
+
+@unittest.skip("Not implemented")
+class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel):
+    def test_late_takeover_allowed_default_outcome(self):
+        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.75)
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertFalse(outcome["credit_rationed"])
+        self.assertEqual("No", outcome["bidding_type"])
         self.assertTrue(outcome["development"])
         self.assertFalse(outcome["takeover_first_time"])
         self.assertFalse(outcome["takeover_second_time"])
 
-    def test_credit_rationed_outcome(self):
+
+@unittest.skip("Not implemented")
+class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyModel):
+    def test_late_takeover_prohibited_default_outcome(self):
+        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.25)
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertFalse(outcome["credit_rationed"])
+        self.assertEqual("No", outcome["bidding_type"])
+        self.assertTrue(outcome["development"])
+        self.assertFalse(outcome["takeover_first_time"])
+        self.assertFalse(outcome["takeover_second_time"])
+
+
+class TestStrictMergerPolicyModel(TestMergerPolicyModel):
+    def test_strict_merger_policy_default_outcome(self):
+        self.model = Model.MergerPolicyModel()
+        outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
+        self.assertFalse(outcome["credit_rationed"])
+        self.assertEqual("No", outcome["bidding_type"])
+        self.assertTrue(outcome["development"])
+        self.assertFalse(outcome["takeover_first_time"])
+        self.assertFalse(outcome["takeover_second_time"])
+
+    def test_strict_merger_policy_credit_rationed_outcome(self):
         self.model = Model.MergerPolicyModel(
             private_benefit=0.09, development_costs=0.11
         )
         outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
         self.assertTrue(outcome["credit_rationed"])
-        self.assertEqual(outcome["bidding_type"], "No")
+        self.assertEqual("No", outcome["bidding_type"])
         self.assertFalse(outcome["development"])
         self.assertFalse(outcome["takeover_first_time"])
         self.assertFalse(outcome["takeover_second_time"])
 
-    def test_pooling_bid_outcome(self):
+    def test_strict_merger_policy_pooling_bid_outcome(self):
         self.model = Model.MergerPolicyModel(
             development_costs=0.075,
             success_probability=0.79,
@@ -185,12 +284,12 @@ class TestMergerPolicyModel(TestBaseModel):
         )
         outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
         self.assertTrue(outcome["credit_rationed"])
-        self.assertEqual(outcome["bidding_type"], "Pooling")
+        self.assertEqual("Pooling", outcome["bidding_type"])
         self.assertTrue(outcome["development"])
         self.assertTrue(outcome["takeover_first_time"])
         self.assertFalse(outcome["takeover_second_time"])
 
-    def test_separating_bid_outcome(self):
+    def test_strict_merger_policy_separating_bid_outcome(self):
         self.model = Model.MergerPolicyModel(
             development_costs=0.075,
             success_probability=0.75,
@@ -204,7 +303,7 @@ class TestMergerPolicyModel(TestBaseModel):
         )
         outcome: Dict[str, (bool, float, str)] = self.model.get_outcome()
         self.assertTrue(outcome["credit_rationed"])
-        self.assertEqual(outcome["bidding_type"], "Separating")
+        self.assertEqual("Separating", outcome["bidding_type"])
         self.assertTrue(outcome["development"])
         self.assertTrue(outcome["takeover_first_time"])
         self.assertFalse(outcome["takeover_second_time"])
