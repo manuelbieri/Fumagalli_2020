@@ -40,6 +40,7 @@ class BaseModel:
         development_costs: float = 0.1,
         startup_assets: float = 0.05,
         success_probability: float = 0.7,
+        development_success: bool = True,
         private_benefit: float = 0.05,
         consumer_surplus_without_innovation: float = 0.2,
         incumbent_profit_without_innovation: float = 0.4,
@@ -79,6 +80,8 @@ class BaseModel:
             ($A$) Assets of the startup at the beginning.
         success_probability : float
             ($p$) Probability of success in case of effort (otherwise the projects fails for sure).
+        development_success : bool
+            Decide whether a development will be successful (God mode).
         private_benefit : float
             ($B$) Private benefit of the entrepreneur in case of failure.
         consumer_surplus_without_innovation : float
@@ -100,6 +103,7 @@ class BaseModel:
         self._development_costs = development_costs
         self._startup_assets = startup_assets
         self._success_probability = success_probability
+        self._development_success = development_success
         self._private_benefit = private_benefit
 
         # product market payoffs (p.6ff.)
@@ -199,6 +203,10 @@ class BaseModel:
     @property
     def success_probability(self) -> float:
         return self._success_probability
+
+    @property
+    def development_success(self) -> bool:
+        return self._development_success
 
     @property
     def private_benefit(self) -> float:

@@ -104,6 +104,7 @@ class TestBaseModel(unittest.TestCase):
             self.get_default_value("success_probability"),
             self.model.success_probability,
         )
+        self.assertTrue(self.model.development_success)
         self.assertEqual(
             self.get_default_value("private_benefit"), self.model.private_benefit
         )
