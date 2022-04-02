@@ -272,7 +272,7 @@ class MergerPolicyModel(BaseModel):
             self.asset_threshold_laissez_faire
         )
 
-        self._probability_credit_constrained = (
+        self._probability_credit_constrained_threshold = (
             self.success_probability
             * (self.w_duopoly - self.w_with_innovation)
             / (
@@ -281,7 +281,14 @@ class MergerPolicyModel(BaseModel):
                 - self.development_costs
             )
         )
-        self._probability_pooling_bid: float = 0
+        self._merger_policy: Literal[
+            "Strict",
+            "Intermediate (late takeover prohibited)",
+            "Intermediate (late takeover allowed)",
+            "Laissez-faire",
+        ] = "Strict"
+        self._probability_credit_constrained_default: float = 0
+        self._probability_credit_constrained_merger_policy: float = 0
 
         self._early_bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
         self._late_bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
@@ -291,37 +298,43 @@ class MergerPolicyModel(BaseModel):
         self._early_takeover: bool = False
         self._late_takeover: bool = False
         assert (
-            0 < self._probability_credit_constrained < 1
+                0 < self._probability_credit_constrained_threshold < 1
         ), "Violates A.1 (has to be between 0 and 1)"
+        self._determine_merger_policy()
+        self._calculate_probability_credit_rationed()
         self._solve_game()
 
-    def _calculate_probability_pooling_bid(self, strict_merger_policy: bool) -> None:
-        if strict_merger_policy or (
+    def _determine_merger_policy(self):
+        if self.tolerated_harm <= self._calculate_h0():
+            self._merger_policy = "Strict"
+        elif self.tolerated_harm < self._calculate_h1():
+            self._merger_policy = "Intermediate (late takeover prohibited)"
+        elif self.tolerated_harm < self._calculate_h2():
+            self._merger_policy = "Intermediate (late takeover allowed)"
+        else:
+            self._merger_policy = "Laissez-faire"
+
+    def _calculate_probability_credit_rationed(self) -> None:
+        self._probability_credit_constrained_default = (
             self.success_probability
             * (
                 self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
+                - self.incumbent_profit_duopoly
+                - self.startup_profit_duopoly
             )
-            >= self.development_costs
-        ):
-            self._probability_pooling_bid = (
+            / (
                 self.success_probability
                 * (
                     self.incumbent_profit_with_innovation
                     - self.incumbent_profit_duopoly
-                    - self.startup_profit_duopoly
                 )
-                / (
-                    self.success_probability
-                    * (
-                        self.incumbent_profit_with_innovation
-                        - self.incumbent_profit_duopoly
-                    )
-                    - self.development_costs
-                )
+                - self.development_costs
             )
-        else:
-            self._probability_pooling_bid = (
+        )
+        if self.get_merger_policy == "Strict":
+            self._probability_credit_constrained_merger_policy = self._probability_credit_constrained_default
+        elif self.get_merger_policy == "Laissez-faire":
+            self._probability_credit_constrained_merger_policy = (
                 self.success_probability
                 * (
                     self.incumbent_profit_without_innovation
@@ -336,10 +349,38 @@ class MergerPolicyModel(BaseModel):
                     - self.incumbent_profit_with_innovation
                 )
             )
+        else:
+            self._probability_credit_constrained_merger_policy = (
+                self.success_probability
+                * (
+                    self.incumbent_profit_without_innovation
+                    - self.incumbent_profit_duopoly
+                    - self.startup_profit_duopoly
+                )
+                + self.development_costs
+            ) / (
+                self.success_probability
+                * (self.incumbent_profit_without_innovation - self.incumbent_profit_duopoly)
+            )
 
         assert (
-            0 < self._probability_pooling_bid < 1
+                0 < self.probability_credit_constrained_default < 1
         ), "Violates A.2 (has to be between 0 and 1)"
+        assert (
+                0 < self.probability_credit_constrained_merger_policy[0] < 1 or self.success_probability * (self.incumbent_profit_with_innovation - self.incumbent_profit_without_innovation) - self.development_costs > 0
+        ), "Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)"
+        assert self.probability_credit_constrained_merger_policy[1] == self.get_merger_policy, "Probability calculated for the wrong merger policy"
+
+    @property
+    def get_merger_policy(
+        self,
+    ) -> Literal[
+        "Strict",
+        "Intermediate (late takeover prohibited)",
+        "Intermediate (late takeover allowed)",
+        "Laissez-faire",
+    ]:
+        return self._merger_policy
 
     @property
     def asset_threshold(self) -> float:
@@ -370,12 +411,21 @@ class MergerPolicyModel(BaseModel):
         return self._startup_credit_rationed
 
     @property
-    def probability_credit_constrained(self) -> float:
-        return self._probability_credit_constrained
+    def probability_credit_constrained_threshold(self) -> float:
+        return self._probability_credit_constrained_threshold
 
     @property
-    def probability_pooling_bid(self) -> float:
-        return self._probability_pooling_bid
+    def probability_credit_constrained_default(self) -> float:
+        return self._probability_credit_constrained_default
+
+    @property
+    def probability_credit_constrained_merger_policy(self) -> (float, Literal[
+        "Strict",
+        "Intermediate (late takeover prohibited)",
+        "Intermediate (late takeover allowed)",
+        "Laissez-faire",
+    ]):
+        return self._probability_credit_constrained_merger_policy, self.get_merger_policy
 
     @property
     def is_early_takeover(self) -> bool:
@@ -386,7 +436,7 @@ class MergerPolicyModel(BaseModel):
         return self._late_takeover
 
     @staticmethod
-    def _get_cdf_value(value: float):
+    def _get_cdf_value(value: float) -> float:
         return float(scipy.stats.norm.cdf(value))
 
     def _calculate_h0(self) -> float:
@@ -425,38 +475,31 @@ class MergerPolicyModel(BaseModel):
 
         The levels of tolerated harm are defined in A.4 (p.36ff.).
         """
-        if self.tolerated_harm <= self._calculate_h0():
+        if self.get_merger_policy == "Strict":
             self._solve_game_strict_merger_policy()
-        elif self.tolerated_harm < self._calculate_h1():
+        elif self.get_merger_policy == "Intermediate (late takeover prohibited)":
             self._solve_game_late_takeover_prohibited()
-        elif self.tolerated_harm < self._calculate_h2():
+        elif self.get_merger_policy == "Intermediate (late takeover allowed)":
             self._solve_game_late_takeover_allowed()
         else:
             self._solve_game_laissez_faire()
+        self._calculate_investment_decision()
 
     def _solve_game_laissez_faire(self):
-        self._calculate_probability_pooling_bid(strict_merger_policy=False)
         self._calculate_startup_credit_rationed_laissez_faire()
         self._calculate_takeover_decision_laissez_faire()
-        self._calculate_investment_decision_laissez_faire()
 
     def _solve_game_late_takeover_allowed(self):
-        self._calculate_probability_pooling_bid(strict_merger_policy=False)
         self._calculate_startup_credit_rationed_late_takeover_allowed()
         self._calculate_takeover_decision_late_takeover_allowed()
-        self._calculate_investment_decision_late_takeover_allowed()
 
     def _solve_game_late_takeover_prohibited(self):
-        self._calculate_probability_pooling_bid(strict_merger_policy=False)
         self._calculate_startup_credit_rationed_late_takeover_prohibited()
         self._calculate_takeover_decision_late_takeover_prohibited()
-        self._calculate_investment_decision_late_takeover_prohibited()
 
     def _solve_game_strict_merger_policy(self):
-        self._calculate_probability_pooling_bid(strict_merger_policy=True)
         self._calculate_startup_credit_rationed_strict_merger_policy()
         self._calculate_takeover_decision_strict_merger_policy()
-        self._calculate_investment_decision_strict_merger_policy()
 
     def _calculate_takeover_decision_strict_merger_policy(self):
         # decision of the AA and the startup (chapter 3.4.1)
@@ -469,9 +512,12 @@ class MergerPolicyModel(BaseModel):
             )
         ) >= self.development_costs:
             if (
-                self.probability_credit_constrained
+                self.probability_credit_constrained_threshold
                 < self._asset_threshold_cdf
-                < max(self.probability_pooling_bid, self.probability_credit_constrained)
+                < max(
+                    self._probability_credit_constrained_default,
+                    self.probability_credit_constrained_threshold,
+                )
             ):
                 self._early_bid_attempt = "Pooling"
                 self._early_takeover = True
@@ -484,9 +530,8 @@ class MergerPolicyModel(BaseModel):
         pass
 
     def _calculate_takeover_decision_late_takeover_prohibited(self):
-        pass
-
-    def _calculate_takeover_decision_laissez_faire(self):
+        probability_credit_constrained_intermediate, merger_policy = self.probability_credit_constrained_merger_policy
+        assert merger_policy == "Intermediate (late takeover prohibited)"
         if (
             self.success_probability
             * (
@@ -495,7 +540,32 @@ class MergerPolicyModel(BaseModel):
             )
             < self.development_costs
         ):
-            if self._asset_threshold_laissez_faire_cdf >= self.probability_pooling_bid:
+            if self._asset_threshold_cdf < probability_credit_constrained_intermediate:
+                self._early_takeover = True
+                self._early_bid_attempt = "Pooling"
+        else:
+            if self._asset_threshold_cdf >= self.probability_credit_constrained_default:
+                self._early_bid_attempt = "Separating"
+                if self.is_startup_credit_rationed:
+                    self._early_takeover = True
+            else:
+                self._early_bid_attempt = "Pooling"
+
+    def _calculate_takeover_decision_laissez_faire(self):
+        probability_credit_constrained_laissez_faire, merger_policy = self.probability_credit_constrained_merger_policy
+        assert merger_policy == "Laissez-faire"
+        if (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
+            )
+            < self.development_costs
+        ):
+            if (
+                self._asset_threshold_laissez_faire_cdf
+                >= probability_credit_constrained_laissez_faire
+            ):
                 if not self.is_startup_credit_rationed and self.development_success:
                     self._late_takeover = True
                     self._late_bid_attempt = "Pooling"
@@ -511,7 +581,7 @@ class MergerPolicyModel(BaseModel):
                 self._late_takeover = True
                 self._late_bid_attempt = "Pooling"
 
-    def _calculate_investment_decision_strict_merger_policy(self):
+    def _calculate_investment_decision(self):
         # investment decision (chapter 3.3)
         if (not self.is_startup_credit_rationed and not self.is_early_takeover) or (
             (
@@ -529,23 +599,13 @@ class MergerPolicyModel(BaseModel):
             self.is_owner_investing and self._development_success
         )
 
-    def _calculate_investment_decision_late_takeover_prohibited(self):
-        pass
-
-    def _calculate_investment_decision_late_takeover_allowed(self):
-        pass
-
-    def _calculate_investment_decision_laissez_faire(self):
-        # decision does not change compared with the strict merger policy (chapter 3.3)
-        self._calculate_investment_decision_strict_merger_policy()
-
     def _calculate_startup_credit_rationed_strict_merger_policy(self):
         # financial contracting (chapter 3.2)
         if self.startup_assets < self.asset_threshold:
             self._startup_credit_rationed = True
 
     def _calculate_startup_credit_rationed_late_takeover_prohibited(self):
-        pass
+        self._calculate_startup_credit_rationed_strict_merger_policy()
 
     def _calculate_startup_credit_rationed_late_takeover_allowed(self):
         pass

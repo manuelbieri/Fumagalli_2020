@@ -268,9 +268,17 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
     pass
 
 
-@unittest.skip("Not implemented")
 class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyModel):
-    pass
+    def test_intermediate_late_takeover_prohibited_default(self):
+        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.025)
+        self.assertEqual("Intermediate (late takeover prohibited)", self.model.get_merger_policy)
+        self.assertFalse(self.model.is_startup_credit_rationed)
+        self.assertEqual("Pooling", self.model.get_early_bidding_type)
+        self.assertEqual("No", self.model.get_late_bidding_type)
+        self.assertFalse(self.model.is_owner_investing)
+        self.assertFalse(self.model.is_development_successful)
+        self.assertTrue(self.model.is_early_takeover)
+        self.assertFalse(self.model.is_late_takeover)
 
 
 class TestStrictMergerPolicyModel(TestMergerPolicyModel):
