@@ -118,13 +118,16 @@
                                 <a class="variable" href="#MergerPolicyModel.asset_threshold_laissez_faire">asset_threshold_laissez_faire</a>
                         </li>
                         <li>
-                                <a class="variable" href="#MergerPolicyModel.get_incumbent_bid_type">get_incumbent_bid_type</a>
+                                <a class="variable" href="#MergerPolicyModel.get_early_bidding_type">get_early_bidding_type</a>
                         </li>
                         <li>
-                                <a class="variable" href="#MergerPolicyModel.is_takeover_blocked">is_takeover_blocked</a>
+                                <a class="variable" href="#MergerPolicyModel.get_late_bidding_type">get_late_bidding_type</a>
                         </li>
                         <li>
                                 <a class="variable" href="#MergerPolicyModel.is_owner_investing">is_owner_investing</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MergerPolicyModel.is_development_successful">is_development_successful</a>
                         </li>
                         <li>
                                 <a class="variable" href="#MergerPolicyModel.is_startup_credit_rationed">is_startup_credit_rationed</a>
@@ -142,7 +145,7 @@
                                 <a class="variable" href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a>
                         </li>
                         <li>
-                                <a class="function" href="#MergerPolicyModel.get_outcome">get_outcome</a>
+                                <a class="function" href="#MergerPolicyModel.summary">summary</a>
                         </li>
                 </ul>
 
@@ -451,12 +454,13 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_antitrust_agency_block_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.1 (has to be between 0 and 1)&quot;</span>
@@ -517,16 +521,20 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">get_incumbent_bid_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span>
+    <span class="k">def</span> <span class="nf">get_early_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_takeover_blocked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_antitrust_agency_block_takeover</span>
+    <span class="k">def</span> <span class="nf">get_late_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_owner_investing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_development_successful</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_startup_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -542,11 +550,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -630,20 +638,18 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
             <span class="p">)</span>
-        <span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span>
                 <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
                 <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -661,20 +667,20 @@
             <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
 
     <span class="k">def</span> <span class="nf">_calculate_investment_decision_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># investment decision (chapter 3.3)</span>
@@ -690,6 +696,9 @@
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_calculate_investment_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -717,14 +726,32 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">get_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the calculated outcome of the model with the defined parameters.</span>
+
+<span class="sd">        The resulting dictionary contains the following information (and keys):</span>
+<span class="sd">        - &#39;credit_rationed&#39; : True, if the start-up is credit rationed.</span>
+<span class="sd">        - &#39;early_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=1.</span>
+<span class="sd">        - &#39;late_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=2.</span>
+<span class="sd">        - &#39;development_attempt&#39; : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</span>
+<span class="sd">        - &#39;development_outcome&#39; : True, if the product is developed successfully.</span>
+<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at t=1.</span>
+<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at t=2.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[str, any]</span>
+<span class="sd">            Containing the result of the model with the defined parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;credit_rationed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">,</span>
-            <span class="s2">&quot;bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_incumbent_bid_type</span><span class="p">,</span>
-            <span class="s2">&quot;development&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_blocked&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_takeover_blocked</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_first_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_second_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
+            <span class="s2">&quot;early_bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">,</span>
+            <span class="s2">&quot;late_bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">,</span>
+            <span class="s2">&quot;development_attempt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">,</span>
+            <span class="s2">&quot;development_outcome&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">,</span>
+            <span class="s2">&quot;early_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
+            <span class="s2">&quot;late_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
         <span class="p">}</span>
 </pre></div>
 
@@ -1495,12 +1522,13 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_antitrust_agency_block_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.1 (has to be between 0 and 1)&quot;</span>
@@ -1561,16 +1589,20 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">get_incumbent_bid_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span>
+    <span class="k">def</span> <span class="nf">get_early_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_takeover_blocked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_antitrust_agency_block_takeover</span>
+    <span class="k">def</span> <span class="nf">get_late_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_owner_investing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_development_successful</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_startup_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -1586,11 +1618,11 @@ Consumer surplus for the case that the innovation is introduced into the market 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -1674,20 +1706,18 @@ Consumer surplus for the case that the innovation is introduced into the market 
                 <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
             <span class="p">)</span>
-        <span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span>
                 <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
                 <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -1705,20 +1735,20 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
 
     <span class="k">def</span> <span class="nf">_calculate_investment_decision_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># investment decision (chapter 3.3)</span>
@@ -1734,6 +1764,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_calculate_investment_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -1761,14 +1794,32 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">get_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the calculated outcome of the model with the defined parameters.</span>
+
+<span class="sd">        The resulting dictionary contains the following information (and keys):</span>
+<span class="sd">        - &#39;credit_rationed&#39; : True, if the start-up is credit rationed.</span>
+<span class="sd">        - &#39;early_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=1.</span>
+<span class="sd">        - &#39;late_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=2.</span>
+<span class="sd">        - &#39;development_attempt&#39; : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</span>
+<span class="sd">        - &#39;development_outcome&#39; : True, if the product is developed successfully.</span>
+<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at t=1.</span>
+<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at t=2.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[str, any]</span>
+<span class="sd">            Containing the result of the model with the defined parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;credit_rationed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">,</span>
-            <span class="s2">&quot;bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_incumbent_bid_type</span><span class="p">,</span>
-            <span class="s2">&quot;development&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_blocked&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_takeover_blocked</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_first_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_second_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
+            <span class="s2">&quot;early_bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">,</span>
+            <span class="s2">&quot;late_bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">,</span>
+            <span class="s2">&quot;development_attempt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">,</span>
+            <span class="s2">&quot;development_outcome&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">,</span>
+            <span class="s2">&quot;early_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
+            <span class="s2">&quot;late_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
         <span class="p">}</span>
 </pre></div>
 
@@ -1874,12 +1925,13 @@ from the merger, if any.</p>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_antitrust_agency_block_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_owner_invests_in_development</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_successful_development_outcome</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_first_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_takeover_second_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.1 (has to be between 0 and 1)&quot;</span>
@@ -2018,20 +2070,20 @@ Consumer surplus for the case that the innovation is introduced into the market 
     
 
                             </div>
-                            <div id="MergerPolicyModel.get_incumbent_bid_type" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.get_incumbent_bid_type">#&nbsp;&nbsp</a>
+                            <div id="MergerPolicyModel.get_early_bidding_type" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.get_early_bidding_type">#&nbsp;&nbsp</a>
 
-        <span class="name">get_incumbent_bid_type</span><span class="annotation">: Literal[&#39;No&#39;, &#39;Separating&#39;, &#39;Pooling&#39;]</span>
+        <span class="name">get_early_bidding_type</span><span class="annotation">: Literal[&#39;No&#39;, &#39;Separating&#39;, &#39;Pooling&#39;]</span>
     </div>
 
     
     
 
                             </div>
-                            <div id="MergerPolicyModel.is_takeover_blocked" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_takeover_blocked">#&nbsp;&nbsp</a>
+                            <div id="MergerPolicyModel.get_late_bidding_type" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.get_late_bidding_type">#&nbsp;&nbsp</a>
 
-        <span class="name">is_takeover_blocked</span><span class="annotation">: bool</span>
+        <span class="name">get_late_bidding_type</span><span class="annotation">: Literal[&#39;No&#39;, &#39;Separating&#39;, &#39;Pooling&#39;]</span>
     </div>
 
     
@@ -2042,6 +2094,16 @@ Consumer surplus for the case that the innovation is introduced into the market 
                                             <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_owner_investing">#&nbsp;&nbsp</a>
 
         <span class="name">is_owner_investing</span><span class="annotation">: bool</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="MergerPolicyModel.is_development_successful" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_development_successful">#&nbsp;&nbsp</a>
+
+        <span class="name">is_development_successful</span><span class="annotation">: bool</span>
     </div>
 
     
@@ -2098,30 +2160,68 @@ Consumer surplus for the case that the innovation is introduced into the market 
     
 
                             </div>
-                            <div id="MergerPolicyModel.get_outcome" class="classattr">
-                                        <div class="attr function"><a class="headerlink" href="#MergerPolicyModel.get_outcome">#&nbsp;&nbsp</a>
+                            <div id="MergerPolicyModel.summary" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#MergerPolicyModel.summary">#&nbsp;&nbsp</a>
 
         
             <span class="def">def</span>
-            <span class="name">get_outcome</span><span class="signature">(self) -&gt; Dict[str, &lt;built-in function any&gt;]</span>:
+            <span class="name">summary</span><span class="signature">(self) -&gt; Dict[str, &lt;built-in function any&gt;]</span>:
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the calculated outcome of the model with the defined parameters.</span>
+
+<span class="sd">        The resulting dictionary contains the following information (and keys):</span>
+<span class="sd">        - &#39;credit_rationed&#39; : True, if the start-up is credit rationed.</span>
+<span class="sd">        - &#39;early_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=1.</span>
+<span class="sd">        - &#39;late_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=2.</span>
+<span class="sd">        - &#39;development_attempt&#39; : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</span>
+<span class="sd">        - &#39;development_outcome&#39; : True, if the product is developed successfully.</span>
+<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at t=1.</span>
+<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at t=2.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[str, any]</span>
+<span class="sd">            Containing the result of the model with the defined parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;credit_rationed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">,</span>
-            <span class="s2">&quot;bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_incumbent_bid_type</span><span class="p">,</span>
-            <span class="s2">&quot;development&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_blocked&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_takeover_blocked</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_first_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
-            <span class="s2">&quot;takeover_second_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
+            <span class="s2">&quot;early_bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">,</span>
+            <span class="s2">&quot;late_bidding_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">,</span>
+            <span class="s2">&quot;development_attempt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">,</span>
+            <span class="s2">&quot;development_outcome&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">,</span>
+            <span class="s2">&quot;early_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
+            <span class="s2">&quot;late_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
         <span class="p">}</span>
 </pre></div>
 
         </details>
 
-    
+            <div class="docstring"><p>Returns the calculated outcome of the model with the defined parameters.</p>
+
+<p>The resulting dictionary contains the following information (and keys):</p>
+
+<ul>
+<li>'credit_rationed' : True, if the start-up is credit rationed.</li>
+<li>'early_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=1.</li>
+<li>'late_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=2.</li>
+<li>'development_attempt' : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</li>
+<li>'development_outcome' : True, if the product is developed successfully.</li>
+<li>'early_takeover' : True, if a takeover takes place at t=1.</li>
+<li>'late_takeover' : True, if a takeover takes place at t=2.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>Dict[str, any]</strong>: Containing the result of the model with the defined parameters.</li>
+</ul>
+</div>
+
 
                             </div>
                             <div class="inherited">

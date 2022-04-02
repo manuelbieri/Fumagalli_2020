@@ -570,7 +570,8 @@ class MergerPolicyModel(BaseModel):
 
         Returns
         -------
-            Dict containing the result of the model with the defined parameters.
+        Dict[str, any]
+            Containing the result of the model with the defined parameters.
         """
         return {
             "credit_rationed": self.is_startup_credit_rationed,
