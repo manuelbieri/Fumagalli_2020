@@ -67,6 +67,9 @@
                                 <a class="variable" href="#BaseModel.success_probability">success_probability</a>
                         </li>
                         <li>
+                                <a class="variable" href="#BaseModel.development_success">development_success</a>
+                        </li>
+                        <li>
                                 <a class="variable" href="#BaseModel.private_benefit">private_benefit</a>
                         </li>
                         <li>
@@ -205,6 +208,7 @@
         <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">development_success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
@@ -244,6 +248,8 @@
 <span class="sd">            ($A$) Assets of the startup at the beginning.</span>
 <span class="sd">        success_probability : float</span>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
+<span class="sd">        development_success : bool</span>
+<span class="sd">            Decide whether a development will be successful (God mode).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
 <span class="sd">        consumer_surplus_without_innovation : float</span>
@@ -265,6 +271,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span> <span class="o">=</span> <span class="n">development_costs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span> <span class="o">=</span> <span class="n">startup_assets</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">=</span> <span class="n">success_probability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span> <span class="o">=</span> <span class="n">development_success</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span> <span class="o">=</span> <span class="n">private_benefit</span>
 
         <span class="c1"># product market payoffs (p.6ff.)</span>
@@ -364,6 +371,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">success_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">development_success</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">private_benefit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -768,6 +779,7 @@
         <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">development_success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
@@ -807,6 +819,8 @@
 <span class="sd">            ($A$) Assets of the startup at the beginning.</span>
 <span class="sd">        success_probability : float</span>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
+<span class="sd">        development_success : bool</span>
+<span class="sd">            Decide whether a development will be successful (God mode).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
 <span class="sd">        consumer_surplus_without_innovation : float</span>
@@ -828,6 +842,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span> <span class="o">=</span> <span class="n">development_costs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span> <span class="o">=</span> <span class="n">startup_assets</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">=</span> <span class="n">success_probability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span> <span class="o">=</span> <span class="n">development_success</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span> <span class="o">=</span> <span class="n">private_benefit</span>
 
         <span class="c1"># product market payoffs (p.6ff.)</span>
@@ -927,6 +942,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">success_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">development_success</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">private_benefit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -1046,6 +1065,7 @@ from the merger, if any.</p>
     development_costs: float = 0.1,
     startup_assets: float = 0.05,
     success_probability: float = 0.7,
+    development_success: bool = True,
     private_benefit: float = 0.05,
     consumer_surplus_without_innovation: float = 0.2,
     incumbent_profit_without_innovation: float = 0.4,
@@ -1065,6 +1085,7 @@ from the merger, if any.</p>
         <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">development_success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
@@ -1104,6 +1125,8 @@ from the merger, if any.</p>
 <span class="sd">            ($A$) Assets of the startup at the beginning.</span>
 <span class="sd">        success_probability : float</span>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
+<span class="sd">        development_success : bool</span>
+<span class="sd">            Decide whether a development will be successful (God mode).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
 <span class="sd">        consumer_surplus_without_innovation : float</span>
@@ -1125,6 +1148,7 @@ from the merger, if any.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span> <span class="o">=</span> <span class="n">development_costs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span> <span class="o">=</span> <span class="n">startup_assets</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">=</span> <span class="n">success_probability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span> <span class="o">=</span> <span class="n">development_success</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span> <span class="o">=</span> <span class="n">private_benefit</span>
 
         <span class="c1"># product market payoffs (p.6ff.)</span>
@@ -1246,6 +1270,8 @@ from the merger, if any.</p>
 ($A$) Assets of the startup at the beginning.</li>
 <li><strong>success_probability</strong> (float):
 ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</li>
+<li><strong>development_success</strong> (bool):
+Decide whether a development will be successful (God mode).</li>
 <li><strong>private_benefit</strong> (float):
 ($B$) Private benefit of the entrepreneur in case of failure.</li>
 <li><strong>consumer_surplus_without_innovation</strong> (float):
@@ -1301,6 +1327,16 @@ Consumer surplus for the case that the innovation is introduced into the market 
                                             <div class="attr variable"><a class="headerlink" href="#BaseModel.success_probability">#&nbsp;&nbsp</a>
 
         <span class="name">success_probability</span><span class="annotation">: float</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="BaseModel.development_success" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#BaseModel.development_success">#&nbsp;&nbsp</a>
+
+        <span class="name">development_success</span><span class="annotation">: bool</span>
     </div>
 
     
@@ -1939,6 +1975,8 @@ from the merger, if any.</p>
 ($A$) Assets of the startup at the beginning.</li>
 <li><strong>success_probability</strong> (float):
 ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</li>
+<li><strong>development_success</strong> (bool):
+Decide whether a development will be successful (God mode).</li>
 <li><strong>private_benefit</strong> (float):
 ($B$) Private benefit of the entrepreneur in case of failure.</li>
 <li><strong>consumer_surplus_without_innovation</strong> (float):
@@ -2094,6 +2132,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
                 <dd id="MergerPolicyModel.development_costs" class="variable"><a href="#BaseModel.development_costs">development_costs</a></dd>
                 <dd id="MergerPolicyModel.startup_assets" class="variable"><a href="#BaseModel.startup_assets">startup_assets</a></dd>
                 <dd id="MergerPolicyModel.success_probability" class="variable"><a href="#BaseModel.success_probability">success_probability</a></dd>
+                <dd id="MergerPolicyModel.development_success" class="variable"><a href="#BaseModel.development_success">development_success</a></dd>
                 <dd id="MergerPolicyModel.private_benefit" class="variable"><a href="#BaseModel.private_benefit">private_benefit</a></dd>
                 <dd id="MergerPolicyModel.incumbent_profit_with_innovation" class="variable"><a href="#BaseModel.incumbent_profit_with_innovation">incumbent_profit_with_innovation</a></dd>
                 <dd id="MergerPolicyModel.cs_with_innovation" class="variable"><a href="#BaseModel.cs_with_innovation">cs_with_innovation</a></dd>

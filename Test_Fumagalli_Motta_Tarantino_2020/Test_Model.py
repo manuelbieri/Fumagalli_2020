@@ -199,8 +199,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
 
     def test_laissez_faire_no_early_takeover_not_credit_rationed_unsuccessful(self):
         self.model = Model.MergerPolicyModel(
-            tolerated_level_of_harm=1, private_benefit=0.075,
-            development_success=False
+            tolerated_level_of_harm=1, private_benefit=0.075, development_success=False
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -253,7 +252,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
             development_costs=0.076,
             success_probability=0.76,
             incumbent_profit_with_innovation=0.51,
-            development_success=False
+            development_success=False,
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
@@ -278,13 +277,13 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
     def test_strict_merger_policy_default_outcome_summary(self):
         self.model = Model.MergerPolicyModel()
         summary: Dict[str, any] = self.model.summary()
-        self.assertFalse(summary['credit_rationed'])
-        self.assertEqual("No", summary['early_bidding_type'])
-        self.assertEqual("No", summary['late_bidding_type'])
-        self.assertTrue(summary['development_attempt'])
-        self.assertTrue(summary['development_outcome'])
-        self.assertFalse(summary['early_takeover'])
-        self.assertFalse(summary['late_takeover'])
+        self.assertFalse(summary["credit_rationed"])
+        self.assertEqual("No", summary["early_bidding_type"])
+        self.assertEqual("No", summary["late_bidding_type"])
+        self.assertTrue(summary["development_attempt"])
+        self.assertTrue(summary["development_outcome"])
+        self.assertFalse(summary["early_takeover"])
+        self.assertFalse(summary["late_takeover"])
 
     def test_strict_merger_policy_default_outcome(self):
         self.model = Model.MergerPolicyModel()

@@ -525,7 +525,9 @@ class MergerPolicyModel(BaseModel):
             and self.is_early_takeover
         ):
             self._owner_invests_in_development = True
-        self._successful_development_outcome = self.is_owner_investing and self._development_success
+        self._successful_development_outcome = (
+            self.is_owner_investing and self._development_success
+        )
 
     def _calculate_investment_decision_late_takeover_prohibited(self):
         pass
