@@ -298,7 +298,7 @@ class MergerPolicyModel(BaseModel):
         self._early_takeover: bool = False
         self._late_takeover: bool = False
         assert (
-                0 < self._probability_credit_constrained_threshold < 1
+            0 < self._probability_credit_constrained_threshold < 1
         ), "Violates A.1 (has to be between 0 and 1)"
         self._determine_merger_policy()
         self._calculate_probability_credit_rationed()
@@ -332,7 +332,9 @@ class MergerPolicyModel(BaseModel):
             )
         )
         if self.get_merger_policy == "Strict":
-            self._probability_credit_constrained_merger_policy = self._probability_credit_constrained_default
+            self._probability_credit_constrained_merger_policy = (
+                self._probability_credit_constrained_default
+            )
         elif self.get_merger_policy == "Laissez-faire":
             self._probability_credit_constrained_merger_policy = (
                 self.success_probability
@@ -360,16 +362,29 @@ class MergerPolicyModel(BaseModel):
                 + self.development_costs
             ) / (
                 self.success_probability
-                * (self.incumbent_profit_without_innovation - self.incumbent_profit_duopoly)
+                * (
+                    self.incumbent_profit_without_innovation
+                    - self.incumbent_profit_duopoly
+                )
             )
 
         assert (
-                0 < self.probability_credit_constrained_default < 1
+            0 < self.probability_credit_constrained_default < 1
         ), "Violates A.2 (has to be between 0 and 1)"
         assert (
-                0 < self.probability_credit_constrained_merger_policy[0] < 1 or self.success_probability * (self.incumbent_profit_with_innovation - self.incumbent_profit_without_innovation) - self.development_costs > 0
+            0 < self.probability_credit_constrained_merger_policy[0] < 1
+            or self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
+            )
+            - self.development_costs
+            > 0
         ), "Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)"
-        assert self.probability_credit_constrained_merger_policy[1] == self.get_merger_policy, "Probability calculated for the wrong merger policy"
+        assert (
+            self.probability_credit_constrained_merger_policy[1]
+            == self.get_merger_policy
+        ), "Probability calculated for the wrong merger policy"
 
     @property
     def get_merger_policy(
@@ -419,13 +434,21 @@ class MergerPolicyModel(BaseModel):
         return self._probability_credit_constrained_default
 
     @property
-    def probability_credit_constrained_merger_policy(self) -> (float, Literal[
-        "Strict",
-        "Intermediate (late takeover prohibited)",
-        "Intermediate (late takeover allowed)",
-        "Laissez-faire",
-    ]):
-        return self._probability_credit_constrained_merger_policy, self.get_merger_policy
+    def probability_credit_constrained_merger_policy(
+        self,
+    ) -> (
+        float,
+        Literal[
+            "Strict",
+            "Intermediate (late takeover prohibited)",
+            "Intermediate (late takeover allowed)",
+            "Laissez-faire",
+        ],
+    ):
+        return (
+            self._probability_credit_constrained_merger_policy,
+            self.get_merger_policy,
+        )
 
     @property
     def is_early_takeover(self) -> bool:
@@ -530,7 +553,10 @@ class MergerPolicyModel(BaseModel):
         pass
 
     def _calculate_takeover_decision_late_takeover_prohibited(self):
-        probability_credit_constrained_intermediate, merger_policy = self.probability_credit_constrained_merger_policy
+        (
+            probability_credit_constrained_intermediate,
+            merger_policy,
+        ) = self.probability_credit_constrained_merger_policy
         assert merger_policy == "Intermediate (late takeover prohibited)"
         if (
             self.success_probability
@@ -552,7 +578,10 @@ class MergerPolicyModel(BaseModel):
                 self._early_bid_attempt = "Pooling"
 
     def _calculate_takeover_decision_laissez_faire(self):
-        probability_credit_constrained_laissez_faire, merger_policy = self.probability_credit_constrained_merger_policy
+        (
+            probability_credit_constrained_laissez_faire,
+            merger_policy,
+        ) = self.probability_credit_constrained_merger_policy
         assert merger_policy == "Laissez-faire"
         if (
             self.success_probability

@@ -271,7 +271,9 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
 class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyModel):
     def test_intermediate_late_takeover_prohibited_default(self):
         self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.025)
-        self.assertEqual("Intermediate (late takeover prohibited)", self.model.get_merger_policy)
+        self.assertEqual(
+            "Intermediate (late takeover prohibited)", self.model.get_merger_policy
+        )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
