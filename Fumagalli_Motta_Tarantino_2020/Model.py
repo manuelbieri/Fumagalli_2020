@@ -283,12 +283,13 @@ class MergerPolicyModel(BaseModel):
         )
         self._probability_pooling_bid: float = 0
 
-        self._bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
-        self._antitrust_agency_block_takeover: bool = False
+        self._early_bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
+        self._late_bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
         self._owner_invests_in_development: bool = False
+        self._successful_development_outcome: bool = False
         self._startup_credit_rationed: bool = False
-        self._takeover_first_time: bool = False
-        self._takeover_second_time: bool = False
+        self._early_takeover: bool = False
+        self._late_takeover: bool = False
         assert (
             0 < self._probability_credit_constrained < 1
         ), "Violates A.1 (has to be between 0 and 1)"
@@ -349,16 +350,20 @@ class MergerPolicyModel(BaseModel):
         return self._asset_threshold_laissez_faire
 
     @property
-    def get_incumbent_bid_type(self) -> Literal["No", "Separating", "Pooling"]:
-        return self._bid_attempt
+    def get_early_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
+        return self._early_bid_attempt
 
     @property
-    def is_takeover_blocked(self) -> bool:
-        return self._antitrust_agency_block_takeover
+    def get_late_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
+        return self._late_bid_attempt
 
     @property
     def is_owner_investing(self) -> bool:
         return self._owner_invests_in_development
+
+    @property
+    def is_development_successful(self) -> bool:
+        return self._successful_development_outcome
 
     @property
     def is_startup_credit_rationed(self) -> bool:
@@ -374,11 +379,11 @@ class MergerPolicyModel(BaseModel):
 
     @property
     def is_early_takeover(self) -> bool:
-        return self._takeover_first_time
+        return self._early_takeover
 
     @property
     def is_late_takeover(self) -> bool:
-        return self._takeover_second_time
+        return self._late_takeover
 
     @staticmethod
     def _get_cdf_value(value: float):
@@ -462,20 +467,18 @@ class MergerPolicyModel(BaseModel):
                 self.incumbent_profit_with_innovation
                 - self.incumbent_profit_without_innovation
             )
-        ) < self.development_costs:
-            self._bid_attempt = "No"
-        else:
+        ) >= self.development_costs:
             if (
                 self.probability_credit_constrained
                 < self._asset_threshold_cdf
                 < max(self.probability_pooling_bid, self.probability_credit_constrained)
             ):
-                self._bid_attempt = "Pooling"
-                self._takeover_first_time = True
+                self._early_bid_attempt = "Pooling"
+                self._early_takeover = True
             else:
-                self._bid_attempt = "Separating"
+                self._early_bid_attempt = "Separating"
                 if self.is_startup_credit_rationed:
-                    self._takeover_first_time = True
+                    self._early_takeover = True
 
     def _calculate_takeover_decision_late_takeover_allowed(self):
         pass
@@ -493,20 +496,20 @@ class MergerPolicyModel(BaseModel):
             < self.development_costs
         ):
             if self._asset_threshold_laissez_faire_cdf >= self.probability_pooling_bid:
-                if not self.is_startup_credit_rationed:
-                    self._takeover_second_time = True
-                    self._bid_attempt = "Pooling"
+                if not self.is_startup_credit_rationed and self.development_success:
+                    self._late_takeover = True
+                    self._late_bid_attempt = "Pooling"
             else:
-                self._takeover_first_time = True
-                self._bid_attempt = "Pooling"
+                self._early_takeover = True
+                self._early_bid_attempt = "Pooling"
                 self._owner_invests_in_development = False
         else:
+            self._early_bid_attempt = "Separating"
             if self.is_startup_credit_rationed:
-                self._takeover_first_time = True
-                self._bid_attempt = "Separating"
-            else:
-                self._takeover_second_time = True
-                self._bid_attempt = "Pooling"
+                self._early_takeover = True
+            elif self.development_success:
+                self._late_takeover = True
+                self._late_bid_attempt = "Pooling"
 
     def _calculate_investment_decision_strict_merger_policy(self):
         # investment decision (chapter 3.3)
@@ -522,6 +525,7 @@ class MergerPolicyModel(BaseModel):
             and self.is_early_takeover
         ):
             self._owner_invests_in_development = True
+        self._successful_development_outcome = self.is_owner_investing and self._development_success
 
     def _calculate_investment_decision_late_takeover_prohibited(self):
         pass
@@ -549,12 +553,29 @@ class MergerPolicyModel(BaseModel):
         if self.startup_assets < self.asset_threshold_laissez_faire:
             self._startup_credit_rationed = True
 
-    def get_outcome(self) -> Dict[str, any]:
+    def summary(self) -> Dict[str, any]:
+        """
+        Returns the calculated outcome of the model with the defined parameters.
+
+        The resulting dictionary contains the following information (and keys):
+        - 'credit_rationed' : True, if the start-up is credit rationed.
+        - 'early_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=1.
+        - 'late_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=2.
+        - 'development_attempt' : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.
+        - 'development_outcome' : True, if the product is developed successfully.
+        - 'early_takeover' : True, if a takeover takes place at t=1.
+        - 'late_takeover' : True, if a takeover takes place at t=2.
+
+        Returns
+        -------
+            Dict containing the result of the model with the defined parameters.
+        """
         return {
             "credit_rationed": self.is_startup_credit_rationed,
-            "bidding_type": self.get_incumbent_bid_type,
-            "development": self.is_owner_investing,
-            "takeover_blocked": self.is_takeover_blocked,
-            "takeover_first_time": self.is_early_takeover,
-            "takeover_second_time": self.is_late_takeover,
+            "early_bidding_type": self.get_early_bidding_type,
+            "late_bidding_type": self.get_early_bidding_type,
+            "development_attempt": self.is_owner_investing,
+            "development_outcome": self.is_development_successful,
+            "early_takeover": self.is_early_takeover,
+            "late_takeover": self.is_late_takeover,
         }
