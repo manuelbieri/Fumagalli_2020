@@ -18,8 +18,10 @@
 import Fumagalli_Motta_Tarantino_2020.Model as Model
 
 # initialize the model (here you can adjust the parameters of the model)
-# if the parameters are not valid for the model an assertion-error with a corresponding message will be displayed
-model: Model.BaseModel = Model.BaseModel()
+model: Model.MergerPolicyModel = Model.MergerPolicyModel()
+
+# print a summary of the outcome
+print(model.summary())
 ```
 
 ### Dependencies
@@ -30,9 +32,10 @@ These packages include all the needed imports for the functionality of this pack
 |:---------------|:--------------:|:-------------------------------------------|
 | scipy          |     1.8.0      | Always                                     |
 | numpy          |     1.22.3     | Always                                     |
+| black          |     22.1.0     | For consistent code formatting             |
 | jupyter        |     1.0.0      | For the demonstration in jupyter Notebooks |
-| IPython        |     8.1.1      | For the demonstration in jupyter Notebooks |
-| pdoc           |     10.0.3     | To generate the documentation from scratch |
+| IPython        |     8.2.0      | For the demonstration in jupyter Notebooks |
+| pdoc           |     10.0.4     | To generate the documentation from scratch |
 
 Install the dependencies with the following command:
 
@@ -40,6 +43,16 @@ Install the dependencies with the following command:
 $ pip install -r requirements.txt
 ```
 (Note: Make sure you are operating in the same directory, where the `requirements.txt` is located.)
+
+### Tests
+
+Run the unittests with the following command (pay attention to the current working directory):
+
+```shell
+python -m unittest discover Fumagalli_Motta_Tarantino_2020/tests "Test_*.py"
+```
+
+See [codecov.io](https://app.codecov.io/gh/manuelbieri/Fumagalli_2020) for a detailed report about the test coverage.
 
 ### Generate Documentation
 Generate the documentation with the following command:

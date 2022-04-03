@@ -576,6 +576,7 @@ class MergerPolicyModel(BaseModel):
                     self._early_takeover = True
             else:
                 self._early_bid_attempt = "Pooling"
+                self._early_takeover = True
 
     def _calculate_takeover_decision_laissez_faire(self):
         (
