@@ -27,7 +27,7 @@ jobs:
     - name: Generate Report
       run: |
         pip install coverage
-        coverage run -m unittest Test_Fumagalli_Motta_Tarantino_2020/Test_*.py
+        coverage run -m unittest discover Fumagalli_Motta_Tarantino_2020/tests "Test_*.py"
         coverage xml
 
     - name: Upload Coverage to Codecov
