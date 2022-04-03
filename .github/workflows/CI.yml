@@ -24,4 +24,4 @@ jobs:
           python -m pip install -r requirements.txt
       - name: Run Test
         run: |
-          python -m unittest Test_Fumagalli_Motta_Tarantino_2020/Test_*.py
+          python -m unittest discover Fumagalli_Motta_Tarantino_2020/tests "Test_*.py"
