@@ -112,6 +112,9 @@
                                 <a class="function" href="#MergerPolicyModel.__init__">MergerPolicyModel</a>
                         </li>
                         <li>
+                                <a class="variable" href="#MergerPolicyModel.get_merger_policy">get_merger_policy</a>
+                        </li>
+                        <li>
                                 <a class="variable" href="#MergerPolicyModel.asset_threshold">asset_threshold</a>
                         </li>
                         <li>
@@ -133,10 +136,13 @@
                                 <a class="variable" href="#MergerPolicyModel.is_startup_credit_rationed">is_startup_credit_rationed</a>
                         </li>
                         <li>
-                                <a class="variable" href="#MergerPolicyModel.probability_credit_constrained">probability_credit_constrained</a>
+                                <a class="variable" href="#MergerPolicyModel.probability_credit_constrained_threshold">probability_credit_constrained_threshold</a>
                         </li>
                         <li>
-                                <a class="variable" href="#MergerPolicyModel.probability_pooling_bid">probability_pooling_bid</a>
+                                <a class="variable" href="#MergerPolicyModel.probability_credit_constrained_default">probability_credit_constrained_default</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MergerPolicyModel.probability_credit_constrained_merger_policy">probability_credit_constrained_merger_policy</a>
                         </li>
                         <li>
                                 <a class="variable" href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a>
@@ -443,7 +449,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">)</span>
             <span class="o">/</span> <span class="p">(</span>
@@ -452,7 +458,14 @@
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Strict&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
@@ -462,37 +475,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.1 (has to be between 0 and 1)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_determine_merger_policy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_rationed</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strict_merger_policy</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">strict_merger_policy</span> <span class="ow">or</span> <span class="p">(</span>
+    <span class="k">def</span> <span class="nf">_determine_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h0</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Strict&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h1</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h2</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_probability_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
             <span class="p">)</span>
-            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-        <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">/</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
                 <span class="o">*</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
                     <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
                 <span class="p">)</span>
-                <span class="o">/</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
-                    <span class="o">*</span> <span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                        <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
-                    <span class="p">)</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-                <span class="p">)</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Strict&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
                 <span class="o">*</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
@@ -507,10 +528,51 @@
                     <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
+                <span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_default</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.2 (has to be between 0 and 1)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">),</span> <span class="s2">&quot;Probability calculated for the wrong merger policy&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">get_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asset_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -541,12 +603,29 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">probability_credit_constrained</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span>
+    <span class="k">def</span> <span class="nf">probability_credit_constrained_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">probability_pooling_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span>
+    <span class="k">def</span> <span class="nf">probability_credit_constrained_default</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">probability_credit_constrained_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -557,7 +636,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -596,38 +675,31 @@
 
 <span class="sd">        The levels of tolerated harm are defined in A.4 (p.36ff.).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h0</span><span class="p">():</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Strict&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_strict_merger_policy</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h1</span><span class="p">():</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_late_takeover_prohibited</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h2</span><span class="p">():</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_late_takeover_allowed</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_laissez_faire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_laissez_faire</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_laissez_faire</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_laissez_faire</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_late_takeover_allowed</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_late_takeover_allowed</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_late_takeover_allowed</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_late_takeover_prohibited</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_late_takeover_prohibited</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_late_takeover_prohibited</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_strict_merger_policy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># decision of the AA and the startup (chapter 3.4.1)</span>
@@ -640,9 +712,12 @@
             <span class="p">)</span>
         <span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_threshold</span>
                 <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
-                <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span><span class="p">)</span>
+                <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_threshold</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
@@ -655,9 +730,11 @@
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">_calculate_takeover_decision_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">(</span>
+            <span class="n">probability_credit_constrained_intermediate</span><span class="p">,</span>
+            <span class="n">merger_policy</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span>
+        <span class="k">assert</span> <span class="n">merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span>
@@ -666,7 +743,36 @@
             <span class="p">)</span>
             <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span> <span class="o">&lt;</span> <span class="n">probability_credit_constrained_intermediate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_default</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_takeover_decision_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">(</span>
+            <span class="n">probability_credit_constrained_laissez_faire</span><span class="p">,</span>
+            <span class="n">merger_policy</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span>
+        <span class="k">assert</span> <span class="n">merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+                <span class="o">&gt;=</span> <span class="n">probability_credit_constrained_laissez_faire</span>
+            <span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
@@ -682,7 +788,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_calculate_investment_decision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># investment decision (chapter 3.3)</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
             <span class="p">(</span>
@@ -700,23 +806,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># decision does not change compared with the strict merger policy (chapter 3.3)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_strict_merger_policy</span><span class="p">()</span>
-
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># financial contracting (chapter 3.2)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -1511,7 +1607,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">)</span>
             <span class="o">/</span> <span class="p">(</span>
@@ -1520,7 +1616,14 @@ Consumer surplus for the case that the innovation is introduced into the market 
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Strict&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
@@ -1530,37 +1633,45 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.1 (has to be between 0 and 1)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_determine_merger_policy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_rationed</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strict_merger_policy</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">strict_merger_policy</span> <span class="ow">or</span> <span class="p">(</span>
+    <span class="k">def</span> <span class="nf">_determine_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h0</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Strict&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h1</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h2</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span> <span class="o">=</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_probability_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
             <span class="p">)</span>
-            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-        <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">/</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
                 <span class="o">*</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
                     <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
                 <span class="p">)</span>
-                <span class="o">/</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
-                    <span class="o">*</span> <span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                        <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
-                    <span class="p">)</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-                <span class="p">)</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Strict&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
                 <span class="o">*</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
@@ -1575,10 +1686,51 @@ Consumer surplus for the case that the innovation is introduced into the market 
                     <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
+                <span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_default</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.2 (has to be between 0 and 1)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">),</span> <span class="s2">&quot;Probability calculated for the wrong merger policy&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">get_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asset_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -1609,12 +1761,29 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">probability_credit_constrained</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span>
+    <span class="k">def</span> <span class="nf">probability_credit_constrained_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">probability_pooling_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span>
+    <span class="k">def</span> <span class="nf">probability_credit_constrained_default</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">probability_credit_constrained_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -1625,7 +1794,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -1664,38 +1833,31 @@ Consumer surplus for the case that the innovation is introduced into the market 
 
 <span class="sd">        The levels of tolerated harm are defined in A.4 (p.36ff.).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h0</span><span class="p">():</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Strict&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_strict_merger_policy</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h1</span><span class="p">():</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_late_takeover_prohibited</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerated_harm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h2</span><span class="p">():</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_late_takeover_allowed</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game_laissez_faire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_laissez_faire</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_laissez_faire</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_laissez_faire</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_late_takeover_allowed</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_late_takeover_allowed</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_late_takeover_allowed</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_late_takeover_prohibited</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_late_takeover_prohibited</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_late_takeover_prohibited</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_pooling_bid</span><span class="p">(</span><span class="n">strict_merger_policy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_takeover_decision_strict_merger_policy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># decision of the AA and the startup (chapter 3.4.1)</span>
@@ -1708,9 +1870,12 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="p">)</span>
         <span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_threshold</span>
                 <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
-                <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained</span><span class="p">)</span>
+                <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_threshold</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1723,9 +1888,11 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">_calculate_takeover_decision_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">(</span>
+            <span class="n">probability_credit_constrained_intermediate</span><span class="p">,</span>
+            <span class="n">merger_policy</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span>
+        <span class="k">assert</span> <span class="n">merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span>
@@ -1734,7 +1901,36 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="p">)</span>
             <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_pooling_bid</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span> <span class="o">&lt;</span> <span class="n">probability_credit_constrained_intermediate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_default</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_takeover_decision_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">(</span>
+            <span class="n">probability_credit_constrained_laissez_faire</span><span class="p">,</span>
+            <span class="n">merger_policy</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span>
+        <span class="k">assert</span> <span class="n">merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+                <span class="o">&gt;=</span> <span class="n">probability_credit_constrained_laissez_faire</span>
+            <span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
@@ -1750,7 +1946,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_calculate_investment_decision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># investment decision (chapter 3.3)</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
             <span class="p">(</span>
@@ -1768,23 +1964,13 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="bp">self</span><span class="o">.</span><span class="n">is_owner_investing</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">_calculate_investment_decision_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># decision does not change compared with the strict merger policy (chapter 3.3)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_investment_decision_strict_merger_policy</span><span class="p">()</span>
-
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># financial contracting (chapter 3.2)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_startup_credit_rationed</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -1914,7 +2100,7 @@ from the merger, if any.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">)</span>
             <span class="o">/</span> <span class="p">(</span>
@@ -1923,7 +2109,14 @@ from the merger, if any.</p>
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_pooling_bid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Strict&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
@@ -1933,8 +2126,10 @@ from the merger, if any.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_threshold</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.1 (has to be between 0 and 1)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_determine_merger_policy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_rationed</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_solve_game</span><span class="p">()</span>
 </pre></div>
 
@@ -2050,6 +2245,16 @@ Consumer surplus for the case that the innovation is introduced into the market 
 
 
                             </div>
+                            <div id="MergerPolicyModel.get_merger_policy" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.get_merger_policy">#&nbsp;&nbsp</a>
+
+        <span class="name">get_merger_policy</span><span class="annotation">: Literal[&#39;Strict&#39;, &#39;Intermediate (late takeover prohibited)&#39;, &#39;Intermediate (late takeover allowed)&#39;, &#39;Laissez-faire&#39;]</span>
+    </div>
+
+    
+    
+
+                            </div>
                             <div id="MergerPolicyModel.asset_threshold" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.asset_threshold">#&nbsp;&nbsp</a>
 
@@ -2120,20 +2325,30 @@ Consumer surplus for the case that the innovation is introduced into the market 
     
 
                             </div>
-                            <div id="MergerPolicyModel.probability_credit_constrained" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.probability_credit_constrained">#&nbsp;&nbsp</a>
+                            <div id="MergerPolicyModel.probability_credit_constrained_threshold" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.probability_credit_constrained_threshold">#&nbsp;&nbsp</a>
 
-        <span class="name">probability_credit_constrained</span><span class="annotation">: float</span>
+        <span class="name">probability_credit_constrained_threshold</span><span class="annotation">: float</span>
     </div>
 
     
     
 
                             </div>
-                            <div id="MergerPolicyModel.probability_pooling_bid" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.probability_pooling_bid">#&nbsp;&nbsp</a>
+                            <div id="MergerPolicyModel.probability_credit_constrained_default" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.probability_credit_constrained_default">#&nbsp;&nbsp</a>
 
-        <span class="name">probability_pooling_bid</span><span class="annotation">: float</span>
+        <span class="name">probability_credit_constrained_default</span><span class="annotation">: float</span>
+    </div>
+
+    
+    
+
+                            </div>
+                            <div id="MergerPolicyModel.probability_credit_constrained_merger_policy" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.probability_credit_constrained_merger_policy">#&nbsp;&nbsp</a>
+
+        <span class="name">probability_credit_constrained_merger_policy</span><span class="annotation">: (&lt;class &#39;float&#39;&gt;, typing.Literal[&#39;Strict&#39;, &#39;Intermediate (late takeover prohibited)&#39;, &#39;Intermediate (late takeover allowed)&#39;, &#39;Laissez-faire&#39;])</span>
     </div>
 
     
