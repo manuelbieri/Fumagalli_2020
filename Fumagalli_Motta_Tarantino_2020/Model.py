@@ -550,7 +550,24 @@ class MergerPolicyModel(BaseModel):
                     self._early_takeover = True
 
     def _calculate_takeover_decision_late_takeover_allowed(self):
-        pass
+        if (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
+            )
+            < self.development_costs
+        ):
+            if not self.is_startup_credit_rationed and self.development_success:
+                self._late_takeover = True
+                self._late_bid_attempt = "Pooling"
+        else:
+            self._early_bid_attempt = "Separating"
+            if self.is_startup_credit_rationed:
+                self._early_takeover = True
+            elif self.development_success:
+                self._late_bid_attempt = "Pooling"
+                self._late_takeover = True
 
     def _calculate_takeover_decision_late_takeover_prohibited(self):
         (
@@ -638,7 +655,7 @@ class MergerPolicyModel(BaseModel):
         self._calculate_startup_credit_rationed_strict_merger_policy()
 
     def _calculate_startup_credit_rationed_late_takeover_allowed(self):
-        pass
+        self._calculate_startup_credit_rationed_strict_merger_policy()
 
     def _calculate_startup_credit_rationed_laissez_faire(self):
         # financial contracting (chapter 4.2)

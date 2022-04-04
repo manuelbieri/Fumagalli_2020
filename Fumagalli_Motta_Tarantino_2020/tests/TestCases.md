@@ -42,6 +42,14 @@ This testcase tests, whether the implemented logic for a laissez-faire merger po
 
 ## TestIntermediateLateTakeoverAllowedMergerPolicyModel
 
+| Name of test                                         | Is the start-up credit rationed? | Early bidding type (t=1) | Late bidding type (t=2) | Development attempt? | Development success | Early takeover (t=1) | Late takeover (t=2) |
+|:-----------------------------------------------------|:--------------------------------:|:------------------------:|:-----------------------:|:--------------------:|:-------------------:|:--------------------:|:-------------------:|
+| test_not_profitable_not_credit_rationed              |              False               |            No            |         Pooling         |         True         |        True         |        False         |        True         |
+| test_not_profitable_not_credit_rationed_unsuccessful |              False               |            No            |           No            |         True         |        False        |        False         |        False        |
+| test_not_profitable_credit_rationed                  |               True               |            No            |           No            |        False         |   Does not matter   |        False         |        False        |
+| test_profitable_credit_rationed                      |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_profitable_not_credit_rationed                  |              False               |        Separating        |         Pooling         |         True         |        True         |        False         |        True         |
+| test_profitable_not_credit_rationed_unsuccessful     |              False               |        Separating        |           No            |         True         |        False        |        False         |        False        |
 
 ## TestIntermediateLateTakeoverProhibitedMergerPolicyModel
 
