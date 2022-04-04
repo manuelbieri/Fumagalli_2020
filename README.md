@@ -23,6 +23,7 @@ model: Model.MergerPolicyModel = Model.MergerPolicyModel()
 # print a summary of the outcome
 print(model.summary())
 ```
+Find the latest documentation on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
 
 ### Dependencies
 
