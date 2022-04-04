@@ -153,7 +153,7 @@ class TestMergerPolicyModel(TestBaseModel):
         Model.MergerPolicyModel()
 
 
-class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
+class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
     def test_not_profitable_below_assets_threshold_not_credit_rationed(self):
         self.model = Model.MergerPolicyModel(tolerated_level_of_harm=1)
         self.assertFalse(self.model.is_startup_credit_rationed)
@@ -265,7 +265,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel):
+class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
     def test_not_profitable_not_credit_rationed(self):
         self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.06)
         self.assertEqual(
@@ -359,7 +359,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyModel):
+class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase):
     def test_not_profitable_below_assets_threshold_not_credit_rationed(self):
         self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.025)
         self.assertEqual(
@@ -467,7 +467,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestStrictMergerPolicyModel(TestMergerPolicyModel):
+class TestStrictMergerPolicyModel(unittest.TestCase):
     def test_not_profitable_not_credit_rationed_summary(self):
         self.model = Model.MergerPolicyModel()
         summary: Dict[str, any] = self.model.summary()
