@@ -9,9 +9,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="Fumagalli_Motta_Tarantino_2020",
-    packages=find_packages(
-        exclude=["Notebooks"]
-    ),
+    packages=find_packages(exclude=["Notebooks"]),
     version="0.1.0",  # change with new version
     license="MIT",
     description="Implements the model presented in Fumagalli et al. (2020)",
