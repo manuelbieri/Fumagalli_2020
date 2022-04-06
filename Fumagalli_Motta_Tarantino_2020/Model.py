@@ -742,10 +742,9 @@ class OptimalMergerPolicy(MergerPolicyModel):
         # section 6.3
         if self.is_laissez_faire_optimal():
             return "Laissez-faire"
-        elif self.is_intermediate_optimal():
+        if self.is_intermediate_optimal():
             return "Intermediate (late takeover allowed)"
-        else:
-            return "Strict"
+        return "Strict"
 
     def is_laissez_faire_optimal(self) -> bool:
         return (
