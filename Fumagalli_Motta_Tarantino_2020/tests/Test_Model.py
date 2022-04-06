@@ -576,3 +576,31 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertTrue(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+
+
+class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
+    def test_strict_beneficial_compared_to_laissez_faire(self):
+        self.model = Model.OptimalMergerPolicy()
+        self.assertTrue(self.model.is_strict_beneficial_compared_to_laissez_faire())
+
+    def test_strict_not_beneficial_compared_to_laissez_faire(self):
+        self.model = Model.OptimalMergerPolicy(incumbent_profit_with_innovation=0.59)
+        self.assertFalse(self.model.is_strict_beneficial_compared_to_laissez_faire())
+
+    def test_strict_beneficial_compared_to_intermediate(self):
+        self.model = Model.OptimalMergerPolicy()
+        self.assertTrue(self.model.is_strict_beneficial_compared_to_intermediate())
+
+    def test_strict_not_beneficial_compared_to_intermediate(self):
+        self.model = Model.OptimalMergerPolicy(incumbent_profit_with_innovation=0.59)
+        self.assertFalse(self.model.is_strict_beneficial_compared_to_intermediate())
+
+    def test_strict_optimal_merger_policy(self):
+        self.model = Model.OptimalMergerPolicy()
+        self.assertEqual("Strict", self.model.get_optimal_merger_policy())
+
+    def test_intermediate_optimal_merger_policy(self):
+        pass
+
+    def test_laissez_faire_optimal_merger_policy(self):
+        pass

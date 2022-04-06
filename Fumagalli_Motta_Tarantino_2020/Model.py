@@ -337,19 +337,7 @@ class MergerPolicyModel(BaseModel):
             )
         elif self.get_merger_policy == "Laissez-faire":
             self._probability_credit_constrained_merger_policy = (
-                self.success_probability
-                * (
-                    self.incumbent_profit_without_innovation
-                    - self.incumbent_profit_with_innovation
-                )
-                + self.development_costs
-            ) / (
-                self.success_probability
-                * (
-                    self.incumbent_profit_without_innovation
-                    + self.startup_profit_duopoly
-                    - self.incumbent_profit_with_innovation
-                )
+                self._calculate_probability_credit_constrained_laissez_faire()
             )
         else:
             self._probability_credit_constrained_merger_policy = (
@@ -371,8 +359,30 @@ class MergerPolicyModel(BaseModel):
         assert (
             0 < self.probability_credit_constrained_default < 1
         ), "Violates A.2 (has to be between 0 and 1)"
+
         assert (
-            0 < self.probability_credit_constrained_merger_policy[0] < 1
+            self.probability_credit_constrained_merger_policy[1]
+            == self.get_merger_policy
+        ), "Probability calculated for the wrong merger policy"
+
+    def _calculate_probability_credit_constrained_laissez_faire(self):
+        probability_credit_constrained = (
+            self.success_probability
+            * (
+                self.incumbent_profit_without_innovation
+                - self.incumbent_profit_with_innovation
+            )
+            + self.development_costs
+        ) / (
+            self.success_probability
+            * (
+                self.incumbent_profit_without_innovation
+                + self.startup_profit_duopoly
+                - self.incumbent_profit_with_innovation
+            )
+        )
+        assert (
+            0 < probability_credit_constrained < 1
             or self.success_probability
             * (
                 self.incumbent_profit_with_innovation
@@ -381,10 +391,7 @@ class MergerPolicyModel(BaseModel):
             - self.development_costs
             > 0
         ), "Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)"
-        assert (
-            self.probability_credit_constrained_merger_policy[1]
-            == self.get_merger_policy
-        ), "Probability calculated for the wrong merger policy"
+        return probability_credit_constrained
 
     @property
     def get_merger_policy(
@@ -473,6 +480,16 @@ class MergerPolicyModel(BaseModel):
                 - self.development_costs
             ),
             0,
+        )
+
+    def is_incumbent_expected_to_shelve(self) -> bool:
+        return (
+            self.success_probability
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_without_innovation
+            )
+            < self.development_costs
         )
 
     def _calculate_h1(self) -> float:
@@ -689,3 +706,82 @@ class MergerPolicyModel(BaseModel):
             "early_takeover": self.is_early_takeover,
             "late_takeover": self.is_late_takeover,
         }
+
+
+class OptimalMergerPolicy(MergerPolicyModel):
+    def __init__(self, **kwargs):
+        super(OptimalMergerPolicy, self).__init__(**kwargs)
+
+    def is_strict_beneficial_compared_to_laissez_faire(self) -> bool:
+        # section 6.1
+        return (
+            self.success_probability * (self.w_duopoly - self.w_without_innovation)
+            - self.development_costs
+        ) / (
+            self.success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs
+        ) > (
+            1 - self._asset_threshold_laissez_faire_cdf
+        ) / (
+            1 - self._asset_threshold_cdf
+        )
+
+    def is_strict_beneficial_compared_to_intermediate(self) -> bool:
+        # section 6.2
+        return self.is_strict_beneficial_compared_to_laissez_faire()
+
+    def get_optimal_merger_policy(
+        self,
+    ) -> Literal[
+        "Strict",
+        "Intermediate (late takeover prohibited)",
+        "Intermediate (late takeover allowed)",
+        "Laissez-faire",
+    ]:
+        # section 6.3
+        if self.is_laissez_faire_optimal():
+            return "Laissez-faire"
+        elif self.is_intermediate_optimal():
+            return "Intermediate (late takeover allowed)"
+        else:
+            return "Strict"
+
+    def is_laissez_faire_optimal(self) -> bool:
+        return (
+            self.is_incumbent_expected_to_shelve()
+            and self.is_financial_imperfection_severe()
+            and self.is_early_takeover_followed_by_shelving_optimal()
+            and not self.is_strict_beneficial_compared_to_laissez_faire()
+        )
+
+    def is_intermediate_optimal(self) -> bool:
+        return (
+            self.is_incumbent_expected_to_shelve()
+            and not self.is_early_takeover_followed_by_shelving_optimal()
+            and not self.is_strict_beneficial_compared_to_intermediate()
+        )
+
+    def is_financial_imperfection_severe(self) -> bool:
+        return (
+            self._asset_threshold_laissez_faire_cdf
+            >= self._calculate_probability_credit_constrained_laissez_faire()
+        )
+
+    def is_early_takeover_followed_by_shelving_optimal(self) -> bool:
+        return (
+            self._asset_threshold_laissez_faire_cdf
+            >= self.threshold_approved_takeover_followed_pooling_offer()
+        )
+
+    def threshold_approved_takeover_followed_pooling_offer(self) -> float:
+        return (
+            self.success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs
+            - (self.w_duopoly - self.w_with_innovation)
+        ) / (
+            self.development_success
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs
+        )
