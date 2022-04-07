@@ -151,7 +151,43 @@
                                 <a class="variable" href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a>
                         </li>
                         <li>
+                                <a class="function" href="#MergerPolicyModel.is_incumbent_expected_to_shelve">is_incumbent_expected_to_shelve</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#MergerPolicyModel.summary">summary</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#OptimalMergerPolicy">OptimalMergerPolicy</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.__init__">OptimalMergerPolicy</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.is_strict_beneficial_compared_to_laissez_faire">is_strict_beneficial_compared_to_laissez_faire</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.is_strict_beneficial_compared_to_intermediate">is_strict_beneficial_compared_to_intermediate</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.get_optimal_merger_policy">get_optimal_merger_policy</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.is_laissez_faire_optimal">is_laissez_faire_optimal</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.is_intermediate_optimal">is_intermediate_optimal</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.is_financial_imperfection_severe">is_financial_imperfection_severe</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.is_early_takeover_followed_by_shelving_optimal">is_early_takeover_followed_by_shelving_optimal</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#OptimalMergerPolicy.threshold_approved_takeover_followed_pooling_offer">threshold_approved_takeover_followed_pooling_offer</a>
                         </li>
                 </ul>
 
@@ -258,21 +294,21 @@
 <span class="sd">        success_probability : float</span>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
 <span class="sd">        development_success : bool</span>
-<span class="sd">            Decide whether a development will be successful (God mode).</span>
+<span class="sd">            Decides whether an attempted development will be successful (true $\\rightarrow$ attempted development succeeds).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
 <span class="sd">        consumer_surplus_without_innovation : float</span>
-<span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</span>
+<span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</span>
 <span class="sd">        incumbent_profit_without_innovation : float</span>
 <span class="sd">            ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
 <span class="sd">        consumer_surplus_duopoly : float</span>
-<span class="sd">            Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">            ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
 <span class="sd">        incumbent_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
 <span class="sd">        startup_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
 <span class="sd">        consumer_surplus_with_innovation : float</span>
-<span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</span>
+<span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</span>
 <span class="sd">        incumbent_profit_with_innovation : float</span>
 <span class="sd">            ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -367,71 +403,133 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tolerated_harm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tolerated_harm</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">development_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($K$) Fixed costs to invest for development.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">startup_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($A$) Assets of the startup at the beginning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">success_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">development_success</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decides whether an attempted development will be successful.</span>
+
+<span class="sd">        If true, every attempted development will be successful.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">private_benefit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($B$) Private benefit of the entrepreneur in case of failure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">incumbent_profit_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cs_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">w_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($W^M$) Total welfare for the case that the innovation is introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">incumbent_profit_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cs_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">w_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($W^m$) Total welfare for the case that the innovation is not introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">startup_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">incumbent_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_duopoly</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cs_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_duopoly</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">w_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($W^d$) Total welfare for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_duopoly</span>
 
 
 <span class="k">class</span> <span class="nc">MergerPolicyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    In this class all merger policies and their respective outcomes are considered.</span>
+
+<span class="sd">    Available merger policies are:</span>
+<span class="sd">    - Strict: The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare.</span>
+<span class="sd">    - Intermediate (late takeover prohibited): The AA blocks late takeovers, but is more lenient with early takeovers.</span>
+<span class="sd">    - Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.</span>
+<span class="sd">    - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the same arguments as BaseModel.__init__.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_benefit</span> <span class="o">-</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
@@ -514,19 +612,7 @@
             <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
-                <span class="o">*</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                <span class="p">)</span>
-                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
-                <span class="o">*</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
-                    <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
@@ -548,8 +634,30 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_default</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.2 (has to be between 0 and 1)&quot;</span>
+
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">),</span> <span class="s2">&quot;Probability calculated for the wrong merger policy&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">probability_credit_constrained</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
             <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
@@ -558,10 +666,7 @@
             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="p">),</span> <span class="s2">&quot;Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span>
-        <span class="p">),</span> <span class="s2">&quot;Probability calculated for the wrong merger policy&quot;</span>
+        <span class="k">return</span> <span class="n">probability_credit_constrained</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_merger_policy</span><span class="p">(</span>
@@ -572,22 +677,50 @@
         <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
     <span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the merger policy used to determine the outcome.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asset_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Threshold level $\\bar{A} = B - (\\pi^d_S - K)$</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asset_threshold_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The prospect that the start-up will be acquired at $t = 2$ alleviates financial constraints: there exists a</span>
+<span class="sd">        threshold level $\\bar{A}^T = B - (\\pi_I^M - K)$</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_early_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the bidding attempt of the incumbent at $t = 1$.</span>
+
+<span class="sd">        Possible options of an actual attempt:</span>
+<span class="sd">        - Pooling: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.</span>
+<span class="sd">        - Separating: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.</span>
+
+<span class="sd">        Otherwise, the option &#39;No&#39; is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_late_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the bidding attempt of the incumbent at $t = 2$.</span>
+
+<span class="sd">        Possible options of an actual attempt:</span>
+<span class="sd">        - &#39;Pooling&#39;: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.</span>
+<span class="sd">        - &#39;Separating&#39;: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.</span>
+
+<span class="sd">        Otherwise, the option &#39;No&#39; is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span>
 
     <span class="nd">@property</span>
@@ -650,6 +783,24 @@
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">),</span>
             <span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_incumbent_expected_to_shelve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the incumbent is expected to shelve, whenever it acquires the entrant.</span>
+
+<span class="sd">        - True (expected to shelve): $p*(\\pi^M_I-\\pi^m_I) &lt; K$</span>
+
+<span class="sd">        - False (not expected to shelve): $p*(\\pi^M_I-\\pi^m_I) \\ge K$</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -727,7 +878,24 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="p">(</span>
@@ -815,7 +983,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># financial contracting (chapter 4.2)</span>
@@ -832,8 +1000,8 @@
 <span class="sd">        - &#39;late_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=2.</span>
 <span class="sd">        - &#39;development_attempt&#39; : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</span>
 <span class="sd">        - &#39;development_outcome&#39; : True, if the product is developed successfully.</span>
-<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at t=1.</span>
-<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at t=2.</span>
+<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at $t=1$.</span>
+<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at $t=2$.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -849,6 +1017,84 @@
             <span class="s2">&quot;early_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">,</span>
             <span class="s2">&quot;late_takeover&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">,</span>
         <span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">OptimalMergerPolicy</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># section 6.1</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">&gt;</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_strict_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># section 6.2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_optimal_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="c1"># section 6.3</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Strict&quot;</span>
+
+    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover_followed_by_shelving_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover_followed_by_shelving_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_early_takeover_followed_by_shelving_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_approved_takeover_followed_pooling_offer</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">threshold_approved_takeover_followed_pooling_offer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span>
 </pre></div>
 
         </details>
@@ -943,21 +1189,21 @@
 <span class="sd">        success_probability : float</span>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
 <span class="sd">        development_success : bool</span>
-<span class="sd">            Decide whether a development will be successful (God mode).</span>
+<span class="sd">            Decides whether an attempted development will be successful (true $\\rightarrow$ attempted development succeeds).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
 <span class="sd">        consumer_surplus_without_innovation : float</span>
-<span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</span>
+<span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</span>
 <span class="sd">        incumbent_profit_without_innovation : float</span>
 <span class="sd">            ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
 <span class="sd">        consumer_surplus_duopoly : float</span>
-<span class="sd">            Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">            ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
 <span class="sd">        incumbent_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
 <span class="sd">        startup_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
 <span class="sd">        consumer_surplus_with_innovation : float</span>
-<span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</span>
+<span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</span>
 <span class="sd">        incumbent_profit_with_innovation : float</span>
 <span class="sd">            ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1052,66 +1298,116 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tolerated_harm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tolerated_harm</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">development_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($K$) Fixed costs to invest for development.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_costs</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">startup_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($A$) Assets of the startup at the beginning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_assets</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">success_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">development_success</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decides whether an attempted development will be successful.</span>
+
+<span class="sd">        If true, every attempted development will be successful.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_development_success</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">private_benefit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($B$) Private benefit of the entrepreneur in case of failure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_private_benefit</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">incumbent_profit_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_with_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cs_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_with_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">w_with_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($W^M$) Total welfare for the case that the innovation is introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_with_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">incumbent_profit_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_without_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cs_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">w_without_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($W^m$) Total welfare for the case that the innovation is not introduced by the incumbent into the market.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_without_innovation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">startup_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_startup_profit_duopoly</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">incumbent_profit_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_incumbent_profit_duopoly</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cs_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_duopoly</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">w_duopoly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ($W^d$) Total welfare for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_duopoly</span>
 </pre></div>
 
@@ -1249,21 +1545,21 @@ from the merger, if any.</p>
 <span class="sd">        success_probability : float</span>
 <span class="sd">            ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</span>
 <span class="sd">        development_success : bool</span>
-<span class="sd">            Decide whether a development will be successful (God mode).</span>
+<span class="sd">            Decides whether an attempted development will be successful (true $\\rightarrow$ attempted development succeeds).</span>
 <span class="sd">        private_benefit : float</span>
 <span class="sd">            ($B$) Private benefit of the entrepreneur in case of failure.</span>
 <span class="sd">        consumer_surplus_without_innovation : float</span>
-<span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</span>
+<span class="sd">            ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</span>
 <span class="sd">        incumbent_profit_without_innovation : float</span>
 <span class="sd">            ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).</span>
 <span class="sd">        consumer_surplus_duopoly : float</span>
-<span class="sd">            Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
+<span class="sd">            ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</span>
 <span class="sd">        incumbent_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.</span>
 <span class="sd">        startup_profit_duopoly : float</span>
 <span class="sd">            ($\\pi^d_S$) Profit of the startup in the case of a duopoly.</span>
 <span class="sd">        consumer_surplus_with_innovation : float</span>
-<span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</span>
+<span class="sd">             ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</span>
 <span class="sd">        incumbent_profit_with_innovation : float</span>
 <span class="sd">            ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1394,21 +1690,21 @@ from the merger, if any.</p>
 <li><strong>success_probability</strong> (float):
 ($p$) Probability of success in case of effort (otherwise the projects fails for sure).</li>
 <li><strong>development_success</strong> (bool):
-Decide whether a development will be successful (God mode).</li>
+Decides whether an attempted development will be successful (true $\rightarrow$ attempted development succeeds).</li>
 <li><strong>private_benefit</strong> (float):
 ($B$) Private benefit of the entrepreneur in case of failure.</li>
 <li><strong>consumer_surplus_without_innovation</strong> (float):
-($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</li>
+($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</li>
 <li><strong>incumbent_profit_without_innovation</strong> (float):
 ($\pi^m_I$) Profit of the monopolist with a single product (without innovation).</li>
 <li><strong>consumer_surplus_duopoly</strong> (float):
-Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</li>
+($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</li>
 <li><strong>incumbent_profit_duopoly</strong> (float):
 ($\pi^d_I$) Profit of the incumbent in the case of a duopoly.</li>
 <li><strong>startup_profit_duopoly</strong> (float):
 ($\pi^d_S$) Profit of the startup in the case of a duopoly.</li>
 <li><strong>consumer_surplus_with_innovation</strong> (float):
-($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</li>
+($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</li>
 <li><strong>incumbent_profit_with_innovation</strong> (float):
 ($\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</li>
 </ul>
@@ -1423,7 +1719,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.development_costs" class="classattr">
@@ -1433,7 +1731,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($K$) Fixed costs to invest for development.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.startup_assets" class="classattr">
@@ -1443,7 +1743,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($A$) Assets of the startup at the beginning.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.success_probability" class="classattr">
@@ -1453,7 +1755,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($p$) Probability of success in case of effort (otherwise the projects fails for sure).</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.development_success" class="classattr">
@@ -1463,7 +1767,11 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>Decides whether an attempted development will be successful.</p>
+
+<p>If true, every attempted development will be successful.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.private_benefit" class="classattr">
@@ -1473,7 +1781,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($B$) Private benefit of the entrepreneur in case of failure.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.incumbent_profit_with_innovation" class="classattr">
@@ -1483,7 +1793,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.cs_with_innovation" class="classattr">
@@ -1493,7 +1805,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.w_with_innovation" class="classattr">
@@ -1503,7 +1817,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($W^M$) Total welfare for the case that the innovation is introduced by the incumbent into the market.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.incumbent_profit_without_innovation" class="classattr">
@@ -1513,7 +1829,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($\pi^m_I$) Profit of the monopolist with a single product (without innovation).</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.cs_without_innovation" class="classattr">
@@ -1523,7 +1841,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.w_without_innovation" class="classattr">
@@ -1533,7 +1853,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($W^m$) Total welfare for the case that the innovation is not introduced by the incumbent into the market.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.startup_profit_duopoly" class="classattr">
@@ -1543,7 +1865,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($\pi^d_S$) Profit of the startup in the case of a duopoly.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.incumbent_profit_duopoly" class="classattr">
@@ -1553,7 +1877,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($\pi^d_I$) Profit of the incumbent in the case of a duopoly.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.cs_duopoly" class="classattr">
@@ -1563,7 +1889,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</p>
+</div>
+
 
                             </div>
                             <div id="BaseModel.w_duopoly" class="classattr">
@@ -1573,7 +1901,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>($W^d$) Total welfare for the case that the innovation is introduced into the market and a duopoly exists.</p>
+</div>
+
 
                             </div>
                 </section>
@@ -1589,7 +1919,19 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MergerPolicyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    In this class all merger policies and their respective outcomes are considered.</span>
+
+<span class="sd">    Available merger policies are:</span>
+<span class="sd">    - Strict: The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare.</span>
+<span class="sd">    - Intermediate (late takeover prohibited): The AA blocks late takeovers, but is more lenient with early takeovers.</span>
+<span class="sd">    - Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.</span>
+<span class="sd">    - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the same arguments as BaseModel.__init__.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_benefit</span> <span class="o">-</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
@@ -1672,19 +2014,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span> <span class="o">==</span> <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
-                <span class="o">*</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                <span class="p">)</span>
-                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
-                <span class="o">*</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
-                    <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
-                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span> <span class="o">=</span> <span class="p">(</span>
@@ -1706,8 +2036,30 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="k">assert</span> <span class="p">(</span>
             <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_default</span> <span class="o">&lt;</span> <span class="mi">1</span>
         <span class="p">),</span> <span class="s2">&quot;Violates A.2 (has to be between 0 and 1)&quot;</span>
+
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">),</span> <span class="s2">&quot;Probability calculated for the wrong merger policy&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">probability_credit_constrained</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">probability_credit_constrained</span> <span class="o">&lt;</span> <span class="mi">1</span>
             <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
@@ -1716,10 +2068,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="p">),</span> <span class="s2">&quot;Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">probability_credit_constrained_merger_policy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_merger_policy</span>
-        <span class="p">),</span> <span class="s2">&quot;Probability calculated for the wrong merger policy&quot;</span>
+        <span class="k">return</span> <span class="n">probability_credit_constrained</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_merger_policy</span><span class="p">(</span>
@@ -1730,22 +2079,50 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
     <span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the merger policy used to determine the outcome.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merger_policy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asset_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Threshold level $\\bar{A} = B - (\\pi^d_S - K)$</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asset_threshold_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The prospect that the start-up will be acquired at $t = 2$ alleviates financial constraints: there exists a</span>
+<span class="sd">        threshold level $\\bar{A}^T = B - (\\pi_I^M - K)$</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_early_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the bidding attempt of the incumbent at $t = 1$.</span>
+
+<span class="sd">        Possible options of an actual attempt:</span>
+<span class="sd">        - Pooling: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.</span>
+<span class="sd">        - Separating: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.</span>
+
+<span class="sd">        Otherwise, the option &#39;No&#39; is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_late_bidding_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="s2">&quot;Pooling&quot;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the bidding attempt of the incumbent at $t = 2$.</span>
+
+<span class="sd">        Possible options of an actual attempt:</span>
+<span class="sd">        - &#39;Pooling&#39;: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.</span>
+<span class="sd">        - &#39;Separating&#39;: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.</span>
+
+<span class="sd">        Otherwise, the option &#39;No&#39; is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span>
 
     <span class="nd">@property</span>
@@ -1808,6 +2185,24 @@ Consumer surplus for the case that the innovation is introduced into the market 
                 <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
             <span class="p">),</span>
             <span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_incumbent_expected_to_shelve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the incumbent is expected to shelve, whenever it acquires the entrant.</span>
+
+<span class="sd">        - True (expected to shelve): $p*(\\pi^M_I-\\pi^m_I) &lt; K$</span>
+
+<span class="sd">        - False (not expected to shelve): $p*(\\pi^M_I-\\pi^m_I) \\ge K$</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -1885,7 +2280,24 @@ Consumer surplus for the case that the innovation is introduced into the market 
                     <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_early_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Separating&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span> <span class="o">=</span> <span class="s2">&quot;Pooling&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_calculate_takeover_decision_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="p">(</span>
@@ -1973,7 +2385,7 @@ Consumer surplus for the case that the innovation is introduced into the market 
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_startup_credit_rationed_strict_merger_policy</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_calculate_startup_credit_rationed_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># financial contracting (chapter 4.2)</span>
@@ -1990,8 +2402,8 @@ Consumer surplus for the case that the innovation is introduced into the market 
 <span class="sd">        - &#39;late_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=2.</span>
 <span class="sd">        - &#39;development_attempt&#39; : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</span>
 <span class="sd">        - &#39;development_outcome&#39; : True, if the product is developed successfully.</span>
-<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at t=1.</span>
-<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at t=2.</span>
+<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at $t=1$.</span>
+<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at $t=2$.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2011,65 +2423,16 @@ Consumer surplus for the case that the innovation is introduced into the market 
 
         </details>
 
-            <div class="docstring"><p>There are three players in our game: an Antitrust Authority (AA), which at the beginning of the game decides its
-merger policy; a monopolist $       {I}$ncumbent; and a $   {S}$tart-up. The start-up owns a “prototype” (or project)
-that, if developed, can give rise to an innovation: for instance a substitute/higher quality product to the
-incumbent’s existing product, or a more efficient production process. The start-up does not have enough own
-resources to develop the project. It has two options: it can either obtain additional funds from competitive
-capital markets, or sell out to the incumbent. The incumbent will have to decide whether and when it wants to
-acquire the start-up (and if it does so before product development, it has to decide whether to develop the
-prototype or shelve it), conditional on the AA’s approval of the acquisition. We assume that the takeover
-involves a negligible but positive transaction cost. The AA commits at the beginning of the game to a merger
-policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate. Harm from a proposed merger
-consists of the difference between the expected welfare levels if the merger goes ahead, and in the counterfactual
-where it does not take place (derived of course by correctly anticipating the continuation equilibrium of the
-game). A proposed merger will be prohibited only if the tolerated harm level H is lower than the expected harm
-from the merger, if any.</p>
+            <div class="docstring"><p>In this class all merger policies and their respective outcomes are considered.</p>
 
-<p>Timing of the game:</p>
+<p>Available merger policies are:</p>
 
-<table>
-<thead>
-<tr>
-  <th>Time</th>
-  <th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>0</td>
-  <td>The AA commits to the standard for merger approval, $\bar{H}$.</td>
-</tr>
-<tr>
-  <td>1(a)</td>
-  <td>$  {I}$ can make a takeover offer to $     {S}$, which can accept or reject.</td>
-</tr>
-<tr>
-  <td>1(b)</td>
-  <td>The AA approves or blocks the takeover proposal.</td>
-</tr>
-<tr>
-  <td>1(c)</td>
-  <td>The firm ($        {I}$ or $       {S}$) that owns the prototype decides whether to develop or shelve it.</td>
-</tr>
-<tr>
-  <td>1(d)</td>
-  <td>The owner of the prototype engages in financial contracting (if needed). After that, uncertainty about the success or failure of the project resolves.</td>
-</tr>
-<tr>
-  <td>2(a)</td>
-  <td>$  {I}$ can make a take-it-or-leave-it offer to $  {S}$ (if it did not already buy it at t = 1, and if the development of the project was successful).</td>
-</tr>
-<tr>
-  <td>2(b)</td>
-  <td>The AA approves or blocks the takeover proposal.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>Active firms sell in the product market, payoffs are realised and contracts are honored.</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>Strict: The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare.</li>
+<li>Intermediate (late takeover prohibited): The AA blocks late takeovers, but is more lenient with early takeovers.</li>
+<li>Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.</li>
+<li>Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.</li>
+</ul>
 </div>
 
 
@@ -2083,6 +2446,9 @@ from the merger, if any.</p>
             <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the same arguments as BaseModel.__init__.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_benefit</span> <span class="o">-</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_profit_duopoly</span>
@@ -2135,112 +2501,7 @@ from the merger, if any.</p>
 
         </details>
 
-            <div class="docstring"><p>Initializes a valid base model according to the assumptions given in the paper.</p>
-
-<p>The following assumptions have to be met:</p>
-
-<table>
-<thead>
-<tr>
-  <th>Condition</th>
-  <th>Remark</th>
-  <th>Page (Assumption)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>$\bar{H} \ge 0$</td>
-  <td>The tolerated level of harm has to be bigger than 0.</td>
-  <td>p.6</td>
-</tr>
-<tr>
-  <td>$p \in (0,1]$</td>
-  <td>Probability that the prototype is developed successfully depends on the non-contractible effort exerted by the entrepreneur of the firm that owns the project. In case of no effort the project fails for sure, but the entrepreneur obtains a positive private benefit. In case of failure the project yields no profit.</td>
-  <td>p.8</td>
-</tr>
-<tr>
-  <td>$B>0$</td>
-  <td>Private benefit of the entrepreneur in case of failure.</td>
-  <td>p.8</td>
-</tr>
-<tr>
-  <td>$A \in (0,K)$</td>
-  <td>The startup does not hold sufficient assets at the beginning to cover the costs.</td>
-  <td>p.8</td>
-</tr>
-<tr>
-  <td>$\pi^m_I>\pi^d_I$</td>
-  <td>Profit of the incumbent has to be bigger without the innovation than in the duopoly.</td>
-  <td>p.7</td>
-</tr>
-<tr>
-  <td>$\pi^M_I>\pi^m_I$</td>
-  <td>Industry profits are higher with a multi-product monopolist than a single product monopolist.</td>
-  <td>p.7</td>
-</tr>
-<tr>
-  <td>$CS^M \ge CS^m$</td>
-  <td>Consumer surplus with the innovation has to weakly bigger than without the innovation.</td>
-  <td>p.7</td>
-</tr>
-<tr>
-  <td>$\pi^M_I>\pi^d_I+\pi^d_S$</td>
-  <td>Industry profits are higher under monopoly than under duopoly. If this assumption did not hold, the takeover would not take place.</td>
-  <td>p.7 (A1)</td>
-</tr>
-<tr>
-  <td>$\pi^d_S>\pi^M_I-\pi^m_I$</td>
-  <td>An incumbent has less incentive to innovate (in a new/better product or a more efficient production process) than a potential entrant because the innovation would cannibalise the incumbent’s current profits. (Corresponds to Arrow's replacement effect)</td>
-  <td>p.7 (A2)</td>
-</tr>
-<tr>
-  <td>$p\pi^d_S>K$</td>
-  <td>In case of effort it is efficient to develop the prototype, i.e., development has a positive net present value (NPV) for the start-up</td>
-  <td>p.8 (A3)</td>
-</tr>
-<tr>
-  <td>$p(W^M-W^m)&gt;K$</td>
-  <td>The development of the project is not only privately beneficial for the start-up, but also for society as a whole, whether undertaken by the incumbent or the start-up.</td>
-  <td>p.8 (A4)</td>
-</tr>
-<tr>
-  <td>$B-K&lt;0$$B-(p\pi^d_S-K)&gt;0$</td>
-  <td>The first inequality implies that if S shirks the project has negative value; thus, no financial contract could be signed unless the startup makes effort. The second implies that the start-up may be financially constrained, that is, it may hold insufficient assets to fund the development of the prototype even though the project has a positive NPV.</td>
-  <td>p.8 (A5)</td>
-</tr>
-</tbody>
-</table>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>tolerated_level_of_harm</strong> (float):
-($\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.</li>
-<li><strong>development_costs</strong> (float):
-($K$) Fixed costs to invest for development.</li>
-<li><strong>startup_assets</strong> (float):
-($A$) Assets of the startup at the beginning.</li>
-<li><strong>success_probability</strong> (float):
-($p$) Probability of success in case of effort (otherwise the projects fails for sure).</li>
-<li><strong>development_success</strong> (bool):
-Decide whether a development will be successful (God mode).</li>
-<li><strong>private_benefit</strong> (float):
-($B$) Private benefit of the entrepreneur in case of failure.</li>
-<li><strong>consumer_surplus_without_innovation</strong> (float):
-($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.</li>
-<li><strong>incumbent_profit_without_innovation</strong> (float):
-($\pi^m_I$) Profit of the monopolist with a single product (without innovation).</li>
-<li><strong>consumer_surplus_duopoly</strong> (float):
-Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.</li>
-<li><strong>incumbent_profit_duopoly</strong> (float):
-($\pi^d_I$) Profit of the incumbent in the case of a duopoly.</li>
-<li><strong>startup_profit_duopoly</strong> (float):
-($\pi^d_S$) Profit of the startup in the case of a duopoly.</li>
-<li><strong>consumer_surplus_with_innovation</strong> (float):
-($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.</li>
-<li><strong>incumbent_profit_with_innovation</strong> (float):
-($\pi^M_I$) Profit of the monopolist with multiple products (with innovation).</li>
-</ul>
+            <div class="docstring"><p>Takes the same arguments as <a href="#BaseModel.__init__">BaseModel.__init__</a>.</p>
 </div>
 
 
@@ -2252,7 +2513,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>Returns the merger policy used to determine the outcome.</p>
+</div>
+
 
                             </div>
                             <div id="MergerPolicyModel.asset_threshold" class="classattr">
@@ -2262,7 +2525,9 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>Threshold level $\bar{A} = B - (\pi^d_S - K)$</p>
+</div>
+
 
                             </div>
                             <div id="MergerPolicyModel.asset_threshold_laissez_faire" class="classattr">
@@ -2272,7 +2537,10 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>The prospect that the start-up will be acquired at $t = 2$ alleviates financial constraints: there exists a
+threshold level $\bar{A}^T = B - (\pi_I^M - K)$</p>
+</div>
+
 
                             </div>
                             <div id="MergerPolicyModel.get_early_bidding_type" class="classattr">
@@ -2282,7 +2550,18 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>Returns the bidding attempt of the incumbent at $t = 1$.</p>
+
+<p>Possible options of an actual attempt:</p>
+
+<ul>
+<li>Pooling: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.</li>
+<li>Separating: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.</li>
+</ul>
+
+<p>Otherwise, the option 'No' is returned.</p>
+</div>
+
 
                             </div>
                             <div id="MergerPolicyModel.get_late_bidding_type" class="classattr">
@@ -2292,7 +2571,18 @@ Consumer surplus for the case that the innovation is introduced into the market 
     </div>
 
     
-    
+            <div class="docstring"><p>Returns the bidding attempt of the incumbent at $t = 2$.</p>
+
+<p>Possible options of an actual attempt:</p>
+
+<ul>
+<li>'Pooling': The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.</li>
+<li>'Separating': The incumbent offers a low takeover price targeting only the credit-rationed start-ups.</li>
+</ul>
+
+<p>Otherwise, the option 'No' is returned.</p>
+</div>
+
 
                             </div>
                             <div id="MergerPolicyModel.is_owner_investing" class="classattr">
@@ -2375,6 +2665,47 @@ Consumer surplus for the case that the innovation is introduced into the market 
     
 
                             </div>
+                            <div id="MergerPolicyModel.is_incumbent_expected_to_shelve" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#MergerPolicyModel.is_incumbent_expected_to_shelve">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_incumbent_expected_to_shelve</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_incumbent_expected_to_shelve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the incumbent is expected to shelve, whenever it acquires the entrant.</span>
+
+<span class="sd">        - True (expected to shelve): $p*(\\pi^M_I-\\pi^m_I) &lt; K$</span>
+
+<span class="sd">        - False (not expected to shelve): $p*(\\pi^M_I-\\pi^m_I) \\ge K$</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_with_innovation</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Returns whether the incumbent is expected to shelve, whenever it acquires the entrant.</p>
+
+<ul>
+<li><p>True (expected to shelve): $p*(\pi^M_I-\pi^m_I) &lt; K$</p></li>
+<li><p>False (not expected to shelve): $p*(\pi^M_I-\pi^m_I) \ge K$</p></li>
+</ul>
+</div>
+
+
+                            </div>
                             <div id="MergerPolicyModel.summary" class="classattr">
                                         <div class="attr function"><a class="headerlink" href="#MergerPolicyModel.summary">#&nbsp;&nbsp</a>
 
@@ -2395,8 +2726,8 @@ Consumer surplus for the case that the innovation is introduced into the market 
 <span class="sd">        - &#39;late_bidding_type&#39; : &#39;No&#39;, &#39;Pooling&#39; or &#39;Separating&#39; -&gt; Defines the bidding type of the incumbent at t=2.</span>
 <span class="sd">        - &#39;development_attempt&#39; : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</span>
 <span class="sd">        - &#39;development_outcome&#39; : True, if the product is developed successfully.</span>
-<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at t=1.</span>
-<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at t=2.</span>
+<span class="sd">        - &#39;early_takeover&#39; : True, if a takeover takes place at $t=1$.</span>
+<span class="sd">        - &#39;late_takeover&#39; : True, if a takeover takes place at $t=2$.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2426,8 +2757,8 @@ Consumer surplus for the case that the innovation is introduced into the market 
 <li>'late_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=2.</li>
 <li>'development_attempt' : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.</li>
 <li>'development_outcome' : True, if the product is developed successfully.</li>
-<li>'early_takeover' : True, if a takeover takes place at t=1.</li>
-<li>'late_takeover' : True, if a takeover takes place at t=2.</li>
+<li>'early_takeover' : True, if a takeover takes place at $t=1$.</li>
+<li>'late_takeover' : True, if a takeover takes place at $t=2$.</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
@@ -2459,6 +2790,376 @@ Consumer surplus for the case that the innovation is introduced into the market 
                 <dd id="MergerPolicyModel.incumbent_profit_duopoly" class="variable"><a href="#BaseModel.incumbent_profit_duopoly">incumbent_profit_duopoly</a></dd>
                 <dd id="MergerPolicyModel.cs_duopoly" class="variable"><a href="#BaseModel.cs_duopoly">cs_duopoly</a></dd>
                 <dd id="MergerPolicyModel.w_duopoly" class="variable"><a href="#BaseModel.w_duopoly">w_duopoly</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="OptimalMergerPolicy">
+                                <div class="attr class">
+        <a class="headerlink" href="#OptimalMergerPolicy">#&nbsp;&nbsp</a>
+
+        
+        <span class="def">class</span>
+        <span class="name">OptimalMergerPolicy</span><wbr>(<span class="base"><a href="#MergerPolicyModel">MergerPolicyModel</a></span>):
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">OptimalMergerPolicy</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># section 6.1</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">&gt;</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_strict_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># section 6.2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_optimal_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="c1"># section 6.3</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Strict&quot;</span>
+
+    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover_followed_by_shelving_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover_followed_by_shelving_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_early_takeover_followed_by_shelving_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_approved_takeover_followed_pooling_offer</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">threshold_approved_takeover_followed_pooling_offer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>In this class all merger policies and their respective outcomes are considered.</p>
+
+<p>Available merger policies are:</p>
+
+<ul>
+<li>Strict: The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare.</li>
+<li>Intermediate (late takeover prohibited): The AA blocks late takeovers, but is more lenient with early takeovers.</li>
+<li>Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.</li>
+<li>Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.</li>
+</ul>
+</div>
+
+
+                            <div id="OptimalMergerPolicy.__init__" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.__init__">#&nbsp;&nbsp</a>
+
+        
+            <span class="name">OptimalMergerPolicy</span><span class="signature">(**kwargs)</span>
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Takes the same arguments as <a href="#BaseModel.__init__">BaseModel.__init__</a>.</p>
+</div>
+
+
+                            </div>
+                            <div id="OptimalMergerPolicy.is_strict_beneficial_compared_to_laissez_faire" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.is_strict_beneficial_compared_to_laissez_faire">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_strict_beneficial_compared_to_laissez_faire</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># section 6.1</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span> <span class="o">&gt;</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_cdf</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.is_strict_beneficial_compared_to_intermediate" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.is_strict_beneficial_compared_to_intermediate">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_strict_beneficial_compared_to_intermediate</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_strict_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># section 6.2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">()</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.get_optimal_merger_policy" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.get_optimal_merger_policy">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">get_optimal_merger_policy</span><span class="signature">(
+    self
+) -&gt; Literal[&#39;Strict&#39;, &#39;Intermediate (late takeover prohibited)&#39;, &#39;Intermediate (late takeover allowed)&#39;, &#39;Laissez-faire&#39;]</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_optimal_merger_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;Strict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="c1"># section 6.3</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Laissez-faire&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Strict&quot;</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.is_laissez_faire_optimal" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.is_laissez_faire_optimal">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_laissez_faire_optimal</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover_followed_by_shelving_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">()</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.is_intermediate_optimal" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.is_intermediate_optimal">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_intermediate_optimal</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_early_takeover_followed_by_shelving_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">()</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.is_financial_imperfection_severe" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.is_financial_imperfection_severe">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_financial_imperfection_severe</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_probability_credit_constrained_laissez_faire</span><span class="p">()</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.is_early_takeover_followed_by_shelving_optimal" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.is_early_takeover_followed_by_shelving_optimal">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_early_takeover_followed_by_shelving_optimal</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_early_takeover_followed_by_shelving_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asset_threshold_laissez_faire_cdf</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_approved_takeover_followed_pooling_offer</span><span class="p">()</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="OptimalMergerPolicy.threshold_approved_takeover_followed_pooling_offer" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.threshold_approved_takeover_followed_pooling_offer">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">threshold_approved_takeover_followed_pooling_offer</span><span class="signature">(self) -&gt; float</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">threshold_approved_takeover_followed_pooling_offer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="#MergerPolicyModel">MergerPolicyModel</a></dt>
+                                <dd id="OptimalMergerPolicy.get_merger_policy" class="variable"><a href="#MergerPolicyModel.get_merger_policy">get_merger_policy</a></dd>
+                <dd id="OptimalMergerPolicy.asset_threshold" class="variable"><a href="#MergerPolicyModel.asset_threshold">asset_threshold</a></dd>
+                <dd id="OptimalMergerPolicy.asset_threshold_laissez_faire" class="variable"><a href="#MergerPolicyModel.asset_threshold_laissez_faire">asset_threshold_laissez_faire</a></dd>
+                <dd id="OptimalMergerPolicy.get_early_bidding_type" class="variable"><a href="#MergerPolicyModel.get_early_bidding_type">get_early_bidding_type</a></dd>
+                <dd id="OptimalMergerPolicy.get_late_bidding_type" class="variable"><a href="#MergerPolicyModel.get_late_bidding_type">get_late_bidding_type</a></dd>
+                <dd id="OptimalMergerPolicy.is_owner_investing" class="variable"><a href="#MergerPolicyModel.is_owner_investing">is_owner_investing</a></dd>
+                <dd id="OptimalMergerPolicy.is_development_successful" class="variable"><a href="#MergerPolicyModel.is_development_successful">is_development_successful</a></dd>
+                <dd id="OptimalMergerPolicy.is_startup_credit_rationed" class="variable"><a href="#MergerPolicyModel.is_startup_credit_rationed">is_startup_credit_rationed</a></dd>
+                <dd id="OptimalMergerPolicy.probability_credit_constrained_threshold" class="variable"><a href="#MergerPolicyModel.probability_credit_constrained_threshold">probability_credit_constrained_threshold</a></dd>
+                <dd id="OptimalMergerPolicy.probability_credit_constrained_default" class="variable"><a href="#MergerPolicyModel.probability_credit_constrained_default">probability_credit_constrained_default</a></dd>
+                <dd id="OptimalMergerPolicy.probability_credit_constrained_merger_policy" class="variable"><a href="#MergerPolicyModel.probability_credit_constrained_merger_policy">probability_credit_constrained_merger_policy</a></dd>
+                <dd id="OptimalMergerPolicy.is_early_takeover" class="variable"><a href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a></dd>
+                <dd id="OptimalMergerPolicy.is_late_takeover" class="variable"><a href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a></dd>
+                <dd id="OptimalMergerPolicy.is_incumbent_expected_to_shelve" class="function"><a href="#MergerPolicyModel.is_incumbent_expected_to_shelve">is_incumbent_expected_to_shelve</a></dd>
+                <dd id="OptimalMergerPolicy.summary" class="function"><a href="#MergerPolicyModel.summary">summary</a></dd>
+
+            </div>
+            <div><dt><a href="#BaseModel">BaseModel</a></dt>
+                                <dd id="OptimalMergerPolicy.tolerated_harm" class="variable"><a href="#BaseModel.tolerated_harm">tolerated_harm</a></dd>
+                <dd id="OptimalMergerPolicy.development_costs" class="variable"><a href="#BaseModel.development_costs">development_costs</a></dd>
+                <dd id="OptimalMergerPolicy.startup_assets" class="variable"><a href="#BaseModel.startup_assets">startup_assets</a></dd>
+                <dd id="OptimalMergerPolicy.success_probability" class="variable"><a href="#BaseModel.success_probability">success_probability</a></dd>
+                <dd id="OptimalMergerPolicy.development_success" class="variable"><a href="#BaseModel.development_success">development_success</a></dd>
+                <dd id="OptimalMergerPolicy.private_benefit" class="variable"><a href="#BaseModel.private_benefit">private_benefit</a></dd>
+                <dd id="OptimalMergerPolicy.incumbent_profit_with_innovation" class="variable"><a href="#BaseModel.incumbent_profit_with_innovation">incumbent_profit_with_innovation</a></dd>
+                <dd id="OptimalMergerPolicy.cs_with_innovation" class="variable"><a href="#BaseModel.cs_with_innovation">cs_with_innovation</a></dd>
+                <dd id="OptimalMergerPolicy.w_with_innovation" class="variable"><a href="#BaseModel.w_with_innovation">w_with_innovation</a></dd>
+                <dd id="OptimalMergerPolicy.incumbent_profit_without_innovation" class="variable"><a href="#BaseModel.incumbent_profit_without_innovation">incumbent_profit_without_innovation</a></dd>
+                <dd id="OptimalMergerPolicy.cs_without_innovation" class="variable"><a href="#BaseModel.cs_without_innovation">cs_without_innovation</a></dd>
+                <dd id="OptimalMergerPolicy.w_without_innovation" class="variable"><a href="#BaseModel.w_without_innovation">w_without_innovation</a></dd>
+                <dd id="OptimalMergerPolicy.startup_profit_duopoly" class="variable"><a href="#BaseModel.startup_profit_duopoly">startup_profit_duopoly</a></dd>
+                <dd id="OptimalMergerPolicy.incumbent_profit_duopoly" class="variable"><a href="#BaseModel.incumbent_profit_duopoly">incumbent_profit_duopoly</a></dd>
+                <dd id="OptimalMergerPolicy.cs_duopoly" class="variable"><a href="#BaseModel.cs_duopoly">cs_duopoly</a></dd>
+                <dd id="OptimalMergerPolicy.w_duopoly" class="variable"><a href="#BaseModel.w_duopoly">w_duopoly</a></dd>
 
             </div>
                                 </dl>

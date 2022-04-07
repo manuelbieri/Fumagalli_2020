@@ -81,21 +81,21 @@ class BaseModel:
         success_probability : float
             ($p$) Probability of success in case of effort (otherwise the projects fails for sure).
         development_success : bool
-            Decide whether a development will be successful (God mode).
+            Decides whether an attempted development will be successful (true $\\rightarrow$ attempted development succeeds).
         private_benefit : float
             ($B$) Private benefit of the entrepreneur in case of failure.
         consumer_surplus_without_innovation : float
-            ($CS^m$) Consumer surplus for the case that the innovation is not introduced into the market.
+            ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.
         incumbent_profit_without_innovation : float
             ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).
         consumer_surplus_duopoly : float
-            Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.
+            ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.
         incumbent_profit_duopoly : float
             ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.
         startup_profit_duopoly : float
             ($\\pi^d_S$) Profit of the startup in the case of a duopoly.
         consumer_surplus_with_innovation : float
-             ($CS^M$) Consumer surplus for the case that the innovation is introduced into the market.
+             ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.
         incumbent_profit_with_innovation : float
             ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).
         """
@@ -190,71 +190,133 @@ class BaseModel:
 
     @property
     def tolerated_harm(self) -> float:
+        """
+        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.
+        """
         return self._tolerated_harm
 
     @property
     def development_costs(self) -> float:
+        """
+        ($K$) Fixed costs to invest for development.
+        """
         return self._development_costs
 
     @property
     def startup_assets(self) -> float:
+        """
+        ($A$) Assets of the startup at the beginning.
+        """
         return self._startup_assets
 
     @property
     def success_probability(self) -> float:
+        """
+        ($p$) Probability of success in case of effort (otherwise the projects fails for sure).
+        """
         return self._success_probability
 
     @property
     def development_success(self) -> bool:
+        """
+        Decides whether an attempted development will be successful.
+
+        If true, every attempted development will be successful.
+        """
         return self._development_success
 
     @property
     def private_benefit(self) -> float:
+        """
+        ($B$) Private benefit of the entrepreneur in case of failure.
+        """
         return self._private_benefit
 
     @property
     def incumbent_profit_with_innovation(self):
+        """
+        ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).
+        """
         return self._incumbent_profit_with_innovation
 
     @property
     def cs_with_innovation(self) -> float:
+        """
+        ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.
+        """
         return self._cs_with_innovation
 
     @property
     def w_with_innovation(self) -> float:
+        """
+        ($W^M$) Total welfare for the case that the innovation is introduced by the incumbent into the market.
+        """
         return self._w_with_innovation
 
     @property
     def incumbent_profit_without_innovation(self) -> float:
+        """
+        ($\\pi^m_I$) Profit of the monopolist with a single product (without innovation).
+        """
         return self._incumbent_profit_without_innovation
 
     @property
     def cs_without_innovation(self) -> float:
+        """
+        ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.
+        """
         return self._cs_without_innovation
 
     @property
     def w_without_innovation(self) -> float:
+        """
+        ($W^m$) Total welfare for the case that the innovation is not introduced by the incumbent into the market.
+        """
         return self._w_without_innovation
 
     @property
     def startup_profit_duopoly(self) -> float:
+        """
+        ($\\pi^d_S$) Profit of the startup in the case of a duopoly.
+        """
         return self._startup_profit_duopoly
 
     @property
     def incumbent_profit_duopoly(self) -> float:
+        """
+        ($\\pi^d_I$) Profit of the incumbent in the case of a duopoly.
+        """
         return self._incumbent_profit_duopoly
 
     @property
     def cs_duopoly(self) -> float:
+        """
+        ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.
+        """
         return self._cs_duopoly
 
     @property
     def w_duopoly(self) -> float:
+        """
+        ($W^d$) Total welfare for the case that the innovation is introduced into the market and a duopoly exists.
+        """
         return self._w_duopoly
 
 
 class MergerPolicyModel(BaseModel):
+    """
+    In this class all merger policies and their respective outcomes are considered.
+
+    Available merger policies are:
+    - Strict: The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare.
+    - Intermediate (late takeover prohibited): The AA blocks late takeovers, but is more lenient with early takeovers.
+    - Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.
+    - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.
+    """
     def __init__(self, **kwargs):
+        """
+        Takes the same arguments as BaseModel.__init__.
+        """
         super(MergerPolicyModel, self).__init__(**kwargs)
         self._asset_threshold = self.private_benefit - (
             self.success_probability * self.startup_profit_duopoly
@@ -365,7 +427,7 @@ class MergerPolicyModel(BaseModel):
             == self.get_merger_policy
         ), "Probability calculated for the wrong merger policy"
 
-    def _calculate_probability_credit_constrained_laissez_faire(self):
+    def _calculate_probability_credit_constrained_laissez_faire(self) -> float:
         probability_credit_constrained = (
             self.success_probability
             * (
@@ -402,22 +464,50 @@ class MergerPolicyModel(BaseModel):
         "Intermediate (late takeover allowed)",
         "Laissez-faire",
     ]:
+        """
+        Returns the merger policy used to determine the outcome.
+        """
         return self._merger_policy
 
     @property
     def asset_threshold(self) -> float:
+        """
+        Threshold level $\\bar{A} = B - (\\pi^d_S - K)$
+        """
         return self._asset_threshold
 
     @property
     def asset_threshold_laissez_faire(self) -> float:
+        """
+        The prospect that the start-up will be acquired at $t = 2$ alleviates financial constraints: there exists a
+        threshold level $\\bar{A}^T = B - (\\pi_I^M - K)$
+        """
         return self._asset_threshold_laissez_faire
 
     @property
     def get_early_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
+        """
+        Returns the bidding attempt of the incumbent at $t = 1$.
+
+        Possible options of an actual attempt:
+        - Pooling: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.
+        - Separating: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.
+
+        Otherwise, the option 'No' is returned.
+        """
         return self._early_bid_attempt
 
     @property
     def get_late_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
+        """
+        Returns the bidding attempt of the incumbent at $t = 2$.
+
+        Possible options of an actual attempt:
+        - 'Pooling': The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.
+        - 'Separating': The incumbent offers a low takeover price targeting only the credit-rationed start-ups.
+
+        Otherwise, the option 'No' is returned.
+        """
         return self._late_bid_attempt
 
     @property
@@ -483,6 +573,14 @@ class MergerPolicyModel(BaseModel):
         )
 
     def is_incumbent_expected_to_shelve(self) -> bool:
+        """
+        Returns whether the incumbent is expected to shelve, whenever it acquires the entrant.
+
+        - True (expected to shelve): $p*(\\pi^M_I-\\pi^m_I) < K$
+
+        - False (not expected to shelve): $p*(\\pi^M_I-\\pi^m_I) \\ge K$
+
+        """
         return (
             self.success_probability
             * (
@@ -689,8 +787,8 @@ class MergerPolicyModel(BaseModel):
         - 'late_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=2.
         - 'development_attempt' : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.
         - 'development_outcome' : True, if the product is developed successfully.
-        - 'early_takeover' : True, if a takeover takes place at t=1.
-        - 'late_takeover' : True, if a takeover takes place at t=2.
+        - 'early_takeover' : True, if a takeover takes place at $t=1$.
+        - 'late_takeover' : True, if a takeover takes place at $t=2$.
 
         Returns
         -------

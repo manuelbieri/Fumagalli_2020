@@ -47,7 +47,7 @@ $ pip install -r requirements.txt
 
 ### Tests
 
-Run the unittests with the following command (pay attention to the current working directory):
+Run the unittests shipped in Fumagalli_Motta_Tarantino_2020.tests with the following command (pay attention to the current working directory):
 
 ```shell
 python -m unittest discover Fumagalli_Motta_Tarantino_2020/tests "Test_*.py"

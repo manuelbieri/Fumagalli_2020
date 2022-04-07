@@ -231,6 +231,83 @@
 
 <h2 id="testintermediatelatetakeoverallowedmergerpolicymodel">TestIntermediateLateTakeoverAllowedMergerPolicyModel</h2>
 
+<table>
+<thead>
+<tr>
+  <th style="text-align:left;">Name of test</th>
+  <th style="text-align:center;">Is the start-up credit rationed?</th>
+  <th style="text-align:center;">Early bidding type (t=1)</th>
+  <th style="text-align:center;">Late bidding type (t=2)</th>
+  <th style="text-align:center;">Development attempt?</th>
+  <th style="text-align:center;">Development success</th>
+  <th style="text-align:center;">Early takeover (t=1)</th>
+  <th style="text-align:center;">Late takeover (t=2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:left;">test_not_profitable_not_credit_rationed</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">Pooling</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">True</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_not_credit_rationed_unsuccessful</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_credit_rationed</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_credit_rationed</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Separating</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_not_credit_rationed</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Separating</td>
+  <td style="text-align:center;">Pooling</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">True</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_not_credit_rationed_unsuccessful</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Separating</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+</tbody>
+</table>
+
 <h2 id="testintermediatelatetakeoverprohibitedmergerpolicymodel">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</h2>
 
 <p>This testcase tests, whether the implemented logic for a intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:</p>

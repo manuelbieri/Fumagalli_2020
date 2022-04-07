@@ -123,6 +123,24 @@
             <li>
                     <a class="class" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel">TestIntermediateLateTakeoverAllowedMergerPolicyModel</a>
                             <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_not_credit_rationed">test_not_profitable_not_credit_rationed</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_not_credit_rationed_unsuccessful">test_not_profitable_not_credit_rationed_unsuccessful</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_credit_rationed">test_not_profitable_credit_rationed</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_not_credit_rationed">test_profitable_not_credit_rationed</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_not_credit_rationed_unsuccessful">test_profitable_not_credit_rationed_unsuccessful</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_credit_rationed">test_profitable_credit_rationed</a>
+                        </li>
                 </ul>
 
             </li>
@@ -170,6 +188,33 @@
                         </li>
                         <li>
                                 <a class="function" href="#TestStrictMergerPolicyModel.test_profitable_above_assets_threshold_not_credit_rationed">test_profitable_above_assets_threshold_not_credit_rationed</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#TestOptimalMergerPolicyModel">TestOptimalMergerPolicyModel</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_strict_beneficial_compared_to_laissez_faire">test_strict_beneficial_compared_to_laissez_faire</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_strict_not_beneficial_compared_to_laissez_faire">test_strict_not_beneficial_compared_to_laissez_faire</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_strict_beneficial_compared_to_intermediate">test_strict_beneficial_compared_to_intermediate</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_strict_not_beneficial_compared_to_intermediate">test_strict_not_beneficial_compared_to_intermediate</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_strict_optimal_merger_policy">test_strict_optimal_merger_policy</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_intermediate_optimal_merger_policy">test_intermediate_optimal_merger_policy</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestOptimalMergerPolicyModel.test_laissez_faire_optimal_merger_policy">test_laissez_faire_optimal_merger_policy</a>
                         </li>
                 </ul>
 
@@ -348,7 +393,7 @@
         <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">TestLaissezFaireMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TestLaissezFaireMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
@@ -460,12 +505,101 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 
 
-<span class="nd">@unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;Not implemented&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverAllowedMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
-    <span class="k">pass</span>
+<span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverAllowedMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed_unsuccessful</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_not_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_profitable_not_credit_rationed_unsuccessful</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+            <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
@@ -573,7 +707,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">TestStrictMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TestStrictMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">()</span>
         <span class="n">summary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
@@ -682,6 +816,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">TestOptimalMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_strict_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_not_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_not_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Strict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">test_laissez_faire_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
 </pre></div>
 
         </details>
@@ -1434,12 +1596,12 @@ attribute so can be configured by individual tests if required.</li>
 
         
         <span class="def">class</span>
-        <span class="name">TestLaissezFaireMergerPolicyModel</span><wbr>(<span class="base"><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></span>):
+        <span class="name">TestLaissezFaireMergerPolicyModel</span><wbr>(<span class="base">unittest.case.TestCase</span>):
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestLaissezFaireMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestLaissezFaireMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
@@ -1888,22 +2050,6 @@ attribute so can be configured by individual tests if required.</li>
                 <dd id="TestLaissezFaireMergerPolicyModel.assert_" class="function">assert_</dd>
 
             </div>
-            <div><dt><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></dt>
-                                <dd id="TestLaissezFaireMergerPolicyModel.test_valid_setup_default_values" class="function"><a href="#TestMergerPolicyModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
-
-            </div>
-            <div><dt><a href="#TestBaseModel">TestBaseModel</a></dt>
-                                <dd id="TestLaissezFaireMergerPolicyModel.get_default_value" class="function"><a href="#TestBaseModel.get_default_value">get_default_value</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.get_welfare_value" class="function"><a href="#TestBaseModel.get_welfare_value">get_welfare_value</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_invalid_tolerated_harm" class="function"><a href="#TestBaseModel.test_invalid_tolerated_harm">test_invalid_tolerated_harm</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_invalid_private_benefit" class="function"><a href="#TestBaseModel.test_invalid_private_benefit">test_invalid_private_benefit</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_invalid_profit" class="function"><a href="#TestBaseModel.test_invalid_profit">test_invalid_profit</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_invalid_consumer_surplus" class="function"><a href="#TestBaseModel.test_invalid_consumer_surplus">test_invalid_consumer_surplus</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_invalid_success_probability" class="function"><a href="#TestBaseModel.test_invalid_success_probability">test_invalid_success_probability</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_properties" class="function"><a href="#TestBaseModel.test_properties">test_properties</a></dd>
-                <dd id="TestLaissezFaireMergerPolicyModel.test_welfare_properties" class="function"><a href="#TestBaseModel.test_welfare_properties">test_welfare_properties</a></dd>
-
-            </div>
                                 </dl>
                             </div>
                 </section>
@@ -1911,17 +2057,105 @@ attribute so can be configured by individual tests if required.</li>
                                 <div class="attr class">
         <a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel">#&nbsp;&nbsp</a>
 
-                <div class="decorator">@unittest.skip(&#39;Not implemented&#39;)</div>
-
+        
         <span class="def">class</span>
-        <span class="name">TestIntermediateLateTakeoverAllowedMergerPolicyModel</span><wbr>(<span class="base"><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></span>):
+        <span class="name">TestIntermediateLateTakeoverAllowedMergerPolicyModel</span><wbr>(<span class="base">unittest.case.TestCase</span>):
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span class="nd">@unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;Not implemented&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverAllowedMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
-    <span class="k">pass</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverAllowedMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed_unsuccessful</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_not_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_profitable_not_credit_rationed_unsuccessful</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+            <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -1962,6 +2196,194 @@ attribute so can be configured by individual tests if required.</li>
 </div>
 
 
+                            <div id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_not_credit_rationed" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_not_credit_rationed">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_not_profitable_not_credit_rationed</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_not_credit_rationed_unsuccessful" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_not_credit_rationed_unsuccessful">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_not_profitable_not_credit_rationed_unsuccessful</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed_unsuccessful</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_credit_rationed" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_not_profitable_credit_rationed">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_not_profitable_credit_rationed</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_not_credit_rationed" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_not_credit_rationed">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_profitable_not_credit_rationed</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_not_credit_rationed_unsuccessful" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_not_credit_rationed_unsuccessful">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_profitable_not_credit_rationed_unsuccessful</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_profitable_not_credit_rationed_unsuccessful</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+            <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_credit_rationed" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_profitable_credit_rationed">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_profitable_credit_rationed</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
@@ -2039,22 +2461,6 @@ attribute so can be configured by individual tests if required.</li>
                 <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.assert_" class="function">assert_</dd>
 
             </div>
-            <div><dt><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></dt>
-                                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_valid_setup_default_values" class="function"><a href="#TestMergerPolicyModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
-
-            </div>
-            <div><dt><a href="#TestBaseModel">TestBaseModel</a></dt>
-                                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.get_default_value" class="function"><a href="#TestBaseModel.get_default_value">get_default_value</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.get_welfare_value" class="function"><a href="#TestBaseModel.get_welfare_value">get_welfare_value</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_invalid_tolerated_harm" class="function"><a href="#TestBaseModel.test_invalid_tolerated_harm">test_invalid_tolerated_harm</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_invalid_private_benefit" class="function"><a href="#TestBaseModel.test_invalid_private_benefit">test_invalid_private_benefit</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_invalid_profit" class="function"><a href="#TestBaseModel.test_invalid_profit">test_invalid_profit</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_invalid_consumer_surplus" class="function"><a href="#TestBaseModel.test_invalid_consumer_surplus">test_invalid_consumer_surplus</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_invalid_success_probability" class="function"><a href="#TestBaseModel.test_invalid_success_probability">test_invalid_success_probability</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_properties" class="function"><a href="#TestBaseModel.test_properties">test_properties</a></dd>
-                <dd id="TestIntermediateLateTakeoverAllowedMergerPolicyModel.test_welfare_properties" class="function"><a href="#TestBaseModel.test_welfare_properties">test_welfare_properties</a></dd>
-
-            </div>
                                 </dl>
                             </div>
                 </section>
@@ -2064,12 +2470,12 @@ attribute so can be configured by individual tests if required.</li>
 
         
         <span class="def">class</span>
-        <span class="name">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</span><wbr>(<span class="base"><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></span>):
+        <span class="name">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</span><wbr>(<span class="base">unittest.case.TestCase</span>):
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
@@ -2478,22 +2884,6 @@ attribute so can be configured by individual tests if required.</li>
                 <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.assert_" class="function">assert_</dd>
 
             </div>
-            <div><dt><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></dt>
-                                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_valid_setup_default_values" class="function"><a href="#TestMergerPolicyModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
-
-            </div>
-            <div><dt><a href="#TestBaseModel">TestBaseModel</a></dt>
-                                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.get_default_value" class="function"><a href="#TestBaseModel.get_default_value">get_default_value</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.get_welfare_value" class="function"><a href="#TestBaseModel.get_welfare_value">get_welfare_value</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_invalid_tolerated_harm" class="function"><a href="#TestBaseModel.test_invalid_tolerated_harm">test_invalid_tolerated_harm</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_invalid_private_benefit" class="function"><a href="#TestBaseModel.test_invalid_private_benefit">test_invalid_private_benefit</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_invalid_profit" class="function"><a href="#TestBaseModel.test_invalid_profit">test_invalid_profit</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_invalid_consumer_surplus" class="function"><a href="#TestBaseModel.test_invalid_consumer_surplus">test_invalid_consumer_surplus</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_invalid_success_probability" class="function"><a href="#TestBaseModel.test_invalid_success_probability">test_invalid_success_probability</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_properties" class="function"><a href="#TestBaseModel.test_properties">test_properties</a></dd>
-                <dd id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_welfare_properties" class="function"><a href="#TestBaseModel.test_welfare_properties">test_welfare_properties</a></dd>
-
-            </div>
                                 </dl>
                             </div>
                 </section>
@@ -2503,12 +2893,12 @@ attribute so can be configured by individual tests if required.</li>
 
         
         <span class="def">class</span>
-        <span class="name">TestStrictMergerPolicyModel</span><wbr>(<span class="base"><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></span>):
+        <span class="name">TestStrictMergerPolicyModel</span><wbr>(<span class="base">unittest.case.TestCase</span>):
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestStrictMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestStrictMergerPolicyModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">()</span>
         <span class="n">summary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
@@ -2955,20 +3345,315 @@ attribute so can be configured by individual tests if required.</li>
                 <dd id="TestStrictMergerPolicyModel.assert_" class="function">assert_</dd>
 
             </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="TestOptimalMergerPolicyModel">
+                                <div class="attr class">
+        <a class="headerlink" href="#TestOptimalMergerPolicyModel">#&nbsp;&nbsp</a>
+
+        
+        <span class="def">class</span>
+        <span class="name">TestOptimalMergerPolicyModel</span><wbr>(<span class="base"><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></span>):
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestOptimalMergerPolicyModel</span><span class="p">(</span><span class="n">TestMergerPolicyModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_strict_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_not_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_not_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_strict_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Strict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">test_laissez_faire_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>A class whose instances are single test cases.</p>
+
+<p>By default, the test code itself should be placed in a method named
+'runTest'.</p>
+
+<p>If the fixture may be used for many test cases, create as
+many test methods as are needed. When instantiating such a TestCase
+subclass, specify in the constructor arguments the name of the test method
+that the instance is to execute.</p>
+
+<p>Test authors should subclass TestCase for their own tests. Construction
+and deconstruction of the test's environment ('fixture') can be
+implemented by overriding the 'setUp' and 'tearDown' methods respectively.</p>
+
+<p>If it is necessary to override the __init__ method, the base class
+__init__ method must always be called. It is important that subclasses
+should not change the signature of their __init__ method, since instances
+of the classes are instantiated automatically by parts of the framework
+in order to be run.</p>
+
+<p>When subclassing TestCase, you can set these attributes:</p>
+
+<ul>
+<li>failureException: determines which exception will be raised when
+the instance's assertion methods fail; test methods raising this
+exception will be deemed to have 'failed' rather than 'errored'.</li>
+<li>longMessage: determines whether long messages (including repr of
+objects used in assert methods) will be printed on failure in <em>addition</em>
+to any explicit message passed.</li>
+<li>maxDiff: sets the maximum length of a diff in failure messages
+by assert methods using difflib. It is looked up as an instance
+attribute so can be configured by individual tests if required.</li>
+</ul>
+</div>
+
+
+                            <div id="TestOptimalMergerPolicyModel.test_strict_beneficial_compared_to_laissez_faire" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_strict_beneficial_compared_to_laissez_faire">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_strict_beneficial_compared_to_laissez_faire</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_strict_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">())</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestOptimalMergerPolicyModel.test_strict_not_beneficial_compared_to_laissez_faire" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_strict_not_beneficial_compared_to_laissez_faire">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_strict_not_beneficial_compared_to_laissez_faire</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_strict_not_beneficial_compared_to_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_laissez_faire</span><span class="p">())</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestOptimalMergerPolicyModel.test_strict_beneficial_compared_to_intermediate" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_strict_beneficial_compared_to_intermediate">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_strict_beneficial_compared_to_intermediate</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_strict_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">())</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestOptimalMergerPolicyModel.test_strict_not_beneficial_compared_to_intermediate" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_strict_not_beneficial_compared_to_intermediate">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_strict_not_beneficial_compared_to_intermediate</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_strict_not_beneficial_compared_to_intermediate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_beneficial_compared_to_intermediate</span><span class="p">())</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestOptimalMergerPolicyModel.test_strict_optimal_merger_policy" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_strict_optimal_merger_policy">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_strict_optimal_merger_policy</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_strict_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Strict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestOptimalMergerPolicyModel.test_intermediate_optimal_merger_policy" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_intermediate_optimal_merger_policy">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_intermediate_optimal_merger_policy</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestOptimalMergerPolicyModel.test_laissez_faire_optimal_merger_policy" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestOptimalMergerPolicyModel.test_laissez_faire_optimal_merger_policy">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_laissez_faire_optimal_merger_policy</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_laissez_faire_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt>unittest.case.TestCase</dt>
+                                <dd id="TestOptimalMergerPolicyModel.__init__" class="function">TestCase</dd>
+                <dd id="TestOptimalMergerPolicyModel.failureException" class="class">failureException</dd>
+                <dd id="TestOptimalMergerPolicyModel.longMessage" class="variable">longMessage</dd>
+                <dd id="TestOptimalMergerPolicyModel.maxDiff" class="variable">maxDiff</dd>
+                <dd id="TestOptimalMergerPolicyModel.addTypeEqualityFunc" class="function">addTypeEqualityFunc</dd>
+                <dd id="TestOptimalMergerPolicyModel.addCleanup" class="function">addCleanup</dd>
+                <dd id="TestOptimalMergerPolicyModel.addClassCleanup" class="function">addClassCleanup</dd>
+                <dd id="TestOptimalMergerPolicyModel.setUp" class="function">setUp</dd>
+                <dd id="TestOptimalMergerPolicyModel.tearDown" class="function">tearDown</dd>
+                <dd id="TestOptimalMergerPolicyModel.setUpClass" class="function">setUpClass</dd>
+                <dd id="TestOptimalMergerPolicyModel.tearDownClass" class="function">tearDownClass</dd>
+                <dd id="TestOptimalMergerPolicyModel.countTestCases" class="function">countTestCases</dd>
+                <dd id="TestOptimalMergerPolicyModel.defaultTestResult" class="function">defaultTestResult</dd>
+                <dd id="TestOptimalMergerPolicyModel.shortDescription" class="function">shortDescription</dd>
+                <dd id="TestOptimalMergerPolicyModel.id" class="function">id</dd>
+                <dd id="TestOptimalMergerPolicyModel.subTest" class="function">subTest</dd>
+                <dd id="TestOptimalMergerPolicyModel.run" class="function">run</dd>
+                <dd id="TestOptimalMergerPolicyModel.doCleanups" class="function">doCleanups</dd>
+                <dd id="TestOptimalMergerPolicyModel.doClassCleanups" class="function">doClassCleanups</dd>
+                <dd id="TestOptimalMergerPolicyModel.debug" class="function">debug</dd>
+                <dd id="TestOptimalMergerPolicyModel.skipTest" class="function">skipTest</dd>
+                <dd id="TestOptimalMergerPolicyModel.fail" class="function">fail</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertFalse" class="function">assertFalse</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertTrue" class="function">assertTrue</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertRaises" class="function">assertRaises</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertWarns" class="function">assertWarns</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertLogs" class="function">assertLogs</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNoLogs" class="function">assertNoLogs</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertEqual" class="function">assertEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotEqual" class="function">assertNotEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertAlmostEqual" class="function">assertAlmostEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotAlmostEqual" class="function">assertNotAlmostEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertSequenceEqual" class="function">assertSequenceEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertListEqual" class="function">assertListEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertTupleEqual" class="function">assertTupleEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertSetEqual" class="function">assertSetEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertIn" class="function">assertIn</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotIn" class="function">assertNotIn</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertIs" class="function">assertIs</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertIsNot" class="function">assertIsNot</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertDictEqual" class="function">assertDictEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertDictContainsSubset" class="function">assertDictContainsSubset</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertCountEqual" class="function">assertCountEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertMultiLineEqual" class="function">assertMultiLineEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertLess" class="function">assertLess</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertLessEqual" class="function">assertLessEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertGreater" class="function">assertGreater</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertGreaterEqual" class="function">assertGreaterEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertIsNone" class="function">assertIsNone</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertIsNotNone" class="function">assertIsNotNone</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertIsInstance" class="function">assertIsInstance</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotIsInstance" class="function">assertNotIsInstance</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertRaisesRegex" class="function">assertRaisesRegex</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertWarnsRegex" class="function">assertWarnsRegex</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertRegex" class="function">assertRegex</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotRegex" class="function">assertNotRegex</dd>
+                <dd id="TestOptimalMergerPolicyModel.failUnlessRaises" class="function">failUnlessRaises</dd>
+                <dd id="TestOptimalMergerPolicyModel.failIf" class="function">failIf</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertRaisesRegexp" class="function">assertRaisesRegexp</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertRegexpMatches" class="function">assertRegexpMatches</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotRegexpMatches" class="function">assertNotRegexpMatches</dd>
+                <dd id="TestOptimalMergerPolicyModel.failUnlessEqual" class="function">failUnlessEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertEquals" class="function">assertEquals</dd>
+                <dd id="TestOptimalMergerPolicyModel.failIfEqual" class="function">failIfEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotEquals" class="function">assertNotEquals</dd>
+                <dd id="TestOptimalMergerPolicyModel.failUnlessAlmostEqual" class="function">failUnlessAlmostEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertAlmostEquals" class="function">assertAlmostEquals</dd>
+                <dd id="TestOptimalMergerPolicyModel.failIfAlmostEqual" class="function">failIfAlmostEqual</dd>
+                <dd id="TestOptimalMergerPolicyModel.assertNotAlmostEquals" class="function">assertNotAlmostEquals</dd>
+                <dd id="TestOptimalMergerPolicyModel.failUnless" class="function">failUnless</dd>
+                <dd id="TestOptimalMergerPolicyModel.assert_" class="function">assert_</dd>
+
+            </div>
             <div><dt><a href="#TestMergerPolicyModel">TestMergerPolicyModel</a></dt>
-                                <dd id="TestStrictMergerPolicyModel.test_valid_setup_default_values" class="function"><a href="#TestMergerPolicyModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
+                                <dd id="TestOptimalMergerPolicyModel.test_valid_setup_default_values" class="function"><a href="#TestMergerPolicyModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
 
             </div>
             <div><dt><a href="#TestBaseModel">TestBaseModel</a></dt>
-                                <dd id="TestStrictMergerPolicyModel.get_default_value" class="function"><a href="#TestBaseModel.get_default_value">get_default_value</a></dd>
-                <dd id="TestStrictMergerPolicyModel.get_welfare_value" class="function"><a href="#TestBaseModel.get_welfare_value">get_welfare_value</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_invalid_tolerated_harm" class="function"><a href="#TestBaseModel.test_invalid_tolerated_harm">test_invalid_tolerated_harm</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_invalid_private_benefit" class="function"><a href="#TestBaseModel.test_invalid_private_benefit">test_invalid_private_benefit</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_invalid_profit" class="function"><a href="#TestBaseModel.test_invalid_profit">test_invalid_profit</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_invalid_consumer_surplus" class="function"><a href="#TestBaseModel.test_invalid_consumer_surplus">test_invalid_consumer_surplus</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_invalid_success_probability" class="function"><a href="#TestBaseModel.test_invalid_success_probability">test_invalid_success_probability</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_properties" class="function"><a href="#TestBaseModel.test_properties">test_properties</a></dd>
-                <dd id="TestStrictMergerPolicyModel.test_welfare_properties" class="function"><a href="#TestBaseModel.test_welfare_properties">test_welfare_properties</a></dd>
+                                <dd id="TestOptimalMergerPolicyModel.get_default_value" class="function"><a href="#TestBaseModel.get_default_value">get_default_value</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.get_welfare_value" class="function"><a href="#TestBaseModel.get_welfare_value">get_welfare_value</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_invalid_tolerated_harm" class="function"><a href="#TestBaseModel.test_invalid_tolerated_harm">test_invalid_tolerated_harm</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_invalid_private_benefit" class="function"><a href="#TestBaseModel.test_invalid_private_benefit">test_invalid_private_benefit</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_invalid_profit" class="function"><a href="#TestBaseModel.test_invalid_profit">test_invalid_profit</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_invalid_consumer_surplus" class="function"><a href="#TestBaseModel.test_invalid_consumer_surplus">test_invalid_consumer_surplus</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_invalid_success_probability" class="function"><a href="#TestBaseModel.test_invalid_success_probability">test_invalid_success_probability</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_properties" class="function"><a href="#TestBaseModel.test_properties">test_properties</a></dd>
+                <dd id="TestOptimalMergerPolicyModel.test_welfare_properties" class="function"><a href="#TestBaseModel.test_welfare_properties">test_welfare_properties</a></dd>
 
             </div>
                                 </dl>
