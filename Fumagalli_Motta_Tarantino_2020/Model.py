@@ -313,6 +313,7 @@ class MergerPolicyModel(BaseModel):
     - Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.
     - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.
     """
+
     def __init__(self, **kwargs):
         """
         Takes the same arguments as BaseModel.__init__.
