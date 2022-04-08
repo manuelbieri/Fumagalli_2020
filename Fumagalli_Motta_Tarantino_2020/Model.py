@@ -110,24 +110,15 @@ class BaseModel:
         # with innovation
         self._incumbent_profit_with_innovation = incumbent_profit_with_innovation
         self._cs_with_innovation = consumer_surplus_with_innovation
-        self._w_with_innovation = (
-            self._cs_with_innovation + self._incumbent_profit_with_innovation
-        )
+
         # without innovation
         self._incumbent_profit_without_innovation = incumbent_profit_without_innovation
         self._cs_without_innovation = consumer_surplus_without_innovation
-        self._w_without_innovation = (
-            self._cs_without_innovation + self._incumbent_profit_without_innovation
-        )
+
         # with duopoly
         self._startup_profit_duopoly = startup_profit_duopoly
         self._incumbent_profit_duopoly = incumbent_profit_duopoly
         self._cs_duopoly = consumer_surplus_duopoly
-        self._w_duopoly = (
-            self._cs_duopoly
-            + self._startup_profit_duopoly
-            + self._incumbent_profit_duopoly
-        )
 
         # pre-conditions given for the parameters (p.6-8)
         self._check_preconditions()
@@ -137,55 +128,55 @@ class BaseModel:
 
     def _check_post_conditions(self):
         assert (
-            self._w_without_innovation < self._w_with_innovation < self._w_duopoly
+            self.w_without_innovation < self.w_with_innovation < self.w_duopoly
         ), "Ranking of total welfare not valid (p.7)"
         assert (
             self._success_probability
-            * (self._w_with_innovation - self._w_without_innovation)
+            * (self.w_with_innovation - self.w_without_innovation)
             > self._development_costs
         ), "A4 not satisfied (p.8)"
 
     def _check_preconditions(self):
         # preconditions given (p.6-8)
-        assert self._tolerated_harm >= 0, "Level of harm has to be bigger than 0"
-        assert self._private_benefit > 0, "Private benefit has to be bigger than 0"
+        assert self.tolerated_harm >= 0, "Level of harm has to be bigger than 0"
+        assert self.private_benefit > 0, "Private benefit has to be bigger than 0"
         assert (
-            self._incumbent_profit_without_innovation > self._incumbent_profit_duopoly
+            self.incumbent_profit_without_innovation > self.incumbent_profit_duopoly
         ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
         assert (
-            self._incumbent_profit_with_innovation
-            > self._incumbent_profit_without_innovation
+            self.incumbent_profit_with_innovation
+            > self.incumbent_profit_without_innovation
         ), "Profit of the incumbent has to be bigger with the innovation than without the innovation"
         assert (
-            self._cs_with_innovation >= self._cs_without_innovation
+            self.cs_with_innovation >= self.cs_without_innovation
         ), "Consumer surplus with the innovation has to weakly bigger than without the innovation"
         assert (
-            self._incumbent_profit_with_innovation
-            > self._incumbent_profit_duopoly + self._startup_profit_duopoly
+            self.incumbent_profit_with_innovation
+            > self.incumbent_profit_duopoly + self.startup_profit_duopoly
         ), "A1 not satisfied (p.7)"
         assert (
-            self._startup_profit_duopoly
-            > self._incumbent_profit_with_innovation
-            - self._incumbent_profit_without_innovation
+            self.startup_profit_duopoly
+            > self.incumbent_profit_with_innovation
+            - self.incumbent_profit_without_innovation
         ), "A2 not satisfied (p.7)"
         assert (
-            0 < self._success_probability <= 1
+            0 < self.success_probability <= 1
         ), "Success probability of development has to be between 0 and 1"
         assert (
-            self._success_probability * self._startup_profit_duopoly
+            self.success_probability * self.startup_profit_duopoly
             > self._development_costs
         ), "A3 not satisfied (p.8)"
         assert (
-            self._private_benefit - self._development_costs
+            self.private_benefit - self.development_costs
             < 0
-            < self._private_benefit
+            < self.private_benefit
             * (
-                self._success_probability * self._startup_profit_duopoly
-                - self._development_costs
+                self.success_probability * self._startup_profit_duopoly
+                - self.development_costs
             )
         ), "A5 not satisfied (p.8)"
         assert (
-            0 < self._startup_assets < self._development_costs
+            0 < self.startup_assets < self.development_costs
         ), "Startup has not enough assets for development"
 
     @property
@@ -251,7 +242,7 @@ class BaseModel:
         """
         ($W^M$) Total welfare for the case that the innovation is introduced by the incumbent into the market.
         """
-        return self._w_with_innovation
+        return self._cs_with_innovation + self._incumbent_profit_with_innovation
 
     @property
     def incumbent_profit_without_innovation(self) -> float:
@@ -272,7 +263,7 @@ class BaseModel:
         """
         ($W^m$) Total welfare for the case that the innovation is not introduced by the incumbent into the market.
         """
-        return self._w_without_innovation
+        return self._cs_without_innovation + self._incumbent_profit_without_innovation
 
     @property
     def startup_profit_duopoly(self) -> float:
@@ -300,7 +291,11 @@ class BaseModel:
         """
         ($W^d$) Total welfare for the case that the innovation is introduced into the market and a duopoly exists.
         """
-        return self._w_duopoly
+        return (
+            self._cs_duopoly
+            + self._startup_profit_duopoly
+            + self._incumbent_profit_duopoly
+        )
 
 
 class MergerPolicyModel(BaseModel):
@@ -319,31 +314,6 @@ class MergerPolicyModel(BaseModel):
         Takes the same arguments as BaseModel.__init__.
         """
         super(MergerPolicyModel, self).__init__(**kwargs)
-        self._asset_threshold = self.private_benefit - (
-            self.success_probability * self.startup_profit_duopoly
-            - self.development_costs
-        )
-        self._asset_threshold_cdf = MergerPolicyModel._get_cdf_value(
-            self.asset_threshold
-        )
-
-        self._asset_threshold_laissez_faire = self.private_benefit - (
-            self.success_probability * self.incumbent_profit_with_innovation
-            - self.development_costs
-        )
-        self._asset_threshold_laissez_faire_cdf = self._get_cdf_value(
-            self.asset_threshold_laissez_faire
-        )
-
-        self._probability_credit_constrained_threshold = (
-            self.success_probability
-            * (self.w_duopoly - self.w_with_innovation)
-            / (
-                self.success_probability
-                * (self.w_duopoly - self.incumbent_profit_without_innovation)
-                - self.development_costs
-            )
-        )
         self._merger_policy: Literal[
             "Strict",
             "Intermediate (late takeover prohibited)",
@@ -361,7 +331,7 @@ class MergerPolicyModel(BaseModel):
         self._early_takeover: bool = False
         self._late_takeover: bool = False
         assert (
-            0 < self._probability_credit_constrained_threshold < 1
+            0 < self.probability_credit_constrained_threshold < 1
         ), "Violates A.1 (has to be between 0 and 1)"
         self._determine_merger_policy()
         self._calculate_probability_credit_rationed()
@@ -475,7 +445,17 @@ class MergerPolicyModel(BaseModel):
         """
         Threshold level $\\bar{A} = B - (\\pi^d_S - K)$
         """
-        return self._asset_threshold
+        return self.private_benefit - (
+            self.success_probability * self.startup_profit_duopoly
+            - self.development_costs
+        )
+
+    @property
+    def asset_threshold_cdf(self) -> float:
+        """
+        Returns the value of the continuous distribution function for the assest threshold.
+        """
+        return MergerPolicyModel._get_cdf_value(self.asset_threshold)
 
     @property
     def asset_threshold_laissez_faire(self) -> float:
@@ -483,7 +463,17 @@ class MergerPolicyModel(BaseModel):
         The prospect that the start-up will be acquired at $t = 2$ alleviates financial constraints: there exists a
         threshold level $\\bar{A}^T = B - (\\pi_I^M - K)$
         """
-        return self._asset_threshold_laissez_faire
+        return self.private_benefit - (
+            self.success_probability * self.incumbent_profit_with_innovation
+            - self.development_costs
+        )
+
+    @property
+    def asset_threshold_laissez_faire_cdf(self) -> float:
+        """
+        Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
+        """
+        return MergerPolicyModel._get_cdf_value(self.asset_threshold_laissez_faire)
 
     @property
     def get_early_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
@@ -525,7 +515,14 @@ class MergerPolicyModel(BaseModel):
 
     @property
     def probability_credit_constrained_threshold(self) -> float:
-        return self._probability_credit_constrained_threshold
+        return (
+            self.success_probability
+            * (self.w_duopoly - self.w_with_innovation)
+            / (
+                self.success_probability * (self.w_duopoly - self.w_without_innovation)
+                - self.development_costs
+            )
+        )
 
     @property
     def probability_credit_constrained_default(self) -> float:
@@ -562,9 +559,9 @@ class MergerPolicyModel(BaseModel):
 
     def _calculate_h0(self) -> float:
         return max(
-            (1 - self._asset_threshold_cdf)
+            (1 - self.asset_threshold_cdf)
             * (self.success_probability * (self.w_duopoly - self.w_with_innovation))
-            - self._asset_threshold_cdf
+            - self.asset_threshold_cdf
             * (
                 self.success_probability
                 * (self.w_with_innovation - self.w_without_innovation)
@@ -582,17 +579,25 @@ class MergerPolicyModel(BaseModel):
         - False (not expected to shelve): $p*(\\pi^M_I-\\pi^m_I) \\ge K$
 
         """
+        return self.incumbent_expected_additional_profit_from_innovation() < 0
+
+    def incumbent_expected_additional_profit_from_innovation(self) -> float:
+        """
+        Returns the additional expected profit for the incumbent, if it does not shelve the product after an acquisition.
+
+        $ Expected additional profit = p*(\\pi^M_I-\\pi^m_I)-K$
+        """
         return (
             self.success_probability
             * (
                 self.incumbent_profit_with_innovation
                 - self.incumbent_profit_without_innovation
             )
-            < self.development_costs
+            - self.development_costs
         )
 
     def _calculate_h1(self) -> float:
-        return (1 - self._asset_threshold_cdf) * (
+        return (1 - self.asset_threshold_cdf) * (
             self.success_probability * (self.w_duopoly - self.w_without_innovation)
             - self.development_costs
         )
@@ -600,7 +605,7 @@ class MergerPolicyModel(BaseModel):
     def _calculate_h2(self) -> float:
         return max(
             self.w_duopoly - self.w_with_innovation,
-            (1 - self._asset_threshold_laissez_faire_cdf)
+            (1 - self.asset_threshold_laissez_faire_cdf)
             * (
                 self.success_probability
                 * (self.w_with_innovation - self.w_without_innovation)
@@ -643,16 +648,10 @@ class MergerPolicyModel(BaseModel):
     def _calculate_takeover_decision_strict_merger_policy(self):
         # decision of the AA and the startup (chapter 3.4.1)
         # takeover bid of the incumbent (chapter 3.4.2)
-        if (
-            self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
-            )
-        ) >= self.development_costs:
+        if not self.is_incumbent_expected_to_shelve():
             if (
                 self.probability_credit_constrained_threshold
-                < self._asset_threshold_cdf
+                < self.asset_threshold_cdf
                 < max(
                     self._probability_credit_constrained_default,
                     self.probability_credit_constrained_threshold,
@@ -666,14 +665,7 @@ class MergerPolicyModel(BaseModel):
                     self._early_takeover = True
 
     def _calculate_takeover_decision_late_takeover_allowed(self):
-        if (
-            self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
-            )
-            < self.development_costs
-        ):
+        if self.is_incumbent_expected_to_shelve():
             if not self.is_startup_credit_rationed and self.development_success:
                 self._late_takeover = True
                 self._late_bid_attempt = "Pooling"
@@ -691,19 +683,12 @@ class MergerPolicyModel(BaseModel):
             merger_policy,
         ) = self.probability_credit_constrained_merger_policy
         assert merger_policy == "Intermediate (late takeover prohibited)"
-        if (
-            self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
-            )
-            < self.development_costs
-        ):
-            if self._asset_threshold_cdf < probability_credit_constrained_intermediate:
+        if self.is_incumbent_expected_to_shelve():
+            if self.asset_threshold_cdf < probability_credit_constrained_intermediate:
                 self._early_takeover = True
                 self._early_bid_attempt = "Pooling"
         else:
-            if self._asset_threshold_cdf >= self.probability_credit_constrained_default:
+            if self.asset_threshold_cdf >= self.probability_credit_constrained_default:
                 self._early_bid_attempt = "Separating"
                 if self.is_startup_credit_rationed:
                     self._early_takeover = True
@@ -717,16 +702,9 @@ class MergerPolicyModel(BaseModel):
             merger_policy,
         ) = self.probability_credit_constrained_merger_policy
         assert merger_policy == "Laissez-faire"
-        if (
-            self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
-            )
-            < self.development_costs
-        ):
+        if self.is_incumbent_expected_to_shelve():
             if (
-                self._asset_threshold_laissez_faire_cdf
+                self.asset_threshold_laissez_faire_cdf
                 >= probability_credit_constrained_laissez_faire
             ):
                 if not self.is_startup_credit_rationed and self.development_success:
@@ -747,15 +725,7 @@ class MergerPolicyModel(BaseModel):
     def _calculate_investment_decision(self):
         # investment decision (chapter 3.3)
         if (not self.is_startup_credit_rationed and not self.is_early_takeover) or (
-            (
-                self.success_probability
-                * (
-                    self.incumbent_profit_with_innovation
-                    - self.incumbent_profit_without_innovation
-                )
-            )
-            >= self.development_costs
-            and self.is_early_takeover
+            not self.is_incumbent_expected_to_shelve() and self.is_early_takeover
         ):
             self._owner_invests_in_development = True
         self._successful_development_outcome = (
@@ -821,9 +791,9 @@ class OptimalMergerPolicy(MergerPolicyModel):
             * (self.w_with_innovation - self.w_without_innovation)
             - self.development_costs
         ) > (
-            1 - self._asset_threshold_laissez_faire_cdf
+            1 - self.asset_threshold_laissez_faire_cdf
         ) / (
-            1 - self._asset_threshold_cdf
+            1 - self.asset_threshold_cdf
         )
 
     def is_strict_beneficial_compared_to_intermediate(self) -> bool:
@@ -862,13 +832,13 @@ class OptimalMergerPolicy(MergerPolicyModel):
 
     def is_financial_imperfection_severe(self) -> bool:
         return (
-            self._asset_threshold_laissez_faire_cdf
+            self.asset_threshold_laissez_faire_cdf
             >= self._calculate_probability_credit_constrained_laissez_faire()
         )
 
     def is_early_takeover_followed_by_shelving_optimal(self) -> bool:
         return (
-            self._asset_threshold_laissez_faire_cdf
+            self.asset_threshold_laissez_faire_cdf
             >= self.threshold_approved_takeover_followed_pooling_offer()
         )
 
