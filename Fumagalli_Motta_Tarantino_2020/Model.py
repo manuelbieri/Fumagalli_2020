@@ -538,7 +538,7 @@ class MergerPolicyModel(BaseModel):
             if self.startup_assets < self.asset_threshold:
                 return True
             return False
-        elif self.startup_assets < self.asset_threshold_laissez_faire:
+        if self.startup_assets < self.asset_threshold_laissez_faire:
             return True
         return False
 
