@@ -538,10 +538,9 @@ class MergerPolicyModel(BaseModel):
             if self.startup_assets < self.asset_threshold:
                 return True
             return False
-        else:
-            if self.startup_assets < self.asset_threshold_laissez_faire:
-                return True
-            return False
+        elif self.startup_assets < self.asset_threshold_laissez_faire:
+            return True
+        return False
 
     @property
     def probability_credit_constrained_threshold(self) -> float:
