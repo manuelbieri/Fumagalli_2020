@@ -133,6 +133,12 @@
                                 <a class="variable" href="#MergerPolicyModel.get_late_bidding_type">get_late_bidding_type</a>
                         </li>
                         <li>
+                                <a class="variable" href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a>
+                        </li>
+                        <li>
                                 <a class="variable" href="#MergerPolicyModel.is_owner_investing">is_owner_investing</a>
                         </li>
                         <li>
@@ -152,12 +158,6 @@
                         </li>
                         <li>
                                 <a class="variable" href="#MergerPolicyModel.asset_distribution_threshold_intermediate">asset_distribution_threshold_intermediate</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a>
                         </li>
                         <li>
                                 <a class="function" href="#MergerPolicyModel.is_incumbent_expected_to_shelve">is_incumbent_expected_to_shelve</a>
@@ -657,6 +657,32 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the start-up is acquired by the incumbent at $t=1$.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True</span>
+<span class="sd">            If the start-up is acquired by the incumbent at $t=1$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the start-up is acquired by the incumbent at $t=2$.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True</span>
+<span class="sd">            If the start-up is acquired by the incumbent at $t=2$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_owner_investing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A start-up that expects external investors to deny financing will not undertake the investment. Conversely, the incumbent</span>
@@ -701,6 +727,22 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_startup_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If no takeover took place at t = 1(b), a start-up that decided to develop the project searches for funding at $t = 1(d)$.</span>
+
+<span class="sd">        Strict and Intermediate (late takeover prohibited):</span>
+<span class="sd">        - $A &lt; \\bar{A}$, the start-up is credit-rationed and cannot invest.</span>
+<span class="sd">        - $A \\ge \\bar{A}$, the start-up obtains external funding.</span>
+
+<span class="sd">        Laissez-Faire and Intermediate (late takeover allowed): $$</span>
+<span class="sd">        - $A &lt; \\bar{A}^T$, the start-up is credit-rationed and cannot invest.</span>
+<span class="sd">        - $A \\ge \\bar{A}^T$, the start-up obtains external funding.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True</span>
+<span class="sd">            If the start-up is credit rationed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># financial contracting (chapter 3.2)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Strict&quot;</span><span class="p">,</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold</span><span class="p">:</span>
@@ -778,16 +820,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span><span class="p">)</span>
         <span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -2029,6 +2061,32 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_bid_attempt</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the start-up is acquired by the incumbent at $t=1$.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True</span>
+<span class="sd">            If the start-up is acquired by the incumbent at $t=1$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the start-up is acquired by the incumbent at $t=2$.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True</span>
+<span class="sd">            If the start-up is acquired by the incumbent at $t=2$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_owner_investing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A start-up that expects external investors to deny financing will not undertake the investment. Conversely, the incumbent</span>
@@ -2073,6 +2131,22 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_startup_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If no takeover took place at t = 1(b), a start-up that decided to develop the project searches for funding at $t = 1(d)$.</span>
+
+<span class="sd">        Strict and Intermediate (late takeover prohibited):</span>
+<span class="sd">        - $A &lt; \\bar{A}$, the start-up is credit-rationed and cannot invest.</span>
+<span class="sd">        - $A \\ge \\bar{A}$, the start-up obtains external funding.</span>
+
+<span class="sd">        Laissez-Faire and Intermediate (late takeover allowed): $$</span>
+<span class="sd">        - $A &lt; \\bar{A}^T$, the start-up is credit-rationed and cannot invest.</span>
+<span class="sd">        - $A \\ge \\bar{A}^T$, the start-up obtains external funding.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True</span>
+<span class="sd">            If the start-up is credit rationed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># financial contracting (chapter 3.2)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Strict&quot;</span><span class="p">,</span> <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startup_assets</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold</span><span class="p">:</span>
@@ -2150,16 +2224,6 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_without_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">incumbent_profit_duopoly</span><span class="p">)</span>
         <span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_early_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_takeover</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_late_takeover</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_cdf_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -2533,6 +2597,42 @@ threshold level $\bar{A}^T = B - (\pi_I^M - K)$</p>
 
 
                             </div>
+                            <div id="MergerPolicyModel.is_early_takeover" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_early_takeover">#&nbsp;&nbsp</a>
+
+        <span class="name">is_early_takeover</span><span class="annotation">: bool</span>
+    </div>
+
+    
+            <div class="docstring"><p>Returns whether the start-up is acquired by the incumbent at $t=1$.</p>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>True</strong>: If the start-up is acquired by the incumbent at $t=1$.</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div id="MergerPolicyModel.is_late_takeover" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_late_takeover">#&nbsp;&nbsp</a>
+
+        <span class="name">is_late_takeover</span><span class="annotation">: bool</span>
+    </div>
+
+    
+            <div class="docstring"><p>Returns whether the start-up is acquired by the incumbent at $t=2$.</p>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>True</strong>: If the start-up is acquired by the incumbent at $t=2$.</li>
+</ul>
+</div>
+
+
+                            </div>
                             <div id="MergerPolicyModel.is_owner_investing" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_owner_investing">#&nbsp;&nbsp</a>
 
@@ -2594,7 +2694,29 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
     </div>
 
     
-    
+            <div class="docstring"><p>If no takeover took place at t = 1(b), a start-up that decided to develop the project searches for funding at $t = 1(d)$.</p>
+
+<p>Strict and Intermediate (late takeover prohibited):</p>
+
+<ul>
+<li>$A &lt; \bar{A}$, the start-up is credit-rationed and cannot invest.</li>
+<li>$A \ge \bar{A}$, the start-up obtains external funding.</li>
+</ul>
+
+<p>Laissez-Faire and Intermediate (late takeover allowed): $$</p>
+
+<ul>
+<li>$A &lt; \bar{A}^T$, the start-up is credit-rationed and cannot invest.</li>
+<li>$A \ge \bar{A}^T$, the start-up obtains external funding.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>True</strong>: If the start-up is credit rationed.</li>
+</ul>
+</div>
+
 
                             </div>
                             <div id="MergerPolicyModel.asset_distribution_threshold_strict" class="classattr">
@@ -2643,26 +2765,6 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
             <div class="docstring"><p>Threshold defined in A-3 :$\;\Phi^{\prime}(\cdot)=\frac{p(\pi^m_I-\pi^d_I-\pi^d_S)+K}{p(\pi^m_I+\pi^d_I)}$</p>
 </div>
 
-
-                            </div>
-                            <div id="MergerPolicyModel.is_early_takeover" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_early_takeover">#&nbsp;&nbsp</a>
-
-        <span class="name">is_early_takeover</span><span class="annotation">: bool</span>
-    </div>
-
-    
-    
-
-                            </div>
-                            <div id="MergerPolicyModel.is_late_takeover" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.is_late_takeover">#&nbsp;&nbsp</a>
-
-        <span class="name">is_late_takeover</span><span class="annotation">: bool</span>
-    </div>
-
-    
-    
 
                             </div>
                             <div id="MergerPolicyModel.is_incumbent_expected_to_shelve" class="classattr">
@@ -3161,6 +3263,8 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
                 <dd id="OptimalMergerPolicy.asset_threshold_laissez_faire_cdf" class="variable"><a href="#MergerPolicyModel.asset_threshold_laissez_faire_cdf">asset_threshold_laissez_faire_cdf</a></dd>
                 <dd id="OptimalMergerPolicy.get_early_bidding_type" class="variable"><a href="#MergerPolicyModel.get_early_bidding_type">get_early_bidding_type</a></dd>
                 <dd id="OptimalMergerPolicy.get_late_bidding_type" class="variable"><a href="#MergerPolicyModel.get_late_bidding_type">get_late_bidding_type</a></dd>
+                <dd id="OptimalMergerPolicy.is_early_takeover" class="variable"><a href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a></dd>
+                <dd id="OptimalMergerPolicy.is_late_takeover" class="variable"><a href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a></dd>
                 <dd id="OptimalMergerPolicy.is_owner_investing" class="variable"><a href="#MergerPolicyModel.is_owner_investing">is_owner_investing</a></dd>
                 <dd id="OptimalMergerPolicy.is_development_successful" class="variable"><a href="#MergerPolicyModel.is_development_successful">is_development_successful</a></dd>
                 <dd id="OptimalMergerPolicy.is_startup_credit_rationed" class="variable"><a href="#MergerPolicyModel.is_startup_credit_rationed">is_startup_credit_rationed</a></dd>
@@ -3168,8 +3272,6 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
                 <dd id="OptimalMergerPolicy.asset_distribution_threshold" class="variable"><a href="#MergerPolicyModel.asset_distribution_threshold">asset_distribution_threshold</a></dd>
                 <dd id="OptimalMergerPolicy.asset_distribution_threshold_laissez_faire" class="variable"><a href="#MergerPolicyModel.asset_distribution_threshold_laissez_faire">asset_distribution_threshold_laissez_faire</a></dd>
                 <dd id="OptimalMergerPolicy.asset_distribution_threshold_intermediate" class="variable"><a href="#MergerPolicyModel.asset_distribution_threshold_intermediate">asset_distribution_threshold_intermediate</a></dd>
-                <dd id="OptimalMergerPolicy.is_early_takeover" class="variable"><a href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a></dd>
-                <dd id="OptimalMergerPolicy.is_late_takeover" class="variable"><a href="#MergerPolicyModel.is_late_takeover">is_late_takeover</a></dd>
                 <dd id="OptimalMergerPolicy.is_incumbent_expected_to_shelve" class="function"><a href="#MergerPolicyModel.is_incumbent_expected_to_shelve">is_incumbent_expected_to_shelve</a></dd>
                 <dd id="OptimalMergerPolicy.incumbent_expected_additional_profit_from_innovation" class="function"><a href="#MergerPolicyModel.incumbent_expected_additional_profit_from_innovation">incumbent_expected_additional_profit_from_innovation</a></dd>
                 <dd id="OptimalMergerPolicy.summary" class="function"><a href="#MergerPolicyModel.summary">summary</a></dd>

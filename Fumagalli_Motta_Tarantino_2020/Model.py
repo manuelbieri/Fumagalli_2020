@@ -432,6 +432,32 @@ class MergerPolicyModel(BaseModel):
         return self._late_bid_attempt
 
     @property
+    def is_early_takeover(self) -> bool:
+        """
+        Returns whether the start-up is acquired by the incumbent at $t=1$.
+
+        Returns
+        -------
+        True
+            If the start-up is acquired by the incumbent at $t=1$.
+        """
+        assert self._early_takeover is not None
+        return self._early_takeover
+
+    @property
+    def is_late_takeover(self) -> bool:
+        """
+        Returns whether the start-up is acquired by the incumbent at $t=2$.
+
+        Returns
+        -------
+        True
+            If the start-up is acquired by the incumbent at $t=2$.
+        """
+        assert self._late_takeover is not None
+        return self._late_takeover
+
+    @property
     def is_owner_investing(self) -> bool:
         """
         A start-up that expects external investors to deny financing will not undertake the investment. Conversely, the incumbent
@@ -476,6 +502,22 @@ class MergerPolicyModel(BaseModel):
 
     @property
     def is_startup_credit_rationed(self) -> bool:
+        """
+        If no takeover took place at t = 1(b), a start-up that decided to develop the project searches for funding at $t = 1(d)$.
+
+        Strict and Intermediate (late takeover prohibited):
+        - $A < \\bar{A}$, the start-up is credit-rationed and cannot invest.
+        - $A \\ge \\bar{A}$, the start-up obtains external funding.
+
+        Laissez-Faire and Intermediate (late takeover allowed): $$
+        - $A < \\bar{A}^T$, the start-up is credit-rationed and cannot invest.
+        - $A \\ge \\bar{A}^T$, the start-up obtains external funding.
+
+        Returns
+        -------
+        True
+            If the start-up is credit rationed.
+        """
         # financial contracting (chapter 3.2)
         if self.merger_policy in ["Strict", "Intermediate (late takeover prohibited)"]:
             if self.startup_assets < self.asset_threshold:
@@ -553,16 +595,6 @@ class MergerPolicyModel(BaseModel):
             self.success_probability
             * (self.incumbent_profit_without_innovation - self.incumbent_profit_duopoly)
         )
-
-    @property
-    def is_early_takeover(self) -> bool:
-        assert self._early_takeover is not None
-        return self._early_takeover
-
-    @property
-    def is_late_takeover(self) -> bool:
-        assert self._late_takeover is not None
-        return self._late_takeover
 
     @staticmethod
     def _get_cdf_value(value: float) -> float:
