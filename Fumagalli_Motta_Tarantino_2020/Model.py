@@ -1,4 +1,4 @@
-from typing import Literal, Dict
+from typing import Literal, Dict, Optional
 
 import scipy.stats
 
@@ -62,12 +62,12 @@ class BaseModel:
         | $B>0$                        | Private benefit of the entrepreneur in case of failure.                                                                                                                                                                                                                                                                                                       | p.8               |
         | $A \\in (0,K)$               | The startup does not hold sufficient assets at the beginning to cover the costs.                                                                                                                                                                                                                                                                              | p.8               |
         | $\\pi^m_I>\\pi^d_I$          | Profit of the incumbent has to be bigger without the innovation than in the duopoly.                                                                                                                                                                                                                                                                          | p.7               |
-        | $\\pi^M_I>\\pi^m_I$          | Industry profits are higher with a multi-product monopolist than a single product monopolist.                                                                                                                                                                                                                                                                 | p.7               |
-        | $CS^M \\ge CS^m$             | Consumer surplus with the innovation has to weakly bigger than without the innovation.                                                                                                                                                                                                                                                                        | p.7               |
+        | $\\pi^M_I>\\pi^m_I$          | Industry profits are higher with a multi-product monopolist than a single product monopolist (otherwise, the incumbent would always shelve).                                                                                                                                                                                                                                                                 | p.7               |
+        | $CS^M \\ge CS^m$             | Consumer surplus with the innovation has to weakly bigger than without the innovation (consumers like variety).                                                                                                                                                                                                                                                                        | p.7               |
         | $\\pi^M_I>\\pi^d_I+\\pi^d_S$ | Industry profits are higher under monopoly than under duopoly. If this assumption did not hold, the takeover would not take place.                                                                                                                                                                                                                            | p.7 (A1)          |
         | $\\pi^d_S>\\pi^M_I-\\pi^m_I$ | An incumbent has less incentive to innovate (in a new/better product or a more efficient production process) than a potential entrant because the innovation would cannibalise the incumbent’s current profits. (Corresponds to Arrow's replacement effect)                                                                                                   | p.7 (A2)          |
         | $p\\pi^d_S>K$                | In case of effort it is efficient to develop the prototype, i.e., development has a positive net present value (NPV) for the start-up                                                                                                                                                                                                                         | p.8 (A3)          |
-        | $p(W^M-W^m)>K$               | The development of the project is not only privately beneficial for the start-up, but also for society as a whole, whether undertaken by the incumbent or the start-up.                                                                                                                                                                                       | p.8 (A4)          |
+        | $p(W^M-W^m)>K$               | The development of the project is not only privately beneficial for the start-up, but also for society as a whole, whether undertaken by the incumbent or the start-up (implies $\\;p(W^d-W^m)>K\\;$).                                                                                                                                                                                       | p.8 (A4)          |
         | $B-K<0$$B-(p\\pi^d_S-K)>0$   | The first inequality implies that if S shirks the project has negative value; thus, no financial contract could be signed unless the startup makes effort. The second implies that the start-up may be financially constrained, that is, it may hold insufficient assets to fund the development of the prototype even though the project has a positive NPV. | p.8 (A5)          |
 
         Parameters
@@ -124,9 +124,9 @@ class BaseModel:
         self._check_preconditions()
 
         # post-condition given (p.6-8)
-        self._check_post_conditions()
+        self._check_postconditions()
 
-    def _check_post_conditions(self):
+    def _check_postconditions(self):
         assert (
             self.w_without_innovation < self.w_with_innovation < self.w_duopoly
         ), "Ranking of total welfare not valid (p.7)"
@@ -140,6 +140,12 @@ class BaseModel:
         # preconditions given (p.6-8)
         assert self.tolerated_harm >= 0, "Level of harm has to be bigger than 0"
         assert self.private_benefit > 0, "Private benefit has to be bigger than 0"
+        assert (
+            0 < self.success_probability <= 1
+        ), "Success probability of development has to be between 0 and 1"
+        assert (
+            0 < self.startup_assets < self.development_costs
+        ), "Startup has not enough assets for development"
         assert (
             self.incumbent_profit_without_innovation > self.incumbent_profit_duopoly
         ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
@@ -160,9 +166,6 @@ class BaseModel:
             - self.incumbent_profit_without_innovation
         ), "A2 not satisfied (p.7)"
         assert (
-            0 < self.success_probability <= 1
-        ), "Success probability of development has to be between 0 and 1"
-        assert (
             self.success_probability * self.startup_profit_duopoly
             > self._development_costs
         ), "A3 not satisfied (p.8)"
@@ -170,14 +173,11 @@ class BaseModel:
             self.private_benefit - self.development_costs
             < 0
             < self.private_benefit
-            * (
+            - (
                 self.success_probability * self._startup_profit_duopoly
                 - self.development_costs
             )
         ), "A5 not satisfied (p.8)"
-        assert (
-            0 < self.startup_assets < self.development_costs
-        ), "Startup has not enough assets for development"
 
     @property
     def tolerated_harm(self) -> float:
@@ -314,38 +314,20 @@ class MergerPolicyModel(BaseModel):
         Takes the same arguments as BaseModel.__init__.
         """
         super(MergerPolicyModel, self).__init__(**kwargs)
-        self._merger_policy: Literal[
-            "Strict",
-            "Intermediate (late takeover prohibited)",
-            "Intermediate (late takeover allowed)",
-            "Laissez-faire",
-        ] = "Strict"
         self._probability_credit_constrained_default: float = 0
         self._probability_credit_constrained_merger_policy: float = 0
 
-        self._early_bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
-        self._late_bid_attempt: Literal["No", "Separating", "Pooling"] = "No"
-        self._owner_invests_in_development: bool = False
-        self._successful_development_outcome: bool = False
-        self._startup_credit_rationed: bool = False
-        self._early_takeover: bool = False
-        self._late_takeover: bool = False
+        self._early_bid_attempt: Optional[Literal["No", "Separating", "Pooling"]] = None
+        self._late_bid_attempt: Optional[Literal["No", "Separating", "Pooling"]] = None
+        self._owner_invests_in_development: Optional[bool] = None
+        self._successful_development_outcome: Optional[bool] = None
+        self._early_takeover: Optional[bool] = None
+        self._late_takeover: Optional[bool] = None
         assert (
             0 < self.probability_credit_constrained_threshold < 1
         ), "Violates A.1 (has to be between 0 and 1)"
-        self._determine_merger_policy()
         self._calculate_probability_credit_rationed()
         self._solve_game()
-
-    def _determine_merger_policy(self):
-        if self.tolerated_harm <= self._calculate_h0():
-            self._merger_policy = "Strict"
-        elif self.tolerated_harm < self._calculate_h1():
-            self._merger_policy = "Intermediate (late takeover prohibited)"
-        elif self.tolerated_harm < self._calculate_h2():
-            self._merger_policy = "Intermediate (late takeover allowed)"
-        else:
-            self._merger_policy = "Laissez-faire"
 
     def _calculate_probability_credit_rationed(self) -> None:
         self._probability_credit_constrained_default = (
@@ -364,11 +346,11 @@ class MergerPolicyModel(BaseModel):
                 - self.development_costs
             )
         )
-        if self.get_merger_policy == "Strict":
+        if self.merger_policy == "Strict":
             self._probability_credit_constrained_merger_policy = (
                 self._probability_credit_constrained_default
             )
-        elif self.get_merger_policy == "Laissez-faire":
+        elif self.merger_policy == "Laissez-faire":
             self._probability_credit_constrained_merger_policy = (
                 self._calculate_probability_credit_constrained_laissez_faire()
             )
@@ -394,8 +376,7 @@ class MergerPolicyModel(BaseModel):
         ), "Violates A.2 (has to be between 0 and 1)"
 
         assert (
-            self.probability_credit_constrained_merger_policy[1]
-            == self.get_merger_policy
+            self.probability_credit_constrained_merger_policy[1] == self.merger_policy
         ), "Probability calculated for the wrong merger policy"
 
     def _calculate_probability_credit_constrained_laissez_faire(self) -> float:
@@ -427,7 +408,7 @@ class MergerPolicyModel(BaseModel):
         return probability_credit_constrained
 
     @property
-    def get_merger_policy(
+    def merger_policy(
         self,
     ) -> Literal[
         "Strict",
@@ -438,7 +419,13 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the merger policy used to determine the outcome.
         """
-        return self._merger_policy
+        if self.tolerated_harm <= self._calculate_h0():
+            return "Strict"
+        if self.tolerated_harm < self._calculate_h1():
+            return "Intermediate (late takeover prohibited)"
+        if self.tolerated_harm < self._calculate_h2():
+            return "Intermediate (late takeover allowed)"
+        return "Laissez-faire"
 
     @property
     def asset_threshold(self) -> float:
@@ -486,6 +473,7 @@ class MergerPolicyModel(BaseModel):
 
         Otherwise, the option 'No' is returned.
         """
+        assert self._early_bid_attempt is not None
         return self._early_bid_attempt
 
     @property
@@ -499,19 +487,61 @@ class MergerPolicyModel(BaseModel):
 
         Otherwise, the option 'No' is returned.
         """
+        assert self._late_bid_attempt is not None
         return self._late_bid_attempt
 
     @property
     def is_owner_investing(self) -> bool:
-        return self._owner_invests_in_development
+        """
+        A start-up that expects external investors to deny financing will not undertake the investment. Conversely, the incumbent
+        has the financial ability to invest, but it does not always have the incentive to do so. Indeed, the innovation
+        increases the incumbent’s profits less than the (unconstrained) start-up’s. (This result follows directly from
+        the Arrow’s replacement effect) The increase in the incumbent’s profits may not be large enough to cover the investment
+        cost. When this is the case, the incumbent will shelve the project and the acquisition turns out to be a killer acquisition.
+
+        Investment decision under the strict merger policy:
+        - An unconstrained start-up always invests in the development of the prototype.
+        - The incumbent invests if (and only if): $p*(\\pi^M_I-\\pi^m_I) \\ge K$
+
+        Returns
+        -------
+        True, if the owner of the innovation at $t=1$ invests in the project, instead of shelving.
+        """
+        assert self.is_startup_credit_rationed is not None
+        assert self.is_early_takeover is not None
+        assert self.is_late_takeover is not None
+        if (not self.is_startup_credit_rationed and not self.is_early_takeover) or (
+            not self.is_incumbent_expected_to_shelve() and self.is_early_takeover
+        ):
+            return True
+        return False
 
     @property
     def is_development_successful(self) -> bool:
-        return self._successful_development_outcome
+        """
+        Returns whether the development was successful or not.
+
+        The following two conditions have to be satisfied:
+        - The owner of the product at $t=1$ has to invest in the development
+        - The development success variable has to be set to True (attempted development always successful).
+
+        Returns
+        -------
+        True, if both conditions are met.
+        """
+        return self.is_owner_investing and self._development_success
 
     @property
     def is_startup_credit_rationed(self) -> bool:
-        return self._startup_credit_rationed
+        # financial contracting (chapter 3.2)
+        if self.merger_policy in ["Strict", "Intermediate (late takeover prohibited)"]:
+            if self.startup_assets < self.asset_threshold:
+                return True
+            return False
+        else:
+            if self.startup_assets < self.asset_threshold_laissez_faire:
+                return True
+            return False
 
     @property
     def probability_credit_constrained_threshold(self) -> float:
@@ -542,7 +572,7 @@ class MergerPolicyModel(BaseModel):
     ):
         return (
             self._probability_credit_constrained_merger_policy,
-            self.get_merger_policy,
+            self.merger_policy,
         )
 
     @property
@@ -572,7 +602,7 @@ class MergerPolicyModel(BaseModel):
 
     def is_incumbent_expected_to_shelve(self) -> bool:
         """
-        Returns whether the incumbent is expected to shelve, whenever it acquires the entrant.
+        Returns whether the incumbent is expected to shelve, whenever it acquires the entrant (Condition 1).
 
         - True (expected to shelve): $p*(\\pi^M_I-\\pi^m_I) < K$
 
@@ -585,7 +615,7 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the additional expected profit for the incumbent, if it does not shelve the product after an acquisition.
 
-        $ Expected additional profit = p*(\\pi^M_I-\\pi^m_I)-K$
+        $ Expected \\; additional \\; profit = p*(\\pi^M_I-\\pi^m_I)-K$
         """
         return (
             self.success_probability
@@ -619,84 +649,16 @@ class MergerPolicyModel(BaseModel):
 
         The levels of tolerated harm are defined in A.4 (p.36ff.).
         """
-        if self.get_merger_policy == "Strict":
+        if self.merger_policy == "Strict":
             self._solve_game_strict_merger_policy()
-        elif self.get_merger_policy == "Intermediate (late takeover prohibited)":
+        elif self.merger_policy == "Intermediate (late takeover prohibited)":
             self._solve_game_late_takeover_prohibited()
-        elif self.get_merger_policy == "Intermediate (late takeover allowed)":
+        elif self.merger_policy == "Intermediate (late takeover allowed)":
             self._solve_game_late_takeover_allowed()
         else:
             self._solve_game_laissez_faire()
-        self._calculate_investment_decision()
 
     def _solve_game_laissez_faire(self):
-        self._calculate_startup_credit_rationed_laissez_faire()
-        self._calculate_takeover_decision_laissez_faire()
-
-    def _solve_game_late_takeover_allowed(self):
-        self._calculate_startup_credit_rationed_late_takeover_allowed()
-        self._calculate_takeover_decision_late_takeover_allowed()
-
-    def _solve_game_late_takeover_prohibited(self):
-        self._calculate_startup_credit_rationed_late_takeover_prohibited()
-        self._calculate_takeover_decision_late_takeover_prohibited()
-
-    def _solve_game_strict_merger_policy(self):
-        self._calculate_startup_credit_rationed_strict_merger_policy()
-        self._calculate_takeover_decision_strict_merger_policy()
-
-    def _calculate_takeover_decision_strict_merger_policy(self):
-        # decision of the AA and the startup (chapter 3.4.1)
-        # takeover bid of the incumbent (chapter 3.4.2)
-        if not self.is_incumbent_expected_to_shelve():
-            if (
-                self.probability_credit_constrained_threshold
-                < self.asset_threshold_cdf
-                < max(
-                    self._probability_credit_constrained_default,
-                    self.probability_credit_constrained_threshold,
-                )
-            ):
-                self._early_bid_attempt = "Pooling"
-                self._early_takeover = True
-            else:
-                self._early_bid_attempt = "Separating"
-                if self.is_startup_credit_rationed:
-                    self._early_takeover = True
-
-    def _calculate_takeover_decision_late_takeover_allowed(self):
-        if self.is_incumbent_expected_to_shelve():
-            if not self.is_startup_credit_rationed and self.development_success:
-                self._late_takeover = True
-                self._late_bid_attempt = "Pooling"
-        else:
-            self._early_bid_attempt = "Separating"
-            if self.is_startup_credit_rationed:
-                self._early_takeover = True
-            elif self.development_success:
-                self._late_bid_attempt = "Pooling"
-                self._late_takeover = True
-
-    def _calculate_takeover_decision_late_takeover_prohibited(self):
-        (
-            probability_credit_constrained_intermediate,
-            merger_policy,
-        ) = self.probability_credit_constrained_merger_policy
-        assert merger_policy == "Intermediate (late takeover prohibited)"
-        if self.is_incumbent_expected_to_shelve():
-            if self.asset_threshold_cdf < probability_credit_constrained_intermediate:
-                self._early_takeover = True
-                self._early_bid_attempt = "Pooling"
-        else:
-            if self.asset_threshold_cdf >= self.probability_credit_constrained_default:
-                self._early_bid_attempt = "Separating"
-                if self.is_startup_credit_rationed:
-                    self._early_takeover = True
-            else:
-                self._early_bid_attempt = "Pooling"
-                self._early_takeover = True
-
-    def _calculate_takeover_decision_laissez_faire(self):
         (
             probability_credit_constrained_laissez_faire,
             merger_policy,
@@ -708,45 +670,117 @@ class MergerPolicyModel(BaseModel):
                 >= probability_credit_constrained_laissez_faire
             ):
                 if not self.is_startup_credit_rationed and self.development_success:
-                    self._late_takeover = True
-                    self._late_bid_attempt = "Pooling"
+                    self._set_takeovers(late_takeover="Pooling")
+                else:
+                    self._set_takeovers(early_takeover="No", late_takeover="No")
             else:
-                self._early_takeover = True
-                self._early_bid_attempt = "Pooling"
-                self._owner_invests_in_development = False
+                self._set_takeovers(early_takeover="Pooling")
         else:
-            self._early_bid_attempt = "Separating"
             if self.is_startup_credit_rationed:
-                self._early_takeover = True
-            elif self.development_success:
-                self._late_takeover = True
-                self._late_bid_attempt = "Pooling"
+                self._set_takeovers(early_takeover="Separating")
+            else:
+                if self.development_success:
+                    self._set_takeovers(
+                        early_takeover="Separating",
+                        early_takeover_accepted=False,
+                        late_takeover="Pooling",
+                    )
+                else:
+                    self._set_takeovers(
+                        early_takeover="Separating",
+                        early_takeover_accepted=False,
+                        late_takeover="No",
+                    )
 
-    def _calculate_investment_decision(self):
-        # investment decision (chapter 3.3)
-        if (not self.is_startup_credit_rationed and not self.is_early_takeover) or (
-            not self.is_incumbent_expected_to_shelve() and self.is_early_takeover
-        ):
-            self._owner_invests_in_development = True
-        self._successful_development_outcome = (
-            self.is_owner_investing and self._development_success
+    def _solve_game_late_takeover_allowed(self):
+        if self.is_incumbent_expected_to_shelve():
+            if not self.is_startup_credit_rationed and self.development_success:
+                self._set_takeovers(late_takeover="Pooling")
+            else:
+                self._set_takeovers(early_takeover="No", late_takeover="No")
+        else:
+            if self.is_startup_credit_rationed:
+                self._set_takeovers(early_takeover="Separating")
+            else:
+                if self.development_success:
+                    self._set_takeovers(
+                        early_takeover="Separating",
+                        early_takeover_accepted=False,
+                        late_takeover="Pooling",
+                    )
+                else:
+                    self._set_takeovers(
+                        early_takeover="Separating", early_takeover_accepted=False
+                    )
+
+    def _solve_game_late_takeover_prohibited(self):
+        (
+            probability_credit_constrained_intermediate,
+            merger_policy,
+        ) = self.probability_credit_constrained_merger_policy
+        assert merger_policy == "Intermediate (late takeover prohibited)"
+        if self.is_incumbent_expected_to_shelve():
+            if self.asset_threshold_cdf >= probability_credit_constrained_intermediate:
+                self._set_takeovers(early_takeover="No", late_takeover="No")
+            else:
+                self._set_takeovers(early_takeover="Pooling")
+        else:
+            if self.asset_threshold_cdf >= self.probability_credit_constrained_default:
+                if self.is_startup_credit_rationed:
+                    self._set_takeovers(early_takeover="Separating")
+                else:
+                    self._set_takeovers(
+                        early_takeover="Separating", early_takeover_accepted=False
+                    )
+            else:
+                self._set_takeovers("Pooling")
+
+    def _solve_game_strict_merger_policy(self):
+        # decision of the AA and the startup (chapter 3.4.1)
+        # takeover bid of the incumbent (chapter 3.4.2)
+        if self.is_incumbent_expected_to_shelve():
+            self._set_takeovers(early_takeover="No", late_takeover="No")
+        else:
+            if (
+                self.probability_credit_constrained_threshold
+                < self.asset_threshold_cdf
+                < max(
+                    self._probability_credit_constrained_default,
+                    self.probability_credit_constrained_threshold,
+                )
+            ):
+                self._set_takeovers(early_takeover="Pooling")
+            else:
+                if self.is_startup_credit_rationed:
+                    self._set_takeovers(early_takeover="Separating")
+                else:
+                    self._set_takeovers(
+                        early_takeover="Separating", early_takeover_accepted=False
+                    )
+
+    def _set_takeovers(
+        self,
+        early_takeover: Literal["No", "Separating", "Pooling"] = "No",
+        late_takeover: Literal["No", "Separating", "Pooling"] = "No",
+        early_takeover_accepted=True,
+        late_takeover_accepted=True,
+    ) -> None:
+        assert self._early_bid_attempt is None and self._early_takeover is None
+        assert self._late_bid_attempt is None and self._late_takeover is None
+        assert not (
+            early_takeover in ["Separating", "Pooling"]
+            and early_takeover_accepted
+            and late_takeover in ["Separating", "Pooling"]
+            and late_takeover_accepted
+        ), "Only one takeover can occur."
+        self._early_takeover = (
+            False if early_takeover == "No" or not early_takeover_accepted else True
         )
-
-    def _calculate_startup_credit_rationed_strict_merger_policy(self):
-        # financial contracting (chapter 3.2)
-        if self.startup_assets < self.asset_threshold:
-            self._startup_credit_rationed = True
-
-    def _calculate_startup_credit_rationed_late_takeover_prohibited(self):
-        self._calculate_startup_credit_rationed_strict_merger_policy()
-
-    def _calculate_startup_credit_rationed_late_takeover_allowed(self):
-        self._calculate_startup_credit_rationed_strict_merger_policy()
-
-    def _calculate_startup_credit_rationed_laissez_faire(self):
-        # financial contracting (chapter 4.2)
-        if self.startup_assets < self.asset_threshold_laissez_faire:
-            self._startup_credit_rationed = True
+        self._early_bid_attempt = early_takeover
+        self._late_takeover = (
+            False if late_takeover == "No" or not late_takeover_accepted else True
+        )
+        self._late_bid_attempt = late_takeover
 
     def summary(self) -> Dict[str, any]:
         """

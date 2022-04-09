@@ -151,6 +151,9 @@
                                 <a class="function" href="#TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_not_profitable_below_assets_threshold_not_credit_rationed">test_not_profitable_below_assets_threshold_not_credit_rationed</a>
                         </li>
                         <li>
+                                <a class="function" href="#TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_not_profitable_above_assets_threshold_not_credit_rationed">test_not_profitable_above_assets_threshold_not_credit_rationed</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_profitable_below_assets_threshold_credit_rationed">test_profitable_below_assets_threshold_credit_rationed</a>
                         </li>
                         <li>
@@ -475,7 +478,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
-            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.078</span><span class="p">,</span>
             <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.76</span><span class="p">,</span>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
         <span class="p">)</span>
@@ -491,7 +494,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
-            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.078</span><span class="p">,</span>
             <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.76</span><span class="p">,</span>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
             <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -509,7 +512,7 @@
     <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -524,7 +527,7 @@
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -536,10 +539,19 @@
 
     <span class="k">def</span> <span class="nf">test_not_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
-            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.099</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.339</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+            <span class="n">consumer_surplus_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -554,7 +566,7 @@
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -571,7 +583,7 @@
             <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -583,12 +595,18 @@
 
     <span class="k">def</span> <span class="nf">test_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
-            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
-            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
-            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span><span class="p">,</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.179</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -603,7 +621,7 @@
     <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -611,6 +629,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_not_profitable_above_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.38</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.22</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">test_profitable_below_assets_threshold_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -624,7 +662,7 @@
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -646,7 +684,7 @@
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -671,7 +709,7 @@
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -696,7 +734,7 @@
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -1683,7 +1721,7 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
-            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.078</span><span class="p">,</span>
             <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.76</span><span class="p">,</span>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
         <span class="p">)</span>
@@ -1699,7 +1737,7 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
-            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.078</span><span class="p">,</span>
             <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.76</span><span class="p">,</span>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
             <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1922,7 +1960,7 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
-            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.078</span><span class="p">,</span>
             <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.76</span><span class="p">,</span>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
         <span class="p">)</span>
@@ -1954,7 +1992,7 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
-            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.078</span><span class="p">,</span>
             <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.76</span><span class="p">,</span>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
             <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -2068,7 +2106,7 @@ attribute so can be configured by individual tests if required.</li>
     <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2083,7 +2121,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2095,10 +2133,19 @@ attribute so can be configured by individual tests if required.</li>
 
     <span class="k">def</span> <span class="nf">test_not_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
-            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.099</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.339</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+            <span class="n">consumer_surplus_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2113,7 +2160,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2130,7 +2177,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2142,12 +2189,18 @@ attribute so can be configured by individual tests if required.</li>
 
     <span class="k">def</span> <span class="nf">test_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
-            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
-            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
-            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span><span class="p">,</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.179</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2209,7 +2262,7 @@ attribute so can be configured by individual tests if required.</li>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2240,7 +2293,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2268,10 +2321,19 @@ attribute so can be configured by individual tests if required.</li>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
-            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.099</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.51</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.339</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+            <span class="n">consumer_surplus_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2302,7 +2364,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2335,7 +2397,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2363,12 +2425,18 @@ attribute so can be configured by individual tests if required.</li>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_profitable_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
-            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
-            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span>
-            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.009</span><span class="p">,</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.075</span><span class="p">,</span>
+            <span class="n">startup_assets</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.076</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.179</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2479,7 +2547,7 @@ attribute so can be configured by individual tests if required.</li>
     <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2487,6 +2555,26 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_not_profitable_above_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.38</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.22</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">test_profitable_below_assets_threshold_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2500,7 +2588,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2522,7 +2610,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2547,7 +2635,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2572,7 +2660,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2634,7 +2722,7 @@ attribute so can be configured by individual tests if required.</li>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_below_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span><span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2642,6 +2730,42 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_not_profitable_above_assets_threshold_not_credit_rationed" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#TestIntermediateLateTakeoverProhibitedMergerPolicyModel.test_not_profitable_above_assets_threshold_not_credit_rationed">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">test_not_profitable_above_assets_threshold_not_credit_rationed</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_not_profitable_above_assets_threshold_not_credit_rationed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">MergerPolicyModel</span><span class="p">(</span>
+            <span class="n">tolerated_level_of_harm</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>
+            <span class="n">success_probability</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.38</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.22</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_late_bidding_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_owner_investing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_development_successful</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_early_takeover</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_late_takeover</span><span class="p">)</span>
 </pre></div>
 
@@ -2671,7 +2795,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2709,7 +2833,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Pooling&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2750,7 +2874,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>
@@ -2791,7 +2915,7 @@ attribute so can be configured by individual tests if required.</li>
             <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_merger_policy</span>
+            <span class="s2">&quot;Intermediate (late takeover prohibited)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">merger_policy</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Separating&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_early_bidding_type</span><span class="p">)</span>

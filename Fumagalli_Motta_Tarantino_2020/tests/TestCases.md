@@ -55,14 +55,14 @@ This testcase tests, whether the implemented logic for a laissez-faire merger po
 
 This testcase tests, whether the implemented logic for a intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:
 
-| Name of test                                                       | Is the start-up credit rationed? | Early bidding type (t=1) | Late bidding type (t=2) | Development attempt? | Development success | Early takeover (t=1) | Late takeover (t=2) |
-|:-------------------------------------------------------------------|:--------------------------------:|:------------------------:|:-----------------------:|:--------------------:|:-------------------:|:--------------------:|:-------------------:|
-| test_not_profitable_below_assets_threshold_not_credit_rationed     |              False               |         Pooling          |           No            |        False         |   Does not matter   |         True         |        False        |
-| **test_not_profitable_above_assets_threshold_not_credit_rationed** |              False               |            No            |           No            |         True         |   Does not matter   |        False         |        False        |
-| test_profitable_above_assets_threshold_not_credit_rationed         |              False               |        Separating        |           No            |         True         |   Does not matter   |        False         |        False        |
-| test_profitable_above_assets_threshold_credit_rationed             |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
-| test_profitable_below_assets_threshold_not_credit_rationed         |              False               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
-| test_profitable_below_assets_threshold_credit_rationed             |               True               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
+| Name of test                                                   | Is the start-up credit rationed? | Early bidding type (t=1) | Late bidding type (t=2) | Development attempt? | Development success | Early takeover (t=1) | Late takeover (t=2) |
+|:---------------------------------------------------------------|:--------------------------------:|:------------------------:|:-----------------------:|:--------------------:|:-------------------:|:--------------------:|:-------------------:|
+| test_not_profitable_below_assets_threshold_not_credit_rationed |              False               |         Pooling          |           No            |        False         |   Does not matter   |         True         |        False        |
+| test_not_profitable_above_assets_threshold_not_credit_rationed |              False               |            No            |           No            |         True         |   Does not matter   |        False         |        False        |
+| test_profitable_above_assets_threshold_not_credit_rationed     |              False               |        Separating        |           No            |         True         |   Does not matter   |        False         |        False        |
+| test_profitable_above_assets_threshold_credit_rationed         |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_profitable_below_assets_threshold_not_credit_rationed     |              False               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_profitable_below_assets_threshold_credit_rationed         |               True               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
 
 ## TestStrictMergerPolicyModel
 
