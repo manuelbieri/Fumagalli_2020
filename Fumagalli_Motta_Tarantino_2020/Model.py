@@ -440,7 +440,7 @@ class MergerPolicyModel(BaseModel):
     @property
     def asset_threshold_cdf(self) -> float:
         """
-        Returns the value of the continuous distribution function for the assest threshold.
+        Returns the value of the continuous distribution function for the asset threshold.
         """
         return MergerPolicyModel._get_cdf_value(self.asset_threshold)
 
