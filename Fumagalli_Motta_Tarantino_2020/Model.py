@@ -319,93 +319,34 @@ class MergerPolicyModel(BaseModel):
 
         self._early_bid_attempt: Optional[Literal["No", "Separating", "Pooling"]] = None
         self._late_bid_attempt: Optional[Literal["No", "Separating", "Pooling"]] = None
-        self._owner_invests_in_development: Optional[bool] = None
-        self._successful_development_outcome: Optional[bool] = None
         self._early_takeover: Optional[bool] = None
         self._late_takeover: Optional[bool] = None
-        assert (
-            0 < self.probability_credit_constrained_threshold < 1
-        ), "Violates A.1 (has to be between 0 and 1)"
-        self._calculate_probability_credit_rationed()
+
+        self._check_asset_distribution_thresholds()
         self._solve_game()
 
-    def _calculate_probability_credit_rationed(self) -> None:
-        self._probability_credit_constrained_default = (
-            self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_duopoly
-                - self.startup_profit_duopoly
-            )
-            / (
-                self.success_probability
-                * (
-                    self.incumbent_profit_with_innovation
-                    - self.incumbent_profit_duopoly
-                )
-                - self.development_costs
-            )
-        )
-        if self.merger_policy == "Strict":
-            self._probability_credit_constrained_merger_policy = (
-                self._probability_credit_constrained_default
-            )
-        elif self.merger_policy == "Laissez-faire":
-            self._probability_credit_constrained_merger_policy = (
-                self._calculate_probability_credit_constrained_laissez_faire()
-            )
-        else:
-            self._probability_credit_constrained_merger_policy = (
-                self.success_probability
-                * (
-                    self.incumbent_profit_without_innovation
-                    - self.incumbent_profit_duopoly
-                    - self.startup_profit_duopoly
-                )
-                + self.development_costs
-            ) / (
-                self.success_probability
-                * (
-                    self.incumbent_profit_without_innovation
-                    - self.incumbent_profit_duopoly
-                )
-            )
-
+    def _check_asset_distribution_thresholds(self) -> None:
         assert (
-            0 < self.probability_credit_constrained_default < 1
+            0 < self.asset_distribution_threshold < 1
         ), "Violates A.2 (has to be between 0 and 1)"
-
-        assert (
-            self.probability_credit_constrained_merger_policy[1] == self.merger_policy
-        ), "Probability calculated for the wrong merger policy"
-
-    def _calculate_probability_credit_constrained_laissez_faire(self) -> float:
-        probability_credit_constrained = (
-            self.success_probability
-            * (
-                self.incumbent_profit_without_innovation
-                - self.incumbent_profit_with_innovation
-            )
-            + self.development_costs
-        ) / (
-            self.success_probability
-            * (
-                self.incumbent_profit_without_innovation
-                + self.startup_profit_duopoly
-                - self.incumbent_profit_with_innovation
-            )
-        )
-        assert (
-            0 < probability_credit_constrained < 1
-            or self.success_probability
-            * (
-                self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
-            )
-            - self.development_costs
-            > 0
-        ), "Violates Proposition 2 (laissez-faire) or Lemma A-1 (intermediate) (has to be between 0 and 1)"
-        return probability_credit_constrained
+        if self.merger_policy == "Strict":
+            assert (
+                0 < self.asset_distribution_threshold_strict < 1
+            ), "Violates Condition 2 (has to be between 0 and 1)"
+        elif (
+            self.merger_policy == "Intermediate (late takeover prohibited)"
+            and self.is_incumbent_expected_to_shelve()
+        ):
+            assert (
+                0 <= self.asset_distribution_threshold_intermediate < 1
+            ), "Violates Condition A-3 (has to be between 0 and 1)"
+        elif (
+            self.merger_policy == "Laissez-faire"
+            and self.is_incumbent_expected_to_shelve()
+        ):
+            assert (
+                0 < self.asset_distribution_threshold_laissez_faire < 1
+            ), "Violates Condition 4 (has to be between 0 and 1)"
 
     @property
     def merger_policy(
@@ -445,7 +386,7 @@ class MergerPolicyModel(BaseModel):
         return MergerPolicyModel._get_cdf_value(self.asset_threshold)
 
     @property
-    def asset_threshold_laissez_faire(self) -> float:
+    def asset_threshold_late_takeover(self) -> float:
         """
         The prospect that the start-up will be acquired at $t = 2$ alleviates financial constraints: there exists a
         threshold level $\\bar{A}^T = B - (\\pi_I^M - K)$
@@ -460,7 +401,7 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
         """
-        return MergerPolicyModel._get_cdf_value(self.asset_threshold_laissez_faire)
+        return MergerPolicyModel._get_cdf_value(self.asset_threshold_late_takeover)
 
     @property
     def get_early_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
@@ -505,11 +446,11 @@ class MergerPolicyModel(BaseModel):
 
         Returns
         -------
-        True, if the owner of the innovation at $t=1$ invests in the project, instead of shelving.
+        True
+            If the owner of the innovation at $t=1$ invests in the project, instead of shelving.
         """
         assert self.is_startup_credit_rationed is not None
         assert self.is_early_takeover is not None
-        assert self.is_late_takeover is not None
         if (not self.is_startup_credit_rationed and not self.is_early_takeover) or (
             not self.is_incumbent_expected_to_shelve() and self.is_early_takeover
         ):
@@ -527,8 +468,10 @@ class MergerPolicyModel(BaseModel):
 
         Returns
         -------
-        True, if both conditions are met.
+        True
+            If both conditions are met.
         """
+        assert self.is_owner_investing is not None
         return self.is_owner_investing and self._development_success
 
     @property
@@ -538,66 +481,92 @@ class MergerPolicyModel(BaseModel):
             if self.startup_assets < self.asset_threshold:
                 return True
             return False
-        if self.startup_assets < self.asset_threshold_laissez_faire:
+        if self.startup_assets < self.asset_threshold_late_takeover:
             return True
         return False
 
     @property
-    def probability_credit_constrained_threshold(self) -> float:
+    def asset_distribution_threshold_strict(self) -> float:
+        """
+        Threshold defined in Lemma 3 :$\\;\\Gamma(\\cdot)=\\frac{p(W^d-W^M)}{p(W^d-W^m)-K}$
+        """
+        return (
+            self.success_probability * (self.w_duopoly - self.w_with_innovation)
+        ) / (
+            self.success_probability * (self.w_duopoly - self.w_without_innovation)
+            - self.development_costs
+        )
+
+    @property
+    def asset_distribution_threshold(self) -> float:
+        """
+        Threshold defined in Condition 3 :$\\;\\Phi(\\cdot)=\\frac{p(\\pi^M_I-\\pi^d_I-\\pi^d_S)}{p(\\pi^M_I-\\pi^d_I)-K}$
+        """
         return (
             self.success_probability
-            * (self.w_duopoly - self.w_with_innovation)
-            / (
-                self.success_probability * (self.w_duopoly - self.w_without_innovation)
-                - self.development_costs
+            * (
+                self.incumbent_profit_with_innovation
+                - self.incumbent_profit_duopoly
+                - self.startup_profit_duopoly
+            )
+        ) / (
+            self.success_probability
+            * (self.incumbent_profit_with_innovation - self.incumbent_profit_duopoly)
+            - self.development_costs
+        )
+
+    @property
+    def asset_distribution_threshold_laissez_faire(self) -> float:
+        """
+        Threshold defined in Condition 4 :$\\;\\Phi^T(\\cdot)=\\frac{p(\\pi^m_I-\\pi^M_I)+K}{p(\\pi^m_I+\\pi^d_S-\\pi^M_I)}$
+        """
+        return (
+            self.success_probability
+            * (
+                self.incumbent_profit_without_innovation
+                - self.incumbent_profit_with_innovation
+            )
+            + self.development_costs
+        ) / (
+            self.success_probability
+            * (
+                self.incumbent_profit_without_innovation
+                + self.startup_profit_duopoly
+                - self.incumbent_profit_with_innovation
             )
         )
 
     @property
-    def probability_credit_constrained_default(self) -> float:
-        return self._probability_credit_constrained_default
-
-    @property
-    def probability_credit_constrained_merger_policy(
-        self,
-    ) -> (
-        float,
-        Literal[
-            "Strict",
-            "Intermediate (late takeover prohibited)",
-            "Intermediate (late takeover allowed)",
-            "Laissez-faire",
-        ],
-    ):
+    def asset_distribution_threshold_intermediate(self) -> float:
+        """
+        Threshold defined in A-3 :$\\;\\Phi^{\\prime}(\\cdot)=\\frac{p(\\pi^m_I-\\pi^d_I-\\pi^d_S)+K}{p(\\pi^m_I+\\pi^d_I)}$
+        """
         return (
-            self._probability_credit_constrained_merger_policy,
-            self.merger_policy,
+            self.success_probability
+            * (
+                self.incumbent_profit_without_innovation
+                - self.incumbent_profit_duopoly
+                - self.startup_profit_duopoly
+            )
+            + self.development_costs
+        ) / (
+            self.success_probability
+            * (self.incumbent_profit_without_innovation - self.incumbent_profit_duopoly)
         )
 
     @property
     def is_early_takeover(self) -> bool:
+        assert self._early_takeover is not None
         return self._early_takeover
 
     @property
     def is_late_takeover(self) -> bool:
+        assert self._late_takeover is not None
         return self._late_takeover
 
     @staticmethod
     def _get_cdf_value(value: float) -> float:
         return float(scipy.stats.norm.cdf(value))
-
-    def _calculate_h0(self) -> float:
-        return max(
-            (1 - self.asset_threshold_cdf)
-            * (self.success_probability * (self.w_duopoly - self.w_with_innovation))
-            - self.asset_threshold_cdf
-            * (
-                self.success_probability
-                * (self.w_with_innovation - self.w_without_innovation)
-                - self.development_costs
-            ),
-            0,
-        )
 
     def is_incumbent_expected_to_shelve(self) -> bool:
         """
@@ -623,6 +592,19 @@ class MergerPolicyModel(BaseModel):
                 - self.incumbent_profit_without_innovation
             )
             - self.development_costs
+        )
+
+    def _calculate_h0(self) -> float:
+        return max(
+            (1 - self.asset_threshold_cdf)
+            * (self.success_probability * (self.w_duopoly - self.w_with_innovation))
+            - self.asset_threshold_cdf
+            * (
+                self.success_probability
+                * (self.w_with_innovation - self.w_without_innovation)
+                - self.development_costs
+            ),
+            0,
         )
 
     def _calculate_h1(self) -> float:
@@ -658,15 +640,10 @@ class MergerPolicyModel(BaseModel):
             self._solve_game_laissez_faire()
 
     def _solve_game_laissez_faire(self):
-        (
-            probability_credit_constrained_laissez_faire,
-            merger_policy,
-        ) = self.probability_credit_constrained_merger_policy
-        assert merger_policy == "Laissez-faire"
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_laissez_faire_cdf
-                >= probability_credit_constrained_laissez_faire
+                >= self.asset_distribution_threshold_laissez_faire
             ):
                 if not self.is_startup_credit_rationed and self.development_success:
                     self._set_takeovers(late_takeover="Pooling")
@@ -713,18 +690,16 @@ class MergerPolicyModel(BaseModel):
                     )
 
     def _solve_game_late_takeover_prohibited(self):
-        (
-            probability_credit_constrained_intermediate,
-            merger_policy,
-        ) = self.probability_credit_constrained_merger_policy
-        assert merger_policy == "Intermediate (late takeover prohibited)"
         if self.is_incumbent_expected_to_shelve():
-            if self.asset_threshold_cdf >= probability_credit_constrained_intermediate:
+            if (
+                self.asset_threshold_cdf
+                >= self.asset_distribution_threshold_intermediate
+            ):
                 self._set_takeovers(early_takeover="No", late_takeover="No")
             else:
                 self._set_takeovers(early_takeover="Pooling")
         else:
-            if self.asset_threshold_cdf >= self.probability_credit_constrained_default:
+            if self.asset_threshold_cdf >= self.asset_distribution_threshold:
                 if self.is_startup_credit_rationed:
                     self._set_takeovers(early_takeover="Separating")
                 else:
@@ -741,11 +716,11 @@ class MergerPolicyModel(BaseModel):
             self._set_takeovers(early_takeover="No", late_takeover="No")
         else:
             if (
-                self.probability_credit_constrained_threshold
+                self.asset_distribution_threshold_strict
                 < self.asset_threshold_cdf
                 < max(
-                    self._probability_credit_constrained_default,
-                    self.probability_credit_constrained_threshold,
+                    self.asset_distribution_threshold,
+                    self.asset_distribution_threshold_strict,
                 )
             ):
                 self._set_takeovers(early_takeover="Pooling")
@@ -866,7 +841,7 @@ class OptimalMergerPolicy(MergerPolicyModel):
     def is_financial_imperfection_severe(self) -> bool:
         return (
             self.asset_threshold_laissez_faire_cdf
-            >= self._calculate_probability_credit_constrained_laissez_faire()
+            >= self.asset_distribution_threshold_laissez_faire
         )
 
     def is_early_takeover_followed_by_shelving_optimal(self) -> bool:
@@ -882,7 +857,7 @@ class OptimalMergerPolicy(MergerPolicyModel):
             - self.development_costs
             - (self.w_duopoly - self.w_with_innovation)
         ) / (
-            self.development_success
+            self.success_probability
             * (self.w_with_innovation - self.w_without_innovation)
             - self.development_costs
         )
