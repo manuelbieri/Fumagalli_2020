@@ -818,27 +818,15 @@ class MergerPolicyModel(BaseModel):
 
 
 class OptimalMergerPolicy(MergerPolicyModel):
+    """
+    Add functionality to determine the optimal merger policy for a given set of parameters.
+
+    Annotation: As discussed in section 5.1, a policy that is more lenient with respect to early acquisitions is always
+    dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.
+    """
+
     def __init__(self, **kwargs):
         super(OptimalMergerPolicy, self).__init__(**kwargs)
-
-    def is_strict_beneficial_compared_to_laissez_faire(self) -> bool:
-        # section 6.1
-        return (
-            self.success_probability * (self.w_duopoly - self.w_without_innovation)
-            - self.development_costs
-        ) / (
-            self.success_probability
-            * (self.w_with_innovation - self.w_without_innovation)
-            - self.development_costs
-        ) > (
-            1 - self.asset_threshold_laissez_faire_cdf
-        ) / (
-            1 - self.asset_threshold_cdf
-        )
-
-    def is_strict_beneficial_compared_to_intermediate(self) -> bool:
-        # section 6.2
-        return self.is_strict_beneficial_compared_to_laissez_faire()
 
     def get_optimal_merger_policy(
         self,
@@ -848,7 +836,15 @@ class OptimalMergerPolicy(MergerPolicyModel):
         "Intermediate (late takeover allowed)",
         "Laissez-faire",
     ]:
-        # section 6.3
+        """
+        A strict merger policy is always optimal when the incumbent is expected to invest. When the incumbent is expected
+        to shelve, a more lenient policy (that either authorises any type of takeover, or that blocks early takeovers when
+        the incumbent makes a pooling bid and plans to shelve, and authorises late takeovers) may be optimal, but under the
+        cumulative conditions indicated in proposition 4.
+
+        See: OptimalMergerPolicy.is_laissez_faire_optimal, OptimalMergerPolicy.is_intermediate_optimal and OptimalMergerPolicy.is_strict_optimal
+
+        """
         if self.is_laissez_faire_optimal():
             return "Laissez-faire"
         if self.is_intermediate_optimal():
@@ -856,18 +852,73 @@ class OptimalMergerPolicy(MergerPolicyModel):
         return "Strict"
 
     def is_laissez_faire_optimal(self) -> bool:
+        """
+        Returns whether a laissez-faire policy is optimal.
+
+
+        A laissez-faire policy (that authorises any takeover) is optimal, if:
+        1. Incumbent is expected to shelve ($p(\\pi^M_I-\\pi^m_I) < K$).
+        2. Financial imperfections are severe ($F(\\bar{A}^T)\\ge\\Phi^T(\\cdot)$).
+        3. Approving early takeovers followed by shelving is optimal ($F(\\bar{A}^T)\\ge\\Lambda(\\cdot)$).
+        4. Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+        likely that the innovation is commercialised (Condition 6 not satisfied).
+
+
+        Returns
+        -------
+        True
+            If a laissez-faire merger policy is optimal.
+        """
         return (
             self.is_incumbent_expected_to_shelve()
             and self.is_financial_imperfection_severe()
-            and self.is_early_takeover_followed_by_shelving_optimal()
-            and not self.is_strict_beneficial_compared_to_laissez_faire()
+            and self.is_shelving_after_early_takeover_optimal()
+            and not self.is_strict_optimal()
         )
 
     def is_intermediate_optimal(self) -> bool:
+        """
+        Returns whether an intermediate merger policy (late takeover allowed) is optimal.
+
+        An intermediate merger policy (late takeovers allowed) is optimal, if:
+        1. Incumbent is expected to shelve ($p(\\pi^M_I-\\pi^m_I) < K$).
+        2. Approving early takeovers followed by shelving is not optimal ($F(\\bar{A}^T) < \\Lambda(\\cdot)$).
+        3. Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+        likely that the innovation is commercialised (Condition 6 not satisfied).
+
+        Returns
+        -------
+        True
+            If an intermediate merger policy (late takeover allowed) is optimal.
+        """
         return (
             self.is_incumbent_expected_to_shelve()
-            and not self.is_early_takeover_followed_by_shelving_optimal()
-            and not self.is_strict_beneficial_compared_to_intermediate()
+            and not self.is_shelving_after_early_takeover_optimal()
+            and not self.is_strict_optimal()
+        )
+
+    def is_strict_optimal(self) -> bool:
+        """
+        Returns whether the strict merger policy is optimal.
+
+        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A}^T)}$
+
+        Returns
+        -------
+        True
+            If the strict merger policy is optimal.
+        """
+        return (
+            self.success_probability * (self.w_duopoly - self.w_without_innovation)
+            - self.development_costs
+        ) / (
+            self.success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs
+        ) >= (
+            1 - self.asset_threshold_laissez_faire_cdf
+        ) / (
+            1 - self.asset_threshold_cdf
         )
 
     def is_financial_imperfection_severe(self) -> bool:
@@ -876,13 +927,27 @@ class OptimalMergerPolicy(MergerPolicyModel):
             >= self.asset_distribution_threshold_laissez_faire
         )
 
-    def is_early_takeover_followed_by_shelving_optimal(self) -> bool:
+    def is_shelving_after_early_takeover_optimal(self) -> bool:
+        """
+        If the harm to welfare caused by an early takeover is lower than the one, caused by a late takeover, then also
+        early takeovers must be approved, even in the case of a pooling offer followed by shelving. Such a scenario occurs
+        if (and only if): $F(\\bar{A}^T)\\ge\\Lambda(\\cdot)$
+
+        Returns
+        -------
+        True
+            If the above mentioned condition is met.
+        """
         return (
             self.asset_threshold_laissez_faire_cdf
-            >= self.threshold_approved_takeover_followed_pooling_offer()
+            >= self.asset_distribution_threshold_intermediate_approval_despite_shelving
         )
 
-    def threshold_approved_takeover_followed_pooling_offer(self) -> float:
+    @property
+    def asset_distribution_threshold_intermediate_approval_despite_shelving(self) -> float:
+        """
+        Threshold defined in Condition 5 :$\\;\\Lambda(\\cdot)=\\frac{p(W^M-W^m)-K-(W^d-W^M)}{p(W^M-W^m)-K}$
+        """
         return (
             self.success_probability
             * (self.w_with_innovation - self.w_without_innovation)
