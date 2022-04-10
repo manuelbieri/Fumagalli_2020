@@ -125,7 +125,7 @@
                                 <a class="variable" href="#MergerPolicyModel.asset_threshold_late_takeover">asset_threshold_late_takeover</a>
                         </li>
                         <li>
-                                <a class="variable" href="#MergerPolicyModel.asset_threshold_laissez_faire_cdf">asset_threshold_laissez_faire_cdf</a>
+                                <a class="variable" href="#MergerPolicyModel.asset_threshold_late_takeover_cdf">asset_threshold_late_takeover_cdf</a>
                         </li>
                         <li>
                                 <a class="variable" href="#MergerPolicyModel.get_early_bidding_type">get_early_bidding_type</a>
@@ -533,11 +533,11 @@
 <span class="sd">    - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes the same arguments as BaseModel.__init__.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -621,7 +621,7 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">asset_threshold_laissez_faire_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">asset_threshold_late_takeover_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the value of the continuous distribution function for the asset threshold under laissez-faire.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -872,7 +872,7 @@
     <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">,</span>
-            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span><span class="p">)</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span><span class="p">)</span>
             <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
                 <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
@@ -898,7 +898,7 @@
     <span class="k">def</span> <span class="nf">_solve_game_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
                 <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_laissez_faire</span>
             <span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
@@ -1049,8 +1049,8 @@
 <span class="sd">    dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_optimal_merger_policy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1125,7 +1125,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether the strict merger policy is optimal.</span>
 
-<span class="sd">        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A}^T)}$</span>
+<span class="sd">        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A})}$</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1140,14 +1140,14 @@
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span>
-            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
         <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
             <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">is_financial_imperfection_severe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
             <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_laissez_faire</span>
         <span class="p">)</span>
 
@@ -1163,12 +1163,14 @@
 <span class="sd">            If the above mentioned condition is met.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
             <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_intermediate_approval_despite_shelving</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">asset_distribution_threshold_intermediate_approval_despite_shelving</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">asset_distribution_threshold_intermediate_approval_despite_shelving</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Threshold defined in Condition 5 :$\\;\\Lambda(\\cdot)=\\frac{p(W^M-W^m)-K-(W^d-W^M)}{p(W^M-W^m)-K}$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2002,11 +2004,11 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
 <span class="sd">    - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes the same arguments as BaseModel.__init__.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -2090,7 +2092,7 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">asset_threshold_laissez_faire_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">asset_threshold_late_takeover_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the value of the continuous distribution function for the asset threshold under laissez-faire.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2341,7 +2343,7 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
     <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">,</span>
-            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span><span class="p">)</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span><span class="p">)</span>
             <span class="o">*</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
                 <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
@@ -2367,7 +2369,7 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
     <span class="k">def</span> <span class="nf">_solve_game_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
                 <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_laissez_faire</span>
             <span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
@@ -2529,16 +2531,16 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
                                         <div class="attr function"><a class="headerlink" href="#MergerPolicyModel.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">MergerPolicyModel</span><span class="signature">(**kwargs)</span>
+            <span class="name">MergerPolicyModel</span><span class="signature">(*args, **kwargs)</span>
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes the same arguments as BaseModel.__init__.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MergerPolicyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_probability_credit_constrained_merger_policy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -2607,10 +2609,10 @@ threshold level $\bar{A}^T = B - (\pi_I^M - K)$</p>
 
 
                             </div>
-                            <div id="MergerPolicyModel.asset_threshold_laissez_faire_cdf" class="classattr">
-                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.asset_threshold_laissez_faire_cdf">#&nbsp;&nbsp</a>
+                            <div id="MergerPolicyModel.asset_threshold_late_takeover_cdf" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#MergerPolicyModel.asset_threshold_late_takeover_cdf">#&nbsp;&nbsp</a>
 
-        <span class="name">asset_threshold_laissez_faire_cdf</span><span class="annotation">: float</span>
+        <span class="name">asset_threshold_late_takeover_cdf</span><span class="annotation">: float</span>
     </div>
 
     
@@ -3008,8 +3010,8 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
 <span class="sd">    dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_optimal_merger_policy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3084,7 +3086,7 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether the strict merger policy is optimal.</span>
 
-<span class="sd">        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A}^T)}$</span>
+<span class="sd">        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A})}$</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -3099,14 +3101,14 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span>
-            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
         <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
             <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">is_financial_imperfection_severe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
             <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_laissez_faire</span>
         <span class="p">)</span>
 
@@ -3122,12 +3124,14 @@ cost. When this is the case, the incumbent will shelve the project and the acqui
 <span class="sd">            If the above mentioned condition is met.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
             <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_intermediate_approval_despite_shelving</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">asset_distribution_threshold_intermediate_approval_despite_shelving</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">asset_distribution_threshold_intermediate_approval_despite_shelving</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Threshold defined in Condition 5 :$\\;\\Lambda(\\cdot)=\\frac{p(W^M-W^m)-K-(W^d-W^M)}{p(W^M-W^m)-K}$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3156,13 +3160,13 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
                                         <div class="attr function"><a class="headerlink" href="#OptimalMergerPolicy.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">OptimalMergerPolicy</span><span class="signature">(**kwargs)</span>
+            <span class="name">OptimalMergerPolicy</span><span class="signature">(*args, **kwargs)</span>
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OptimalMergerPolicy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -3347,7 +3351,7 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether the strict merger policy is optimal.</span>
 
-<span class="sd">        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A}^T)}$</span>
+<span class="sd">        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A})}$</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -3362,7 +3366,7 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
             <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
         <span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span>
-            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
         <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
             <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
         <span class="p">)</span>
@@ -3372,7 +3376,7 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 
             <div class="docstring"><p>Returns whether the strict merger policy is optimal.</p>
 
-<p>The strict merger is optimal, if Condition 6 is met: $\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \ge \frac{1-F(\bar{A}^T)}{1-F(\bar{A}^T)}$</p>
+<p>The strict merger is optimal, if Condition 6 is met: $\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \ge \frac{1-F(\bar{A}^T)}{1-F(\bar{A})}$</p>
 
 <h6 id="returns">Returns</h6>
 
@@ -3395,7 +3399,7 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
             <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_laissez_faire</span>
         <span class="p">)</span>
 </pre></div>
@@ -3427,7 +3431,7 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 <span class="sd">            If the above mentioned condition is met.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_laissez_faire_cdf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
             <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_intermediate_approval_despite_shelving</span>
         <span class="p">)</span>
 </pre></div>
@@ -3467,7 +3471,7 @@ if (and only if): $F(\bar{A}^T)\ge\Lambda(\cdot)$</p>
                 <dd id="OptimalMergerPolicy.asset_threshold" class="variable"><a href="#MergerPolicyModel.asset_threshold">asset_threshold</a></dd>
                 <dd id="OptimalMergerPolicy.asset_threshold_cdf" class="variable"><a href="#MergerPolicyModel.asset_threshold_cdf">asset_threshold_cdf</a></dd>
                 <dd id="OptimalMergerPolicy.asset_threshold_late_takeover" class="variable"><a href="#MergerPolicyModel.asset_threshold_late_takeover">asset_threshold_late_takeover</a></dd>
-                <dd id="OptimalMergerPolicy.asset_threshold_laissez_faire_cdf" class="variable"><a href="#MergerPolicyModel.asset_threshold_laissez_faire_cdf">asset_threshold_laissez_faire_cdf</a></dd>
+                <dd id="OptimalMergerPolicy.asset_threshold_late_takeover_cdf" class="variable"><a href="#MergerPolicyModel.asset_threshold_late_takeover_cdf">asset_threshold_late_takeover_cdf</a></dd>
                 <dd id="OptimalMergerPolicy.get_early_bidding_type" class="variable"><a href="#MergerPolicyModel.get_early_bidding_type">get_early_bidding_type</a></dd>
                 <dd id="OptimalMergerPolicy.get_late_bidding_type" class="variable"><a href="#MergerPolicyModel.get_late_bidding_type">get_late_bidding_type</a></dd>
                 <dd id="OptimalMergerPolicy.is_early_takeover" class="variable"><a href="#MergerPolicyModel.is_early_takeover">is_early_takeover</a></dd>

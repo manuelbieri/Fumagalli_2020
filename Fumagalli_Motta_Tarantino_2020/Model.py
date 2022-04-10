@@ -309,11 +309,11 @@ class MergerPolicyModel(BaseModel):
     - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Takes the same arguments as BaseModel.__init__.
         """
-        super(MergerPolicyModel, self).__init__(**kwargs)
+        super(MergerPolicyModel, self).__init__(*args, **kwargs)
         self._probability_credit_constrained_default: float = 0
         self._probability_credit_constrained_merger_policy: float = 0
 
@@ -397,7 +397,7 @@ class MergerPolicyModel(BaseModel):
         )
 
     @property
-    def asset_threshold_laissez_faire_cdf(self) -> float:
+    def asset_threshold_late_takeover_cdf(self) -> float:
         """
         Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
         """
@@ -648,7 +648,7 @@ class MergerPolicyModel(BaseModel):
     def _calculate_h2(self) -> float:
         return max(
             self.w_duopoly - self.w_with_innovation,
-            (1 - self.asset_threshold_laissez_faire_cdf)
+            (1 - self.asset_threshold_late_takeover_cdf)
             * (
                 self.success_probability
                 * (self.w_with_innovation - self.w_without_innovation)
@@ -674,7 +674,7 @@ class MergerPolicyModel(BaseModel):
     def _solve_game_laissez_faire(self):
         if self.is_incumbent_expected_to_shelve():
             if (
-                self.asset_threshold_laissez_faire_cdf
+                self.asset_threshold_late_takeover_cdf
                 >= self.asset_distribution_threshold_laissez_faire
             ):
                 if not self.is_startup_credit_rationed and self.development_success:
@@ -825,8 +825,8 @@ class OptimalMergerPolicy(MergerPolicyModel):
     dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.
     """
 
-    def __init__(self, **kwargs):
-        super(OptimalMergerPolicy, self).__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super(OptimalMergerPolicy, self).__init__(*args, **kwargs)
 
     def get_optimal_merger_policy(
         self,
@@ -901,7 +901,7 @@ class OptimalMergerPolicy(MergerPolicyModel):
         """
         Returns whether the strict merger policy is optimal.
 
-        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A}^T)}$
+        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A})}$
 
         Returns
         -------
@@ -916,14 +916,14 @@ class OptimalMergerPolicy(MergerPolicyModel):
             * (self.w_with_innovation - self.w_without_innovation)
             - self.development_costs
         ) >= (
-            1 - self.asset_threshold_laissez_faire_cdf
+            1 - self.asset_threshold_late_takeover_cdf
         ) / (
             1 - self.asset_threshold_cdf
         )
 
     def is_financial_imperfection_severe(self) -> bool:
         return (
-            self.asset_threshold_laissez_faire_cdf
+            self.asset_threshold_late_takeover_cdf
             >= self.asset_distribution_threshold_laissez_faire
         )
 
@@ -939,12 +939,14 @@ class OptimalMergerPolicy(MergerPolicyModel):
             If the above mentioned condition is met.
         """
         return (
-            self.asset_threshold_laissez_faire_cdf
+            self.asset_threshold_late_takeover_cdf
             >= self.asset_distribution_threshold_intermediate_approval_despite_shelving
         )
 
     @property
-    def asset_distribution_threshold_intermediate_approval_despite_shelving(self) -> float:
+    def asset_distribution_threshold_intermediate_approval_despite_shelving(
+        self,
+    ) -> float:
         """
         Threshold defined in Condition 5 :$\\;\\Lambda(\\cdot)=\\frac{p(W^M-W^m)-K-(W^d-W^M)}{p(W^M-W^m)-K}$
         """

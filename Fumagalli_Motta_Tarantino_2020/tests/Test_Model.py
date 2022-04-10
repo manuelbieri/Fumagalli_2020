@@ -614,28 +614,35 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
 
 
 class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
-    def test_strict_beneficial_compared_to_laissez_faire(self):
-        self.model = Model.OptimalMergerPolicy()
-        self.assertTrue(self.model.is_strict_beneficial_compared_to_laissez_faire())
-
-    def test_strict_not_beneficial_compared_to_laissez_faire(self):
-        self.model = Model.OptimalMergerPolicy(incumbent_profit_with_innovation=0.59)
-        self.assertFalse(self.model.is_strict_beneficial_compared_to_laissez_faire())
-
-    def test_strict_beneficial_compared_to_intermediate(self):
-        self.model = Model.OptimalMergerPolicy()
-        self.assertTrue(self.model.is_strict_beneficial_compared_to_intermediate())
-
-    def test_strict_not_beneficial_compared_to_intermediate(self):
-        self.model = Model.OptimalMergerPolicy(incumbent_profit_with_innovation=0.59)
-        self.assertFalse(self.model.is_strict_beneficial_compared_to_intermediate())
-
     def test_strict_optimal_merger_policy(self):
         self.model = Model.OptimalMergerPolicy()
         self.assertEqual("Strict", self.model.get_optimal_merger_policy())
+        self.assertTrue(self.model.is_strict_optimal())
 
     def test_intermediate_optimal_merger_policy(self):
-        pass
+        self.model = Model.OptimalMergerPolicy(
+            private_benefit=0.09,
+            startup_profit_duopoly=0.15,
+            incumbent_profit_duopoly=0.16,
+            incumbent_profit_without_innovation=0.36,
+        )
+        self.assertEqual(
+            "Intermediate (late takeover allowed)",
+            self.model.get_optimal_merger_policy(),
+        )
+        self.assertTrue(self.model.is_intermediate_optimal())
 
     def test_laissez_faire_optimal_merger_policy(self):
-        pass
+        self.model = Model.OptimalMergerPolicy(
+            development_costs=3,
+            private_benefit=2,
+            consumer_surplus_with_innovation=4,
+            consumer_surplus_duopoly=6,
+            consumer_surplus_without_innovation=2,
+            incumbent_profit_duopoly=1,
+            incumbent_profit_without_innovation=3,
+            incumbent_profit_with_innovation=7,
+            startup_profit_duopoly=5,
+        )
+        self.assertEqual("Laissez-faire", self.model.get_optimal_merger_policy())
+        self.assertTrue(self.model.is_laissez_faire_optimal())

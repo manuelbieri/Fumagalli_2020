@@ -853,10 +853,29 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_optimal</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.36</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">test_laissez_faire_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">consumer_surplus_with_innovation</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">())</span>
 </pre></div>
 
         </details>
@@ -3465,10 +3484,29 @@ attribute so can be configured by individual tests if required.</li>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_strict_optimal</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.36</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">test_laissez_faire_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">consumer_surplus_with_innovation</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">())</span>
 </pre></div>
 
         </details>
@@ -3541,7 +3579,14 @@ attribute so can be configured by individual tests if required.</li>
             <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mf">0.09</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mf">0.36</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Intermediate (late takeover allowed)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">())</span>
 </pre></div>
 
         </details>
@@ -3560,7 +3605,19 @@ attribute so can be configured by individual tests if required.</li>
             <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">test_laissez_faire_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+            <span class="n">development_costs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">private_benefit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">consumer_surplus_with_innovation</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">incumbent_profit_duopoly</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">incumbent_profit_without_innovation</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">incumbent_profit_with_innovation</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">startup_profit_duopoly</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="s2">&quot;Laissez-faire&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">())</span>
 </pre></div>
 
         </details>
