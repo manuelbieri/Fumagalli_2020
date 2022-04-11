@@ -1,12 +1,13 @@
 import unittest
 from typing import Dict
 
-import Fumagalli_Motta_Tarantino_2020.Model as Model
+import Fumagalli_Motta_Tarantino_2020.Models as Model
+import Models
 
 
 class TestBaseModel(unittest.TestCase):
-    def test_valid_setup_default_values(self):
-        Model.BaseModel()
+    def setupModel(self, **kwargs) -> None:
+        self.model = Models.BaseModel(**kwargs)
 
     @staticmethod
     def get_default_value(arg_name: str) -> float:
@@ -33,31 +34,35 @@ class TestBaseModel(unittest.TestCase):
             startup_profit = 0
         return consumer_surplus + incumbent_profit + startup_profit
 
+    def test_valid_setup_default_values(self):
+        self.setupModel()
+
     def test_invalid_tolerated_harm(self):
         self.assertRaises(
-            AssertionError, lambda: Model.BaseModel(tolerated_level_of_harm=-0.1)
+            AssertionError, lambda: self.setupModel(tolerated_level_of_harm=-0.1)
         )
 
     def test_invalid_private_benefit(self):
-        self.assertRaises(AssertionError, lambda: Model.BaseModel(private_benefit=-0.1))
+        self.assertRaises(AssertionError, lambda: self.setupModel(private_benefit=-0.1))
 
     def test_invalid_profit(self):
         self.assertRaises(
             AssertionError,
-            lambda: Model.BaseModel(
-                incumbent_profit_without_innovation=0.2, incumbent_profit_duopoly=0.3
+            lambda: self.setupModel(
+                incumbent_profit_without_innovation=0.2,
+                incumbent_profit_duopoly=0.3
             ),
         )
         self.assertRaises(
             AssertionError,
-            lambda: Model.BaseModel(
+            lambda: self.setupModel(
                 incumbent_profit_with_innovation=0.2,
                 incumbent_profit_without_innovation=0.3,
             ),
         )
         self.assertRaises(
             AssertionError,
-            lambda: Model.BaseModel(
+            lambda: self.setupModel(
                 incumbent_profit_with_innovation=0.2,
                 incumbent_profit_duopoly=0.3,
                 startup_profit_duopoly=0.2,
@@ -65,7 +70,7 @@ class TestBaseModel(unittest.TestCase):
         )
         self.assertRaises(
             AssertionError,
-            lambda: Model.BaseModel(
+            lambda: self.setupModel(
                 startup_profit_duopoly=0.2,
                 incumbent_profit_with_innovation=0.5,
                 incumbent_profit_duopoly=0.3,
@@ -75,7 +80,7 @@ class TestBaseModel(unittest.TestCase):
     def test_invalid_consumer_surplus(self):
         self.assertRaises(
             AssertionError,
-            lambda: Model.BaseModel(
+            lambda: self.setupModel(
                 consumer_surplus_with_innovation=0.2,
                 consumer_surplus_without_innovation=0.3,
             ),
@@ -83,14 +88,14 @@ class TestBaseModel(unittest.TestCase):
 
     def test_invalid_success_probability(self):
         self.assertRaises(
-            AssertionError, lambda: Model.BaseModel(success_probability=0)
+            AssertionError, lambda: self.setupModel(success_probability=0)
         )
         self.assertRaises(
-            AssertionError, lambda: Model.BaseModel(success_probability=1.1)
+            AssertionError, lambda: self.setupModel(success_probability=1.1)
         )
 
     def test_properties(self):
-        self.model = Model.BaseModel()
+        self.setupModel()
         self.assertEqual(
             self.get_default_value("tolerated_level_of_harm"), self.model.tolerated_harm
         )
@@ -137,7 +142,7 @@ class TestBaseModel(unittest.TestCase):
         )
 
     def test_welfare_properties(self):
-        self.model = Model.BaseModel()
+        self.setupModel()
         self.assertEqual(self.get_welfare_value("duopoly"), self.model.w_duopoly)
         self.assertEqual(
             self.get_welfare_value("without_innovation"),
@@ -149,13 +154,13 @@ class TestBaseModel(unittest.TestCase):
 
 
 class TestMergerPolicyModel(TestBaseModel):
-    def test_valid_setup_default_values(self):
-        Model.MergerPolicyModel()
+    def setupModel(self, **kwargs) -> None:
+        self.model = Models.MergerPolicyModel(**kwargs)
 
 
-class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
+class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_below_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=1)
+        self.setupModel(tolerated_level_of_harm=1)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -165,7 +170,7 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_above_assets_threshold_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=1,
             startup_assets=0.01,
             private_benefit=0.099,
@@ -186,7 +191,7 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_above_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=1, private_benefit=0.075
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
@@ -200,8 +205,10 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
     def test_not_profitable_below_assets_threshold_not_credit_rationed_unsuccessful(
         self,
     ):
-        self.model = Model.MergerPolicyModel(
-            tolerated_level_of_harm=1, private_benefit=0.075, development_success=False
+        self.setupModel(
+            tolerated_level_of_harm=1,
+            private_benefit=0.075,
+            development_success=False
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -212,7 +219,7 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=1,
             private_benefit=0.075,
             startup_assets=0.005,
@@ -232,7 +239,7 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=1,
             private_benefit=0.075,
             development_costs=0.078,
@@ -248,7 +255,7 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
         self.assertTrue(self.model.is_late_takeover)
 
     def test_profitable_not_credit_rationed_unsuccessful(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=1,
             private_benefit=0.075,
             development_costs=0.078,
@@ -265,9 +272,9 @@ class TestLaissezFaireMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
+class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.06)
+        self.setupModel(tolerated_level_of_harm=0.06)
         self.assertEqual(
             "Intermediate (late takeover allowed)", self.model.merger_policy
         )
@@ -280,7 +287,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
         self.assertTrue(self.model.is_late_takeover)
 
     def test_not_profitable_not_credit_rationed_unsuccessful(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.06, development_success=False
         )
         self.assertEqual(
@@ -295,7 +302,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.06,
             startup_assets=0.01,
             private_benefit=0.099,
@@ -319,7 +326,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.06, incumbent_profit_with_innovation=0.59
         )
         self.assertEqual(
@@ -334,7 +341,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
         self.assertTrue(self.model.is_late_takeover)
 
     def test_profitable_not_credit_rationed_unsuccessful(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.06,
             incumbent_profit_with_innovation=0.59,
             development_success=False,
@@ -351,7 +358,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.12,
             private_benefit=0.075,
             startup_assets=0.005,
@@ -374,9 +381,9 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase):
+class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_below_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(tolerated_level_of_harm=0.025)
+        self.setupModel(tolerated_level_of_harm=0.025)
         self.assertEqual(
             "Intermediate (late takeover prohibited)", self.model.merger_policy
         )
@@ -389,7 +396,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase)
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_above_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.025,
             success_probability=0.74,
             private_benefit=0.08,
@@ -409,7 +416,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase)
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_below_assets_threshold_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.025,
             development_costs=0.075,
             success_probability=0.79,
@@ -430,7 +437,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase)
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_below_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.025,
             startup_assets=0.06,
             development_costs=0.075,
@@ -452,7 +459,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase)
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_above_assets_threshold_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.17,
             startup_assets=0.055,
             development_costs=0.071,
@@ -477,7 +484,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase)
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_above_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             tolerated_level_of_harm=0.17,
             startup_assets=0.062,
             development_costs=0.071,
@@ -502,9 +509,9 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(unittest.TestCase)
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestStrictMergerPolicyModel(unittest.TestCase):
+class TestStrictMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_not_credit_rationed_summary(self):
-        self.model = Model.MergerPolicyModel()
+        self.setupModel()
         summary: Dict[str, any] = self.model.summary()
         self.assertFalse(summary["credit_rationed"])
         self.assertEqual("No", summary["early_bidding_type"])
@@ -515,7 +522,7 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertFalse(summary["late_takeover"])
 
     def test_not_profitable_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel()
+        self.setupModel()
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -525,7 +532,7 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             private_benefit=0.09, development_costs=0.11
         )
         self.assertTrue(self.model.is_startup_credit_rationed)
@@ -537,7 +544,7 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_below_assets_threshold_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             development_costs=0.075,
             success_probability=0.79,
             private_benefit=0.07,
@@ -554,7 +561,7 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_below_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             startup_assets=0.06,
             development_costs=0.075,
             success_probability=0.79,
@@ -572,7 +579,7 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_above_assets_threshold_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             development_costs=0.075,
             success_probability=0.75,
             private_benefit=0.07,
@@ -592,7 +599,7 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_profitable_above_assets_threshold_not_credit_rationed(self):
-        self.model = Model.MergerPolicyModel(
+        self.setupModel(
             development_costs=0.075,
             startup_assets=0.065,
             success_probability=0.75,
@@ -614,13 +621,16 @@ class TestStrictMergerPolicyModel(unittest.TestCase):
 
 
 class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
+    def setupModel(self, **kwargs) -> None:
+        self.model = Models.OptimalMergerPolicy(**kwargs)
+
     def test_strict_optimal_merger_policy(self):
-        self.model = Model.OptimalMergerPolicy()
+        self.setupModel()
         self.assertEqual("Strict", self.model.get_optimal_merger_policy())
         self.assertTrue(self.model.is_strict_optimal())
 
     def test_intermediate_optimal_merger_policy(self):
-        self.model = Model.OptimalMergerPolicy(
+        self.setupModel(
             private_benefit=0.09,
             startup_profit_duopoly=0.15,
             incumbent_profit_duopoly=0.16,
@@ -633,7 +643,7 @@ class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
         self.assertTrue(self.model.is_intermediate_optimal())
 
     def test_laissez_faire_optimal_merger_policy(self):
-        self.model = Model.OptimalMergerPolicy(
+        self.setupModel(
             development_costs=3,
             private_benefit=2,
             consumer_surplus_with_innovation=4,
