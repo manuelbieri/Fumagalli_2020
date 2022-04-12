@@ -1,8 +1,7 @@
 import unittest
 from typing import Dict
 
-import Fumagalli_Motta_Tarantino_2020.Models as Model
-import Models
+import Fumagalli_Motta_Tarantino_2020.Models as Models
 
 
 class TestBaseModel(unittest.TestCase):
@@ -10,11 +9,15 @@ class TestBaseModel(unittest.TestCase):
         self.model = Models.BaseModel(**kwargs)
 
     @staticmethod
+    def are_floats_equal(f1: float, f2: float, tolerance: float = 10 ** (-10)) -> float:
+        return abs(f1 - f2) < tolerance
+
+    @staticmethod
     def get_default_value(arg_name: str) -> float:
-        args_name = Model.BaseModel.__init__.__code__.co_varnames[
+        args_name = Models.BaseModel.__init__.__code__.co_varnames[
             1:
         ]  # "self" is not needed
-        default_value = Model.BaseModel.__init__.__defaults__
+        default_value = Models.BaseModel.__init__.__defaults__
         arg_index = args_name.index(f"{arg_name}")
         return default_value[arg_index]
 
@@ -49,8 +52,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertRaises(
             AssertionError,
             lambda: self.setupModel(
-                incumbent_profit_without_innovation=0.2,
-                incumbent_profit_duopoly=0.3
+                incumbent_profit_without_innovation=0.2, incumbent_profit_duopoly=0.3
             ),
         )
         self.assertRaises(
@@ -96,49 +98,79 @@ class TestBaseModel(unittest.TestCase):
 
     def test_properties(self):
         self.setupModel()
-        self.assertEqual(
-            self.get_default_value("tolerated_level_of_harm"), self.model.tolerated_harm
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("tolerated_level_of_harm"),
+                self.model.tolerated_harm,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("development_costs"), self.model.development_costs
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("development_costs"),
+                self.model.development_costs,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("startup_assets"), self.model.startup_assets
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("startup_assets"), self.model.startup_assets
+            )
         )
-        self.assertEqual(
-            self.get_default_value("success_probability"),
-            self.model.success_probability,
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("success_probability"),
+                self.model.success_probability,
+            )
         )
         self.assertTrue(self.model.development_success)
-        self.assertEqual(
-            self.get_default_value("private_benefit"), self.model.private_benefit
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("private_benefit"), self.model.private_benefit
+            )
         )
-        self.assertEqual(
-            self.get_default_value("consumer_surplus_without_innovation"),
-            self.model.cs_without_innovation,
+
+    def test_properties_profits_consumer_surplus(self):
+        self.setupModel()
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("consumer_surplus_without_innovation"),
+                self.model.cs_without_innovation,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("incumbent_profit_without_innovation"),
-            self.model.incumbent_profit_without_innovation,
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("incumbent_profit_without_innovation"),
+                self.model.incumbent_profit_without_innovation,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("consumer_surplus_duopoly"), self.model.cs_duopoly
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("consumer_surplus_duopoly"),
+                self.model.cs_duopoly,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("incumbent_profit_duopoly"),
-            self.model.incumbent_profit_duopoly,
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("incumbent_profit_duopoly"),
+                self.model.incumbent_profit_duopoly,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("startup_profit_duopoly"),
-            self.model.startup_profit_duopoly,
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("startup_profit_duopoly"),
+                self.model.startup_profit_duopoly,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("consumer_surplus_with_innovation"),
-            self.model.cs_with_innovation,
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("consumer_surplus_with_innovation"),
+                self.model.cs_with_innovation,
+            )
         )
-        self.assertEqual(
-            self.get_default_value("incumbent_profit_with_innovation"),
-            self.model.incumbent_profit_with_innovation,
+        self.assertTrue(
+            self.are_floats_equal(
+                self.get_default_value("incumbent_profit_with_innovation"),
+                self.model.incumbent_profit_with_innovation,
+            )
         )
 
     def test_welfare_properties(self):
@@ -191,9 +223,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_above_assets_threshold_not_credit_rationed(self):
-        self.setupModel(
-            tolerated_level_of_harm=1, private_benefit=0.075
-        )
+        self.setupModel(tolerated_level_of_harm=1, private_benefit=0.075)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("Pooling", self.model.get_late_bidding_type)
@@ -206,9 +236,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self,
     ):
         self.setupModel(
-            tolerated_level_of_harm=1,
-            private_benefit=0.075,
-            development_success=False
+            tolerated_level_of_harm=1, private_benefit=0.075, development_success=False
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -287,9 +315,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
         self.assertTrue(self.model.is_late_takeover)
 
     def test_not_profitable_not_credit_rationed_unsuccessful(self):
-        self.setupModel(
-            tolerated_level_of_harm=0.06, development_success=False
-        )
+        self.setupModel(tolerated_level_of_harm=0.06, development_success=False)
         self.assertEqual(
             "Intermediate (late takeover allowed)", self.model.merger_policy
         )
@@ -532,9 +558,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_credit_rationed(self):
-        self.setupModel(
-            private_benefit=0.09, development_costs=0.11
-        )
+        self.setupModel(private_benefit=0.09, development_costs=0.11)
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)

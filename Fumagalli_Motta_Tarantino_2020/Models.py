@@ -159,39 +159,39 @@ class BaseModel:
 
     def _check_assumption_five(self):
         assert (
-                self.private_benefit - self.development_costs
-                < 0
-                < self.private_benefit
-                - (
-                        self.success_probability * self._startup_profit_duopoly
-                        - self.development_costs
-                )
+            self.private_benefit - self.development_costs
+            < 0
+            < self.private_benefit
+            - (
+                self.success_probability * self._startup_profit_duopoly
+                - self.development_costs
+            )
         ), "A5 not satisfied (p.8)"
 
     def _check_assumption_four(self):
         assert (
-                self._success_probability
-                * (self.w_with_innovation - self.w_without_innovation)
-                > self._development_costs
+            self._success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            > self._development_costs
         ), "A4 not satisfied (p.8)"
 
     def _check_assumption_three(self):
         assert (
-                self.success_probability * self.startup_profit_duopoly
-                > self._development_costs
+            self.success_probability * self.startup_profit_duopoly
+            > self._development_costs
         ), "A3 not satisfied (p.8)"
 
     def _check_assumption_two(self):
         assert (
-                self.startup_profit_duopoly
-                > self.incumbent_profit_with_innovation
-                - self.incumbent_profit_without_innovation
+            self.startup_profit_duopoly
+            > self.incumbent_profit_with_innovation
+            - self.incumbent_profit_without_innovation
         ), "A2 not satisfied (p.7)"
 
     def _check_assumption_one(self):
         assert (
-                self.incumbent_profit_with_innovation
-                > self.incumbent_profit_duopoly + self.startup_profit_duopoly
+            self.incumbent_profit_with_innovation
+            > self.incumbent_profit_duopoly + self.startup_profit_duopoly
         ), "A1 not satisfied (p.7)"
 
     @property
