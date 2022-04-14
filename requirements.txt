@@ -3,7 +3,7 @@ scipy~=1.8.0
 numpy==1.22.3
 
 # nesseary for code formatting
-black>=22.1.0
+black==22.3.0
 
 # necessary for the jupyter notebook
 ipython==8.2.0

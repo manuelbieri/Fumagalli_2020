@@ -76,3 +76,7 @@ This testcase tests, whether the implemented logic for a strict merger policy wo
 | test_profitable_below_assets_threshold_not_credit_rationed |              False               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
 | test_profitable_above_assets_threshold_credit_rationed     |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
 | test_profitable_above_assets_threshold_not_credit_rationed |              False               |        Separating        |           No            |         True         |   Does not matter   |        False         |        False        |
+
+## TestOptimalMergerPolicyModel
+
+This testcase tests all possibilities for an optimal merger policy.

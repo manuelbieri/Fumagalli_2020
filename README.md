@@ -15,14 +15,15 @@
 ### Basic Usage
 
 ```python
-import Fumagalli_Motta_Tarantino_2020.Model as Model
+import Fumagalli_Motta_Tarantino_2020.Models as Model
 
 # initialize the model (here you can adjust the parameters of the model)
-model: Model.MergerPolicyModel = Model.MergerPolicyModel()
+model: Model.OptimalMergerPolicy = Model.OptimalMergerPolicy()
 
 # print a summary of the outcome
 print(model.summary())
 ```
+
 Find the latest documentation on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
 
 ### Dependencies
