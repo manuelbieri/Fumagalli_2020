@@ -1,4 +1,4 @@
-import Models
+import Fumagalli_Motta_Tarantino_2020.Models as Models
 
 
 class MicroFoundationModel(Models.OptimalMergerPolicy):
