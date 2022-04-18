@@ -2,6 +2,8 @@ from typing import Literal, Dict, Optional
 
 import scipy.stats
 
+import Fumagalli_Motta_Tarantino_2020.Data as Data
+
 
 class BaseModel:
     """
@@ -139,9 +141,7 @@ class BaseModel:
         assert (
             0 < self.success_probability <= 1
         ), "Success probability of development has to be between 0 and 1"
-        assert (
-            0 < self.startup_assets < self.development_costs
-        ), "Startup has not enough assets for development"
+        self._check_startup_assets()
         assert (
             self.incumbent_profit_without_innovation > self.incumbent_profit_duopoly
         ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
@@ -156,6 +156,11 @@ class BaseModel:
         self._check_assumption_two()
         self._check_assumption_three()
         self._check_assumption_five()
+
+    def _check_startup_assets(self):
+        assert (
+            0 < self.startup_assets < self.development_costs
+        ), "Startup has not enough assets for development"
 
     def _check_assumption_five(self):
         assert (
@@ -214,6 +219,14 @@ class BaseModel:
         ($A$) Assets of the startup at the beginning.
         """
         return self._startup_assets
+
+    @startup_assets.setter
+    def startup_assets(self, value: float) -> None:
+        """
+        ($A$) Assets of the startup at the beginning.
+        """
+        self._startup_assets = value
+        self._check_startup_assets()
 
     @property
     def success_probability(self) -> float:
@@ -417,6 +430,11 @@ class MergerPolicyModel(BaseModel):
         Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
         """
         return MergerPolicyModel._get_cdf_value(self.asset_threshold_late_takeover)
+
+    @BaseModel.startup_assets.setter
+    def startup_assets(self, value: float) -> None:
+        BaseModel.startup_assets.fset(self, value)
+        self._recalculate_model()
 
     @property
     def get_early_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
@@ -686,6 +704,13 @@ class MergerPolicyModel(BaseModel):
         else:
             self._solve_game_laissez_faire()
 
+    def _recalculate_model(self) -> None:
+        self._early_bid_attempt = None
+        self._late_bid_attempt = None
+        self._early_takeover = None
+        self._late_takeover = None
+        self._solve_game()
+
     def _solve_game_laissez_faire(self):
         if self.is_incumbent_expected_to_shelve():
             if (
@@ -803,7 +828,7 @@ class MergerPolicyModel(BaseModel):
         )
         self._late_bid_attempt = late_takeover
 
-    def summary(self) -> Dict[str, any]:
+    def summary(self) -> Data.Summary:
         """
         Returns the calculated outcome of the model with the defined parameters.
 
@@ -821,15 +846,15 @@ class MergerPolicyModel(BaseModel):
         Dict[str, any]
             Containing the result of the model with the defined parameters.
         """
-        return {
-            "credit_rationed": self.is_startup_credit_rationed,
-            "early_bidding_type": self.get_early_bidding_type,
-            "late_bidding_type": self.get_early_bidding_type,
-            "development_attempt": self.is_owner_investing,
-            "development_outcome": self.is_development_successful,
-            "early_takeover": self.is_early_takeover,
-            "late_takeover": self.is_late_takeover,
-        }
+        return Data.Summary(
+            credit_rationed=self.is_startup_credit_rationed,
+            early_bidding_type=self.get_early_bidding_type,
+            late_bidding_type=self.get_late_bidding_type,
+            development_attempt=self.is_owner_investing,
+            development_outcome=self.is_development_successful,
+            early_takeover=self.is_early_takeover,
+            late_takeover=self.is_late_takeover,
+        )
 
 
 class OptimalMergerPolicy(MergerPolicyModel):
@@ -974,4 +999,16 @@ class OptimalMergerPolicy(MergerPolicyModel):
             self.success_probability
             * (self.w_with_innovation - self.w_without_innovation)
             - self.development_costs
+        )
+
+    def summary(self) -> Data.OptimalMergerPolicySummary:
+        return Data.OptimalMergerPolicySummary(
+            credit_rationed=self.is_startup_credit_rationed,
+            early_bidding_type=self.get_early_bidding_type,
+            late_bidding_type=self.get_late_bidding_type,
+            development_attempt=self.is_owner_investing,
+            development_outcome=self.is_development_successful,
+            early_takeover=self.is_early_takeover,
+            late_takeover=self.is_late_takeover,
+            optimal_policy=self.get_optimal_merger_policy(),
         )

@@ -31,5 +31,5 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    install_requires=["scipy~=1.8.0", "numpy~=1.22.3"],  # change with new version
+    install_requires=["scipy~=1.8.0", "matplotlib~=3.5.1", "numpy~=1.22.3"],  # change with new version
 )

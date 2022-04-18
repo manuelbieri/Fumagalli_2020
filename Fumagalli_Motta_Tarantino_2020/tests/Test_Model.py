@@ -1,6 +1,6 @@
 import unittest
-from typing import Dict
 
+import Fumagalli_Motta_Tarantino_2020.Data as Data
 import Fumagalli_Motta_Tarantino_2020.Models as Models
 
 
@@ -545,15 +545,15 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
 class TestStrictMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_not_credit_rationed_summary(self):
         self.setupModel()
-        summary: Dict[str, any] = self.model.summary()
+        summary: Data.Summary = self.model.summary()
         self.assertEqual("Strict", self.model.merger_policy)
-        self.assertFalse(summary["credit_rationed"])
-        self.assertEqual("No", summary["early_bidding_type"])
-        self.assertEqual("No", summary["late_bidding_type"])
-        self.assertTrue(summary["development_attempt"])
-        self.assertTrue(summary["development_outcome"])
-        self.assertFalse(summary["early_takeover"])
-        self.assertFalse(summary["late_takeover"])
+        self.assertFalse(summary.credit_rationed)
+        self.assertEqual("No", summary.early_bidding_type)
+        self.assertEqual("No", summary.late_bidding_type)
+        self.assertTrue(summary.development_attempt)
+        self.assertTrue(summary.development_outcome)
+        self.assertFalse(summary.early_takeover)
+        self.assertFalse(summary.late_takeover)
 
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel()
@@ -576,6 +576,22 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+
+    def test_set_startup_assets_recalculation(self):
+        self.setupModel(
+                development_costs=0.075,
+                success_probability=0.75,
+                private_benefit=0.07,
+                incumbent_profit_without_innovation=0.3,
+                consumer_surplus_duopoly=0.7,
+                incumbent_profit_duopoly=0.25,
+                startup_profit_duopoly=0.11,
+                consumer_surplus_with_innovation=0.21,
+                incumbent_profit_with_innovation=0.4,
+            )
+        self.assertTrue(self.model.is_early_takeover)
+        self.model.startup_assets = 0.065
+        self.assertFalse(self.model.is_early_takeover)
 
     def test_profitable_below_assets_threshold_credit_rationed(self):
         self.setupModel(
@@ -661,6 +677,11 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
 class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
         self.model = Models.OptimalMergerPolicy(**kwargs)
+
+    def test_strict_optimal_merger_policy_summary(self):
+        self.setupModel()
+        summary: Data.OptimalMergerPolicySummary = self.model.summary()
+        self.assertEqual("Strict", summary.optimal_policy)
 
     def test_strict_optimal_merger_policy(self):
         self.setupModel()
