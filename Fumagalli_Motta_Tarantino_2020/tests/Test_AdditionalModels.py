@@ -87,14 +87,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
 
     @unittest.skip("Not yet implemented")
     def test_intermediate_optimal_merger_policy(self):
-        self.setupModel(
-            gamma=0.3,
-        )
-        self.assertEqual(
-            "Intermediate (late takeover allowed)",
-            self.model.get_optimal_merger_policy(),
-        )
-        self.assertTrue(self.model.is_intermediate_optimal())
+        pass
 
     def test_laissez_faire_optimal_merger_policy(self):
         # laissez-faire is never optimal -> dominated by strict

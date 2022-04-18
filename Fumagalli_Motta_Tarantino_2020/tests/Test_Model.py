@@ -579,16 +579,16 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
 
     def test_set_startup_assets_recalculation(self):
         self.setupModel(
-                development_costs=0.075,
-                success_probability=0.75,
-                private_benefit=0.07,
-                incumbent_profit_without_innovation=0.3,
-                consumer_surplus_duopoly=0.7,
-                incumbent_profit_duopoly=0.25,
-                startup_profit_duopoly=0.11,
-                consumer_surplus_with_innovation=0.21,
-                incumbent_profit_with_innovation=0.4,
-            )
+            development_costs=0.075,
+            success_probability=0.75,
+            private_benefit=0.07,
+            incumbent_profit_without_innovation=0.3,
+            consumer_surplus_duopoly=0.7,
+            incumbent_profit_duopoly=0.25,
+            startup_profit_duopoly=0.11,
+            consumer_surplus_with_innovation=0.21,
+            incumbent_profit_with_innovation=0.4,
+        )
         self.assertTrue(self.model.is_early_takeover)
         self.model.startup_assets = 0.065
         self.assertFalse(self.model.is_early_takeover)
