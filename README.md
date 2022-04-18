@@ -39,7 +39,7 @@ These packages include all the needed imports for the functionality of this pack
 | matplotlib     |     3.5.1      | Always (includes numpy)                    |
 | black          |     22.1.0     | For consistent code formatting             |
 | jupyter        |     1.0.0      | For the demonstration in jupyter Notebooks |
-| IPython        |     8.2.0      | For the demonstration in jupyter Notebooks |
+| IPython        |     7.32.0     | For the demonstration in jupyter Notebooks |
 | pdoc           |     11.0.0     | To generate the documentation from scratch |
 
 Install the dependencies with the following command:

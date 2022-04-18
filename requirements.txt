@@ -6,7 +6,7 @@ matplotlib>=3.5.1
 black==22.3.0
 
 # necessary for the jupyter notebook
-ipython==8.2.0
+ipython>=7.32.0
 jupyter>=1.0.0
 
 # necessary for the documentation
