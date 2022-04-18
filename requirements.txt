@@ -1,5 +1,6 @@
 # necessary for the package
-scipy~=1.7.3 # newest version currently not compatibe with mybinder.org
+scipy~=1.7.3
+numpy>=1.21.6
 matplotlib>=3.5.1
 
 # nesseary for code formatting
