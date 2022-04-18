@@ -6,6 +6,7 @@
 [![Code Style Check](https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/Black.yml/badge.svg)](https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/Black.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/manuelbieri/fumagalli_2020/badge)](https://www.codefactor.io/repository/github/manuelbieri/fumagalli_2020)
 [![GitHub repo size](https://img.shields.io/github/repo-size/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020)
+![Lines of code](https://img.shields.io/tokei/lines/github/manuelbieri/Fumagalli_2020)
 ![GitHub license](https://img.shields.io/github/license/manuelbieri/Fumagalli_2020)
 ![GitHub last commit](https://img.shields.io/github/last-commit/manuelbieri/Fumagalli_2020)
 ![GitHub Release Date](https://img.shields.io/github/release-date/manuelbieri/Fumagalli_2020)
@@ -24,6 +25,8 @@ model: Model.OptimalMergerPolicy = Model.OptimalMergerPolicy()
 print(model.summary())
 ```
 
+A tutorial is included with the notebook tutorial.ipynb.
+
 Find the latest documentation on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
 
 ### Dependencies
@@ -33,7 +36,7 @@ These packages include all the needed imports for the functionality of this pack
 | Package &emsp; | Version &emsp; | Annotation &emsp;                          |
 |:---------------|:--------------:|:-------------------------------------------|
 | scipy          |     1.8.0      | Always                                     |
-| numpy          |     1.22.3     | Always                                     |
+| matplotlib     |     3.5.1      | Always (includes numpy)                    |
 | black          |     22.1.0     | For consistent code formatting             |
 | jupyter        |     1.0.0      | For the demonstration in jupyter Notebooks |
 | IPython        |     8.2.0      | For the demonstration in jupyter Notebooks |
@@ -51,7 +54,7 @@ $ pip install -r requirements.txt
 Run the unittests shipped in Fumagalli_Motta_Tarantino_2020.tests with the following command (pay attention to the current working directory):
 
 ```shell
-python -m unittest discover Fumagalli_Motta_Tarantino_2020/tests "Test_*.py"
+python -m unittest discover Fumagalli_Motta_Tarantino_2020/tests
 ```
 
 See [codecov.io](https://app.codecov.io/gh/manuelbieri/Fumagalli_2020) for a detailed report about the test coverage.
