@@ -34,6 +34,6 @@ setup(
     install_requires=[
         "scipy~=1.7.3",
         "matplotlib~=3.5.1",
-        "numpy~=1.22.3",
+        "numpy~=1.21.6",
     ],  # change with new version
 )
