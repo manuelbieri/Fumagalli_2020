@@ -1,5 +1,16 @@
 from typing import Literal
 from dataclasses import dataclass
+from enum import Enum
+
+
+class MergerPolicies(Enum):
+    Strict = "Strict"
+    Intermediate_late_takeover_prohibited = "Intermediate (late takeover prohibited)"
+    Intermediate_late_takeover_allowed = "Intermediate (late takeover allowed)"
+    Laissez_faire = "Laissez-faire"
+
+    def __str__(self) -> str:
+        return self.value
 
 
 @dataclass(frozen=True)
@@ -21,9 +32,4 @@ class Summary:
 
 @dataclass(frozen=True)
 class OptimalMergerPolicySummary(Summary):
-    optimal_policy: Literal[
-        "Strict",
-        "Intermediate (late takeover prohibited)",
-        "Intermediate (late takeover allowed)",
-        "Laissez-faire",
-    ]
+    optimal_policy: MergerPolicies

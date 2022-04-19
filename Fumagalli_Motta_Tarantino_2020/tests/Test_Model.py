@@ -1,6 +1,6 @@
 import unittest
 
-import Fumagalli_Motta_Tarantino_2020.Data as Data
+import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Models as Models
 
 
@@ -193,7 +193,7 @@ class TestMergerPolicyModel(TestBaseModel):
 class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_below_assets_threshold_not_credit_rationed(self):
         self.setupModel(tolerated_level_of_harm=1)
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -215,7 +215,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
             consumer_surplus_with_innovation=0.4,
             incumbent_profit_without_innovation=0.3,
         )
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -226,7 +226,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
 
     def test_not_profitable_above_assets_threshold_not_credit_rationed(self):
         self.setupModel(tolerated_level_of_harm=1, private_benefit=0.075)
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("Pooling", self.model.get_late_bidding_type)
@@ -241,7 +241,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.setupModel(
             tolerated_level_of_harm=1, private_benefit=0.075, development_success=False
         )
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -262,7 +262,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
             incumbent_profit_duopoly=0.05,
             startup_profit_duopoly=0.1,
         )
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -279,7 +279,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
             success_probability=0.76,
             incumbent_profit_with_innovation=0.51,
         )
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
         self.assertEqual("Pooling", self.model.get_late_bidding_type)
@@ -297,7 +297,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
             incumbent_profit_with_innovation=0.51,
             development_success=False,
         )
-        self.assertEqual("Laissez-faire", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -311,7 +311,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel(tolerated_level_of_harm=0.06)
         self.assertEqual(
-            "Intermediate (late takeover allowed)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_allowed, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -324,7 +324,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
     def test_not_profitable_not_credit_rationed_unsuccessful(self):
         self.setupModel(tolerated_level_of_harm=0.06, development_success=False)
         self.assertEqual(
-            "Intermediate (late takeover allowed)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_allowed, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -348,7 +348,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
             incumbent_profit_without_innovation=0.3,
         )
         self.assertEqual(
-            "Intermediate (late takeover allowed)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_allowed, self.model.merger_policy
         )
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -363,7 +363,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
             tolerated_level_of_harm=0.06, incumbent_profit_with_innovation=0.59
         )
         self.assertEqual(
-            "Intermediate (late takeover allowed)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_allowed, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
@@ -380,7 +380,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
             development_success=False,
         )
         self.assertEqual(
-            "Intermediate (late takeover allowed)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_allowed, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
@@ -403,7 +403,7 @@ class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel
             startup_profit_duopoly=0.1,
         )
         self.assertEqual(
-            "Intermediate (late takeover allowed)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_allowed, self.model.merger_policy
         )
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
@@ -418,7 +418,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
     def test_not_profitable_below_assets_threshold_not_credit_rationed(self):
         self.setupModel(tolerated_level_of_harm=0.025)
         self.assertEqual(
-            "Intermediate (late takeover prohibited)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
@@ -438,7 +438,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
             startup_profit_duopoly=0.22,
         )
         self.assertEqual(
-            "Intermediate (late takeover prohibited)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
@@ -459,7 +459,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
             incumbent_profit_with_innovation=0.4,
         )
         self.assertEqual(
-            "Intermediate (late takeover prohibited)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited, self.model.merger_policy
         )
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
@@ -481,7 +481,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
             incumbent_profit_with_innovation=0.4,
         )
         self.assertEqual(
-            "Intermediate (late takeover prohibited)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
@@ -506,7 +506,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
             incumbent_profit_with_innovation=0.4,
         )
         self.assertEqual(
-            "Intermediate (late takeover prohibited)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited, self.model.merger_policy
         )
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
@@ -531,7 +531,7 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
             incumbent_profit_with_innovation=0.4,
         )
         self.assertEqual(
-            "Intermediate (late takeover prohibited)", self.model.merger_policy
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited, self.model.merger_policy
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
@@ -545,8 +545,8 @@ class TestIntermediateLateTakeoverProhibitedMergerPolicyModel(TestMergerPolicyMo
 class TestStrictMergerPolicyModel(TestMergerPolicyModel):
     def test_not_profitable_not_credit_rationed_summary(self):
         self.setupModel()
-        summary: Data.Summary = self.model.summary()
-        self.assertEqual("Strict", self.model.merger_policy)
+        summary: Types.Summary = self.model.summary()
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertFalse(summary.credit_rationed)
         self.assertEqual("No", summary.early_bidding_type)
         self.assertEqual("No", summary.late_bidding_type)
@@ -557,7 +557,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
 
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel()
-        self.assertEqual("Strict", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -568,7 +568,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
 
     def test_not_profitable_credit_rationed(self):
         self.setupModel(private_benefit=0.09, development_costs=0.11)
-        self.assertEqual("Strict", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("No", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -602,7 +602,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
             startup_profit_duopoly=0.11,
             incumbent_profit_with_innovation=0.4,
         )
-        self.assertEqual("Strict", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -621,7 +621,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
             startup_profit_duopoly=0.11,
             incumbent_profit_with_innovation=0.4,
         )
-        self.assertEqual("Strict", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Pooling", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -642,7 +642,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
             consumer_surplus_with_innovation=0.21,
             incumbent_profit_with_innovation=0.4,
         )
-        self.assertEqual("Strict", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -664,7 +664,7 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
             consumer_surplus_with_innovation=0.21,
             incumbent_profit_with_innovation=0.4,
         )
-        self.assertEqual("Strict", self.model.merger_policy)
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual("Separating", self.model.get_early_bidding_type)
         self.assertEqual("No", self.model.get_late_bidding_type)
@@ -680,12 +680,12 @@ class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
 
     def test_strict_optimal_merger_policy_summary(self):
         self.setupModel()
-        summary: Data.OptimalMergerPolicySummary = self.model.summary()
-        self.assertEqual("Strict", summary.optimal_policy)
+        summary: Types.OptimalMergerPolicySummary = self.model.summary()
+        self.assertEqual(Types.MergerPolicies.Strict, summary.optimal_policy)
 
     def test_strict_optimal_merger_policy(self):
         self.setupModel()
-        self.assertEqual("Strict", self.model.get_optimal_merger_policy())
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.get_optimal_merger_policy())
         self.assertTrue(self.model.is_strict_optimal())
 
     def test_intermediate_optimal_merger_policy(self):
@@ -696,7 +696,7 @@ class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
             incumbent_profit_without_innovation=0.36,
         )
         self.assertEqual(
-            "Intermediate (late takeover allowed)",
+            Types.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.get_optimal_merger_policy(),
         )
         self.assertTrue(self.model.is_intermediate_optimal())
@@ -713,5 +713,5 @@ class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
             incumbent_profit_with_innovation=7,
             startup_profit_duopoly=5,
         )
-        self.assertEqual("Laissez-faire", self.model.get_optimal_merger_policy())
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.get_optimal_merger_policy())
         self.assertTrue(self.model.is_laissez_faire_optimal())

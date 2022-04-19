@@ -2,7 +2,7 @@ from typing import Literal, Dict, Optional
 
 import scipy.stats
 
-import Fumagalli_Motta_Tarantino_2020.Data as Data
+import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
 class BaseModel:
@@ -357,19 +357,19 @@ class MergerPolicyModel(BaseModel):
         assert (
             0 < self.asset_distribution_threshold < 1
         ), "Violates A.2 (has to be between 0 and 1)"
-        if self.merger_policy == "Strict":
+        if self.merger_policy is Types.MergerPolicies.Strict:
             assert (
                 0 < self.asset_distribution_threshold_strict < 1
             ), "Violates Condition 2 (has to be between 0 and 1)"
         elif (
-            self.merger_policy == "Intermediate (late takeover prohibited)"
+            self.merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
                 0 <= self.asset_distribution_threshold_intermediate < 1
             ), "Violates Condition A-3 (has to be between 0 and 1)"
         elif (
-            self.merger_policy == "Laissez-faire"
+            self.merger_policy is Types.MergerPolicies.Laissez_faire
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
@@ -379,22 +379,17 @@ class MergerPolicyModel(BaseModel):
     @property
     def merger_policy(
         self,
-    ) -> Literal[
-        "Strict",
-        "Intermediate (late takeover prohibited)",
-        "Intermediate (late takeover allowed)",
-        "Laissez-faire",
-    ]:
+    ) -> Types.MergerPolicies:
         """
         Returns the merger policy used to determine the outcome.
         """
         if self.tolerated_harm <= self._calculate_h0():
-            return "Strict"
+            return Types.MergerPolicies.Strict
         if self.tolerated_harm < self._calculate_h1():
-            return "Intermediate (late takeover prohibited)"
+            return Types.MergerPolicies.Intermediate_late_takeover_prohibited
         if self.tolerated_harm < self._calculate_h2():
-            return "Intermediate (late takeover allowed)"
-        return "Laissez-faire"
+            return Types.MergerPolicies.Intermediate_late_takeover_allowed
+        return Types.MergerPolicies.Laissez_faire
 
     @property
     def asset_threshold(self) -> float:
@@ -552,7 +547,8 @@ class MergerPolicyModel(BaseModel):
             If the start-up is credit rationed.
         """
         # financial contracting (chapter 3.2)
-        if self.merger_policy in ["Strict", "Intermediate (late takeover prohibited)"]:
+        if self.merger_policy in [Types.MergerPolicies.Strict,
+                                  Types.MergerPolicies.Intermediate_late_takeover_prohibited]:
             if self.startup_assets < self.asset_threshold:
                 return True
             return False
@@ -695,11 +691,11 @@ class MergerPolicyModel(BaseModel):
 
         The levels of tolerated harm are defined in A.4 (p.36ff.).
         """
-        if self.merger_policy == "Strict":
+        if self.merger_policy is Types.MergerPolicies.Strict:
             self._solve_game_strict_merger_policy()
-        elif self.merger_policy == "Intermediate (late takeover prohibited)":
+        elif self.merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited:
             self._solve_game_late_takeover_prohibited()
-        elif self.merger_policy == "Intermediate (late takeover allowed)":
+        elif self.merger_policy is Types.MergerPolicies.Intermediate_late_takeover_allowed:
             self._solve_game_late_takeover_allowed()
         else:
             self._solve_game_laissez_faire()
@@ -828,7 +824,7 @@ class MergerPolicyModel(BaseModel):
         )
         self._late_bid_attempt = late_takeover
 
-    def summary(self) -> Data.Summary:
+    def summary(self) -> Types.Summary:
         """
         Returns the calculated outcome of the model with the defined parameters.
 
@@ -846,7 +842,7 @@ class MergerPolicyModel(BaseModel):
         Dict[str, any]
             Containing the result of the model with the defined parameters.
         """
-        return Data.Summary(
+        return Types.Summary(
             credit_rationed=self.is_startup_credit_rationed,
             early_bidding_type=self.get_early_bidding_type,
             late_bidding_type=self.get_late_bidding_type,
@@ -870,12 +866,7 @@ class OptimalMergerPolicy(MergerPolicyModel):
 
     def get_optimal_merger_policy(
         self,
-    ) -> Literal[
-        "Strict",
-        "Intermediate (late takeover prohibited)",
-        "Intermediate (late takeover allowed)",
-        "Laissez-faire",
-    ]:
+    ) -> Types.MergerPolicies:
         """
         A strict merger policy is always optimal when the incumbent is expected to invest. When the incumbent is expected
         to shelve, a more lenient policy (that either authorises any type of takeover, or that blocks early takeovers when
@@ -886,10 +877,10 @@ class OptimalMergerPolicy(MergerPolicyModel):
 
         """
         if self.is_laissez_faire_optimal():
-            return "Laissez-faire"
+            return Types.MergerPolicies.Laissez_faire
         if self.is_intermediate_optimal():
-            return "Intermediate (late takeover allowed)"
-        return "Strict"
+            return Types.MergerPolicies.Intermediate_late_takeover_allowed
+        return Types.MergerPolicies.Strict
 
     def is_laissez_faire_optimal(self) -> bool:
         """
@@ -1001,8 +992,8 @@ class OptimalMergerPolicy(MergerPolicyModel):
             - self.development_costs
         )
 
-    def summary(self) -> Data.OptimalMergerPolicySummary:
-        return Data.OptimalMergerPolicySummary(
+    def summary(self) -> Types.OptimalMergerPolicySummary:
+        return Types.OptimalMergerPolicySummary(
             credit_rationed=self.is_startup_credit_rationed,
             early_bidding_type=self.get_early_bidding_type,
             late_bidding_type=self.get_late_bidding_type,
