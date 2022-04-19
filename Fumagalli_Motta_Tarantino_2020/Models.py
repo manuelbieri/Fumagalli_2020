@@ -868,6 +868,7 @@ class MergerPolicyModel(BaseModel):
             Containing the result of the model with the defined parameters.
         """
         return Types.Summary(
+            set_policy=self.merger_policy,
             credit_rationed=self.is_startup_credit_rationed,
             early_bidding_type=self.get_early_bidding_type,
             late_bidding_type=self.get_late_bidding_type,
@@ -1019,6 +1020,7 @@ class OptimalMergerPolicy(MergerPolicyModel):
 
     def summary(self) -> Types.OptimalMergerPolicySummary:
         return Types.OptimalMergerPolicySummary(
+            set_policy=self.merger_policy,
             credit_rationed=self.is_startup_credit_rationed,
             early_bidding_type=self.get_early_bidding_type,
             late_bidding_type=self.get_late_bidding_type,
