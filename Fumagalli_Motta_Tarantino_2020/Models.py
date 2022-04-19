@@ -1,4 +1,4 @@
-from typing import Literal, Dict, Optional
+from typing import Dict, Optional
 
 import scipy.stats
 
@@ -345,8 +345,8 @@ class MergerPolicyModel(BaseModel):
         self._probability_credit_constrained_default: float = 0
         self._probability_credit_constrained_merger_policy: float = 0
 
-        self._early_bid_attempt: Optional[Literal["No", "Separating", "Pooling"]] = None
-        self._late_bid_attempt: Optional[Literal["No", "Separating", "Pooling"]] = None
+        self._early_bid_attempt: Optional[Types.Takeover] = None
+        self._late_bid_attempt: Optional[Types.Takeover] = None
         self._early_takeover: Optional[bool] = None
         self._late_takeover: Optional[bool] = None
 
@@ -433,7 +433,7 @@ class MergerPolicyModel(BaseModel):
         self._recalculate_model()
 
     @property
-    def get_early_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
+    def get_early_bidding_type(self) -> Types.Takeover:
         """
         Returns the bidding attempt of the incumbent at $t = 1$.
 
@@ -447,7 +447,7 @@ class MergerPolicyModel(BaseModel):
         return self._early_bid_attempt
 
     @property
-    def get_late_bidding_type(self) -> Literal["No", "Separating", "Pooling"]:
+    def get_late_bidding_type(self) -> Types.Takeover:
         """
         Returns the bidding attempt of the incumbent at $t = 2$.
 
@@ -723,47 +723,53 @@ class MergerPolicyModel(BaseModel):
                 >= self.asset_distribution_threshold_laissez_faire
             ):
                 if not self.is_startup_credit_rationed and self.development_success:
-                    self._set_takeovers(late_takeover="Pooling")
+                    self._set_takeovers(late_takeover=Types.Takeover.Pooling)
                 else:
-                    self._set_takeovers(early_takeover="No", late_takeover="No")
+                    self._set_takeovers(
+                        early_takeover=Types.Takeover.No,
+                        late_takeover=Types.Takeover.No,
+                    )
             else:
-                self._set_takeovers(early_takeover="Pooling")
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             if self.is_startup_credit_rationed:
-                self._set_takeovers(early_takeover="Separating")
+                self._set_takeovers(early_takeover=Types.Takeover.Separating)
             else:
                 if self.development_success:
                     self._set_takeovers(
-                        early_takeover="Separating",
+                        early_takeover=Types.Takeover.Separating,
                         early_takeover_accepted=False,
-                        late_takeover="Pooling",
+                        late_takeover=Types.Takeover.Pooling,
                     )
                 else:
                     self._set_takeovers(
-                        early_takeover="Separating",
+                        early_takeover=Types.Takeover.Separating,
                         early_takeover_accepted=False,
-                        late_takeover="No",
+                        late_takeover=Types.Takeover.No,
                     )
 
     def _solve_game_late_takeover_allowed(self):
         if self.is_incumbent_expected_to_shelve():
             if not self.is_startup_credit_rationed and self.development_success:
-                self._set_takeovers(late_takeover="Pooling")
+                self._set_takeovers(late_takeover=Types.Takeover.Pooling)
             else:
-                self._set_takeovers(early_takeover="No", late_takeover="No")
+                self._set_takeovers(
+                    early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+                )
         else:
             if self.is_startup_credit_rationed:
-                self._set_takeovers(early_takeover="Separating")
+                self._set_takeovers(early_takeover=Types.Takeover.Separating)
             else:
                 if self.development_success:
                     self._set_takeovers(
-                        early_takeover="Separating",
+                        early_takeover=Types.Takeover.Separating,
                         early_takeover_accepted=False,
-                        late_takeover="Pooling",
+                        late_takeover=Types.Takeover.Pooling,
                     )
                 else:
                     self._set_takeovers(
-                        early_takeover="Separating", early_takeover_accepted=False
+                        early_takeover=Types.Takeover.Separating,
+                        early_takeover_accepted=False,
                     )
 
     def _solve_game_late_takeover_prohibited(self):
@@ -772,25 +778,30 @@ class MergerPolicyModel(BaseModel):
                 self.asset_threshold_cdf
                 >= self.asset_distribution_threshold_intermediate
             ):
-                self._set_takeovers(early_takeover="No", late_takeover="No")
+                self._set_takeovers(
+                    early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+                )
             else:
-                self._set_takeovers(early_takeover="Pooling")
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             if self.asset_threshold_cdf >= self.asset_distribution_threshold:
                 if self.is_startup_credit_rationed:
-                    self._set_takeovers(early_takeover="Separating")
+                    self._set_takeovers(early_takeover=Types.Takeover.Separating)
                 else:
                     self._set_takeovers(
-                        early_takeover="Separating", early_takeover_accepted=False
+                        early_takeover=Types.Takeover.Separating,
+                        early_takeover_accepted=False,
                     )
             else:
-                self._set_takeovers("Pooling")
+                self._set_takeovers(Types.Takeover.Pooling)
 
     def _solve_game_strict_merger_policy(self):
         # decision of the AA and the startup (chapter 3.4.1)
         # takeover bid of the incumbent (chapter 3.4.2)
         if self.is_incumbent_expected_to_shelve():
-            self._set_takeovers(early_takeover="No", late_takeover="No")
+            self._set_takeovers(
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+            )
         else:
             if (
                 self.asset_distribution_threshold_strict
@@ -800,36 +811,41 @@ class MergerPolicyModel(BaseModel):
                     self.asset_distribution_threshold_strict,
                 )
             ):
-                self._set_takeovers(early_takeover="Pooling")
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
             else:
                 if self.is_startup_credit_rationed:
-                    self._set_takeovers(early_takeover="Separating")
+                    self._set_takeovers(early_takeover=Types.Takeover.Separating)
                 else:
                     self._set_takeovers(
-                        early_takeover="Separating", early_takeover_accepted=False
+                        early_takeover=Types.Takeover.Separating,
+                        early_takeover_accepted=False,
                     )
 
     def _set_takeovers(
         self,
-        early_takeover: Literal["No", "Separating", "Pooling"] = "No",
-        late_takeover: Literal["No", "Separating", "Pooling"] = "No",
+        early_takeover: Types.Takeover = Types.Takeover.No,
+        late_takeover: Types.Takeover = Types.Takeover.No,
         early_takeover_accepted=True,
         late_takeover_accepted=True,
     ) -> None:
         assert self._early_bid_attempt is None and self._early_takeover is None
         assert self._late_bid_attempt is None and self._late_takeover is None
         assert not (
-            early_takeover in ["Separating", "Pooling"]
+            early_takeover in [Types.Takeover.Separating, Types.Takeover.Pooling]
             and early_takeover_accepted
-            and late_takeover in ["Separating", "Pooling"]
+            and late_takeover in [Types.Takeover.Separating, Types.Takeover.Pooling]
             and late_takeover_accepted
         ), "Only one takeover can occur."
         self._early_takeover = (
-            False if early_takeover == "No" or not early_takeover_accepted else True
+            False
+            if early_takeover is Types.Takeover.No or not early_takeover_accepted
+            else True
         )
         self._early_bid_attempt = early_takeover
         self._late_takeover = (
-            False if late_takeover == "No" or not late_takeover_accepted else True
+            False
+            if late_takeover is Types.Takeover.No or not late_takeover_accepted
+            else True
         )
         self._late_bid_attempt = late_takeover
 
