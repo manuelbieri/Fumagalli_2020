@@ -362,7 +362,8 @@ class MergerPolicyModel(BaseModel):
                 0 < self.asset_distribution_threshold_strict < 1
             ), "Violates Condition 2 (has to be between 0 and 1)"
         elif (
-            self.merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_prohibited
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
@@ -547,8 +548,10 @@ class MergerPolicyModel(BaseModel):
             If the start-up is credit rationed.
         """
         # financial contracting (chapter 3.2)
-        if self.merger_policy in [Types.MergerPolicies.Strict,
-                                  Types.MergerPolicies.Intermediate_late_takeover_prohibited]:
+        if self.merger_policy in [
+            Types.MergerPolicies.Strict,
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited,
+        ]:
             if self.startup_assets < self.asset_threshold:
                 return True
             return False
@@ -693,9 +696,15 @@ class MergerPolicyModel(BaseModel):
         """
         if self.merger_policy is Types.MergerPolicies.Strict:
             self._solve_game_strict_merger_policy()
-        elif self.merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited:
+        elif (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        ):
             self._solve_game_late_takeover_prohibited()
-        elif self.merger_policy is Types.MergerPolicies.Intermediate_late_takeover_allowed:
+        elif (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_allowed
+        ):
             self._solve_game_late_takeover_allowed()
         else:
             self._solve_game_laissez_faire()
