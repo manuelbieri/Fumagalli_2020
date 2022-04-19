@@ -183,12 +183,3 @@ class Timeline(VisualizeInterface):
 
         self.ax.margins(y=0.45)
         return self.fig, self.ax
-
-
-if __name__ == "__main__":
-    import Fumagalli_Motta_Tarantino_2020.tests.MockModels as Mock
-
-    m = Mock.mock_optimal_merger_policy()
-    v = Timeline(m)
-    f, _ = v.plot()
-    f.show()
