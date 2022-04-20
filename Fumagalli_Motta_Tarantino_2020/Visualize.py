@@ -100,17 +100,21 @@ class Timeline(VisualizeInterface):
             "AA establishes "
             + self._policy_str(summary.set_policy)
             + "\nmerger policy",
-            str(summary.early_bidding_type),
+            self._bid_attempt_str(summary.early_bidding_type),
             self._takeover_str(summary.early_takeover),
-            self._development_str(summary.development_attempt),
+            self._development_str(summary.development_attempt, summary.early_takeover),
             self._success_str(summary.development_outcome),
-            str(summary.late_bidding_type),
+            self._bid_attempt_str(summary.late_bidding_type),
             self._takeover_str(summary.late_takeover),
             "Payoffs",
         ]
         x_labels = ["t=0", "t=1a", "t=1b", "t=1c", "t=1d", "t=2a", "t=2b", "t=3"]
 
         return values, x_labels
+
+    @staticmethod
+    def _bid_attempt_str(bid_attempt: Types.Takeover) -> str:
+        return str(bid_attempt) + "\nby incumbent"
 
     @staticmethod
     def _policy_str(policy: Types.MergerPolicies) -> str:
@@ -122,14 +126,16 @@ class Timeline(VisualizeInterface):
     @staticmethod
     def _takeover_str(is_takeover: bool) -> str:
         if is_takeover:
-            return "Takeover\noccurs"
+            return "Takeover\napproved"
         return "No takeover\noccurs"
 
     @staticmethod
-    def _development_str(is_development: bool) -> str:
+    def _development_str(is_development: bool, is_early_takeover: bool) -> str:
+        owner = "Incumbent" if is_early_takeover else "Start-up"
+        is_killer_acquisition = "\n(killer acquisition)" if is_early_takeover else ""
         if is_development:
-            return "Owner\ndevelops product"
-        return "Owner\nshelves product"
+            return f"{owner}\ndevelops product"
+        return f"{owner}\nshelves product{is_killer_acquisition}"
 
     @staticmethod
     def _success_str(is_successful: bool) -> str:

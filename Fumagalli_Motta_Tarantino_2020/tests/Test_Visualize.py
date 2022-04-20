@@ -63,11 +63,11 @@ class TestPlotOptimalMergerPolicy(unittest.TestCase):
         self.visualizer.plot()[0].show()
 
     def test_timeline_plot(self):
-        self.setUpMock(successful=False, policy=Types.MergerPolicies.Laissez_faire)
+        self.setUpMock(policy=Types.MergerPolicies.Laissez_faire)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.visualizer.plot()[0].show()
 
     def test_timeline_plot_takeover_shelving(self):
-        self.setUpMock(takeover=True, shelving=True)
+        self.setUpMock(takeover=True, shelving=True, successful=False)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.visualizer.plot()[0].show()

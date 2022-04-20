@@ -16,8 +16,8 @@ def mock_optimal_merger_policy(
         credit_rationed=False,
         early_bidding_type=Types.Takeover.No,
         late_bidding_type=Types.Takeover.No,
-        development_attempt=shelving,
-        development_outcome=successful,
+        development_attempt=True,
+        development_outcome=True,
         early_takeover=False,
         late_takeover=False,
         policy=policy,
@@ -25,6 +25,8 @@ def mock_optimal_merger_policy(
         if takeover:
             early_bidding_type = Types.Takeover.Separating
             early_takeover = True
+            development_attempt = not shelving
+            development_outcome = successful
 
         return Types.OptimalMergerPolicySummary(
             credit_rationed=credit_rationed,
@@ -39,9 +41,9 @@ def mock_optimal_merger_policy(
         )
 
     def summary():
-        if model.startup_assets < 1:
+        if model.startup_assets < asset_threshold_late_takeover:
             return set_summary(credit_rationed=True, development_outcome=False)
-        if model.startup_assets < 3:
+        if model.startup_assets < asset_threshold:
             return set_summary(development_outcome=False)
         return set_summary()
 
