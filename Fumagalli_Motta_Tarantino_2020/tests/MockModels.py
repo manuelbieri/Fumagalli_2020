@@ -5,8 +5,8 @@ import Fumagalli_Motta_Tarantino_2020.Models as Models
 
 
 def mock_optimal_merger_policy(
-    asset_threshold: float = 3,
-    asset_threshold_late_takeover: float = 1,
+    asset_threshold: float = 0.5,
+    asset_threshold_late_takeover: float = -1,
     takeover: bool = False,
     shelving: bool = False,
     successful: bool = True,
@@ -20,7 +20,7 @@ def mock_optimal_merger_policy(
         development_outcome=True,
         early_takeover=False,
         late_takeover=False,
-        policy=policy,
+        set_policy=policy,
     ) -> Types.OptimalMergerPolicySummary:
         if takeover:
             early_bidding_type = Types.Takeover.Separating
@@ -30,27 +30,37 @@ def mock_optimal_merger_policy(
 
         return Types.OptimalMergerPolicySummary(
             credit_rationed=credit_rationed,
-            set_policy=policy,
+            set_policy=set_policy,
             early_bidding_type=early_bidding_type,
             late_bidding_type=late_bidding_type,
             development_attempt=development_attempt,
             development_outcome=development_outcome,
             early_takeover=early_takeover,
             late_takeover=late_takeover,
-            optimal_policy=policy,
+            optimal_policy=set_policy,
         )
 
     def summary():
         if model.startup_assets < asset_threshold_late_takeover:
-            return set_summary(credit_rationed=True, development_outcome=False)
+            return set_summary(
+                credit_rationed=True,
+                development_attempt=False,
+                development_outcome=False,
+                early_bidding_type=Types.Takeover.Separating,
+                early_takeover=True,
+            )
         if model.startup_assets < asset_threshold:
-            return set_summary(development_outcome=False)
+            return set_summary(
+                development_outcome=False,
+                early_bidding_type=Types.Takeover.Pooling,
+                early_takeover=False,
+            )
         return set_summary()
 
     model: Models.OptimalMergerPolicy = mock.Mock(spec=Models.OptimalMergerPolicy)
     type(model).startup_assets = 3.5
     type(model).private_benefit = 0.18
-    type(model).development_costs = 0.28
+    type(model).development_costs = asset_threshold + 1
     type(model).success_probability = 0.38
     type(model).tolerated_harm = 0.48
     type(model).cs_duopoly = 0.58

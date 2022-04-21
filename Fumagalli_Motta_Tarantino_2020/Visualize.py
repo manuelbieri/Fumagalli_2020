@@ -9,7 +9,7 @@ import Fumagalli_Motta_Tarantino_2020.Models as Models
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
-class VisualizeInterface:
+class IVisualize:
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         raise NotImplementedError
@@ -41,7 +41,7 @@ class VisualizeInterface:
         return output_str
 
 
-class Outcome(VisualizeInterface):
+class AssetRange(IVisualize):
     def __init__(self, model: Models.OptimalMergerPolicy):
         self.model = model
         self.fig, self.ax = plt.subplots()
@@ -60,36 +60,109 @@ class Outcome(VisualizeInterface):
 
     def get_asset_thresholds(self) -> List[Types.ThresholdItem]:
         thresholds: List[Types.ThresholdItem] = [
-            Types.ThresholdItem("F(\\bar{A})", self.model.asset_threshold),
+            Types.ThresholdItem("$\\bar{A}$", self.model.asset_threshold),
             Types.ThresholdItem(
-                "F(\\bar{A}^T)", self.model.asset_threshold_late_takeover
+                "$\\bar{A}^T$", self.model.asset_threshold_late_takeover
             ),
+            Types.ThresholdItem("K", self.model.development_costs),
         ]
-        essential_thresholds = [Types.ThresholdItem("start", 0)]
         for threshold in thresholds:
-            if threshold.value > 0:
-                essential_thresholds.append(threshold)
-        essential_thresholds = sorted(essential_thresholds, key=lambda x: x.value)
-        essential_thresholds.append(
-            Types.ThresholdItem("end", self._get_max_asset_range(essential_thresholds))
-        )
-        return essential_thresholds
+            if threshold.value <= 0:
+                thresholds.remove(threshold)
+        thresholds = sorted(thresholds, key=lambda x: x.value)
+        thresholds.insert(0, Types.ThresholdItem("0", 0))
+        return thresholds
 
     @staticmethod
-    def _get_max_asset_range(d: List[Types.ThresholdItem]) -> float:
-        return math.floor(max(i.value for i in d) + 1)
+    def _get_is_takeover_legend(bid_attempt: Types.Takeover, is_takeover: bool) -> str:
+        if bid_attempt is Types.Takeover.No:
+            return ""
+        return "$(\\checkmark)$" if is_takeover else "$(\\times)$"
+
+    @staticmethod
+    def _get_development_attempt_legend(is_developing: bool) -> str:
+        return "$D$" if is_developing else "$\\emptyset$"
+
+    @staticmethod
+    def _get_development_outcome_legend(
+        is_developing: bool, is_successful: bool
+    ) -> str:
+        if is_developing:
+            return "$(\\checkmark)$" if is_successful else "$(\\times)$"
+        return ""
+
+    @staticmethod
+    def _get_symbol_legend():
+        return (
+            "${\\bf Merger\\thickspace policies}$:\n"
+            f"{Types.MergerPolicies.legend()}\n"
+            "${\\bf Bidding\\thickspace types}$:\n"
+            f"{Types.Takeover.legend()}\n"
+            "${\\bf Takeover\\thickspace outcome\\thickspace}$:\n"
+            f"{Types.Takeover.Pooling.abbreviation()}|{Types.Takeover.Separating.abbreviation()}$(\\checkmark)$: Takeover is approved by the startup and AA\n"
+            f"{Types.Takeover.Pooling.abbreviation()}|{Types.Takeover.Separating.abbreviation()}$(\\times)$: Takeover is blocked  by AA or not accepted by the startup\n"
+            "${\\bf Development\\thickspace outcome}$:\n"
+            f"$\\emptyset$: Product development was shelved\n"
+            f"$D(\\checkmark)$: Product development was attempted and successful\n"
+            f"$D(\\times)$: Product development was attempted and not successful\n"
+        )
+
+    @staticmethod
+    def _get_summary_latex(summary: Types.OptimalMergerPolicySummary) -> str:
+        separator: str = "$\\to$"
+        return (
+            f"{summary.set_policy.abbreviation()}: "
+            f"{summary.early_bidding_type.abbreviation()}"
+            f"{AssetRange._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
+            f"{AssetRange._get_development_attempt_legend(summary.development_attempt)}"
+            f"{AssetRange._get_development_outcome_legend(summary.development_attempt, summary.development_outcome)}{separator}"
+            f"{summary.late_bidding_type.abbreviation()}"
+            f"{AssetRange._get_is_takeover_legend(summary.late_bidding_type, summary.late_takeover)}"
+        )
+
+    @staticmethod
+    def _get_x_labels_ticks(
+        asset_thresholds: List[Types.ThresholdItem],
+    ) -> (List[float], List[str]):
+        x_ticks: List[float] = []
+        x_labels: List[str] = []
+        for threshold in asset_thresholds:
+            x_ticks.append(threshold.value)
+            x_labels.append(threshold.name)
+        return x_ticks, x_labels
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         asset_range, summaries = self.get_outcomes_asset_range()
         assert asset_range is not None
         assert summaries is not None
-        for i in range(len(summaries)):
+        for i, summary in enumerate(summaries):
             length: float = asset_range[i + 1].value - asset_range[i].value
-            self.ax.barh(y=1, width=length, left=asset_range[i].value, height=0.4)
+            self.ax.barh(
+                y=0.1,
+                width=length,
+                left=asset_range[i].value,
+                height=0.2,
+                label=self._get_summary_latex(summary),
+            )
+        self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
+        self.ax.annotate(
+            self._get_symbol_legend(),
+            xy=(asset_range[0].value, 0),
+            xytext=(0, -35),
+            textcoords="offset points",
+            horizontalalignment="left",
+            verticalalignment="top",
+        )
+        self.ax.margins(y=0.2, x=0)
+        x_ticks, x_labels = self._get_x_labels_ticks(asset_range)
+        self.ax.set_xticks(x_ticks)
+        self.ax.set_xticklabels(x_labels)
+        self.fig.tight_layout()
+        # self._legend_delete_duplicate_labels() # avoid duplication in legend
         return self.fig, self.ax
 
 
-class Timeline(VisualizeInterface):
+class Timeline(IVisualize):
     def __init__(self, model: Models.OptimalMergerPolicy):
         self.model = model
         self.fig, self.ax = plt.subplots()
