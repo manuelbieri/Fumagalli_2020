@@ -1,4 +1,3 @@
-from typing import List
 from abc import abstractmethod
 import math
 import numpy as np
@@ -7,9 +6,20 @@ import matplotlib.pyplot as plt
 
 import Fumagalli_Motta_Tarantino_2020.Models as Models
 import Fumagalli_Motta_Tarantino_2020.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
 class IVisualize:
+    colors: list[str] = [
+        "salmon",
+        "khaki",
+        "limegreen",
+        "turquoise",
+        "powderblue",
+        "thistle",
+        "pink",
+    ]
+
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         raise NotImplementedError
@@ -45,32 +55,58 @@ class AssetRange(IVisualize):
     def __init__(self, model: Models.OptimalMergerPolicy):
         self.model = model
         self.fig, self.ax = plt.subplots()
+        self.labels: list[str] = []
+        self.colors: dict[str, str] = {}
 
     def get_outcomes_asset_range(
         self,
-    ) -> (List[Types.ThresholdItem], List[Types.OptimalMergerPolicySummary]):
-        asset_range: List[Types.ThresholdItem] = self.get_asset_thresholds()
-        summaries: List[Types.OptimalMergerPolicySummary] = []
+    ) -> (list[Types.ThresholdItem], list[Types.OptimalMergerPolicySummary]):
+        asset_range: list[Types.ThresholdItem] = self.get_asset_thresholds()
+        summaries: list[Types.OptimalMergerPolicySummary] = []
         for i in range(len(asset_range) - 1):
             self.model.startup_assets = (
-                asset_range[i].value + asset_range[i + 1].value
+                Utilities.NormalDistributionFunction.inverse_cumulative(
+                    asset_range[i].value
+                )
+                + Utilities.NormalDistributionFunction.inverse_cumulative(
+                    asset_range[i + 1].value
+                )
             ) / 2
             summaries.append(self.model.summary())
         return asset_range, summaries
 
-    def get_asset_thresholds(self) -> List[Types.ThresholdItem]:
-        thresholds: List[Types.ThresholdItem] = [
-            Types.ThresholdItem("$\\bar{A}$", self.model.asset_threshold),
-            Types.ThresholdItem(
-                "$\\bar{A}^T$", self.model.asset_threshold_late_takeover
+    def get_asset_thresholds(self) -> list[Types.ThresholdItem]:
+        min_threshold = Types.ThresholdItem("0.5", 0.5)
+        max_threshold = Types.ThresholdItem(
+            "$F(K)$",
+            Utilities.NormalDistributionFunction.cumulative(
+                self.model.development_costs
             ),
-            Types.ThresholdItem("K", self.model.development_costs),
+        )
+        thresholds: list[Types.ThresholdItem] = [
+            Types.ThresholdItem(
+                "$\\Gamma$", self.model.asset_distribution_threshold_strict
+            ),
+            Types.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold),
+            Types.ThresholdItem(
+                "$\\Phi^T$", self.model.asset_distribution_threshold_laissez_faire
+            ),
+            Types.ThresholdItem(
+                "$\\Phi^{\\prime}$",
+                self.model.asset_distribution_threshold_intermediate,
+            ),
+            Types.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
+            Types.ThresholdItem(
+                "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
+            ),
         ]
+        essential_thresholds: list[Types.ThresholdItem] = []
         for threshold in thresholds:
-            if threshold.value <= 0:
-                thresholds.remove(threshold)
-        thresholds = sorted(thresholds, key=lambda x: x.value)
-        thresholds.insert(0, Types.ThresholdItem("0", 0))
+            if min_threshold.value < threshold.value < max_threshold.value:
+                essential_thresholds.append(threshold)
+        thresholds = sorted(essential_thresholds, key=lambda x: x.value)
+        thresholds.insert(0, min_threshold)
+        thresholds.append(max_threshold)
         return thresholds
 
     @staticmethod
@@ -122,27 +158,43 @@ class AssetRange(IVisualize):
 
     @staticmethod
     def _get_x_labels_ticks(
-        asset_thresholds: List[Types.ThresholdItem],
-    ) -> (List[float], List[str]):
-        x_ticks: List[float] = []
-        x_labels: List[str] = []
+        asset_thresholds: list[Types.ThresholdItem],
+    ) -> (list[float], list[str]):
+        x_ticks: list[float] = []
+        x_labels: list[str] = []
         for threshold in asset_thresholds:
             x_ticks.append(threshold.value)
             x_labels.append(threshold.name)
         return x_ticks, x_labels
 
+    def _get_label_color(self, label) -> (str, str):
+        if label in self.labels:
+            return "_nolegend_", self.colors[label]
+        self.colors[label] = IVisualize.colors[len(self.labels)]
+        self.labels.append(label)
+        return label, self.colors[label]
+
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         asset_range, summaries = self.get_outcomes_asset_range()
         assert asset_range is not None
         assert summaries is not None
+        self.labels.clear()
+        self.colors.clear()
+        for threshold in asset_range:
+            if 0 < threshold.value < self.model.development_costs:
+                self.ax.axvline(threshold.value, linestyle="--", color="k")
+
         for i, summary in enumerate(summaries):
             length: float = asset_range[i + 1].value - asset_range[i].value
+            label: str = self._get_summary_latex(summary)
+            label, color = self._get_label_color(label)
             self.ax.barh(
                 y=0.1,
                 width=length,
                 left=asset_range[i].value,
                 height=0.2,
-                label=self._get_summary_latex(summary),
+                color=color,
+                label=label,
             )
         self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
         self.ax.annotate(
@@ -157,6 +209,7 @@ class AssetRange(IVisualize):
         x_ticks, x_labels = self._get_x_labels_ticks(asset_range)
         self.ax.set_xticks(x_ticks)
         self.ax.set_xticklabels(x_labels)
+        self.ax.yaxis.set_visible(False)
         self.fig.tight_layout()
         # self._legend_delete_duplicate_labels() # avoid duplication in legend
         return self.fig, self.ax
@@ -167,7 +220,7 @@ class Timeline(IVisualize):
         self.model = model
         self.fig, self.ax = plt.subplots()
 
-    def _prepare_content(self) -> (list, List[datetime.date]):
+    def _prepare_content(self) -> (list, list[datetime.date]):
         summary: Types.OptimalMergerPolicySummary = self.model.summary()
         values = [
             "AA establishes "

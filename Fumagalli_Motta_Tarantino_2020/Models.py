@@ -1,8 +1,7 @@
-from typing import Dict, Optional
-
-import scipy.stats
+from typing import Optional
 
 import Fumagalli_Motta_Tarantino_2020.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
 class BaseModel:
@@ -407,7 +406,7 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold.
         """
-        return MergerPolicyModel._get_cdf_value(self.asset_threshold)
+        return Utilities.NormalDistributionFunction.cumulative(self.asset_threshold)
 
     @property
     def asset_threshold_late_takeover(self) -> float:
@@ -425,7 +424,9 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
         """
-        return MergerPolicyModel._get_cdf_value(self.asset_threshold_late_takeover)
+        return Utilities.NormalDistributionFunction.cumulative(
+            self.asset_threshold_late_takeover
+        )
 
     @BaseModel.startup_assets.setter
     def startup_assets(self, value: float) -> None:
@@ -627,10 +628,6 @@ class MergerPolicyModel(BaseModel):
             self.success_probability
             * (self.incumbent_profit_without_innovation - self.incumbent_profit_duopoly)
         )
-
-    @staticmethod
-    def _get_cdf_value(value: float) -> float:
-        return float(scipy.stats.norm.cdf(value))
 
     def is_incumbent_expected_to_shelve(self) -> bool:
         """
@@ -864,7 +861,7 @@ class MergerPolicyModel(BaseModel):
 
         Returns
         -------
-        Dict[str, any]
+        Types.Summary
             Containing the result of the model with the defined parameters.
         """
         return Types.Summary(
