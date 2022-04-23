@@ -7,7 +7,7 @@ import Fumagalli_Motta_Tarantino_2020.Models as Models
 import Fumagalli_Motta_Tarantino_2020.Visualize as Visualize
 
 
-class TestPlotOptimalMergerPolicy(unittest.TestCase):
+class TestVisualize(unittest.TestCase):
     def setUpMock(self, **kwargs) -> None:
         self.mock: Models.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
             **kwargs

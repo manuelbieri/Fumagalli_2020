@@ -16,6 +16,11 @@ In this file the different Test cases used, are explained. Tests written in bold
 
 $F$ may correspond to $F(\bar{A})$ or $F(\bar{A}^T)$ and $\Phi$ to $\Phi(\cdot)$, $\Phi^\prime(\cdot)$ or $\Phi^T(\cdot)$.
 
+## Mocks
+
+MockModels provides a stub for the OptimalMergerPolicy - class, this is used to test classes for visualizations independently
+of the implementation of the models.
+
 ## TestBaseModel
 
 This testcase includes tests for the following matters:
@@ -53,7 +58,7 @@ This testcase tests, whether the implemented logic for a laissez-faire merger po
 
 ## TestIntermediateLateTakeoverProhibitedMergerPolicyModel
 
-This testcase tests, whether the implemented logic for a intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:
+This testcase tests, whether the implemented logic for an intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:
 
 | Name of test                                                   | Is the start-up credit rationed? | Early bidding type (t=1) | Late bidding type (t=2) | Development attempt? | Development success | Early takeover (t=1) | Late takeover (t=2) |
 |:---------------------------------------------------------------|:--------------------------------:|:------------------------:|:-----------------------:|:--------------------:|:-------------------:|:--------------------:|:-------------------:|
@@ -80,3 +85,13 @@ This testcase tests, whether the implemented logic for a strict merger policy wo
 ## TestOptimalMergerPolicyModel
 
 This testcase tests all possibilities for an optimal merger policy.
+
+
+## TestMircoFoundationModel
+
+This testcase tests the adjustments made for the MicroFoundationModel, which is largely based on the OptimalMergerPolicyModel.
+
+## TestVisualize
+
+This testcase test the plots made with mock objects. The plots are tested by eye, since currently no method exists, to write
+stable unitest for matplotlib. 
