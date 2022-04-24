@@ -5,10 +5,24 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/manuelbieri/fumagalli_2020/badge)](https://www.codefactor.io/repository/github/manuelbieri/fumagalli_2020)
 [![GitHub repo size](https://img.shields.io/github/repo-size/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020)
 [![GitHub license](https://img.shields.io/github/license/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020/blob/master/LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020/commits/master)
-[![GitHub Release Date](https://img.shields.io/github/release-date/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020/releases)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/manuelbieri/Fumagalli_2020)](https://pypi.org/project/Fumagalli-Motta-Tarantino-2020/)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020/releases)
+![PyPI - Status](https://img.shields.io/pypi/status/Fumagalli-Motta-Tarantino-2020)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Fumagalli-Motta-Tarantino-2020)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/manuelbieri/Fumagalli_2020/HEAD)
+
+### Installation
+
+Install the latest release from [PyPi](https://pypi.org/project/Fumagalli-Motta-Tarantino-2020/):
+
+```shell
+$ pip install Fumagalli-Motta-Tarantino-2020
+```
+
+Or alternatively, install the package directly from source:
+
+```shell
+$ pip install pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
+```
 
 
 ### Basic Usage
