@@ -12,12 +12,17 @@ setup(
     packages=find_packages(exclude=["Notebooks"]),
     version="0.1.2",  # change with new version
     license="MIT",
-    description="Implements the model presented in Fumagalli et al. (2020)",
+    description="Implements the models presented in Fumagalli et al. (2020)",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Manuel Bieri",
     author_email="manuel.bieri@outlook.com",
-    url="https://github.com/manuelbieri/Fumagalli_2020",
+    url="https://github.com/manuelbieri/Fumagalli_2020#readme",
+    project_urls={
+        'Documentation': 'https://manuelbieri.ch/Fumagalli_2020/',
+        'Download' : 'https://github.com/manuelbieri/Fumagalli_2020/releases',
+        'Source': 'https://github.com/manuelbieri/Fumagalli_2020'
+    },
     download_url="https://github.com/manuelbieri/Fumagalli_2020/archive/refs/tags/v0.1.2.tar.gz",  # change with new version
     keywords=["Killer Acquisition", "Competition", "Innovation"],
     classifiers=[
@@ -25,7 +30,6 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
