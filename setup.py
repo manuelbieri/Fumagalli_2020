@@ -19,9 +19,9 @@ setup(
     author_email="manuel.bieri@outlook.com",
     url="https://github.com/manuelbieri/Fumagalli_2020#readme",
     project_urls={
-        'Documentation': 'https://manuelbieri.ch/Fumagalli_2020/',
-        'Download' : 'https://github.com/manuelbieri/Fumagalli_2020/releases',
-        'Source': 'https://github.com/manuelbieri/Fumagalli_2020'
+        "Documentation": "https://manuelbieri.ch/Fumagalli_2020/",
+        "Download": "https://github.com/manuelbieri/Fumagalli_2020/releases",
+        "Source": "https://github.com/manuelbieri/Fumagalli_2020",
     },
     download_url="https://github.com/manuelbieri/Fumagalli_2020/archive/refs/tags/v0.1.2.tar.gz",  # change with new version
     keywords=["Killer Acquisition", "Competition", "Innovation"],
