@@ -187,7 +187,7 @@ class TestBaseModel(unittest.TestCase):
 
 class TestMergerPolicyModel(TestBaseModel):
     def setupModel(self, **kwargs) -> None:
-        self.model = Models.MergerPolicyModel(**kwargs)
+        self.model = Models.MergerPolicy(**kwargs)
 
 
 class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):

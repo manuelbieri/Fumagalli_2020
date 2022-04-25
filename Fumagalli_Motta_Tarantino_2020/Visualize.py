@@ -1,4 +1,5 @@
 from abc import abstractmethod
+
 import math
 import numpy as np
 import datetime
@@ -10,6 +11,10 @@ import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
 class IVisualize:
+    """
+    Interface for all visualization classes containing useful methods.
+    """
+
     colors: list[str] = [
         "salmon",
         "khaki",
@@ -19,13 +24,52 @@ class IVisualize:
         "thistle",
         "pink",
     ]
+    """Standard colors used in visualizations."""
+
+    def __init__(self, model: Models.OptimalMergerPolicy):
+        """
+        Parameters
+        ----------
+        model: Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
+            Model to plot the outcomes on asset range from.
+        """
+        self.model: Models.OptimalMergerPolicy = model
+        self.fig, self.ax = plt.subplots()
 
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        """
+        Plots the visual representation for the object.
+
+        Parameters
+        ----------
+        kwargs
+            Options for the plots for further customization.
+
+        Returns
+        -------
+        Figure
+            Containing the axes with the plots (use Figure.show() to display).
+        Axes
+            Containing the plots (arrange custom summary).
+        """
         raise NotImplementedError
 
     @staticmethod
     def _parameter_latex(model: Models.BaseModel) -> str:
+        """
+        Generates a legend for the parameter values of a Fumagalli_Motta_Tarantino_2020.Models.BaseModel in latex format.
+
+        Parameters
+        ----------
+        model: Fumagalli_Motta_Tarantino_2020.Models.BaseModel
+            Input model to generate the legend from.
+
+        Returns
+        -------
+        str
+            Containing the legend for the parameter values.
+        """
         separator_name_value = "="
         separator_parameters = " | "
         output_str = ""
@@ -52,16 +96,29 @@ class IVisualize:
 
 
 class AssetRange(IVisualize):
-    def __init__(self, model: Models.OptimalMergerPolicy):
-        self.model = model
-        self.fig, self.ax = plt.subplots()
+    """
+    Visualizes the outcomes over an assets range for a specific model.
+    """
+
+    def __init__(self, model: Models.OptimalMergerPolicy) -> None:
+        super(AssetRange, self).__init__(model)
         self.labels: list[str] = []
         self.colors: dict[str, str] = {}
 
-    def get_outcomes_asset_range(
+    def _get_outcomes_asset_range(
         self,
     ) -> (list[Types.ThresholdItem], list[Types.OptimalMergerPolicySummary]):
-        asset_range: list[Types.ThresholdItem] = self.get_asset_thresholds()
+        """
+        Generates a list with all essential threshold concerning the assets of a start-up and an additional list with
+        summaries of the outcomes of the model in between the thresholds.
+
+        Returns
+        -------
+        (list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary])
+            List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
+
+        """
+        asset_range: list[Types.ThresholdItem] = self._get_asset_thresholds()
         summaries: list[Types.OptimalMergerPolicySummary] = []
         for i in range(len(asset_range) - 1):
             self.model.startup_assets = (
@@ -75,7 +132,15 @@ class AssetRange(IVisualize):
             summaries.append(self.model.summary())
         return asset_range, summaries
 
-    def get_asset_thresholds(self) -> list[Types.ThresholdItem]:
+    def _get_asset_thresholds(self) -> list[Types.ThresholdItem]:
+        """
+        Generates a list with all essential threshold concerning the assets of a start-up.
+
+        Returns
+        -------
+        list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem]
+            List containing the essential asset thresholds in the model.
+        """
         min_threshold = Types.ThresholdItem("0.5", 0.5)
         max_threshold = Types.ThresholdItem(
             "$F(K)$",
@@ -111,24 +176,75 @@ class AssetRange(IVisualize):
 
     @staticmethod
     def _get_is_takeover_legend(bid_attempt: Types.Takeover, is_takeover: bool) -> str:
+        """
+        Generates a string representation for legend about the takeover (option and approval).
+
+        Parameters
+        ----------
+        bid_attempt: Fumagalli_Motta_Tarantino_2020.Types.Takeover
+            Option for takeover chosen by the incumbent.
+        is_takeover: bool
+            If true, the takeover is approved by AA and the start-up.
+
+        Returns
+        -------
+        str
+            String representation for legend about takeover (option and approval).
+        """
         if bid_attempt is Types.Takeover.No:
             return ""
         return "$(\\checkmark)$" if is_takeover else "$(\\times)$"
 
     @staticmethod
     def _get_development_attempt_legend(is_developing: bool) -> str:
+        """
+        Generates a string representation for legend about the development attempt.
+
+        Parameters
+        ----------
+        is_developing: bool
+            True, if the owner is developing the product (otherwise, the product is shelved).
+
+        Returns
+        -------
+        str
+            String representation for legend about the development attempt.
+        """
         return "$D$" if is_developing else "$\\emptyset$"
 
     @staticmethod
     def _get_development_outcome_legend(
         is_developing: bool, is_successful: bool
     ) -> str:
+        """
+        Generates a string representation for legend about the development outcome.
+
+        Parameters
+        ----------
+        is_developing: bool
+            True, if the owner is developing the product (otherwise, the product is shelved).
+        is_successful: bool
+            True, if the development of the product is successful.
+
+        Returns
+        -------
+        str
+            String representation for legend about the development outcome.
+        """
         if is_developing:
             return "$(\\checkmark)$" if is_successful else "$(\\times)$"
         return ""
 
     @staticmethod
-    def _get_symbol_legend():
+    def _get_symbol_legend() -> str:
+        """
+        Generates a legend for the used abbreviations in the plot legends.
+
+        Returns
+        -------
+        str
+            Containing the legend for the used abbreviations.
+        """
         return (
             "${\\bf Merger\\thickspace policies}$:\n"
             f"{Types.MergerPolicies.legend()}\n"
@@ -145,6 +261,19 @@ class AssetRange(IVisualize):
 
     @staticmethod
     def _get_summary_latex(summary: Types.OptimalMergerPolicySummary) -> str:
+        """
+        Generates a chronological entry for the legend based on the input model.
+
+        Parameters
+        ----------
+        summary: Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary
+            Summary of the model.
+
+        Returns
+        -------
+        str
+            Chronological entry for the legend of the input model.
+        """
         separator: str = "$\\to$"
         return (
             f"{summary.set_policy.abbreviation()}: "
@@ -160,6 +289,19 @@ class AssetRange(IVisualize):
     def _get_x_labels_ticks(
         asset_thresholds: list[Types.ThresholdItem],
     ) -> (list[float], list[str]):
+        """
+        Generates the locations of the ticks on the x-axis and the corresponding labels on the x-axis.
+
+        Parameters
+        ----------
+        asset_thresholds: list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem]
+            List with all threshold the assets.
+
+        Returns
+        -------
+        (list[float], list[str])
+            A list containing the ticks on the x-axis and a list containing the labels on the x-axis.
+        """
         x_ticks: list[float] = []
         x_labels: list[str] = []
         for threshold in asset_thresholds:
@@ -168,6 +310,20 @@ class AssetRange(IVisualize):
         return x_ticks, x_labels
 
     def _get_label_color(self, label) -> (str, str):
+        """
+        Returns the color and the final label for a legend entry.
+
+        Through this method, duplications in the legend are avoided.
+
+        Parameters
+        ----------
+        label: str
+
+        Returns
+        -------
+        (str, str)
+            String representing the final label and a string representing the color.
+        """
         if label in self.labels:
             return "_nolegend_", self.colors[label]
         self.colors[label] = IVisualize.colors[len(self.labels)]
@@ -175,7 +331,7 @@ class AssetRange(IVisualize):
         return label, self.colors[label]
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
-        asset_range, summaries = self.get_outcomes_asset_range()
+        asset_range, summaries = self._get_outcomes_asset_range()
         assert asset_range is not None
         assert summaries is not None
         self.labels.clear()
@@ -216,34 +372,79 @@ class AssetRange(IVisualize):
 
 
 class Timeline(IVisualize):
-    def __init__(self, model: Models.OptimalMergerPolicy):
-        self.model = model
-        self.fig, self.ax = plt.subplots()
+    """
+    Visualizes the timeline of events for a specific model.
+    """
 
-    def _prepare_content(self) -> (list, list[datetime.date]):
+    def __init__(self, model: Models.OptimalMergerPolicy):
+        super(Timeline, self).__init__(model)
+
+    def _prepare_content(self) -> (list[str], list[str]):
+        """
+        Generates the label and points in time of the events in the model.
+
+        Returns
+        -------
+        (list, list[datetime.date])
+            List containing label for the events and list containing the points in time of the events.
+        """
         summary: Types.OptimalMergerPolicySummary = self.model.summary()
-        values = [
+        values: list[str] = [
             "AA establishes "
             + self._policy_str(summary.set_policy)
             + "\nmerger policy",
-            self._bid_attempt_str(summary.early_bidding_type),
+            self._takeover_attempt_str(summary.early_bidding_type),
             self._takeover_str(summary.early_takeover),
             self._development_str(summary.development_attempt, summary.early_takeover),
             self._success_str(summary.development_outcome),
-            self._bid_attempt_str(summary.late_bidding_type),
+            self._takeover_attempt_str(summary.late_bidding_type),
             self._takeover_str(summary.late_takeover),
             "Payoffs",
         ]
-        x_labels = ["t=0", "t=1a", "t=1b", "t=1c", "t=1d", "t=2a", "t=2b", "t=3"]
-
+        x_labels: list[str] = [
+            "t=0",
+            "t=1a",
+            "t=1b",
+            "t=1c",
+            "t=1d",
+            "t=2a",
+            "t=2b",
+            "t=3",
+        ]
         return values, x_labels
 
     @staticmethod
-    def _bid_attempt_str(bid_attempt: Types.Takeover) -> str:
-        return str(bid_attempt) + "\nby incumbent"
+    def _takeover_attempt_str(takeover: Types.Takeover) -> str:
+        """
+        Generate label for takeover event.
+
+        Parameters
+        ----------
+        takeover: Fumagalli_Motta_Tarantino_2020.Types.Takeover
+            Option for takeover chosen by the incumbent.
+
+        Returns
+        -------
+        str
+            Label for takeover event.
+        """
+        return str(takeover) + "\nby incumbent"
 
     @staticmethod
     def _policy_str(policy: Types.MergerPolicies) -> str:
+        """
+        Generate label for establishing of merger policy event.
+
+        Parameters
+        ----------
+        policy: Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies
+            Policy established by the AA at beginning.
+
+        Returns
+        -------
+        str
+            Label for establishing of merger policy event.
+        """
         policy_str = str(policy).lower()
         if "intermediate" in policy_str:
             return policy_str.replace("intermediate", "intermediate\n")
@@ -251,12 +452,40 @@ class Timeline(IVisualize):
 
     @staticmethod
     def _takeover_str(is_takeover: bool) -> str:
+        """
+        Generates a label about the takeover event (option and approval).
+
+        Parameters
+        ----------
+        is_takeover: bool
+            If true, the takeover is approved by AA and the start-up.
+
+        Returns
+        -------
+        str
+            Label about the takeover event (option and approval).
+        """
         if is_takeover:
             return "Takeover\napproved"
         return "No takeover\noccurs"
 
     @staticmethod
     def _development_str(is_development: bool, is_early_takeover: bool) -> str:
+        """
+        Generates a label about the development event (attempt and shelving).
+
+        Parameters
+        ----------
+        is_development: bool
+            True, if the owner is developing the product (otherwise, the product is shelved).
+        is_early_takeover: bool
+            True, if an early takeover occurs.
+
+        Returns
+        -------
+        str
+            Label about the development event (attempt and shelving).
+        """
         owner = "Incumbent" if is_early_takeover else "Start-up"
         is_killer_acquisition = "\n(killer acquisition)" if is_early_takeover else ""
         if is_development:
@@ -265,6 +494,19 @@ class Timeline(IVisualize):
 
     @staticmethod
     def _success_str(is_successful: bool) -> str:
+        """
+        Generates a label about the development outcome event.
+
+        Parameters
+        ----------
+        is_successful: bool
+            True, if the development of the product is successful.
+
+        Returns
+        -------
+        str
+            Label about the development outcome event.
+        """
         if is_successful:
             return "Development is\nsuccessful"
         return "Development is\nnot successful"

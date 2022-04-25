@@ -50,19 +50,27 @@
   <li><a href="#explanations-about-the-unittests">Explanations about the Unittests</a>
   <ul>
     <li><a href="#glossary-about-the-naming-of-tests">Glossary about the naming of tests</a></li>
+    <li><a href="#mocks">Mocks</a></li>
     <li><a href="#testbasemodel">TestBaseModel</a></li>
     <li><a href="#testmergerpolicymodel">TestMergerPolicyModel</a></li>
     <li><a href="#testlaissezfairemergerpolicymodel">TestLaissezFaireMergerPolicyModel</a></li>
     <li><a href="#testintermediatelatetakeoverallowedmergerpolicymodel">TestIntermediateLateTakeoverAllowedMergerPolicyModel</a></li>
     <li><a href="#testintermediatelatetakeoverprohibitedmergerpolicymodel">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</a></li>
     <li><a href="#teststrictmergerpolicymodel">TestStrictMergerPolicyModel</a></li>
+    <li><a href="#testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</a></li>
+    <li><a href="#testmircofoundationmodel">TestMircoFoundationModel</a></li>
+    <li><a href="#testvisualize">TestVisualize</a></li>
   </ul></li>
 </ul>
 
 
         <h2>Submodules</h2>
         <ul>
+                <li><a href="tests/MockModels.html">Fumagalli_Motta_Tarantino_2020.tests.MockModels</a></li>
+                <li><a href="tests/Test_AdditionalModels.html">Fumagalli_Motta_Tarantino_2020.tests.Test_AdditionalModels</a></li>
                 <li><a href="tests/Test_Model.html">Fumagalli_Motta_Tarantino_2020.tests.Test_Model</a></li>
+                <li><a href="tests/Test_Utilities.html">Fumagalli_Motta_Tarantino_2020.tests.Test_Utilities</a></li>
+                <li><a href="tests/Test_Visualize.html">Fumagalli_Motta_Tarantino_2020.tests.Test_Visualize</a></li>
         </ul>
 
 
@@ -126,6 +134,11 @@
 </table>
 
 <p>$F$ may correspond to $F(\bar{A})$ or $F(\bar{A}^T)$ and $\Phi$ to $\Phi(\cdot)$, $\Phi^\prime(\cdot)$ or $\Phi^T(\cdot)$.</p>
+
+<h2 id="mocks">Mocks</h2>
+
+<p>MockModels provides a stub for the OptimalMergerPolicy - class, this is used to test classes for visualizations independently
+of the implementation of the models.</p>
 
 <h2 id="testbasemodel">TestBaseModel</h2>
 
@@ -312,7 +325,7 @@
 
 <h2 id="testintermediatelatetakeoverprohibitedmergerpolicymodel">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</h2>
 
-<p>This testcase tests, whether the implemented logic for a intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:</p>
+<p>This testcase tests, whether the implemented logic for an intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:</p>
 
 <table>
 <thead>
@@ -471,6 +484,19 @@
 </tr>
 </tbody>
 </table>
+
+<h2 id="testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</h2>
+
+<p>This testcase tests all possibilities for an optimal merger policy.</p>
+
+<h2 id="testmircofoundationmodel">TestMircoFoundationModel</h2>
+
+<p>This testcase tests the adjustments made for the MicroFoundationModel, which is largely based on the OptimalMergerPolicyModel.</p>
+
+<h2 id="testvisualize">TestVisualize</h2>
+
+<p>This testcase test the plots made with mock objects. The plots are tested by eye, since currently no method exists, to write
+stable unitest for matplotlib. </p>
 </div>
 
                         <details>

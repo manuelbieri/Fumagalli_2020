@@ -1,6 +1,7 @@
 from typing import Literal
 import unittest
-import MockModels
+
+import Fumagalli_Motta_Tarantino_2020.tests.MockModels as MockModels
 
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Models as Models
@@ -24,12 +25,13 @@ class TestVisualize(unittest.TestCase):
             self.visualizer: Visualize.IVisualize = Visualize.AssetRange(model)
 
     def test_plot_interface(self):
-        self.assertRaises(NotImplementedError, Visualize.IVisualize().plot)
+        self.setUpMock()
+        self.assertRaises(NotImplementedError, Visualize.IVisualize(self.mock).plot)
 
     def test_essential_asset_thresholds(self):
         self.setUpMock(asset_threshold=2, asset_threshold_late_takeover=1)
         self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
-        thresholds = self.visualizer.get_asset_thresholds()
+        thresholds = self.visualizer._get_asset_thresholds()
         self.assertEqual(6, len(thresholds))
         self.assertEqual("0.5", thresholds[0].name)
         self.assertEqual("$F(K)$", thresholds[-1].name)
@@ -37,7 +39,7 @@ class TestVisualize(unittest.TestCase):
     def test_essential_asset_thresholds_negative_values(self):
         self.setUpMock()
         self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
-        thresholds = self.visualizer.get_asset_thresholds()
+        thresholds = self.visualizer._get_asset_thresholds()
         self.assertEqual(6, len(thresholds))
         self.assertEqual(thresholds[0].value, 0.5)
         self.assertEqual(thresholds[-1].name, "$F(K)$")
@@ -48,7 +50,7 @@ class TestVisualize(unittest.TestCase):
             asset_threshold_late_takeover=0.5244005127080407,
         )
         self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
-        thresholds, outcomes = self.visualizer.get_outcomes_asset_range()
+        thresholds, outcomes = self.visualizer._get_outcomes_asset_range()
         self.assertEqual(5, len(outcomes))
         self.assertTrue(outcomes[0].credit_rationed)
         self.assertFalse(outcomes[0].development_outcome)

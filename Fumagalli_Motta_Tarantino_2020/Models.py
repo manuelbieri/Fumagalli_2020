@@ -223,6 +223,11 @@ class BaseModel:
     def startup_assets(self, value: float) -> None:
         """
         ($A$) Assets of the startup at the beginning.
+
+        Parameters
+        ----------
+        value: float
+            New value for the start-up assets (important the assumptions have to remain valid).
         """
         self._startup_assets = value
         self._check_startup_assets()
@@ -325,22 +330,18 @@ class BaseModel:
         )
 
 
-class MergerPolicyModel(BaseModel):
+class MergerPolicy(BaseModel):
     """
-    In this class all merger policies and their respective outcomes are considered.
+    In this class all merger policies and their respective outcomes are calculated.
 
-    Available merger policies are:
-    - Strict: The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare.
-    - Intermediate (late takeover prohibited): The AA blocks late takeovers, but is more lenient with early takeovers.
-    - Intermediate (late takeover allowed): The AA authorises late takeovers, but is stricter with early takeovers.
-    - Laissez-faire: The intervention threshold of the AA is so high that any acquisition would be allowed.
+    The available merger policies are documented in Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies.
     """
 
     def __init__(self, *args, **kwargs):
         """
         Takes the same arguments as BaseModel.__init__.
         """
-        super(MergerPolicyModel, self).__init__(*args, **kwargs)
+        super(MergerPolicy, self).__init__(*args, **kwargs)
         self._probability_credit_constrained_default: float = 0
         self._probability_credit_constrained_merger_policy: float = 0
 
@@ -353,6 +354,11 @@ class MergerPolicyModel(BaseModel):
         self._solve_game()
 
     def _check_asset_distribution_thresholds(self) -> None:
+        """
+        Checks the asset distributions thresholds on validity.
+
+        Every threshold has to be between 0 and 1. If this condition is not satisfied, an assertion error is raised.
+        """
         assert (
             0 < self.asset_distribution_threshold < 1
         ), "Violates A.2 (has to be between 0 and 1)"
@@ -381,7 +387,10 @@ class MergerPolicyModel(BaseModel):
         self,
     ) -> Types.MergerPolicies:
         """
-        Returns the merger policy used to determine the outcome.
+        Returns the merger policy used to determine the outcome, given by the thresholds for tolerated harm.
+
+        The levels of tolerated harm are defined in A.4 (p.36ff.). See Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies
+        for the available merger policies.
         """
         if self.tolerated_harm <= self._calculate_h0():
             return Types.MergerPolicies.Strict
@@ -438,11 +447,7 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the bidding attempt of the incumbent at $t = 1$.
 
-        Possible options of an actual attempt:
-        - Pooling: The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.
-        - Separating: The incumbent offers a low takeover price targeting only the credit-rationed start-ups.
-
-        Otherwise, the option 'No' is returned.
+        See Fumagalli_Motta_Tarantino_2020.Types.Takeover for the available options.
         """
         assert self._early_bid_attempt is not None
         return self._early_bid_attempt
@@ -452,11 +457,7 @@ class MergerPolicyModel(BaseModel):
         """
         Returns the bidding attempt of the incumbent at $t = 2$.
 
-        Possible options of an actual attempt:
-        - 'Pooling': The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets.
-        - 'Separating': The incumbent offers a low takeover price targeting only the credit-rationed start-ups.
-
-        Otherwise, the option 'No' is returned.
+        See Fumagalli_Motta_Tarantino_2020.Types.Takeover for the available options.
         """
         assert self._late_bid_attempt is not None
         return self._late_bid_attempt
@@ -656,6 +657,9 @@ class MergerPolicyModel(BaseModel):
         )
 
     def _calculate_h0(self) -> float:
+        """
+        Calculates the minimal threshold of tolerated harm to achieve for an intermediate merger policy (late takeover prohibited).
+        """
         return max(
             (1 - self.asset_threshold_cdf)
             * (self.success_probability * (self.w_duopoly - self.w_with_innovation))
@@ -669,12 +673,18 @@ class MergerPolicyModel(BaseModel):
         )
 
     def _calculate_h1(self) -> float:
+        """
+        Calculates the minimal threshold of tolerated harm to achieve for an intermediate merger policy (late takeover allowed).
+        """
         return (1 - self.asset_threshold_cdf) * (
             self.success_probability * (self.w_duopoly - self.w_without_innovation)
             - self.development_costs
         )
 
     def _calculate_h2(self) -> float:
+        """
+        Calculates the minimal threshold of tolerated harm to achieve for a laissez-faire merger policy.
+        """
         return max(
             self.w_duopoly - self.w_with_innovation,
             (1 - self.asset_threshold_late_takeover_cdf)
@@ -687,9 +697,7 @@ class MergerPolicyModel(BaseModel):
 
     def _solve_game(self):
         """
-        Solves the game according to the policies given by the thresholds for tolerated harm.
-
-        The levels of tolerated harm are defined in A.4 (p.36ff.).
+        Solves the game according to the set Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies.
         """
         if self.merger_policy is Types.MergerPolicies.Strict:
             self._solve_game_strict_merger_policy()
@@ -707,13 +715,19 @@ class MergerPolicyModel(BaseModel):
             self._solve_game_laissez_faire()
 
     def _recalculate_model(self) -> None:
+        """
+        Organizes the recalculation of the model after a property changed value.
+        """
         self._early_bid_attempt = None
         self._late_bid_attempt = None
         self._early_takeover = None
         self._late_takeover = None
         self._solve_game()
 
-    def _solve_game_laissez_faire(self):
+    def _solve_game_laissez_faire(self) -> None:
+        """
+        Solves the game under a laissez-faire merger policy, based on section 4 in the paper.
+        """
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_late_takeover_cdf
@@ -746,6 +760,9 @@ class MergerPolicyModel(BaseModel):
                     )
 
     def _solve_game_late_takeover_allowed(self):
+        """
+        Solves the game under an intermediate merger policy (late takeover allowed), based on section 5.2 in the paper.
+        """
         if self.is_incumbent_expected_to_shelve():
             if not self.is_startup_credit_rationed and self.development_success:
                 self._set_takeovers(late_takeover=Types.Takeover.Pooling)
@@ -769,7 +786,11 @@ class MergerPolicyModel(BaseModel):
                         early_takeover_accepted=False,
                     )
 
-    def _solve_game_late_takeover_prohibited(self):
+    def _solve_game_late_takeover_prohibited(self) -> None:
+        """
+        Solves the game under an intermediate merger policy (late takeover prohibited),
+        based on section 5.1 in the paper.
+        """
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_cdf
@@ -792,9 +813,10 @@ class MergerPolicyModel(BaseModel):
             else:
                 self._set_takeovers(Types.Takeover.Pooling)
 
-    def _solve_game_strict_merger_policy(self):
-        # decision of the AA and the startup (chapter 3.4.1)
-        # takeover bid of the incumbent (chapter 3.4.2)
+    def _solve_game_strict_merger_policy(self) -> None:
+        """
+        Solves the game under a strict merger policy, based on section 3 in the paper.
+        """
         if self.is_incumbent_expected_to_shelve():
             self._set_takeovers(
                 early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
@@ -825,6 +847,20 @@ class MergerPolicyModel(BaseModel):
         early_takeover_accepted=True,
         late_takeover_accepted=True,
     ) -> None:
+        """
+        Sets the takeover variables of the class.
+
+        Parameters
+        ----------
+        early_takeover: Fumagalli_Motta_Tarantino_2020.Types.Takeover
+            Type of the early bid attempt/takeover (if existing).
+        late_takeover: Fumagalli_Motta_Tarantino_2020.Types.Takeover
+            Type of the early bid attempt/takeover (if existing).
+        early_takeover_accepted: bool
+            If true, the early takeover comes through, otherwise the takeover is blocked by AA or the start-up.
+        late_takeover_accepted
+            If true, the late takeover comes through, otherwise the takeover is blocked by AA or the start-up.
+        """
         assert self._early_bid_attempt is None and self._early_takeover is None
         assert self._late_bid_attempt is None and self._late_takeover is None
         assert not (
@@ -851,9 +887,10 @@ class MergerPolicyModel(BaseModel):
         Returns the calculated outcome of the model with the defined parameters.
 
         The resulting dictionary contains the following information (and keys):
+        - 'set_policy' : Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies -> Defines the chosen merger policy based on the tolerated level of harm.
         - 'credit_rationed' : True, if the start-up is credit rationed.
-        - 'early_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=1.
-        - 'late_bidding_type' : 'No', 'Pooling' or 'Separating' -> Defines the bidding type of the incumbent at t=2.
+        - 'early_bidding_type' : Fumagalli_Motta_Tarantino_2020.Types.Takeover -> Defines the bidding type of the incumbent at t=1.
+        - 'late_bidding_type' : 'Fumagalli_Motta_Tarantino_2020.Types.Takeover -> Defines the bidding type of the incumbent at t=2.
         - 'development_attempt' : True, if the owner (start-up or incumbent after a takeover) tries to develop the product.
         - 'development_outcome' : True, if the product is developed successfully.
         - 'early_takeover' : True, if a takeover takes place at $t=1$.
@@ -876,7 +913,7 @@ class MergerPolicyModel(BaseModel):
         )
 
 
-class OptimalMergerPolicy(MergerPolicyModel):
+class OptimalMergerPolicy(MergerPolicy):
     """
     Add functionality to determine the optimal merger policy for a given set of parameters.
 
@@ -976,6 +1013,14 @@ class OptimalMergerPolicy(MergerPolicyModel):
         )
 
     def is_financial_imperfection_severe(self) -> bool:
+        """
+        Returns whether financial imperfections are severe.
+
+        Returns
+        -------
+        True
+            If the financial imperfections are severe.
+        """
         return (
             self.asset_threshold_late_takeover_cdf
             >= self.asset_distribution_threshold_laissez_faire
@@ -1016,6 +1061,17 @@ class OptimalMergerPolicy(MergerPolicyModel):
         )
 
     def summary(self) -> Types.OptimalMergerPolicySummary:
+        """
+        Returns the calculated outcome of the model with the defined parameters.
+
+        Additional information compared to Fumagalli_Motta_Tarantino_2020.Models.MergerPolicyModel.summary:
+        - 'optimal_policy' : Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies -> Defines the welfare maximizing merger policy.
+
+        Returns
+        -------
+        Types.Summary
+            Containing the result of the model with the defined parameters.
+        """
         return Types.OptimalMergerPolicySummary(
             set_policy=self.merger_policy,
             credit_rationed=self.is_startup_credit_rationed,
