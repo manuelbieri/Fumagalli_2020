@@ -1,4 +1,5 @@
 import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
 class MicroFoundationModel(Models.OptimalMergerPolicy):
@@ -118,4 +119,75 @@ class MicroFoundationModel(Models.OptimalMergerPolicy):
         ) / (
             self.success_probability * (self.w_duopoly - self._cs_without_innovation)
             - self.development_costs
+        )
+
+
+class PerfectInformationModel(Models.OptimalMergerPolicy):
+    def _solve_game_strict_merger_policy(self) -> None:
+        assert self.merger_policy is Types.MergerPolicies.Strict
+        if (
+            self.is_startup_credit_rationed
+            and not self.is_incumbent_expected_to_shelve()
+        ):
+            self._set_takeovers(early_takeover=Types.Takeover.Separating)
+        else:
+            self._set_takeovers(
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+            )
+
+    def _solve_game_laissez_faire(self) -> None:
+        assert self.merger_policy is Types.MergerPolicies.Laissez_faire
+        if self.is_startup_credit_rationed and self.is_incumbent_expected_to_shelve():
+            self._set_takeovers(
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+            )
+        else:
+            if self.is_startup_credit_rationed:
+                self._set_takeovers(early_takeover=Types.Takeover.Separating)
+            else:
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
+
+    def _solve_game_late_takeover_allowed(self) -> None:
+        assert (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_allowed
+        )
+        if self.is_incumbent_expected_to_shelve():
+            if self.is_startup_credit_rationed or not self.development_success:
+                self._set_takeovers(
+                    early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+                )
+            else:
+                self._set_takeovers(late_takeover=Types.Takeover.Pooling)
+        else:
+            if self.is_startup_credit_rationed:
+                self._set_takeovers(early_takeover=Types.Takeover.Separating)
+            else:
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
+
+    def _calculate_h0(self) -> float:
+        return self._calculate_h1()
+
+    def _calculate_h1(self) -> float:
+        return self.w_duopoly - self.w_with_innovation
+
+    def _calculate_h2(self) -> float:
+        return max(
+            self.w_duopoly - self.w_with_innovation,
+            self.success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs,
+        )
+
+    def is_laissez_faire_optimal(self) -> bool:
+        return False
+
+    def is_intermediate_optimal(self) -> bool:
+        return (
+            self.is_incumbent_expected_to_shelve()
+            and not self.is_strict_optimal()
+            and self.success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs
+            >= self.w_duopoly - self.w_with_innovation
         )

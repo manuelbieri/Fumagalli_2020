@@ -91,6 +91,28 @@ This testcase tests all possibilities for an optimal merger policy.
 
 This testcase tests the adjustments made for the MicroFoundationModel, which is largely based on the OptimalMergerPolicyModel.
 
+
+## TestPerfectInformationModel
+
+This testcase tests, whether the implemented logic in PerfectInformationModel works as expected. The following tests are included:
+
+| Name of test                                                      | Merger Policy | Is the start-up credit rationed? | Early bidding type (t=1) | Late bidding type (t=2) | Development attempt? | Development success | Early takeover (t=1) | Late takeover (t=2) |
+|:------------------------------------------------------------------|:-------------:|:--------------------------------:|:------------------------:|:-----------------------:|:--------------------:|:-------------------:|:--------------------:|:-------------------:|
+| test_not_profitable_not_credit_rationed_strict                    |    Strict     |              False               |            No            |           No            |         True         |   Does not matter   |        False         |        False        |
+| test_not_profitable_credit_rationed_strict                        |    Strict     |               True               |            No            |           No            |        False         |   Does not matter   |        False         |        False        |
+| test_profitable_not_credit_rationed_strict                        |    Strict     |              False               |            No            |           No            |         True         |   Does not matter   |        False         |        False        |
+| test_profitable_credit_rationed_strict                            |    Strict     |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_not_profitable_not_credit_rationed_laissez_faire             | Laissez-faire |              False               |         Pooling          |           No            |        False         |   Does not matter   |         True         |        False        |
+| test_not_profitable_credit_rationed_laissez_faire                 | Laissez-faire |               True               |            No            |           No            |        False         |   Does not matter   |        False         |        False        |
+| test_profitable_not_credit_rationed_laissez_faire                 | Laissez-faire |              False               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_profitable_credit_rationed_laissez_faire                     | Laissez-faire |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_not_profitable_not_credit_rationed_intermediate              | Intermediate  |              False               |            No            |         Pooling         |        False         |        True         |        False         |        True         |
+| test_not_profitable_not_credit_rationed_unsuccessful_intermediate | Intermediate  |              False               |            No            |           No            |        False         |        False        |        False         |        False        |
+| test_not_profitable_credit_rationed_intermediate                  | Intermediate  |               True               |            No            |           No            |        False         |   Does not matter   |        False         |        False        |
+| test_profitable_not_credit_rationed_intermediate                  | Intermediate  |              False               |         Pooling          |           No            |         True         |   Does not matter   |         True         |        False        |
+| test_profitable_credit_rationed_intermediate                      | Intermediate  |               True               |        Separating        |           No            |         True         |   Does not matter   |         True         |        False        |
+
+
 ## TestVisualize
 
 This testcase test the plots made with mock objects. The plots are tested by eye, since currently no method exists, to write

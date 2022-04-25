@@ -59,6 +59,7 @@
     <li><a href="#teststrictmergerpolicymodel">TestStrictMergerPolicyModel</a></li>
     <li><a href="#testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</a></li>
     <li><a href="#testmircofoundationmodel">TestMircoFoundationModel</a></li>
+    <li><a href="#testperfectinformationmodel">TestPerfectInformationModel</a></li>
     <li><a href="#testvisualize">TestVisualize</a></li>
   </ul></li>
 </ul>
@@ -492,6 +493,171 @@ of the implementation of the models.</p>
 <h2 id="testmircofoundationmodel">TestMircoFoundationModel</h2>
 
 <p>This testcase tests the adjustments made for the MicroFoundationModel, which is largely based on the OptimalMergerPolicyModel.</p>
+
+<h2 id="testperfectinformationmodel">TestPerfectInformationModel</h2>
+
+<p>This testcase tests, whether the implemented logic in PerfectInformationModel works as expected. The following tests are included:</p>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:left;">Name of test</th>
+  <th style="text-align:center;">Merger Policy</th>
+  <th style="text-align:center;">Is the start-up credit rationed?</th>
+  <th style="text-align:center;">Early bidding type (t=1)</th>
+  <th style="text-align:center;">Late bidding type (t=2)</th>
+  <th style="text-align:center;">Development attempt?</th>
+  <th style="text-align:center;">Development success</th>
+  <th style="text-align:center;">Early takeover (t=1)</th>
+  <th style="text-align:center;">Late takeover (t=2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:left;">test_not_profitable_not_credit_rationed_strict</td>
+  <td style="text-align:center;">Strict</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_credit_rationed_strict</td>
+  <td style="text-align:center;">Strict</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_not_credit_rationed_strict</td>
+  <td style="text-align:center;">Strict</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_credit_rationed_strict</td>
+  <td style="text-align:center;">Strict</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Separating</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_not_credit_rationed_laissez_faire</td>
+  <td style="text-align:center;">Laissez-faire</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Pooling</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_credit_rationed_laissez_faire</td>
+  <td style="text-align:center;">Laissez-faire</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_not_credit_rationed_laissez_faire</td>
+  <td style="text-align:center;">Laissez-faire</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Pooling</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_credit_rationed_laissez_faire</td>
+  <td style="text-align:center;">Laissez-faire</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Separating</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_not_credit_rationed_intermediate</td>
+  <td style="text-align:center;">Intermediate</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">Pooling</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">True</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_not_credit_rationed_unsuccessful_intermediate</td>
+  <td style="text-align:center;">Intermediate</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_not_profitable_credit_rationed_intermediate</td>
+  <td style="text-align:center;">Intermediate</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_not_credit_rationed_intermediate</td>
+  <td style="text-align:center;">Intermediate</td>
+  <td style="text-align:center;">False</td>
+  <td style="text-align:center;">Pooling</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+<tr>
+  <td style="text-align:left;">test_profitable_credit_rationed_intermediate</td>
+  <td style="text-align:center;">Intermediate</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Separating</td>
+  <td style="text-align:center;">No</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">Does not matter</td>
+  <td style="text-align:center;">True</td>
+  <td style="text-align:center;">False</td>
+</tr>
+</tbody>
+</table>
 
 <h2 id="testvisualize">TestVisualize</h2>
 

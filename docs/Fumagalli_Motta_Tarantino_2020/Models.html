@@ -925,7 +925,7 @@
             <span class="p">),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_solve_game</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_solve_game</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game according to the set Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -958,6 +958,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game under a laissez-faire merger policy, based on section 4 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
@@ -989,10 +990,14 @@
                         <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
                     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game under an intermediate merger policy (late takeover allowed), based on section 5.2 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span>
+            <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_allowed</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
@@ -1021,6 +1026,10 @@
 <span class="sd">        Solves the game under an intermediate merger policy (late takeover prohibited),</span>
 <span class="sd">        based on section 5.1 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span>
+            <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_prohibited</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
@@ -1047,6 +1056,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game under a strict merger policy, based on section 3 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
                 <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
@@ -2518,7 +2528,7 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
             <span class="p">),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_solve_game</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_solve_game</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game according to the set Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2551,6 +2561,7 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game under a laissez-faire merger policy, based on section 4 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
@@ -2582,10 +2593,14 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
                         <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
                     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game under an intermediate merger policy (late takeover allowed), based on section 5.2 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span>
+            <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_allowed</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
@@ -2614,6 +2629,10 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
 <span class="sd">        Solves the game under an intermediate merger policy (late takeover prohibited),</span>
 <span class="sd">        based on section 5.1 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span>
+            <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_prohibited</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
@@ -2640,6 +2659,7 @@ Decides whether an attempted development will be successful (true $\rightarrow$ 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the game under a strict merger policy, based on section 3 in the paper.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
                 <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>

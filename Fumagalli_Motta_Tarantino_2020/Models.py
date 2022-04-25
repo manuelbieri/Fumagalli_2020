@@ -695,7 +695,7 @@ class MergerPolicy(BaseModel):
             ),
         )
 
-    def _solve_game(self):
+    def _solve_game(self) -> None:
         """
         Solves the game according to the set Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies.
         """
@@ -728,6 +728,7 @@ class MergerPolicy(BaseModel):
         """
         Solves the game under a laissez-faire merger policy, based on section 4 in the paper.
         """
+        assert self.merger_policy is Types.MergerPolicies.Laissez_faire
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_late_takeover_cdf
@@ -759,10 +760,14 @@ class MergerPolicy(BaseModel):
                         late_takeover=Types.Takeover.No,
                     )
 
-    def _solve_game_late_takeover_allowed(self):
+    def _solve_game_late_takeover_allowed(self) -> None:
         """
         Solves the game under an intermediate merger policy (late takeover allowed), based on section 5.2 in the paper.
         """
+        assert (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_allowed
+        )
         if self.is_incumbent_expected_to_shelve():
             if not self.is_startup_credit_rationed and self.development_success:
                 self._set_takeovers(late_takeover=Types.Takeover.Pooling)
@@ -791,6 +796,10 @@ class MergerPolicy(BaseModel):
         Solves the game under an intermediate merger policy (late takeover prohibited),
         based on section 5.1 in the paper.
         """
+        assert (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        )
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_cdf
@@ -817,6 +826,7 @@ class MergerPolicy(BaseModel):
         """
         Solves the game under a strict merger policy, based on section 3 in the paper.
         """
+        assert self.merger_policy is Types.MergerPolicies.Strict
         if self.is_incumbent_expected_to_shelve():
             self._set_takeovers(
                 early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No

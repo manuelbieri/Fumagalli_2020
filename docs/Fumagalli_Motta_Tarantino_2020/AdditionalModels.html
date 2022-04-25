@@ -88,6 +88,18 @@
                 </ul>
 
             </li>
+            <li>
+                    <a class="class" href="#PerfectInformationModel">PerfectInformationModel</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#PerfectInformationModel.is_laissez_faire_optimal">is_laissez_faire_optimal</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#PerfectInformationModel.is_intermediate_optimal">is_intermediate_optimal</a>
+                        </li>
+                </ul>
+
+            </li>
     </ul>
 
 
@@ -109,6 +121,7 @@
                         <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models</span> <span class="k">as</span> <span class="nn">Models</span>
+<span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Types</span> <span class="k">as</span> <span class="nn">Types</span>
 
 
 <span class="k">class</span> <span class="nc">MicroFoundationModel</span><span class="p">(</span><span class="n">Models</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">):</span>
@@ -228,6 +241,77 @@
         <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cs_without_innovation</span><span class="p">)</span>
             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PerfectInformationModel</span><span class="p">(</span><span class="n">Models</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_solve_game_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span>
+            <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_allowed</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+                    <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h1</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span>
         <span class="p">)</span>
 </pre></div>
 
@@ -704,6 +788,233 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
                 <dd id="MicroFoundationModel.incumbent_profit_duopoly" class="variable"><a href="Models.html#BaseModel.incumbent_profit_duopoly">incumbent_profit_duopoly</a></dd>
                 <dd id="MicroFoundationModel.cs_duopoly" class="variable"><a href="Models.html#BaseModel.cs_duopoly">cs_duopoly</a></dd>
                 <dd id="MicroFoundationModel.w_duopoly" class="variable"><a href="Models.html#BaseModel.w_duopoly">w_duopoly</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="PerfectInformationModel">
+                                <div class="attr class">
+        <a class="headerlink" href="#PerfectInformationModel">#&nbsp;&nbsp</a>
+
+        
+        <span class="def">class</span>
+        <span class="name">PerfectInformationModel</span><wbr>(<span class="base"><a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a></span>):
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="k">class</span> <span class="nc">PerfectInformationModel</span><span class="p">(</span><span class="n">Models</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_solve_game_laissez_faire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span>
+            <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_allowed</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+                    <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_h1</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Add functionality to determine the optimal merger policy for a given set of parameters.</p>
+
+<p>Annotation: As discussed in section 5.1, a policy that is more lenient with respect to early acquisitions is always
+dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.</p>
+</div>
+
+
+                            <div id="PerfectInformationModel.is_laissez_faire_optimal" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#PerfectInformationModel.is_laissez_faire_optimal">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_laissez_faire_optimal</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Returns whether a laissez-faire policy is optimal.</p>
+
+<p>A laissez-faire policy (that authorises any takeover) is optimal, if:</p>
+
+<ol>
+<li>Incumbent is expected to shelve ($p(\pi^M_I-\pi^m_I) &lt; K$).</li>
+<li>Financial imperfections are severe ($F(\bar{A}^T)\ge\Phi^T(\cdot)$).</li>
+<li>Approving early takeovers followed by shelving is optimal ($F(\bar{A}^T)\ge\Lambda(\cdot)$).</li>
+<li>Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+likely that the innovation is commercialised (Condition 6 not satisfied).</li>
+</ol>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>True</strong>: If a laissez-faire merger policy is optimal.</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div id="PerfectInformationModel.is_intermediate_optimal" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#PerfectInformationModel.is_intermediate_optimal">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">is_intermediate_optimal</span><span class="signature">(self) -&gt; bool</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_incumbent_expected_to_shelve</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_strict_optimal</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span>
+            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+            <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span>
+        <span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Returns whether an intermediate merger policy (late takeover allowed) is optimal.</p>
+
+<p>An intermediate merger policy (late takeovers allowed) is optimal, if:</p>
+
+<ol>
+<li>Incumbent is expected to shelve ($p(\pi^M_I-\pi^m_I) &lt; K$).</li>
+<li>Approving early takeovers followed by shelving is not optimal ($F(\bar{A}^T) &lt; \Lambda(\cdot)$).</li>
+<li>Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+likely that the innovation is commercialised (Condition 6 not satisfied).</li>
+</ol>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>True</strong>: If an intermediate merger policy (late takeover allowed) is optimal.</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a></dt>
+                                <dd id="PerfectInformationModel.__init__" class="function"><a href="Models.html#OptimalMergerPolicy.__init__">OptimalMergerPolicy</a></dd>
+                <dd id="PerfectInformationModel.get_optimal_merger_policy" class="function"><a href="Models.html#OptimalMergerPolicy.get_optimal_merger_policy">get_optimal_merger_policy</a></dd>
+                <dd id="PerfectInformationModel.is_strict_optimal" class="function"><a href="Models.html#OptimalMergerPolicy.is_strict_optimal">is_strict_optimal</a></dd>
+                <dd id="PerfectInformationModel.is_financial_imperfection_severe" class="function"><a href="Models.html#OptimalMergerPolicy.is_financial_imperfection_severe">is_financial_imperfection_severe</a></dd>
+                <dd id="PerfectInformationModel.is_shelving_after_early_takeover_optimal" class="function"><a href="Models.html#OptimalMergerPolicy.is_shelving_after_early_takeover_optimal">is_shelving_after_early_takeover_optimal</a></dd>
+                <dd id="PerfectInformationModel.asset_distribution_threshold_intermediate_approval_despite_shelving" class="variable"><a href="Models.html#OptimalMergerPolicy.asset_distribution_threshold_intermediate_approval_despite_shelving">asset_distribution_threshold_intermediate_approval_despite_shelving</a></dd>
+                <dd id="PerfectInformationModel.summary" class="function"><a href="Models.html#OptimalMergerPolicy.summary">summary</a></dd>
+
+            </div>
+            <div><dt><a href="Models.html#MergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.MergerPolicy</a></dt>
+                                <dd id="PerfectInformationModel.merger_policy" class="variable"><a href="Models.html#MergerPolicy.merger_policy">merger_policy</a></dd>
+                <dd id="PerfectInformationModel.asset_threshold" class="variable"><a href="Models.html#MergerPolicy.asset_threshold">asset_threshold</a></dd>
+                <dd id="PerfectInformationModel.asset_threshold_cdf" class="variable"><a href="Models.html#MergerPolicy.asset_threshold_cdf">asset_threshold_cdf</a></dd>
+                <dd id="PerfectInformationModel.asset_threshold_late_takeover" class="variable"><a href="Models.html#MergerPolicy.asset_threshold_late_takeover">asset_threshold_late_takeover</a></dd>
+                <dd id="PerfectInformationModel.asset_threshold_late_takeover_cdf" class="variable"><a href="Models.html#MergerPolicy.asset_threshold_late_takeover_cdf">asset_threshold_late_takeover_cdf</a></dd>
+                <dd id="PerfectInformationModel.startup_assets" class="variable"><a href="Models.html#MergerPolicy.startup_assets">startup_assets</a></dd>
+                <dd id="PerfectInformationModel.get_early_bidding_type" class="variable"><a href="Models.html#MergerPolicy.get_early_bidding_type">get_early_bidding_type</a></dd>
+                <dd id="PerfectInformationModel.get_late_bidding_type" class="variable"><a href="Models.html#MergerPolicy.get_late_bidding_type">get_late_bidding_type</a></dd>
+                <dd id="PerfectInformationModel.is_early_takeover" class="variable"><a href="Models.html#MergerPolicy.is_early_takeover">is_early_takeover</a></dd>
+                <dd id="PerfectInformationModel.is_late_takeover" class="variable"><a href="Models.html#MergerPolicy.is_late_takeover">is_late_takeover</a></dd>
+                <dd id="PerfectInformationModel.is_owner_investing" class="variable"><a href="Models.html#MergerPolicy.is_owner_investing">is_owner_investing</a></dd>
+                <dd id="PerfectInformationModel.is_development_successful" class="variable"><a href="Models.html#MergerPolicy.is_development_successful">is_development_successful</a></dd>
+                <dd id="PerfectInformationModel.is_startup_credit_rationed" class="variable"><a href="Models.html#MergerPolicy.is_startup_credit_rationed">is_startup_credit_rationed</a></dd>
+                <dd id="PerfectInformationModel.asset_distribution_threshold_strict" class="variable"><a href="Models.html#MergerPolicy.asset_distribution_threshold_strict">asset_distribution_threshold_strict</a></dd>
+                <dd id="PerfectInformationModel.asset_distribution_threshold" class="variable"><a href="Models.html#MergerPolicy.asset_distribution_threshold">asset_distribution_threshold</a></dd>
+                <dd id="PerfectInformationModel.asset_distribution_threshold_laissez_faire" class="variable"><a href="Models.html#MergerPolicy.asset_distribution_threshold_laissez_faire">asset_distribution_threshold_laissez_faire</a></dd>
+                <dd id="PerfectInformationModel.asset_distribution_threshold_intermediate" class="variable"><a href="Models.html#MergerPolicy.asset_distribution_threshold_intermediate">asset_distribution_threshold_intermediate</a></dd>
+                <dd id="PerfectInformationModel.is_incumbent_expected_to_shelve" class="function"><a href="Models.html#MergerPolicy.is_incumbent_expected_to_shelve">is_incumbent_expected_to_shelve</a></dd>
+                <dd id="PerfectInformationModel.incumbent_expected_additional_profit_from_innovation" class="function"><a href="Models.html#MergerPolicy.incumbent_expected_additional_profit_from_innovation">incumbent_expected_additional_profit_from_innovation</a></dd>
+
+            </div>
+            <div><dt><a href="Models.html#BaseModel">Fumagalli_Motta_Tarantino_2020.Models.BaseModel</a></dt>
+                                <dd id="PerfectInformationModel.tolerated_harm" class="variable"><a href="Models.html#BaseModel.tolerated_harm">tolerated_harm</a></dd>
+                <dd id="PerfectInformationModel.development_costs" class="variable"><a href="Models.html#BaseModel.development_costs">development_costs</a></dd>
+                <dd id="PerfectInformationModel.success_probability" class="variable"><a href="Models.html#BaseModel.success_probability">success_probability</a></dd>
+                <dd id="PerfectInformationModel.development_success" class="variable"><a href="Models.html#BaseModel.development_success">development_success</a></dd>
+                <dd id="PerfectInformationModel.private_benefit" class="variable"><a href="Models.html#BaseModel.private_benefit">private_benefit</a></dd>
+                <dd id="PerfectInformationModel.incumbent_profit_with_innovation" class="variable"><a href="Models.html#BaseModel.incumbent_profit_with_innovation">incumbent_profit_with_innovation</a></dd>
+                <dd id="PerfectInformationModel.cs_with_innovation" class="variable"><a href="Models.html#BaseModel.cs_with_innovation">cs_with_innovation</a></dd>
+                <dd id="PerfectInformationModel.w_with_innovation" class="variable"><a href="Models.html#BaseModel.w_with_innovation">w_with_innovation</a></dd>
+                <dd id="PerfectInformationModel.incumbent_profit_without_innovation" class="variable"><a href="Models.html#BaseModel.incumbent_profit_without_innovation">incumbent_profit_without_innovation</a></dd>
+                <dd id="PerfectInformationModel.cs_without_innovation" class="variable"><a href="Models.html#BaseModel.cs_without_innovation">cs_without_innovation</a></dd>
+                <dd id="PerfectInformationModel.w_without_innovation" class="variable"><a href="Models.html#BaseModel.w_without_innovation">w_without_innovation</a></dd>
+                <dd id="PerfectInformationModel.startup_profit_duopoly" class="variable"><a href="Models.html#BaseModel.startup_profit_duopoly">startup_profit_duopoly</a></dd>
+                <dd id="PerfectInformationModel.incumbent_profit_duopoly" class="variable"><a href="Models.html#BaseModel.incumbent_profit_duopoly">incumbent_profit_duopoly</a></dd>
+                <dd id="PerfectInformationModel.cs_duopoly" class="variable"><a href="Models.html#BaseModel.cs_duopoly">cs_duopoly</a></dd>
+                <dd id="PerfectInformationModel.w_duopoly" class="variable"><a href="Models.html#BaseModel.w_duopoly">w_duopoly</a></dd>
 
             </div>
                                 </dl>
