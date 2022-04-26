@@ -1,5 +1,6 @@
 from typing import Literal
 import unittest
+import matplotlib.pyplot as plt
 
 import Fumagalli_Motta_Tarantino_2020.tests.MockModels as MockModels
 
@@ -9,6 +10,8 @@ import Fumagalli_Motta_Tarantino_2020.Visualize as Visualize
 
 
 class TestVisualize(unittest.TestCase):
+    show_plots:bool = True
+
     def setUpMock(self, **kwargs) -> None:
         self.mock: Models.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
             **kwargs
@@ -23,6 +26,12 @@ class TestVisualize(unittest.TestCase):
             self.visualizer: Visualize.IVisualize = Visualize.Timeline(model)
         else:
             self.visualizer: Visualize.IVisualize = Visualize.AssetRange(model)
+
+    @staticmethod
+    def view_plot(fig: plt.Figure, show: bool=False) -> None:
+        if show:
+            fig.show()
+
 
     def test_plot_interface(self):
         self.setUpMock()
@@ -66,19 +75,19 @@ class TestVisualize(unittest.TestCase):
     def test_outcome_plot_negative_threshold(self):
         self.setUpMock()
         self.setUpVisualizer(self.mock)
-        self.visualizer.plot()[0].show()
+        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
 
     def test_outcome_plot(self):
         self.setUpMock(asset_threshold=3, asset_threshold_late_takeover=1)
         self.setUpVisualizer(self.mock)
-        self.visualizer.plot()[0].show()
+        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
 
     def test_timeline_plot(self):
         self.setUpMock(policy=Types.MergerPolicies.Laissez_faire)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.visualizer.plot()[0].show()
+        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
 
     def test_timeline_plot_takeover_shelving(self):
         self.setUpMock(takeover=True, shelving=True, successful=False)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.visualizer.plot()[0].show()
+        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
