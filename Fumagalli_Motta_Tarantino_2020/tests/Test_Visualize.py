@@ -10,7 +10,7 @@ import Fumagalli_Motta_Tarantino_2020.Visualize as Visualize
 
 
 class TestVisualize(unittest.TestCase):
-    show_plots:bool = True
+    show_plots: bool = True
 
     def setUpMock(self, **kwargs) -> None:
         self.mock: Models.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
@@ -28,10 +28,9 @@ class TestVisualize(unittest.TestCase):
             self.visualizer: Visualize.IVisualize = Visualize.AssetRange(model)
 
     @staticmethod
-    def view_plot(fig: plt.Figure, show: bool=False) -> None:
+    def view_plot(fig: plt.Figure, show: bool = False) -> None:
         if show:
             fig.show()
-
 
     def test_plot_interface(self):
         self.setUpMock()
