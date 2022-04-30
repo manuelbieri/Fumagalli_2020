@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 11.0.0"/>
-    <title>Fumagalli_Motta_Tarantino_2020.tests API documentation</title>
+    <title>Fumagalli_Motta_Tarantino_2020.Project API documentation</title>
             <link rel="icon" href="https://raw.githubusercontent.com/manuelbieri/Fumagalli_2020/64591aee9856c7163fb62434445546acda099f38/assets/visual/logo.svg"/>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
@@ -47,28 +47,12 @@
 
         <h2>Contents</h2>
         <ul>
-  <li><a href="#explanations-about-the-unittests">Explanations about the Unittests</a>
-  <ul>
-    <li><a href="#glossary-about-the-naming-of-tests">Glossary about the naming of tests</a></li>
-    <li><a href="#mocks">Mocks</a></li>
-    <li><a href="#testbasemodel">TestBaseModel</a></li>
-    <li><a href="#testmergerpolicymodel">TestMergerPolicyModel</a></li>
-    <li><a href="#testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</a></li>
-    <li><a href="#testmircofoundationmodel">TestMircoFoundationModel</a></li>
-    <li><a href="#testperfectinformationmodel">TestPerfectInformationModel</a></li>
-    <li><a href="#testvisualize">TestVisualize</a></li>
-  </ul></li>
+  <li><a href="#project-structure">Project Structure</a></li>
+  <li><a href="#class-diagram">Class diagram</a></li>
+  <li><a href="#code-style">Code style</a></li>
 </ul>
 
 
-        <h2>Submodules</h2>
-        <ul>
-                <li><a href="tests/MockModels.html">Fumagalli_Motta_Tarantino_2020.tests.MockModels</a></li>
-                <li><a href="tests/Test_AdditionalModels.html">Fumagalli_Motta_Tarantino_2020.tests.Test_AdditionalModels</a></li>
-                <li><a href="tests/Test_Model.html">Fumagalli_Motta_Tarantino_2020.tests.Test_Model</a></li>
-                <li><a href="tests/Test_Utilities.html">Fumagalli_Motta_Tarantino_2020.tests.Test_Utilities</a></li>
-                <li><a href="tests/Test_Visualize.html">Fumagalli_Motta_Tarantino_2020.tests.Test_Visualize</a></li>
-        </ul>
 
 
             <footer>2022 Manuel Bieri</footer>
@@ -83,624 +67,78 @@
     <main class="pdoc">
             <section>
                     <h1 class="modulename">
-<a href="./../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.tests    </h1>
+<a href="./../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.Project    </h1>
 
-                        <div class="docstring"><h1 id="explanations-about-the-unittests">Explanations about the Unittests</h1>
+                        <div class="docstring"><h2 id="project-structure">Project Structure</h2>
 
-<p>In this file the different Test cases used, are explained. Tests written in bold letters are not yet implemented, but needed for full coverage.</p>
+<p>Build the folder structure with the following command (or execute <code>assets/Structure/tree.sh</code>):</p>
 
-<h2 id="glossary-about-the-naming-of-tests">Glossary about the naming of tests</h2>
+<div class="pdoc-code codehilite"><pre><span></span><code>git config --global alias.tree <span class="s1">&#39;! git ls-tree --full-name --name-only -t -r HEAD | sed -e &quot;s/[^-][^\/]*\//   |/g&quot; -e &quot;s/|\([^ ]\)/|-- \1/&quot;&#39;</span>
+git tree
+</code></pre></div>
 
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Part of name</th>
-  <th style="text-align:left;">Remark</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;"><em>not_profitable</em></td>
-  <td style="text-align:left;">$p(\pi^M_I-\pi^m_I) &lt; K$ is satisfied</td>
-</tr>
-<tr>
-  <td style="text-align:left;"><em>profitable</em></td>
-  <td style="text-align:left;">$p(\pi^M_I-\pi^m_I) \ge K$ is satisfied</td>
-</tr>
-<tr>
-  <td style="text-align:left;"><em>below_assets_threshold</em></td>
-  <td style="text-align:left;">$F &lt; \Phi$ is satisfied</td>
-</tr>
-<tr>
-  <td style="text-align:left;"><em>above_assets_threshold</em></td>
-  <td style="text-align:left;">$F \ge \Phi$ is satisfied</td>
-</tr>
-<tr>
-  <td style="text-align:left;"><em>credit_rationed</em></td>
-  <td style="text-align:left;">The start-up is credit constraint</td>
-</tr>
-<tr>
-  <td style="text-align:left;"><em>not_credit_rationed</em></td>
-  <td style="text-align:left;">The start-up is not credit constraint</td>
-</tr>
-<tr>
-  <td style="text-align:left;"><em>unsuccessful</em></td>
-  <td style="text-align:left;">The development (if it will take place) is unsuccessful, otherwise we will assume the development was successful</td>
-</tr>
-</tbody>
-</table>
+<p>This command just works for Git - repositories and not for folder structures in general.</p>
 
-<p>$F$ may correspond to $F(\bar{A})$ or $F(\bar{A}^T)$ and $\Phi$ to $\Phi(\cdot)$, $\Phi^\prime(\cdot)$ or $\Phi^T(\cdot)$.</p>
+<p>This is the annotated folder structure:</p>
 
-<h2 id="mocks">Mocks</h2>
+<pre><code>.github
+   |-- workflows
+   |   |-- Black.yml  # checks the code style on errors
+   |   |-- CodeCov.yml  # pushes the newest CI results to codecov.io
+   |   |-- PyPI.yml  # pushes releases automatically on PyPI
+   |   |-- codeql-analysis.yml  # checks for weaknesses in code
+Fumagalli_Motta_Tarantino_2020  # package as published on PyPI
+   |-- AdditionalModels.py  # MicroFoundationModel and PerfectInformationModel
+   |-- Models.py  # BaseModel, MergerPolicy and OptimalMergerPolicy
+   |-- Types.py  # Additional enums and dataclasses
+   |-- Utilities.py  # useful classes for support in models
+   |-- Visualize.py  # visualizations for the models
+   |-- __init__.py
+   |-- tests  # includes tests for the models and visualizations
+   |   |-- MockModels.py
+   |   |-- TestCases.md
+   |   |-- Test_AdditionalModels.py
+   |   |-- Test_Model.py
+   |   |-- Test_Utilities.py
+   |   |-- Test_Visualize.py
+   |   |-- __init__.py
+Notebooks
+   |-- README.md  # introduction to the provided notebooks
+   |-- __init__.py
+   |-- test.ipynb
+assets  # additional ressources regarding the code
+   |-- Strucutre  # contains informations about the project and code structure
+   |   |-- class_diagram.drawio  # UML class diagram
+   |   |-- tree.sh  # generated this tree of the project structure
+   |-- code style  # bash scripts for automatic check and enforcement of code style
+   |   |-- check_black.sh
+   |   |-- run_black.sh
+   |-- visual  # contains graphics such as images and sketches
+   |   |-- logo.svg
+docs  # contains the files for the documentation page (automatically generated with pdoc)
+   |-- build.sh  # bash script to execute build of documentation
+CITATION.cff  # for citation of the repository
+Fumagalli et al (2020) - Shelving or developing  # Original paper
+README.md  # introduction to the package
+LICENSE
+requirements.txt  # needed dependcies for the package
+setup.py  # setup script for publication on PyPI
+</code></pre>
 
-<p>MockModels provides a stub for the OptimalMergerPolicy - class, this is used to test classes for visualizations independently
-of the implementation of the models.</p>
+<h2 id="class-diagram">Class diagram</h2>
 
-<h2 id="testbasemodel">TestBaseModel</h2>
+<p><img src="../visual/class_diagram.svg" alt="Class diagram" /> (If the class diagram is not shown, follow this <a href="https://github.com/manuelbieri/Fumagalli_2020/blob/master/assets/visual/class_diagram.svg">link</a>)</p>
 
-<p>This testcase test, whether <a href="Models.html#BaseModel">Fumagalli_Motta_Tarantino_2020.Models.BaseModel</a> works as expected.</p>
+<h2 id="code-style">Code style</h2>
 
-<p>This testcase includes tests for the following matters:</p>
-
-<ul>
-<li>Test properties (public access for private variables)</li>
-<li>Test necessary conditions for correct values (see pre- and post-conditions)</li>
-</ul>
-
-<h2 id="testmergerpolicymodel">TestMergerPolicyModel</h2>
-
-<p>This  testcase tests, whether <a href="Models.html#MergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.MergerPolicy</a> properly works.</p>
-
-<h3 id="testlaissezfairemergerpolicymodel">TestLaissezFaireMergerPolicyModel</h3>
-
-<p>This testcase tests, whether the implemented logic for a laissez-faire merger policy works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_below_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_above_assets_threshold_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_above_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">True</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_below_assets_threshold_not_credit_rationed_unsuccessful</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">True</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed_unsuccessful</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="testintermediatelatetakeoverallowedmergerpolicymodel">TestIntermediateLateTakeoverAllowedMergerPolicyModel</h3>
-
-<p>This testcase tests, whether the implemented logic for an intermediate merger policy (late takeovers are allowed) works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">True</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed_unsuccessful</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">True</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed_unsuccessful</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="testintermediatelatetakeoverprohibitedmergerpolicymodel">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</h3>
-
-<p>This testcase tests, whether the implemented logic for an intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_below_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_above_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_above_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_above_assets_threshold_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_below_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_below_assets_threshold_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="teststrictmergerpolicymodel">TestStrictMergerPolicyModel</h3>
-
-<p>This testcase tests, whether the implemented logic for a strict merger policy works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">New Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_below_assets_threshold_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_below_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_above_assets_threshold_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_above_assets_threshold_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</h2>
-
-<p>This testcase tests all possibilities for an optimal merger policy in <a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a>.</p>
-
-<h2 id="testmircofoundationmodel">TestMircoFoundationModel</h2>
-
-<p>This testcase tests the adjustments made for the <a href="AdditionalModels.html#MicroFoundationModel">Fumagalli_Motta_Tarantino_2020.AdditionalModels.MicroFoundationModel</a>, which is largely based on the OptimalMergerPolicyModel.</p>
-
-<h2 id="testperfectinformationmodel">TestPerfectInformationModel</h2>
-
-<p>This testcase tests, whether the implemented logic in <a href="AdditionalModels.html#PerfectInformationModel">Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel</a> works as expected.</p>
-
-<h3 id="teststrictperfectinformationmodel">TestStrictPerfectInformationModel</h3>
-
-<p>This testcase tests, whether the implemented logic in <a href="AdditionalModels.html#PerfectInformationModel">Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel</a> for a strict merger policy works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="testintermediateperfectinformationmodel">TestIntermediatePerfectInformationModel</h3>
-
-<p>This testcase tests, whether the implemented logic in <a href="AdditionalModels.html#PerfectInformationModel">Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel</a> for an intermediate merger policy (late takeovers are allowed) works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">True</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed_unsuccessful</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="testlaissezfaireperfectinformationmodel">TestLaissezFairePerfectInformationModel</h3>
-
-<p>This testcase tests, whether the implemented logic in <a href="AdditionalModels.html#PerfectInformationModel">Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel</a> for a laissez-faire merger policy works as expected. The following tests are included:</p>
-
-<table>
-<thead>
-<tr>
-  <th style="text-align:left;">Name of test</th>
-  <th style="text-align:center;">Is the start-up credit rationed?</th>
-  <th style="text-align:center;">Early bidding type (t=1)</th>
-  <th style="text-align:center;">Late bidding type (t=2)</th>
-  <th style="text-align:center;">Development attempt?</th>
-  <th style="text-align:center;">Development success</th>
-  <th style="text-align:center;">Early takeover (t=1)</th>
-  <th style="text-align:center;">Late takeover (t=2)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td style="text-align:left;">test_not_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_not_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_not_credit_rationed</td>
-  <td style="text-align:center;">False</td>
-  <td style="text-align:center;">Pooling</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-<tr>
-  <td style="text-align:left;">test_profitable_credit_rationed</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Separating</td>
-  <td style="text-align:center;">No</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">Does not matter</td>
-  <td style="text-align:center;">True</td>
-  <td style="text-align:center;">False</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="testvisualize">TestVisualize</h2>
-
-<p>This testcase test the plots in Fumagalli_Motta_Tarantino_2020.Visualization made with mock objects. The plots are tested by eye, since currently no method exists, to write
-stable unitest for matplotlib. </p>
+<p>As default code style <a href="https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html">Black</a> is used and
+automatically checked and enforced by GitHub - workflows.</p>
 </div>
 
                         <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. include:: TestCases.md</span>
+<span class="sd">.. include:: ../assets/Structure/README.md</span>
 <span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 
