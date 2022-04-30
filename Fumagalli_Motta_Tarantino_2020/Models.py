@@ -135,7 +135,7 @@ class BaseModel:
 
     def _check_preconditions(self):
         # preconditions given (p.6-8)
-        assert self.tolerated_harm >= 0, "Level of harm has to be bigger than 0"
+        self._check_tolerated_harm()
         assert self.private_benefit > 0, "Private benefit has to be bigger than 0"
         assert (
             0 < self.success_probability <= 1
@@ -155,6 +155,9 @@ class BaseModel:
         self._check_assumption_two()
         self._check_assumption_three()
         self._check_assumption_five()
+
+    def _check_tolerated_harm(self):
+        assert self.tolerated_harm >= 0, "Level of harm has to be bigger than 0"
 
     def _check_startup_assets(self):
         assert (
@@ -204,6 +207,19 @@ class BaseModel:
         ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.
         """
         return self._tolerated_harm
+
+    @tolerated_harm.setter
+    def tolerated_harm(self, value: float) -> None:
+        """
+        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.
+
+        Parameters
+        ----------
+        value: float
+            New value for the tolerated harm by the AA (important the assumptions have to remain valid).
+        """
+        self._tolerated_harm = value
+        self._check_tolerated_harm()
 
     @property
     def development_costs(self) -> float:
@@ -400,6 +416,21 @@ class MergerPolicy(BaseModel):
             return Types.MergerPolicies.Intermediate_late_takeover_allowed
         return Types.MergerPolicies.Laissez_faire
 
+    @merger_policy.setter
+    def merger_policy(self, merger_policy: Types.MergerPolicies) -> None:
+        if merger_policy is Types.MergerPolicies.Strict:
+            self.tolerated_harm = 0
+        elif (
+            merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        ):
+            self.tolerated_harm = (self._calculate_h0() + self._calculate_h1()) / 2
+        elif merger_policy is Types.MergerPolicies.Intermediate_late_takeover_allowed:
+            self.tolerated_harm = (self._calculate_h1() + self._calculate_h2()) / 2
+        else:
+            self.tolerated_harm = self._calculate_h2() + 1
+        self._check_tolerated_harm()
+        self._recalculate_model()
+
     @property
     def asset_threshold(self) -> float:
         """
@@ -440,6 +471,11 @@ class MergerPolicy(BaseModel):
     @BaseModel.startup_assets.setter
     def startup_assets(self, value: float) -> None:
         BaseModel.startup_assets.fset(self, value)
+        self._recalculate_model()
+
+    @BaseModel.tolerated_harm.setter
+    def tolerated_harm(self, value: float) -> None:
+        BaseModel.tolerated_harm.fset(self, value)
         self._recalculate_model()
 
     @property

@@ -605,6 +605,34 @@ class TestStrictMergerPolicyModel(TestMergerPolicyModel):
         self.model.startup_assets = 0.065
         self.assertFalse(self.model.is_early_takeover)
 
+    def test_set_tolerated_harm_recalculation(self):
+        self.setupModel()
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+        self.model.tolerated_harm = 1
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
+
+    def test_set_merger_policy(self):
+        self.setupModel()
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+        self.model.merger_policy = (
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        )
+        self.assertEqual(
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited,
+            self.model.merger_policy,
+        )
+        self.model.merger_policy = (
+            Types.MergerPolicies.Intermediate_late_takeover_allowed
+        )
+        self.assertEqual(
+            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            self.model.merger_policy,
+        )
+        self.model.merger_policy = Types.MergerPolicies.Laissez_faire
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
+        self.model.merger_policy = Types.MergerPolicies.Strict
+        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+
     def test_profitable_below_assets_threshold_credit_rationed(self):
         self.setupModel(
             development_costs=0.075,
