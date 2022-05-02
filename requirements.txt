@@ -1,5 +1,5 @@
 # necessary for the package
-scipy>=1.8.0
+scipy>=1.7.3
 numpy>=1.22.3
 matplotlib>=3.5.1
 

@@ -651,3 +651,20 @@ class Timeline(IVisualize):
 
         self.ax.margins(y=0.45)
         return self.fig, self.ax
+
+
+if __name__ == "__main__":
+    m = Models.OptimalMergerPolicy(
+        tolerated_level_of_harm=1,
+        startup_assets=0.01,
+        private_benefit=0.099,
+        success_probability=0.51,
+        development_costs=0.1,
+        startup_profit_duopoly=0.339,
+        incumbent_profit_duopoly=0.01,
+        incumbent_profit_with_innovation=0.35,
+        consumer_surplus_with_innovation=0.4,
+        incumbent_profit_without_innovation=0.3,
+    )
+    v = MergerPoliciesAssetRange(m)
+    v.show(legend=False)
