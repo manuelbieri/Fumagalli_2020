@@ -21,7 +21,7 @@ $ pip install Fumagalli-Motta-Tarantino-2020
 Or alternatively, install the package directly from source:
 
 ```shell
-$ pip install pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
+$ pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
 ```
 
 
