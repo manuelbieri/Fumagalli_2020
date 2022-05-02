@@ -40,7 +40,9 @@ def mock_optimal_merger_policy(
             optimal_policy=set_policy,
         )
 
-    def summary():
+    def summary(
+        policy: Types.MergerPolicies = Types.MergerPolicies.Intermediate_late_takeover_prohibited,
+    ):
         if model.startup_assets < asset_threshold_late_takeover:
             return set_summary(
                 credit_rationed=True,
@@ -48,6 +50,7 @@ def mock_optimal_merger_policy(
                 development_outcome=False,
                 early_bidding_type=Types.Takeover.Separating,
                 early_takeover=True,
+                set_policy=policy,
             )
         if model.startup_assets < asset_threshold:
             return set_summary(
@@ -55,10 +58,12 @@ def mock_optimal_merger_policy(
                 development_outcome=False,
                 early_bidding_type=Types.Takeover.Pooling,
                 early_takeover=False,
+                set_policy=policy,
             )
-        return set_summary()
+        return set_summary(set_policy=policy)
 
     model: Models.OptimalMergerPolicy = mock.Mock(spec=Models.OptimalMergerPolicy)
+    type(model).merger_policy = policy
     type(model).startup_assets = 3.5
     type(model).private_benefit = 0.18
     type(model).development_costs = 1.5
@@ -82,5 +87,5 @@ def mock_optimal_merger_policy(
     type(model).asset_threshold_cdf = 0.9
     type(model).asset_distribution_threshold_intermediate = 1
 
-    model.summary = summary
+    model.summary = lambda: summary(policy=model.merger_policy)
     return model

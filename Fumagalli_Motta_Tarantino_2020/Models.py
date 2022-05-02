@@ -428,7 +428,6 @@ class MergerPolicy(BaseModel):
             self.tolerated_harm = (self._calculate_h1() + self._calculate_h2()) / 2
         else:
             self.tolerated_harm = self._calculate_h2() + 1
-        self._check_tolerated_harm()
         self._recalculate_model()
 
     @property

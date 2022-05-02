@@ -13,15 +13,24 @@ import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 class IVisualize:
     """
     Interface for all visualization classes containing useful methods.
+
+    Notes
+    -----
+    This module is compatible with python versions starting from 3.9, due to introduction of PEP 585. Therefore, the compatibility
+    with mybinder.org is not guaranteed (uses at the moment python 3.7).
     """
 
     colors: list[str] = [
+        "indianred",
         "salmon",
         "khaki",
+        "greenyellow",
         "limegreen",
         "turquoise",
         "powderblue",
+        "lavender",
         "thistle",
+        "lavenderblush",
         "pink",
     ]
     """Standard colors used in visualizations."""
@@ -41,6 +50,16 @@ class IVisualize:
         """
         Plots the visual representation for the object.
 
+        Example
+        -------
+        ```
+        model = Models.OptimalMergerPolicy()
+        visualizer = MergerPoliciesAssetRange(m)
+        fig, ax = visualizer.plot()
+        # use the figure and axes as you wish, but for example:
+        fig.show()
+        ```
+
         Parameters
         ----------
         kwargs
@@ -54,6 +73,26 @@ class IVisualize:
             Containing the plots (arrange custom summary).
         """
         raise NotImplementedError
+
+    def show(self, **kwargs) -> None:
+        """
+        Shows the visual representation for the object.
+
+        Example
+        -------
+        ```
+        model = Models.OptimalMergerPolicy()
+        visualizer = MergerPoliciesAssetRange(m)
+        visualizer.show()
+        ```
+
+        Parameters
+        ----------
+        kwargs
+            Same options as Fumagalli_Motta_Tarantino_2020.Visualize.IVisualize.plot.
+        """
+        self.plot(**kwargs)
+        self.fig.show()
 
     @staticmethod
     def _parameter_latex(model: Models.BaseModel) -> str:
@@ -107,7 +146,7 @@ class AssetRange(IVisualize):
 
     def _get_outcomes_asset_range(
         self,
-    ) -> (list[Types.ThresholdItem], list[Types.OptimalMergerPolicySummary]):
+    ) -> list[Types.OptimalMergerPolicySummary]:
         """
         Generates a list with all essential threshold concerning the assets of a start-up and an additional list with
         summaries of the outcomes of the model in between the thresholds.
@@ -116,7 +155,6 @@ class AssetRange(IVisualize):
         -------
         (list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary])
             List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
-
         """
         asset_range: list[Types.ThresholdItem] = self._get_asset_thresholds()
         summaries: list[Types.OptimalMergerPolicySummary] = []
@@ -130,7 +168,7 @@ class AssetRange(IVisualize):
                 )
             ) / 2
             summaries.append(self.model.summary())
-        return asset_range, summaries
+        return summaries
 
     def _get_asset_thresholds(self) -> list[Types.ThresholdItem]:
         """
@@ -276,7 +314,7 @@ class AssetRange(IVisualize):
         """
         separator: str = "$\\to$"
         return (
-            f"{summary.set_policy.abbreviation()}: "
+            f"{summary.set_policy.abbreviation()}({summary.optimal_policy.abbreviation()}): "
             f"{summary.early_bidding_type.abbreviation()}"
             f"{AssetRange._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
             f"{AssetRange._get_development_attempt_legend(summary.development_attempt)}"
@@ -331,7 +369,8 @@ class AssetRange(IVisualize):
         return label, self.colors[label]
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
-        asset_range, summaries = self._get_outcomes_asset_range()
+        asset_range = self._get_asset_thresholds()
+        summaries = self._get_outcomes_asset_range()
         assert asset_range is not None
         assert summaries is not None
         self.labels.clear()
@@ -352,6 +391,62 @@ class AssetRange(IVisualize):
                 color=color,
                 label=label,
             )
+        self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
+        self.ax.annotate(
+            self._get_symbol_legend(),
+            xy=(asset_range[0].value, 0),
+            xytext=(0, -35),
+            textcoords="offset points",
+            horizontalalignment="left",
+            verticalalignment="top",
+        )
+        self.ax.margins(y=0.2, x=0)
+        x_ticks, x_labels = self._get_x_labels_ticks(asset_range)
+        self.ax.set_xticks(x_ticks)
+        self.ax.set_xticklabels(x_labels)
+        self.ax.yaxis.set_visible(False)
+        self.fig.tight_layout()
+        # self._legend_delete_duplicate_labels() # avoid duplication in legend
+        return self.fig, self.ax
+
+
+class MergerPoliciesAssetRange(AssetRange):
+    def __init__(self, model: Models.OptimalMergerPolicy):
+        super(MergerPoliciesAssetRange, self).__init__(model)
+
+    def _get_outcomes_different_merger_policies(
+        self,
+    ) -> list[list[Types.OptimalMergerPolicySummary]]:
+        outcomes: list[list[Types.OptimalMergerPolicySummary]] = []
+        for merger_policy in Types.MergerPolicies:
+            self.model.merger_policy = merger_policy
+            outcomes.append(self._get_outcomes_asset_range())
+        return outcomes
+
+    def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        asset_range = self._get_asset_thresholds()
+        merger_policy_summaries = self._get_outcomes_different_merger_policies()
+        assert asset_range is not None
+        assert merger_policy_summaries is not None
+        self.labels.clear()
+        self.colors.clear()
+        for threshold in asset_range:
+            if 0 < threshold.value < self.model.development_costs:
+                self.ax.axvline(threshold.value, linestyle="--", color="k")
+
+        for j, summaries in enumerate(merger_policy_summaries):
+            for i, summary in enumerate(summaries):
+                length: float = asset_range[i + 1].value - asset_range[i].value
+                label: str = self._get_summary_latex(summary)
+                label, color = self._get_label_color(label)
+                self.ax.barh(
+                    y=0.1 * (j + 1) + 0.2 * j,
+                    width=length,
+                    left=asset_range[i].value,
+                    height=0.2,
+                    color=color,
+                    label=label,
+                )
         self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
         self.ax.annotate(
             self._get_symbol_legend(),

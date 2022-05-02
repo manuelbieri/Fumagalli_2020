@@ -1,6 +1,5 @@
 from typing import Literal
 import unittest
-import matplotlib.pyplot as plt
 
 import Fumagalli_Motta_Tarantino_2020.tests.MockModels as MockModels
 
@@ -20,17 +19,22 @@ class TestVisualize(unittest.TestCase):
     def setUpVisualizer(
         self,
         model: Models.OptimalMergerPolicy,
-        plot_type: Literal["Outcome", "Timeline"] = "Outcome",
+        plot_type: Literal["Outcome", "Timeline", "MergerPolicies"] = "Outcome",
     ) -> None:
         if plot_type == "Timeline":
             self.visualizer: Visualize.IVisualize = Visualize.Timeline(model)
+        elif plot_type == "MergerPolicies":
+            self.visualizer: Visualize.IVisualize = Visualize.MergerPoliciesAssetRange(
+                model
+            )
         else:
             self.visualizer: Visualize.IVisualize = Visualize.AssetRange(model)
 
-    @staticmethod
-    def view_plot(fig: plt.Figure, show: bool = False) -> None:
+    def view_plot(self, show: bool = False) -> None:
         if show:
-            fig.show()
+            self.visualizer.show()
+        else:
+            self.visualizer.plot()
 
     def test_plot_interface(self):
         self.setUpMock()
@@ -58,7 +62,7 @@ class TestVisualize(unittest.TestCase):
             asset_threshold_late_takeover=0.5244005127080407,
         )
         self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
-        thresholds, outcomes = self.visualizer._get_outcomes_asset_range()
+        outcomes = self.visualizer._get_outcomes_asset_range()
         self.assertEqual(5, len(outcomes))
         self.assertTrue(outcomes[0].credit_rationed)
         self.assertFalse(outcomes[0].development_outcome)
@@ -71,22 +75,48 @@ class TestVisualize(unittest.TestCase):
         self.assertFalse(outcomes[4].credit_rationed)
         self.assertTrue(outcomes[4].development_outcome)
 
-    def test_outcome_plot_negative_threshold(self):
+    def test_asset_range_plot_negative_threshold(self):
         self.setUpMock()
         self.setUpVisualizer(self.mock)
-        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
+        self.view_plot(show=TestVisualize.show_plots)
 
-    def test_outcome_plot(self):
+    def test_asset_range_plot(self):
         self.setUpMock(asset_threshold=3, asset_threshold_late_takeover=1)
         self.setUpVisualizer(self.mock)
-        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
+        self.view_plot(show=TestVisualize.show_plots)
+
+    def test_outcomes_merger_policies(self):
+        self.setUpMock(
+            asset_threshold=1.2815515655446004,
+            asset_threshold_late_takeover=0.5244005127080407,
+        )
+        self.visualizer: Visualize.MergerPoliciesAssetRange = (
+            Visualize.MergerPoliciesAssetRange(self.mock)
+        )
+        outcomes = self.visualizer._get_outcomes_different_merger_policies()
+        self.assertEqual(4, len(outcomes))
+        self.assertEqual(Types.MergerPolicies.Strict, outcomes[0][0].set_policy)
+        self.assertEqual(
+            Types.MergerPolicies.Intermediate_late_takeover_prohibited,
+            outcomes[1][0].set_policy,
+        )
+        self.assertEqual(
+            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            outcomes[2][0].set_policy,
+        )
+        self.assertEqual(Types.MergerPolicies.Laissez_faire, outcomes[3][0].set_policy)
+
+    def test_merger_policies_plot(self):
+        self.setUpMock(asset_threshold=3, asset_threshold_late_takeover=1)
+        self.setUpVisualizer(self.mock, plot_type="MergerPolicies")
+        self.view_plot(show=TestVisualize.show_plots)
 
     def test_timeline_plot(self):
         self.setUpMock(policy=Types.MergerPolicies.Laissez_faire)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
+        self.view_plot(show=TestVisualize.show_plots)
 
     def test_timeline_plot_takeover_shelving(self):
         self.setUpMock(takeover=True, shelving=True, successful=False)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.view_plot(self.visualizer.plot()[0], show=TestVisualize.show_plots)
+        self.view_plot(show=TestVisualize.show_plots)
