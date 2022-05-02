@@ -10,7 +10,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 setup(
     name="Fumagalli_Motta_Tarantino_2020",
     packages=find_packages(exclude=["Notebooks"]),
-    version="0.1.2",  # change with new version
+    version="0.2.0",  # change with new version
     license="MIT",
     description="Implements the models presented in Fumagalli et al. (2020)",
     long_description=long_description,
@@ -23,10 +23,10 @@ setup(
         "Download": "https://github.com/manuelbieri/Fumagalli_2020/releases",
         "Source": "https://github.com/manuelbieri/Fumagalli_2020",
     },
-    download_url="https://github.com/manuelbieri/Fumagalli_2020/archive/refs/tags/v0.1.2.tar.gz",  # change with new version
+    download_url="https://github.com/manuelbieri/Fumagalli_2020/archive/refs/tags/v0.2.0.tar.gz",  # change with new version
     keywords=["Killer Acquisition", "Competition", "Innovation"],
     classifiers=[
-        "Development Status :: 3 - Alpha",  # "3 - Alpha" / "4 - Beta" / "5 - Production/Stable"
+        "Development Status :: 4 - Beta",  # "3 - Alpha" / "4 - Beta" / "5 - Production/Stable"
         "Intended Audience :: Developers",
         "Topic :: Software Development",
         "License :: OSI Approved :: MIT License",
@@ -34,8 +34,8 @@ setup(
         "Programming Language :: Python :: 3.10",
     ],
     install_requires=[
-        "scipy~=1.7.3",
+        "scipy~=1.8.0",
         "matplotlib~=3.5.1",
-        "numpy~=1.21.6",
+        "numpy~=1.22.3",
     ],  # change with new version
 )
