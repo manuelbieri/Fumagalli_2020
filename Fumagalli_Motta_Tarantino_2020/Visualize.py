@@ -4,6 +4,7 @@ import math
 import numpy as np
 import datetime
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FixedLocator
 
 import Fumagalli_Motta_Tarantino_2020.Models as Models
 import Fumagalli_Motta_Tarantino_2020.Types as Types
@@ -314,7 +315,7 @@ class AssetRange(IVisualize):
         """
         separator: str = "$\\to$"
         return (
-            f"{summary.set_policy.abbreviation()}({summary.optimal_policy.abbreviation()}): "
+            f"{summary.optimal_policy.abbreviation()}: "
             f"{summary.early_bidding_type.abbreviation()}"
             f"{AssetRange._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
             f"{AssetRange._get_development_attempt_legend(summary.development_attempt)}"
@@ -347,6 +348,36 @@ class AssetRange(IVisualize):
             x_labels.append(threshold.name)
         return x_ticks, x_labels
 
+    def _set_x_ticks(self, asset_thresholds: list[Types.ThresholdItem]) -> None:
+        x_ticks, x_labels = self._get_x_labels_ticks(asset_thresholds)
+        self.ax.xaxis.set_major_locator(FixedLocator(x_ticks[::2]))
+        self.ax.xaxis.set_minor_locator(FixedLocator(x_ticks[1::2]))
+        self.ax.set_xticklabels(x_labels[::2])
+        self.ax.set_xticklabels(x_labels[1::2], minor=True)
+        self.ax.tick_params(
+            which="minor",
+            bottom=False,
+            top=True,
+            labelbottom=False,
+            labeltop=True,
+            axis="x",
+        )
+        self.ax.tick_params(which="both", length=6, axis="x")
+        for threshold in asset_thresholds:
+            if threshold.value != max(item.value for item in asset_thresholds):
+                self.ax.axvline(threshold.value, linestyle="--", color="k")
+
+    @staticmethod
+    def _get_y_ticks(
+        spacing: float, bar_height: float, y_labels: list[str]
+    ) -> list[float]:
+        return [(i + 1) * spacing + bar_height * i for i in range(len(y_labels))]
+
+    def _set_y_ticks(self, bar_height, spacing, y_labels):
+        y_ticks = self._get_y_ticks(spacing, bar_height, y_labels)
+        self.ax.set_yticks(y_ticks)
+        self.ax.set_yticklabels(y_labels)
+
     def _get_label_color(self, label) -> (str, str):
         """
         Returns the color and the final label for a legend entry.
@@ -368,45 +399,52 @@ class AssetRange(IVisualize):
         self.labels.append(label)
         return label, self.colors[label]
 
+    def _get_summaries(self) -> list[list[Types.OptimalMergerPolicySummary]]:
+        return [self._get_outcomes_asset_range()]
+
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         asset_range = self._get_asset_thresholds()
-        summaries = self._get_outcomes_asset_range()
+        merger_policies_summaries = self._get_summaries()
         assert asset_range is not None
-        assert summaries is not None
+        assert merger_policies_summaries is not None
         self.labels.clear()
         self.colors.clear()
-        for threshold in asset_range:
-            if 0 < threshold.value < self.model.development_costs:
-                self.ax.axvline(threshold.value, linestyle="--", color="k")
 
-        for i, summary in enumerate(summaries):
-            length: float = asset_range[i + 1].value - asset_range[i].value
-            label: str = self._get_summary_latex(summary)
-            label, color = self._get_label_color(label)
-            self.ax.barh(
-                y=0.1,
-                width=length,
-                left=asset_range[i].value,
-                height=0.2,
-                color=color,
-                label=label,
-            )
+        spacing: float = kwargs.get("spacing", 0.1)
+        bar_height: float = kwargs.get("bar_height", 0.2)
+        y_labels: list[str] = []
+        for number_merger_policy, summaries in enumerate(merger_policies_summaries):
+            y_labels.append(summaries[0].set_policy.abbreviation())
+            for summary_index, summary in enumerate(summaries):
+                length: float = (
+                    asset_range[summary_index + 1].value
+                    - asset_range[summary_index].value
+                )
+                label: str = self._get_summary_latex(summary)
+                label, color = self._get_label_color(label)
+                self.ax.barh(
+                    y=spacing * (number_merger_policy + 1)
+                    + bar_height * number_merger_policy,
+                    width=length,
+                    left=asset_range[summary_index].value,
+                    height=bar_height,
+                    color=color,
+                    label=label,
+                )
         self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
-        self.ax.annotate(
-            self._get_symbol_legend(),
-            xy=(asset_range[0].value, 0),
-            xytext=(0, -35),
-            textcoords="offset points",
-            horizontalalignment="left",
-            verticalalignment="top",
-        )
-        self.ax.margins(y=0.2, x=0)
-        x_ticks, x_labels = self._get_x_labels_ticks(asset_range)
-        self.ax.set_xticks(x_ticks)
-        self.ax.set_xticklabels(x_labels)
-        self.ax.yaxis.set_visible(False)
+        if kwargs.get("legend", True):
+            self.ax.annotate(
+                self._get_symbol_legend(),
+                xy=(asset_range[0].value, 0),
+                xytext=(0, -35),
+                textcoords="offset points",
+                horizontalalignment="left",
+                verticalalignment="top",
+            )
+        self.ax.margins(y=spacing, x=0)
+        self._set_x_ticks(asset_range)
+        self._set_y_ticks(bar_height, spacing, y_labels)
         self.fig.tight_layout()
-        # self._legend_delete_duplicate_labels() # avoid duplication in legend
         return self.fig, self.ax
 
 
@@ -423,47 +461,8 @@ class MergerPoliciesAssetRange(AssetRange):
             outcomes.append(self._get_outcomes_asset_range())
         return outcomes
 
-    def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
-        asset_range = self._get_asset_thresholds()
-        merger_policy_summaries = self._get_outcomes_different_merger_policies()
-        assert asset_range is not None
-        assert merger_policy_summaries is not None
-        self.labels.clear()
-        self.colors.clear()
-        for threshold in asset_range:
-            if 0 < threshold.value < self.model.development_costs:
-                self.ax.axvline(threshold.value, linestyle="--", color="k")
-
-        for j, summaries in enumerate(merger_policy_summaries):
-            for i, summary in enumerate(summaries):
-                length: float = asset_range[i + 1].value - asset_range[i].value
-                label: str = self._get_summary_latex(summary)
-                label, color = self._get_label_color(label)
-                self.ax.barh(
-                    y=0.1 * (j + 1) + 0.2 * j,
-                    width=length,
-                    left=asset_range[i].value,
-                    height=0.2,
-                    color=color,
-                    label=label,
-                )
-        self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
-        self.ax.annotate(
-            self._get_symbol_legend(),
-            xy=(asset_range[0].value, 0),
-            xytext=(0, -35),
-            textcoords="offset points",
-            horizontalalignment="left",
-            verticalalignment="top",
-        )
-        self.ax.margins(y=0.2, x=0)
-        x_ticks, x_labels = self._get_x_labels_ticks(asset_range)
-        self.ax.set_xticks(x_ticks)
-        self.ax.set_xticklabels(x_labels)
-        self.ax.yaxis.set_visible(False)
-        self.fig.tight_layout()
-        # self._legend_delete_duplicate_labels() # avoid duplication in legend
-        return self.fig, self.ax
+    def _get_summaries(self) -> list[list[Types.OptimalMergerPolicySummary]]:
+        return self._get_outcomes_different_merger_policies()
 
 
 class Timeline(IVisualize):
