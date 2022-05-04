@@ -120,3 +120,8 @@ class TestVisualize(unittest.TestCase):
         self.setUpMock(takeover=True, shelving=True, successful=False)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.view_plot(show=TestVisualize.show_plots)
+
+    def test_timeline_plot_takeover_shelving_credit_constraint(self):
+        self.setUpMock(takeover=True, shelving=True, successful=False, credit_constrained=True)
+        self.setUpVisualizer(self.mock, plot_type="Timeline")
+        self.view_plot(show=TestVisualize.show_plots)

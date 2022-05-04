@@ -9,6 +9,7 @@ def mock_optimal_merger_policy(
     asset_threshold_late_takeover: float = -1,
     takeover: bool = False,
     shelving: bool = False,
+    credit_constrained: bool = False,
     successful: bool = True,
     policy: Types.MergerPolicies = Types.MergerPolicies.Intermediate_late_takeover_prohibited,
 ) -> Models.OptimalMergerPolicy:
@@ -60,7 +61,7 @@ def mock_optimal_merger_policy(
                 early_takeover=False,
                 set_policy=policy,
             )
-        return set_summary(set_policy=policy)
+        return set_summary(set_policy=policy, credit_rationed=credit_constrained)
 
     model: Models.OptimalMergerPolicy = mock.Mock(spec=Models.OptimalMergerPolicy)
     type(model).merger_policy = policy
