@@ -957,6 +957,21 @@ class MergerPolicy(BaseModel):
             late_takeover=self.is_late_takeover,
         )
 
+    def is_killer_acquisition(self) -> bool:
+        """
+        Returns whether a killer acquisition occurred in the model.
+
+        For a killer acquisition to take place the following condition have to satisfied:
+        - An early takeover takes place
+        - The start-up is not credit constrained
+
+        Returns
+        -------
+        True
+            if a killer acquisition occurred in the model.
+        """
+        return not self.is_startup_credit_rationed and self.is_early_takeover
+
 
 class OptimalMergerPolicy(MergerPolicy):
     """

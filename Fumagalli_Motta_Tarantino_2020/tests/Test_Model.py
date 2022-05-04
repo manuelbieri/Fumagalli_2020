@@ -201,6 +201,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+        self.assertTrue(self.model.is_killer_acquisition())
 
     def test_not_profitable_above_assets_threshold_credit_rationed(self):
         self.setupModel(
@@ -223,6 +224,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+        self.assertFalse(self.model.is_killer_acquisition())
 
     def test_not_profitable_above_assets_threshold_not_credit_rationed(self):
         self.setupModel(tolerated_level_of_harm=1, private_benefit=0.075)
@@ -234,6 +236,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertTrue(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertTrue(self.model.is_late_takeover)
+        self.assertFalse(self.model.is_killer_acquisition())
 
     def test_not_profitable_below_assets_threshold_not_credit_rationed_unsuccessful(
         self,
@@ -249,6 +252,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+        self.assertFalse(self.model.is_killer_acquisition())
 
     def test_profitable_credit_rationed(self):
         self.setupModel(
@@ -270,6 +274,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+        self.assertFalse(self.model.is_killer_acquisition())
 
     def test_profitable_not_credit_rationed(self):
         self.setupModel(
@@ -287,6 +292,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertTrue(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertTrue(self.model.is_late_takeover)
+        self.assertFalse(self.model.is_killer_acquisition())
 
     def test_profitable_not_credit_rationed_unsuccessful(self):
         self.setupModel(
@@ -305,6 +311,7 @@ class TestLaissezFaireMergerPolicyModel(TestMergerPolicyModel):
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+        self.assertFalse(self.model.is_killer_acquisition())
 
 
 class TestIntermediateLateTakeoverAllowedMergerPolicyModel(TestMergerPolicyModel):

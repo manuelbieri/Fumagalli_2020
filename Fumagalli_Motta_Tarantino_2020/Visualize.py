@@ -489,7 +489,11 @@ class Timeline(IVisualize):
             + "\nmerger policy",
             self._takeover_attempt_str(summary.early_bidding_type),
             self._takeover_str(summary.early_takeover),
-            self._development_str(summary.development_attempt, summary.early_takeover, summary.credit_rationed),
+            self._development_str(
+                summary.development_attempt,
+                summary.early_takeover,
+                self.model.is_killer_acquisition(),
+            ),
             self._success_str(summary.development_outcome),
             self._takeover_attempt_str(summary.late_bidding_type),
             self._takeover_str(summary.late_takeover),
@@ -564,7 +568,9 @@ class Timeline(IVisualize):
         return "No takeover\noccurs"
 
     @staticmethod
-    def _development_str(is_development: bool, is_early_takeover: bool, is_credit_constrained: bool) -> str:
+    def _development_str(
+        is_development: bool, is_early_takeover: bool, is_killer_acqui: bool
+    ) -> str:
         """
         Generates a label about the development event (attempt and shelving).
 
@@ -581,7 +587,7 @@ class Timeline(IVisualize):
             Label about the development event (attempt and shelving).
         """
         owner = "Incumbent" if is_early_takeover else "Start-up"
-        killer_acqui_str = "\n(killer acquisition)" if is_early_takeover and not is_credit_constrained else ""
+        killer_acqui_str = "\n(killer acquisition)" if is_killer_acqui else ""
         if is_development:
             return f"{owner}\ndevelops product"
         return f"{owner}\nshelves product{killer_acqui_str}"
