@@ -972,6 +972,16 @@ class MergerPolicy(BaseModel):
         """
         return not self.is_startup_credit_rationed and self.is_early_takeover
 
+    def __str__(self) -> str:
+        return f"Merger Policy: {self.merger_policy}\n" \
+               f"Is start-up credit rationed?: {self.is_startup_credit_rationed}\n" \
+               f"Type of early takeover attempt: {self.get_early_bidding_type}\n" \
+               f"Is the early takeover approved?: {self.is_early_takeover}\n" \
+               f"Does the owner attempt the development?: {self.is_owner_investing}\n" \
+               f"Is the development successful?: {self.is_development_successful}\n" \
+               f"Type of late takeover attempt: {self.get_late_bidding_type}\n" \
+               f"Is the late takeover approved?: {self.is_late_takeover}"
+
 
 class OptimalMergerPolicy(MergerPolicy):
     """
@@ -1143,3 +1153,7 @@ class OptimalMergerPolicy(MergerPolicy):
             late_takeover=self.is_late_takeover,
             optimal_policy=self.get_optimal_merger_policy(),
         )
+
+    def __str__(self) -> str:
+        return super(OptimalMergerPolicy, self).__str__() + \
+               f"\nOptimal merger policy: {self.get_optimal_merger_policy()}"

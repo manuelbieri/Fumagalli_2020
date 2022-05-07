@@ -766,3 +766,18 @@ class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
             Types.MergerPolicies.Laissez_faire, self.model.get_optimal_merger_policy()
         )
         self.assertTrue(self.model.is_laissez_faire_optimal())
+
+    def test_string_representation(self):
+        self.setupModel()
+        self.assertEqual(
+            "Merger Policy: Strict\n"
+            "Is start-up credit rationed?: False\n"
+            "Type of early takeover attempt: No bid\n"
+            "Is the early takeover approved?: False\n"
+            "Does the owner attempt the development?: True\n"
+            "Is the development successful?: True\n"
+            "Type of late takeover attempt: No bid\n"
+            "Is the late takeover approved?: False\n"
+            "Optimal merger policy: Strict",
+            str(self.model)
+        )

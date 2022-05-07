@@ -91,6 +91,11 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
     def test_intermediate_optimal_merger_policy(self):
         pass
 
+
+    @unittest.skip("Not yet implemented")
+    def test_string_representation(self):
+        pass
+
     def test_laissez_faire_optimal_merger_policy(self):
         # laissez-faire is never optimal -> dominated by strict
         self.setupModel()

@@ -187,6 +187,17 @@ class AssetRange(IVisualize):
                 self.model.development_costs
             ),
         )
+        thresholds = self._get_essential_thresholds()
+        essential_thresholds: list[Types.ThresholdItem] = []
+        for threshold in thresholds:
+            if min_threshold.value < threshold.value < max_threshold.value:
+                essential_thresholds.append(threshold)
+        thresholds = sorted(essential_thresholds, key=lambda x: x.value)
+        thresholds.insert(0, min_threshold)
+        thresholds.append(max_threshold)
+        return thresholds
+
+    def _get_essential_thresholds(self):
         thresholds: list[Types.ThresholdItem] = [
             Types.ThresholdItem(
                 "$\\Gamma$", self.model.asset_distribution_threshold_strict
@@ -204,13 +215,6 @@ class AssetRange(IVisualize):
                 "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
             ),
         ]
-        essential_thresholds: list[Types.ThresholdItem] = []
-        for threshold in thresholds:
-            if min_threshold.value < threshold.value < max_threshold.value:
-                essential_thresholds.append(threshold)
-        thresholds = sorted(essential_thresholds, key=lambda x: x.value)
-        thresholds.insert(0, min_threshold)
-        thresholds.append(max_threshold)
         return thresholds
 
     @staticmethod
@@ -436,7 +440,7 @@ class AssetRange(IVisualize):
             self.ax.annotate(
                 self._get_symbol_legend(),
                 xy=(asset_range[0].value, 0),
-                xytext=(0, -35),
+                xytext=(0, -40),
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
