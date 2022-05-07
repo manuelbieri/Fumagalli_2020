@@ -779,5 +779,5 @@ class TestOptimalMergerPolicyModel(TestMergerPolicyModel):
             "Type of late takeover attempt: No bid\n"
             "Is the late takeover approved?: False\n"
             "Optimal merger policy: Strict",
-            str(self.model)
+            str(self.model),
         )
