@@ -126,4 +126,4 @@ class TestVisualize(unittest.TestCase):
             takeover=True, shelving=True, successful=False, credit_constrained=True
         )
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.view_plot(show=TestVisualize.show_plots)
+        self.view_plot(show=(not TestVisualize.show_plots))

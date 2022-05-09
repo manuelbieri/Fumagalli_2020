@@ -1,5 +1,3 @@
-import unittest
-
 import Fumagalli_Motta_Tarantino_2020.tests.Test_Model as Test
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 
@@ -14,16 +12,16 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.model = AdditionalModels.MicroFoundationModel(**kwargs)
 
     def calculate_properties_profits_consumer_surplus(self) -> None:
-        # calculations made with Gamma = 0.2
+        # calculations made with Gamma = 0.3
         self.test_incumbent_profit_without_innovation = 0.25
         self.test_cs_without_innovation = 0.125
 
-        self.test_incumbent_profit_with_innovation = 1 / 2.4
-        self.test_cs_with_innovation = 1 / 4.8
+        self.test_incumbent_profit_with_innovation = 1 / 2.6
+        self.test_cs_with_innovation = 1 / 5.2
 
-        self.test_incumbent_profit_duopoly = 1 / (2.2**2)
+        self.test_incumbent_profit_duopoly = 1 / (2.3**2)
         self.test_startup_profit_duopoly = self.test_incumbent_profit_duopoly
-        self.test_cs_duopoly = 1.2 / (2.2**2)
+        self.test_cs_duopoly = 1.3 / (2.3**2)
 
     def get_welfare_value(self, market_situation: str) -> float:
         if market_situation == "duopoly":
@@ -87,13 +85,28 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
             )
         )
 
-    @unittest.skip("Not yet implemented")
     def test_intermediate_optimal_merger_policy(self):
-        pass
+        self.setupModel(gamma=0.2)
+        self.assertEqual(
+            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            self.model.get_optimal_merger_policy(),
+        )
+        self.assertTrue(self.model.is_intermediate_optimal())
 
-    @unittest.skip("Not yet implemented")
     def test_string_representation(self):
-        pass
+        self.setupModel(gamma=0.3)
+        self.assertEqual(
+            "Merger Policy: Strict\n"
+            "Is start-up credit rationed?: False\n"
+            "Type of early takeover attempt: No bid\n"
+            "Is the early takeover approved?: False\n"
+            "Does the owner attempt the development?: True\n"
+            "Is the development successful?: True\n"
+            "Type of late takeover attempt: No bid\n"
+            "Is the late takeover approved?: False\n"
+            "Optimal merger policy: Strict",
+            str(self.model),
+        )
 
     def test_laissez_faire_optimal_merger_policy(self):
         # laissez-faire is never optimal -> dominated by strict

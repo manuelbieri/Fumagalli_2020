@@ -2,7 +2,6 @@ from abc import abstractmethod
 
 import math
 import numpy as np
-import datetime
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
 
@@ -36,7 +35,7 @@ class IVisualize:
     ]
     """Standard colors used in visualizations."""
 
-    def __init__(self, model: Models.OptimalMergerPolicy):
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
         """
         Parameters
         ----------
@@ -44,7 +43,7 @@ class IVisualize:
             Model to plot the outcomes on asset range from.
         """
         self.model: Models.OptimalMergerPolicy = model
-        self.fig, self.ax = plt.subplots()
+        self.fig, self.ax = plt.subplots(**kwargs)
 
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -140,8 +139,8 @@ class AssetRange(IVisualize):
     Visualizes the outcomes over an assets range for a specific model.
     """
 
-    def __init__(self, model: Models.OptimalMergerPolicy) -> None:
-        super(AssetRange, self).__init__(model)
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs) -> None:
+        super(AssetRange, self).__init__(model, **kwargs)
         self.labels: list[str] = []
         self.colors: dict[str, str] = {}
 
@@ -440,7 +439,7 @@ class AssetRange(IVisualize):
             self.ax.annotate(
                 self._get_symbol_legend(),
                 xy=(asset_range[0].value, 0),
-                xytext=(0, -40),
+                xytext=(0, -70),
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
@@ -448,13 +447,15 @@ class AssetRange(IVisualize):
         self.ax.margins(y=spacing, x=0)
         self._set_x_ticks(asset_range)
         self._set_y_ticks(bar_height, spacing, y_labels)
+        self.ax.set_xlabel("Cumulative Distribution Value of Assets $F(A)$")
+        self.ax.set_ylabel("Merger Policy")
         self.fig.tight_layout()
         return self.fig, self.ax
 
 
 class MergerPoliciesAssetRange(AssetRange):
-    def __init__(self, model: Models.OptimalMergerPolicy):
-        super(MergerPoliciesAssetRange, self).__init__(model)
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
+        super(MergerPoliciesAssetRange, self).__init__(model, **kwargs)
 
     def _get_outcomes_different_merger_policies(
         self,
@@ -474,8 +475,8 @@ class Timeline(IVisualize):
     Visualizes the timeline of events for a specific model.
     """
 
-    def __init__(self, model: Models.OptimalMergerPolicy):
-        super(Timeline, self).__init__(model)
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
+        super(Timeline, self).__init__(model, **kwargs)
 
     def _prepare_content(self) -> (list[str], list[str]):
         """
@@ -483,7 +484,7 @@ class Timeline(IVisualize):
 
         Returns
         -------
-        (list, list[datetime.date])
+        (list[str], list[str])
             List containing label for the events and list containing the points in time of the events.
         """
         summary: Types.OptimalMergerPolicySummary = self.model.summary()

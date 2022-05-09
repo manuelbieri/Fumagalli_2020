@@ -3,10 +3,13 @@ import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
 class MicroFoundationModel(Models.OptimalMergerPolicy):
-    def __init__(self, gamma=0.2, *args, **kwargs):
+    def __init__(self, gamma=0.3, *args, **kwargs):
         assert 0 < gamma < 1, "Gamma has to be between 0 and 1."
         self._gamma = gamma
         super(MicroFoundationModel, self).__init__(*args, **kwargs)
+        assert (
+            self.development_costs < self.success_probability / 4
+        ), "K >= p/4 is not valid"
         self._incumbent_profit_without_innovation = 0.25
         self._cs_without_innovation = 0.125
         self._incumbent_profit_with_innovation = 1 / (2 + 2 * self.gamma)
@@ -56,10 +59,6 @@ class MicroFoundationModel(Models.OptimalMergerPolicy):
         )
 
     @property
-    def asset_threshold_late_takeover_cdf(self) -> float:
-        return 0
-
-    @property
     def gamma(self) -> float:
         return self._gamma
 
@@ -88,38 +87,34 @@ class MicroFoundationModel(Models.OptimalMergerPolicy):
 
     def is_investment_cost_sufficiently_high(self) -> float:
         return (
-            -5 * (self.success_probability**3)
-            + 64 * (self.development_costs**3) * (3 + self.success_probability)
-            + 12
-            * self.development_costs
-            * (self.success_probability**2)
-            * (3 * self.success_probability - 1)
-            + 16
-            * (self.development_costs**2)
-            * self.success_probability
-            * (5 + 6 * self.success_probability)
-        ) / (
-            8
-            * self.success_probability
-            * ((4 * self.development_costs + 3 * self.success_probability) ** 2)
+            (
+                -5 * (self.success_probability**3)
+                + 64 * (self.development_costs**3) * (3 + self.success_probability)
+                + 12
+                * self.development_costs
+                * (self.success_probability**2)
+                * (3 * self.success_probability - 1)
+                + 16
+                * (self.development_costs**2)
+                * self.success_probability
+                * (5 + 6 * self.success_probability)
+            )
+            / (
+                8
+                * self.success_probability
+                * ((4 * self.development_costs + 3 * self.success_probability) ** 2)
+            )
         ) > 0
 
     def is_degree_substitutability_moderate(self):
-        gamma_inv = (
-            self.incumbent_expected_additional_profit_from_innovation() + self.gamma
-        )
-        gamma_hat = min(self._gamma_assumption_three, self._gamma_assumption_four)
-        return gamma_inv < self.gamma <= gamma_hat
-
-    def is_financial_imperfection_severe(self) -> bool:
-        return self.asset_threshold_cdf > 1 - (
-            self.success_probability
-            * (self.w_with_innovation - self.w_without_innovation)
-            - self.development_costs
-        ) / (
-            self.success_probability * (self.w_duopoly - self._cs_without_innovation)
-            - self.development_costs
-        )
+        # gamma_inv = (
+        #     self.incumbent_expected_additional_profit_from_innovation() + self.gamma
+        # )
+        # gamma_hat = min(self._gamma_assumption_three, self._gamma_bar)
+        # return gamma_inv < self.gamma <= gamma_hat
+        return 0 < self.success_probability * (
+            self.w_with_innovation - self.w_without_innovation
+        ) - self.development_costs - (self.w_duopoly - self.w_with_innovation)
 
 
 class PerfectInformationModel(Models.OptimalMergerPolicy):
