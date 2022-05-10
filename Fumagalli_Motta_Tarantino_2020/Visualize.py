@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
 
-import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Fumagalli_Motta_Tarantino_2020 as Models
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
@@ -44,6 +44,12 @@ class IVisualize:
         """
         self.model: Models.OptimalMergerPolicy = model
         self.fig, self.ax = plt.subplots(**kwargs)
+
+    def _set_legend(self) -> None:
+        self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
+
+    def _set_tight_layout(self) -> None:
+        self.fig.tight_layout()
 
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -130,91 +136,34 @@ class IVisualize:
             ("\\pi^d_I", model.incumbent_profit_duopoly, separator_parameters),
             ("\\pi^d_S", model.startup_profit_duopoly, ""),
         ]:
-            output_str += f"${parameter}{separator_name_value}{value}${separator}"
+            output_str += f"${parameter}{separator_name_value}{round(value, ndigits=3)}${separator}"
         return output_str
 
-
-class AssetRange(IVisualize):
-    """
-    Visualizes the outcomes over an assets range for a specific model.
-    """
-
-    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs) -> None:
-        super(AssetRange, self).__init__(model, **kwargs)
-        self.labels: list[str] = []
-        self.colors: dict[str, str] = {}
-
-    def _get_outcomes_asset_range(
-        self,
-    ) -> list[Types.OptimalMergerPolicySummary]:
+    @staticmethod
+    def _get_summary_latex(summary: Types.OptimalMergerPolicySummary) -> str:
         """
-        Generates a list with all essential threshold concerning the assets of a start-up and an additional list with
-        summaries of the outcomes of the model in between the thresholds.
+        Generates a chronological entry for the legend based on the input model.
+
+        Parameters
+        ----------
+        summary: Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary
+            Summary of the model.
 
         Returns
         -------
-        (list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary])
-            List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
+        str
+            Chronological entry for the legend of the input model.
         """
-        asset_range: list[Types.ThresholdItem] = self._get_asset_thresholds()
-        summaries: list[Types.OptimalMergerPolicySummary] = []
-        for i in range(len(asset_range) - 1):
-            self.model.startup_assets = (
-                Utilities.NormalDistributionFunction.inverse_cumulative(
-                    asset_range[i].value
-                )
-                + Utilities.NormalDistributionFunction.inverse_cumulative(
-                    asset_range[i + 1].value
-                )
-            ) / 2
-            summaries.append(self.model.summary())
-        return summaries
-
-    def _get_asset_thresholds(self) -> list[Types.ThresholdItem]:
-        """
-        Generates a list with all essential threshold concerning the assets of a start-up.
-
-        Returns
-        -------
-        list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem]
-            List containing the essential asset thresholds in the model.
-        """
-        min_threshold = Types.ThresholdItem("0.5", 0.5)
-        max_threshold = Types.ThresholdItem(
-            "$F(K)$",
-            Utilities.NormalDistributionFunction.cumulative(
-                self.model.development_costs
-            ),
+        separator: str = "$\\to$"
+        return (
+            f"{summary.optimal_policy.abbreviation()}: "
+            f"{summary.early_bidding_type.abbreviation()}"
+            f"{IVisualize._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
+            f"{IVisualize._get_development_attempt_legend(summary.development_attempt)}"
+            f"{IVisualize._get_development_outcome_legend(summary.development_attempt, summary.development_outcome)}{separator}"
+            f"{summary.late_bidding_type.abbreviation()}"
+            f"{IVisualize._get_is_takeover_legend(summary.late_bidding_type, summary.late_takeover)}"
         )
-        thresholds = self._get_essential_thresholds()
-        essential_thresholds: list[Types.ThresholdItem] = []
-        for threshold in thresholds:
-            if min_threshold.value < threshold.value < max_threshold.value:
-                essential_thresholds.append(threshold)
-        thresholds = sorted(essential_thresholds, key=lambda x: x.value)
-        thresholds.insert(0, min_threshold)
-        thresholds.append(max_threshold)
-        return thresholds
-
-    def _get_essential_thresholds(self):
-        thresholds: list[Types.ThresholdItem] = [
-            Types.ThresholdItem(
-                "$\\Gamma$", self.model.asset_distribution_threshold_strict
-            ),
-            Types.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold),
-            Types.ThresholdItem(
-                "$\\Phi^T$", self.model.asset_distribution_threshold_laissez_faire
-            ),
-            Types.ThresholdItem(
-                "$\\Phi^{\\prime}$",
-                self.model.asset_distribution_threshold_intermediate,
-            ),
-            Types.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
-            Types.ThresholdItem(
-                "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
-            ),
-        ]
-        return thresholds
 
     @staticmethod
     def _get_is_takeover_legend(bid_attempt: Types.Takeover, is_takeover: bool) -> str:
@@ -301,31 +250,88 @@ class AssetRange(IVisualize):
             f"$D(\\times)$: Product development was attempted and not successful\n"
         )
 
-    @staticmethod
-    def _get_summary_latex(summary: Types.OptimalMergerPolicySummary) -> str:
-        """
-        Generates a chronological entry for the legend based on the input model.
 
-        Parameters
-        ----------
-        summary: Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary
-            Summary of the model.
+class AssetRange(IVisualize):
+    """
+    Visualizes the outcomes over an assets range for a specific model.
+    """
+
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs) -> None:
+        super(AssetRange, self).__init__(model, **kwargs)
+        self.labels: list[str] = []
+        self.colors: dict[str, str] = {}
+
+    def _get_outcomes_asset_range(
+        self,
+    ) -> list[Types.OptimalMergerPolicySummary]:
+        """
+        Generates a list with all essential threshold concerning the assets of a start-up and an additional list with
+        summaries of the outcomes of the model in between the thresholds.
 
         Returns
         -------
-        str
-            Chronological entry for the legend of the input model.
+        (list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary])
+            List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
         """
-        separator: str = "$\\to$"
-        return (
-            f"{summary.optimal_policy.abbreviation()}: "
-            f"{summary.early_bidding_type.abbreviation()}"
-            f"{AssetRange._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
-            f"{AssetRange._get_development_attempt_legend(summary.development_attempt)}"
-            f"{AssetRange._get_development_outcome_legend(summary.development_attempt, summary.development_outcome)}{separator}"
-            f"{summary.late_bidding_type.abbreviation()}"
-            f"{AssetRange._get_is_takeover_legend(summary.late_bidding_type, summary.late_takeover)}"
+        asset_range: list[Types.ThresholdItem] = self._get_asset_thresholds()
+        summaries: list[Types.OptimalMergerPolicySummary] = []
+        for i in range(len(asset_range) - 1):
+            self.model.startup_assets = (
+                Utilities.NormalDistributionFunction.inverse_cumulative(
+                    asset_range[i].value
+                )
+                + Utilities.NormalDistributionFunction.inverse_cumulative(
+                    asset_range[i + 1].value
+                )
+            ) / 2
+            summaries.append(self.model.summary())
+        return summaries
+
+    def _get_asset_thresholds(self) -> list[Types.ThresholdItem]:
+        """
+        Generates a list with all essential threshold concerning the assets of a start-up.
+
+        Returns
+        -------
+        list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem]
+            List containing the essential asset thresholds in the model.
+        """
+        min_threshold = Types.ThresholdItem("0.5", 0.5)
+        max_threshold = Types.ThresholdItem(
+            "$F(K)$",
+            Utilities.NormalDistributionFunction.cumulative(
+                self.model.development_costs
+            ),
         )
+        thresholds = self._get_essential_thresholds()
+        essential_thresholds: list[Types.ThresholdItem] = []
+        for threshold in thresholds:
+            if min_threshold.value < threshold.value < max_threshold.value:
+                essential_thresholds.append(threshold)
+        thresholds = sorted(essential_thresholds, key=lambda x: x.value)
+        thresholds.insert(0, min_threshold)
+        thresholds.append(max_threshold)
+        return thresholds
+
+    def _get_essential_thresholds(self):
+        thresholds: list[Types.ThresholdItem] = [
+            Types.ThresholdItem(
+                "$\\Gamma$", self.model.asset_distribution_threshold_strict
+            ),
+            Types.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold),
+            Types.ThresholdItem(
+                "$\\Phi^T$", self.model.asset_distribution_threshold_laissez_faire
+            ),
+            Types.ThresholdItem(
+                "$\\Phi^{\\prime}$",
+                self.model.asset_distribution_threshold_intermediate,
+            ),
+            Types.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
+            Types.ThresholdItem(
+                "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
+            ),
+        ]
+        return thresholds
 
     @staticmethod
     def _get_x_labels_ticks(
@@ -434,12 +440,12 @@ class AssetRange(IVisualize):
                     color=color,
                     label=label,
                 )
-        self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
+        self._set_legend()
         if kwargs.get("legend", True):
             self.ax.annotate(
                 self._get_symbol_legend(),
                 xy=(asset_range[0].value, 0),
-                xytext=(0, -70),
+                xytext=(0, -50),
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
@@ -449,7 +455,7 @@ class AssetRange(IVisualize):
         self._set_y_ticks(bar_height, spacing, y_labels)
         self.ax.set_xlabel("Cumulative Distribution Value of Assets $F(A)$")
         self.ax.set_ylabel("Merger Policy")
-        self.fig.tight_layout()
+        self._set_tight_layout()
         return self.fig, self.ax
 
 
@@ -662,3 +668,128 @@ class Timeline(IVisualize):
 
         self.ax.margins(y=0.45)
         return self.fig, self.ax
+
+
+class Payoffs(IVisualize):
+    def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        payoffs: dict[str, float] = self._get_payoffs()
+        bar_width = 0.35
+        spacing = 0.05
+
+        self._plot_payoffs_bars(payoffs, bar_width, spacing, **kwargs)
+
+        self.ax.set_title("Payoffs for different Market Configurations")
+        self._set_legend()
+        if kwargs.get("legend", True):
+            self.ax.annotate(
+                self._get_payoff_legend(),
+                xy=(-bar_width, 0),
+                xytext=(0, -30),
+                textcoords="offset points",
+                horizontalalignment="left",
+                verticalalignment="top",
+            )
+        self._set_tight_layout()
+
+    def _plot_payoffs_bars(
+        self, payoffs: dict[str, float], bar_width: float, spacing: float, **kwargs
+    ) -> None:
+        """
+        Plots the bars representing the payoffs for different market configurations of different stakeholders on the specified axis.
+
+        Parameters
+        ----------
+        axis matplotlib.axes.Axes
+            To plot the bars on.
+        bar_width: float
+            Width of a bar in the plot.
+        spacing: float
+            Spacing between the bars on the plot.
+        **kwargs
+            Optional key word arguments for the payoff plot.<br>
+            - opacity : Opacity of the not optimal payoffs.<br>
+        """
+        max_values: list[int] = self._set_max_values(list(payoffs.values()))
+        for number_bar, (label, height) in enumerate(payoffs.items()):
+            x_coordinate: float = self._get_x_coordinate(bar_width, number_bar, spacing)
+            self.ax.annotate(
+                label,
+                xy=(x_coordinate, 0),
+                xytext=(0, -5),
+                textcoords="offset points",
+                horizontalalignment="center",
+                verticalalignment="top",
+            )
+            if number_bar > 3:
+                label = "__nolegend__"
+            else:
+                label = label[:-3] + "$"
+            self.ax.bar(
+                x=x_coordinate,
+                width=bar_width,
+                height=height,
+                label=label,
+                color=self._get_color(number_bar),
+                alpha=kwargs.get("max_opacity", 1)
+                if number_bar in max_values
+                else kwargs.get("min_opacity", 0.5),
+            )
+            self.ax.tick_params(
+                axis="x",  # changes apply to the x-axis
+                which="both",  # both major and minor ticks are affected
+                bottom=False,  # ticks along the bottom edge are off
+                labelbottom=False,
+            )  # labels along the bottom edge are off
+
+    @staticmethod
+    def _set_max_values(payoffs: list[float]) -> list[int]:
+        return [
+            Payoffs._get_max_index(0, payoffs),
+            Payoffs._get_max_index(1, payoffs),
+            Payoffs._get_max_index(2, payoffs),
+            Payoffs._get_max_index(3, payoffs),
+        ]
+
+    @staticmethod
+    def _get_max_index(offset_index: int, payoffs: list[float]) -> int:
+        values: list[float] = payoffs[offset_index::4]
+        max_value: float = max(values)
+        group_index: int = values.index(max_value)
+        return group_index * 4 + offset_index
+
+    @staticmethod
+    def _get_x_coordinate(bar_width, number_bar, spacing):
+        group_spacing: int = (math.trunc(number_bar / 4) % 4) * 8
+        return spacing * (number_bar + 1 + group_spacing) + bar_width * number_bar
+
+    @staticmethod
+    def _get_color(number_bar: int) -> str:
+        return IVisualize.colors[number_bar % 4]
+
+    def _get_payoffs(self) -> dict[str, float]:
+        return {
+            "$\\pi_S^m$": 0,
+            "$\\pi_I^m$": self.model.incumbent_profit_without_innovation,
+            "$CS^m$": self.model.cs_without_innovation,
+            "$W^m$": self.model.w_without_innovation,
+            "$\\pi^M_S$": 0,
+            "$\\pi^M_I$": self.model.incumbent_profit_with_innovation,
+            "$CS^M$": self.model.cs_with_innovation,
+            "$W^M$": self.model.w_with_innovation,
+            "$\\pi^d_S$": self.model.startup_profit_duopoly,
+            "$\\pi^d_I$": self.model.incumbent_profit_duopoly,
+            "$CS^d$": self.model.cs_duopoly,
+            "$W^d$": self.model.w_duopoly,
+        }
+
+    @staticmethod
+    def _get_payoff_legend() -> str:
+        return (
+            "$\\pi_S$: Profit of the start-up\n"
+            "$\\pi_I$: Profit of the incumbent\n"
+            "$CS$: Consumer surplus\n"
+            "$W$: Total welfare\n"
+            "$m$: Monopoly without the innovation\n"
+            "$M$: Monopoly after successful development by the incumbent\n"
+            "$d$: Duopoly (requires successful development by the start-up)\n"
+        )

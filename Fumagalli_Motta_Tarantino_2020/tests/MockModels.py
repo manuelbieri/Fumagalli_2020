@@ -73,10 +73,20 @@ def mock_optimal_merger_policy(
     type(model).cs_duopoly = 0.58
     type(model).incumbent_profit_duopoly = 0.68
     type(model).startup_profit_duopoly = 0.78
+    type(model).w_duopoly = (
+        model.incumbent_profit_duopoly + model.startup_profit_duopoly + model.cs_duopoly
+    )
     type(model).cs_without_innovation = 0.88
     type(model).incumbent_profit_without_innovation = 0.98
+    type(model).w_without_innovation = (
+        model.incumbent_profit_without_innovation + model.cs_without_innovation
+    )
     type(model).cs_with_innovation = 1.08
     type(model).incumbent_profit_with_innovation = 1.18
+    type(model).w_with_innovation = (
+        model.incumbent_profit_with_innovation + model.cs_with_innovation
+    )
+
     type(model).asset_threshold = mock.PropertyMock(return_value=asset_threshold)
     type(model).asset_threshold_late_takeover = mock.PropertyMock(
         return_value=asset_threshold_late_takeover

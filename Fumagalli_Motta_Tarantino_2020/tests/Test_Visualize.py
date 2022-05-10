@@ -19,7 +19,9 @@ class TestVisualize(unittest.TestCase):
     def setUpVisualizer(
         self,
         model: Models.OptimalMergerPolicy,
-        plot_type: Literal["Outcome", "Timeline", "MergerPolicies"] = "Outcome",
+        plot_type: Literal[
+            "Outcome", "Timeline", "MergerPolicies", "Payoff"
+        ] = "Outcome",
     ) -> None:
         if plot_type == "Timeline":
             self.visualizer: Visualize.IVisualize = Visualize.Timeline(model)
@@ -27,6 +29,8 @@ class TestVisualize(unittest.TestCase):
             self.visualizer: Visualize.IVisualize = Visualize.MergerPoliciesAssetRange(
                 model
             )
+        elif plot_type == "Payoff":
+            self.visualizer: Visualize.IVisualize = Visualize.Payoffs(model)
         else:
             self.visualizer: Visualize.IVisualize = Visualize.AssetRange(model)
 
@@ -127,3 +131,8 @@ class TestVisualize(unittest.TestCase):
         )
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.view_plot(show=(not TestVisualize.show_plots))
+
+    def test_payoff_plot(self):
+        self.setUpMock()
+        self.setUpVisualizer(self.mock, plot_type="Payoff")
+        self.view_plot(show=TestVisualize.show_plots)

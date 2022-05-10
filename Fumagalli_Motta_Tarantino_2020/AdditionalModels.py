@@ -1,4 +1,4 @@
-import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Fumagalli_Motta_Tarantino_2020 as Models
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
