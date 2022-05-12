@@ -1,7 +1,7 @@
 # necessary for the package
 scipy>=1.7.3
 numpy>=1.22.3
-matplotlib>=3.5.1
+matplotlib>=3.5.2
 
 # nesseary for code formatting
 black>=22.3.0
