@@ -43,18 +43,17 @@ Find the latest documentation on [manuelbieri.ch/fumagalli_2020](https://manuelb
 
 ### Dependencies
 
-These packages include all the needed imports for the functionality of this package. The declared version should ensure 
-compatibility with [mybinder.org](https://mybinder.org/v2/gh/manuelbieri/Fumagalli_2020/HEAD)
+These packages include all the needed imports for the functionality of this package.
 
 | Package &emsp; | Version &emsp; | Annotation &emsp;                          |
 |:---------------|:--------------:|:-------------------------------------------|
-| scipy          |     1.7.3      | Always                                     |
-| numpy          |     1.21.6     | Always                                     |
-| matplotlib     |     3.5.1      | Always                                     |
-| black          |     22.1.0     | For consistent code formatting             |
+| scipy          |     1.8.1      | Always                                     |
+| numpy          |     1.22.4     | Always                                     |
+| matplotlib     |     3.5.2      | Always                                     |
+| black          |     22.3.0     | For consistent code formatting             |
 | jupyter        |     1.0.0      | For the demonstration in jupyter Notebooks |
-| IPython        |     7.32.0     | For the demonstration in jupyter Notebooks |
-| pdoc           |     11.0.0     | To generate the documentation from scratch |
+| IPython        |     8.3.0      | For the demonstration in jupyter Notebooks |
+| pdoc           |     12.0.0     | To generate the documentation from scratch |
 
 Install the dependencies with the following command (Note: Make sure you are operating in the same directory, where the `requirements.txt` is located.):
 
