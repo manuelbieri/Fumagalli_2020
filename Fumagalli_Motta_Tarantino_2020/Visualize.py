@@ -7,7 +7,6 @@ from matplotlib.ticker import FixedLocator
 
 import Fumagalli_Motta_Tarantino_2020 as Models
 import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
 class IVisualize:
@@ -276,10 +275,8 @@ class AssetRange(IVisualize):
         summaries: list[Types.OptimalMergerPolicySummary] = []
         for i in range(len(asset_range) - 1):
             self.model.startup_assets = (
-                Utilities.NormalDistributionFunction.inverse_cumulative(
-                    asset_range[i].value
-                )
-                + Utilities.NormalDistributionFunction.inverse_cumulative(
+                self.model.asset_distribution.inverse_cumulative(asset_range[i].value)
+                + self.model.asset_distribution.inverse_cumulative(
                     asset_range[i + 1].value
                 )
             ) / 2
@@ -298,9 +295,7 @@ class AssetRange(IVisualize):
         min_threshold = Types.ThresholdItem("0.5", 0.5)
         max_threshold = Types.ThresholdItem(
             "$F(K)$",
-            Utilities.NormalDistributionFunction.cumulative(
-                self.model.development_costs
-            ),
+            self.model.asset_distribution.cumulative(self.model.development_costs),
         )
         thresholds = self._get_essential_thresholds()
         essential_thresholds: list[Types.ThresholdItem] = []

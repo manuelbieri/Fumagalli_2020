@@ -2,6 +2,7 @@ import unittest.mock as mock
 
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Utilities
 
 
 def mock_optimal_merger_policy(
@@ -97,6 +98,7 @@ def mock_optimal_merger_policy(
     type(model).asset_distribution_threshold_laissez_faire = 0.8
     type(model).asset_threshold_cdf = 0.9
     type(model).asset_distribution_threshold_intermediate = 1
+    model.asset_distribution = Utilities.NormalDistributionFunction
 
     model.summary = lambda: summary(policy=model.merger_policy)
     return model
