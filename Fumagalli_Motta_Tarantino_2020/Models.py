@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
@@ -37,7 +37,7 @@ class BaseModel:
 
     def __init__(
         self,
-        tolerated_level_of_harm: float = 0,
+        merger_policy: Types.MergerPolicies = Types.MergerPolicies.Strict,
         development_costs: float = 0.1,
         startup_assets: float = 0.05,
         success_probability: float = 0.7,
@@ -50,6 +50,9 @@ class BaseModel:
         startup_profit_duopoly: float = 0.2,
         consumer_surplus_with_innovation: float = 0.3,
         incumbent_profit_with_innovation: float = 0.5,
+        asset_distribution: Union[
+            Utilities.NormalDistributionFunction, Utilities.UniformDistributionFunction
+        ] = Utilities.NormalDistributionFunction,
     ):
         """
         Initializes a valid base model according to the assumptions given in the paper.
@@ -73,8 +76,6 @@ class BaseModel:
 
         Parameters
         ----------
-        tolerated_level_of_harm : float
-            ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.
         development_costs : float
             ($K$) Fixed costs to invest for development.
         startup_assets : float
@@ -100,7 +101,7 @@ class BaseModel:
         incumbent_profit_with_innovation : float
             ($\\pi^M_I$) Profit of the monopolist with multiple products (with innovation).
         """
-        self._tolerated_harm = tolerated_level_of_harm
+        self._merger_policy = merger_policy
         self._development_costs = development_costs
         self._startup_assets = startup_assets
         self._success_probability = success_probability
@@ -121,6 +122,9 @@ class BaseModel:
         self._incumbent_profit_duopoly = incumbent_profit_duopoly
         self._cs_duopoly = consumer_surplus_duopoly
 
+        # set asset distribution
+        self.asset_distribution = asset_distribution
+
         # pre-conditions given for the parameters (p.6-8)
         self._check_preconditions()
 
@@ -134,8 +138,8 @@ class BaseModel:
         self._check_assumption_four()
 
     def _check_preconditions(self):
+        self._check_merger_policy()
         # preconditions given (p.6-8)
-        self._check_tolerated_harm()
         assert self.private_benefit > 0, "Private benefit has to be bigger than 0"
         assert (
             0 < self.success_probability <= 1
@@ -156,8 +160,8 @@ class BaseModel:
         self._check_assumption_three()
         self._check_assumption_five()
 
-    def _check_tolerated_harm(self):
-        assert self.tolerated_harm >= 0, "Level of harm has to be bigger than 0"
+    def _check_merger_policy(self):
+        assert self._merger_policy is not None
 
     def _check_startup_assets(self):
         assert (
@@ -200,26 +204,6 @@ class BaseModel:
             self.incumbent_profit_with_innovation
             > self.incumbent_profit_duopoly + self.startup_profit_duopoly
         ), "A1 not satisfied (p.7)"
-
-    @property
-    def tolerated_harm(self) -> float:
-        """
-        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.
-        """
-        return self._tolerated_harm
-
-    @tolerated_harm.setter
-    def tolerated_harm(self, value: float) -> None:
-        """
-        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy, in the form of a maximum threshold of “harm”, that it is ready to tolerate.
-
-        Parameters
-        ----------
-        value: float
-            New value for the tolerated harm by the AA (important the assumptions have to remain valid).
-        """
-        self._tolerated_harm = value
-        self._check_tolerated_harm()
 
     @property
     def development_costs(self) -> float:
@@ -408,27 +392,47 @@ class MergerPolicy(BaseModel):
         The levels of tolerated harm are defined in A.4 (p.36ff.). See Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies
         for the available merger policies.
         """
-        if self.tolerated_harm <= self._calculate_h0():
-            return Types.MergerPolicies.Strict
-        if self.tolerated_harm < self._calculate_h1():
-            return Types.MergerPolicies.Intermediate_late_takeover_prohibited
-        if self.tolerated_harm < self._calculate_h2():
-            return Types.MergerPolicies.Intermediate_late_takeover_allowed
-        return Types.MergerPolicies.Laissez_faire
+        # if self.tolerated_harm <= self._calculate_h0():
+        #     return Types.MergerPolicies.Strict
+        # if self.tolerated_harm < self._calculate_h1():
+        #     return Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        # if self.tolerated_harm < self._calculate_h2():
+        #     return Types.MergerPolicies.Intermediate_late_takeover_allowed
+        return self._merger_policy
 
     @merger_policy.setter
     def merger_policy(self, merger_policy: Types.MergerPolicies) -> None:
-        if merger_policy is Types.MergerPolicies.Strict:
-            self.tolerated_harm = 0
-        elif (
-            merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited
-        ):
-            self.tolerated_harm = (self._calculate_h0() + self._calculate_h1()) / 2
-        elif merger_policy is Types.MergerPolicies.Intermediate_late_takeover_allowed:
-            self.tolerated_harm = (self._calculate_h1() + self._calculate_h2()) / 2
-        else:
-            self.tolerated_harm = self._calculate_h2() + 1
+        self._merger_policy = merger_policy
+        # if merger_policy is Types.MergerPolicies.Strict:
+        #     self.tolerated_harm = 0
+        # elif (
+        #     merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        # ):
+        #     self.tolerated_harm = (self._calculate_h0() + self._calculate_h1()) / 2
+        # elif merger_policy is Types.MergerPolicies.Intermediate_late_takeover_allowed:
+        #     self.tolerated_harm = (self._calculate_h1() + self._calculate_h2()) / 2
+        # else:
+        #     self.tolerated_harm = self._calculate_h2() + 1
         self._recalculate_model()
+
+    @property
+    def tolerated_harm(self) -> float:
+        """
+        ($\\bar{H}$) The AA commits at the beginning of the game to a merger policy. The tolerated harm is the maximal loss of welfare the AA is ready to accept.
+        """
+        if self.merger_policy is Types.MergerPolicies.Strict:
+            return self._calculate_h0()
+        if (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        ):
+            return self._calculate_h1()
+        if (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_allowed
+        ):
+            return self._calculate_h2()
+        return float("inf")
 
     @property
     def asset_threshold(self) -> float:
@@ -445,7 +449,7 @@ class MergerPolicy(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold.
         """
-        return Utilities.NormalDistributionFunction.cumulative(self.asset_threshold)
+        return self.asset_distribution.cumulative(self.asset_threshold)
 
     @property
     def asset_threshold_late_takeover(self) -> float:
@@ -463,18 +467,11 @@ class MergerPolicy(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
         """
-        return Utilities.NormalDistributionFunction.cumulative(
-            self.asset_threshold_late_takeover
-        )
+        return self.asset_distribution.cumulative(self.asset_threshold_late_takeover)
 
     @BaseModel.startup_assets.setter
     def startup_assets(self, value: float) -> None:
         BaseModel.startup_assets.fset(self, value)
-        self._recalculate_model()
-
-    @BaseModel.tolerated_harm.setter
-    def tolerated_harm(self, value: float) -> None:
-        BaseModel.tolerated_harm.fset(self, value)
         self._recalculate_model()
 
     @property
@@ -963,14 +960,14 @@ class MergerPolicy(BaseModel):
 
         For a killer acquisition to take place the following condition have to satisfied:
         - An early takeover takes place
-        - The start-up is not credit constrained
+        - The incumbent does not develop the product
 
         Returns
         -------
         True
             if a killer acquisition occurred in the model.
         """
-        return not self.is_startup_credit_rationed and self.is_early_takeover
+        return self.is_early_takeover and not self.is_owner_investing
 
     def __str__(self) -> str:
         return (

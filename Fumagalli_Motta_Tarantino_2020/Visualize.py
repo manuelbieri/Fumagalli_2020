@@ -122,7 +122,6 @@ class IVisualize:
             ("A", model.startup_assets, separator_parameters),
             ("B", model.private_benefit, separator_parameters),
             ("K", model.development_costs, separator_parameters),
-            ("\\bar{H}", model.tolerated_harm, separator_parameters),
             ("p", model.success_probability, "\n"),
             ("CS^m", model.cs_without_innovation, separator_parameters),
             (

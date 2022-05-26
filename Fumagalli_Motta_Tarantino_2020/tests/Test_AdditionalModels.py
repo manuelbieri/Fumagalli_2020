@@ -113,6 +113,24 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.setupModel()
         self.assertFalse(self.model.is_laissez_faire_optimal())
 
+    # TODO: Adjust test for tolerated harm on given calculation basis
+    def test_tolerated_harm_strict(self):
+        self.setupModel()
+
+    def test_tolerated_harm_intermediate_late_takeover_allowed(self):
+        self.setupModel(
+            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        )
+
+    def test_tolerated_harm_intermediate_late_takeover_prohibited(self):
+        self.setupModel(
+            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed
+        )
+
+    def test_tolerated_harm_laissez_faire(self):
+        self.setupModel(merger_policy=Types.MergerPolicies.Laissez_faire)
+        self.assertEqual(float("inf"), self.model.tolerated_harm)
+
 
 class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
@@ -187,7 +205,7 @@ class TestStrictPerfectInformationModel(TestPerfectInformationModel):
 class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel(
-            tolerated_level_of_harm=0.06,
+            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
             consumer_surplus_duopoly=0.46,
             consumer_surplus_without_innovation=0.2,
             consumer_surplus_with_innovation=0.35,
@@ -206,7 +224,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
     def test_not_profitable_not_credit_rationed_unsuccessful(self):
         self.setupModel(
-            tolerated_level_of_harm=0.06,
+            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
             consumer_surplus_duopoly=0.46,
             consumer_surplus_without_innovation=0.2,
             consumer_surplus_with_innovation=0.35,
@@ -226,7 +244,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_not_credit_rationed(self):
         self.setupModel(
-            tolerated_level_of_harm=0.06,
+            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
             development_costs=0.09,
             incumbent_profit_without_innovation=0.35,
             consumer_surplus_duopoly=0.46,
@@ -247,7 +265,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_credit_rationed(self):
         self.setupModel(
-            tolerated_level_of_harm=0.1,
+            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
             private_benefit=0.075,
             startup_assets=0.005,
             development_costs=0.076,
@@ -275,7 +293,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
 class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
     def test_not_profitable_not_credit_rationed(self):
-        self.setupModel(tolerated_level_of_harm=1)
+        self.setupModel(merger_policy=Types.MergerPolicies.Laissez_faire)
         self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
         self.assertEqual(Types.Takeover.Pooling, self.model.get_early_bidding_type)
@@ -287,7 +305,7 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
     def test_not_profitable_credit_rationed(self):
         self.setupModel(
-            tolerated_level_of_harm=1,
+            merger_policy=Types.MergerPolicies.Laissez_faire,
             startup_assets=0.01,
             private_benefit=0.099,
             success_probability=0.51,
@@ -309,7 +327,7 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_not_credit_rationed(self):
         self.setupModel(
-            tolerated_level_of_harm=1,
+            merger_policy=Types.MergerPolicies.Laissez_faire,
             private_benefit=0.075,
             development_costs=0.078,
             success_probability=0.76,
@@ -326,7 +344,7 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_credit_rationed(self):
         self.setupModel(
-            tolerated_level_of_harm=1,
+            merger_policy=Types.MergerPolicies.Laissez_faire,
             private_benefit=0.075,
             startup_assets=0.005,
             development_costs=0.076,
@@ -344,3 +362,21 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
+
+
+class TestEquityModel(Test.TestOptimalMergerPolicyModel):
+    def setupModel(self, **kwargs) -> None:
+        self.model = AdditionalModels.EquityContract(**kwargs)
+
+    def test_thresholds(self):
+        self.setupModel()
+        self.assertEqual(
+            self.model.asset_threshold, self.model.asset_threshold_late_takeover
+        )
+
+    # TODO: Adjust optimal merger policies tests.
+    def test_laissez_faire_optimal_merger_policy(self):
+        pass
+
+    def test_intermediate_optimal_merger_policy(self):
+        pass

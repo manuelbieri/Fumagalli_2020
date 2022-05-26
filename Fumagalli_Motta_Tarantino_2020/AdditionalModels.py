@@ -107,11 +107,6 @@ class MicroFoundationModel(Models.OptimalMergerPolicy):
         ) > 0
 
     def is_degree_substitutability_moderate(self):
-        # gamma_inv = (
-        #     self.incumbent_expected_additional_profit_from_innovation() + self.gamma
-        # )
-        # gamma_hat = min(self._gamma_assumption_three, self._gamma_bar)
-        # return gamma_inv < self.gamma <= gamma_hat
         return 0 < self.success_probability * (
             self.w_with_innovation - self.w_without_innovation
         ) - self.development_costs - (self.w_duopoly - self.w_with_innovation)
@@ -160,20 +155,6 @@ class PerfectInformationModel(Models.OptimalMergerPolicy):
             else:
                 self._set_takeovers(early_takeover=Types.Takeover.Pooling)
 
-    def _calculate_h0(self) -> float:
-        return self._calculate_h1()
-
-    def _calculate_h1(self) -> float:
-        return self.w_duopoly - self.w_with_innovation
-
-    def _calculate_h2(self) -> float:
-        return max(
-            self.w_duopoly - self.w_with_innovation,
-            self.success_probability
-            * (self.w_with_innovation - self.w_without_innovation)
-            - self.development_costs,
-        )
-
     def is_laissez_faire_optimal(self) -> bool:
         return False
 
@@ -186,3 +167,100 @@ class PerfectInformationModel(Models.OptimalMergerPolicy):
             - self.development_costs
             >= self.w_duopoly - self.w_with_innovation
         )
+
+
+class EquityContract(Models.OptimalMergerPolicy):
+    @property
+    def asset_threshold_late_takeover(self) -> float:
+        return self.asset_threshold
+
+    # TODO: Adjust optimal merger policies
+
+
+class WelfareEffect(Models.OptimalMergerPolicy):
+    # TODO: Split model -> ProCompetitiveModel and ResourceWasteModel
+    def __init__(self, **kwargs):
+        super(WelfareEffect, self).__init__(**kwargs)
+        self._welfare_benefit_duopoly: float = (
+            self.success_probability * (self.w_duopoly - self.w_without_innovation)
+            - self.development_costs
+        )
+        self._welfare_benefit_innovation: float = (
+            self.success_probability
+            * (self.w_with_innovation - self.w_without_innovation)
+            - self.development_costs
+        )
+
+    def is_innovation_always_beneficial(self) -> bool:
+        return (
+            self._welfare_benefit_innovation > 0 and self._welfare_benefit_duopoly > 0
+        )
+
+    def is_innovation_enhancing_competition(self) -> bool:
+        return self._welfare_benefit_innovation < 0 < self._welfare_benefit_duopoly
+
+    def is_innovation_resource_waste(self) -> bool:
+        return (
+            self._welfare_benefit_innovation < 0 and self._welfare_benefit_duopoly < 0
+        )
+
+    @property
+    def asset_threshold_resource_waste(self) -> float:
+        return (
+            self.success_probability
+            * (self.startup_profit_duopoly + self.incumbent_profit_duopoly)
+            - self.development_costs
+        ) / (
+            self.success_probability
+            * (self.startup_profit_duopoly + self.incumbent_profit_without_innovation)
+        )
+
+    def _calculate_h1(self) -> float:
+        return (1 - self.asset_threshold_cdf) * (
+            self.success_probability * (self.w_duopoly - self.w_without_innovation)
+            - self.development_costs
+        )
+
+    def _solve_game_strict_merger_policy(self) -> None:
+        assert self.merger_policy is Types.MergerPolicies.Strict
+        if self.is_innovation_always_beneficial():
+            super(WelfareEffect, self)._solve_game_strict_merger_policy()
+        elif self.is_innovation_enhancing_competition():
+            self._solve_game_strict_merger_policy_competitive_effect()
+        elif self.is_innovation_resource_waste():
+            self._solve_game_strict_merger_policy_resource_waste()
+        else:
+            raise not NotImplementedError
+
+    def _solve_game_late_takeover_prohibited(self) -> None:
+        assert (
+            self.merger_policy
+            is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        )
+        if self.is_innovation_always_beneficial():
+            super(WelfareEffect, self)._solve_game_late_takeover_prohibited()
+        elif self.is_innovation_enhancing_competition():
+            self._solve_game_strict_merger_policy_resource_waste()
+        elif self.is_innovation_resource_waste():
+            self._solve_game_late_takeover_prohibited_resource_waste()
+
+    def _solve_game_strict_merger_policy_competitive_effect(self):
+        self._set_takeovers(
+            early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+        )
+
+    def _solve_game_strict_merger_policy_resource_waste(self):
+        if self.is_incumbent_expected_to_shelve():
+            if self.asset_threshold_cdf > self.asset_threshold_resource_waste:
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
+            else:
+                self._set_takeovers(
+                    early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+                )
+        else:
+            self._set_takeovers(
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+            )
+
+    def _solve_game_late_takeover_prohibited_resource_waste(self):
+        pass
