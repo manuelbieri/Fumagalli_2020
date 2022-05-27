@@ -2,7 +2,7 @@ import unittest.mock as mock
 
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Models as Models
-import Utilities
+import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
 def mock_optimal_merger_policy(
