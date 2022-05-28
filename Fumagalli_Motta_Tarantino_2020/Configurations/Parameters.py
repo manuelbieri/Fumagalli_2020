@@ -136,17 +136,3 @@ class Parameters:
 
     def __call__(self, *args, **kwargs) -> dict:
         return self.get_kwargs()
-
-
-if __name__ == "__main__":
-    p = LoadParameters(config_id=101)
-    m = FMT20.OptimalMergerPolicy(**p())
-    print("(1)", m.is_incumbent_expected_to_shelve())
-    print("(2)", m.asset_threshold_cdf > m.asset_distribution_threshold_strict)
-    print("(3)", m.asset_threshold_cdf > m.asset_distribution_threshold)
-    print("(4)", m.asset_threshold_cdf > m.asset_distribution_threshold_intermediate)
-    print(
-        "(5)",
-        m.asset_threshold_late_takeover_cdf
-        > m.asset_distribution_threshold_laissez_faire,
-    )
