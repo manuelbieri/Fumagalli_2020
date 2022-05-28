@@ -18,9 +18,11 @@ class LoadParameters:
         assert self.params is not None, "ID not available"
 
     def _parse_config(self):
-        with open(file=LoadParameters.file_path, newline='') as f:
-            configs = [{k: self.parse_value(v) for k, v in row.items()}
-                 for row in csv.DictReader(f, skipinitialspace=True)]
+        with open(file=LoadParameters.file_path, newline="") as f:
+            configs = [
+                {k: self.parse_value(v) for k, v in row.items()}
+                for row in csv.DictReader(f, skipinitialspace=True)
+            ]
 
         for config in configs:
             if config["id"] == self.id:
@@ -59,23 +61,24 @@ class LoadParameters:
     def __call__(self, *args, **kwargs) -> dict:
         return self.params()
 
+
 class Parameters:
     def __init__(
-            self,
-            merger_policy: Types.MergerPolicies,
-            development_costs: float,
-            startup_assets: float,
-            success_probability: float,
-            development_success: bool,
-            private_benefit: float,
-            consumer_surplus_without_innovation: float,
-            incumbent_profit_without_innovation: float,
-            consumer_surplus_duopoly: float,
-            incumbent_profit_duopoly: float,
-            startup_profit_duopoly: float,
-            consumer_surplus_with_innovation: float,
-            incumbent_profit_with_innovation: float,
-        ):
+        self,
+        merger_policy: Types.MergerPolicies,
+        development_costs: float,
+        startup_assets: float,
+        success_probability: float,
+        development_success: bool,
+        private_benefit: float,
+        consumer_surplus_without_innovation: float,
+        incumbent_profit_without_innovation: float,
+        consumer_surplus_duopoly: float,
+        incumbent_profit_duopoly: float,
+        startup_profit_duopoly: float,
+        consumer_surplus_with_innovation: float,
+        incumbent_profit_with_innovation: float,
+    ):
         self._merger_policy = merger_policy
         self._development_costs = development_costs
         self._startup_assets = startup_assets
@@ -116,20 +119,20 @@ class Parameters:
 
     def get_kwargs(self) -> dict:
         return {
-            'merger_policy': self._merger_policy,
-            'development_costs': self._development_costs,
-            'startup_assets': self._startup_assets,
-            'success_probability': self._success_probability,
-            'development_success': self._development_success,
-            'private_benefit': self._private_benefit,
-            'consumer_surplus_without_innovation': self._cs_without_innovation,
-            'incumbent_profit_without_innovation': self._incumbent_profit_without_innovation,
-            'consumer_surplus_duopoly': self._cs_duopoly,
-            'incumbent_profit_duopoly': self._incumbent_profit_duopoly,
-            'startup_profit_duopoly': self._startup_profit_duopoly,
-            'consumer_surplus_with_innovation': self._cs_with_innovation,
-            'incumbent_profit_with_innovation': self._incumbent_profit_with_innovation,
-            }
+            "merger_policy": self._merger_policy,
+            "development_costs": self._development_costs,
+            "startup_assets": self._startup_assets,
+            "success_probability": self._success_probability,
+            "development_success": self._development_success,
+            "private_benefit": self._private_benefit,
+            "consumer_surplus_without_innovation": self._cs_without_innovation,
+            "incumbent_profit_without_innovation": self._incumbent_profit_without_innovation,
+            "consumer_surplus_duopoly": self._cs_duopoly,
+            "incumbent_profit_duopoly": self._incumbent_profit_duopoly,
+            "startup_profit_duopoly": self._startup_profit_duopoly,
+            "consumer_surplus_with_innovation": self._cs_with_innovation,
+            "incumbent_profit_with_innovation": self._incumbent_profit_with_innovation,
+        }
 
     def __call__(self, *args, **kwargs) -> dict:
         return self.get_kwargs()
@@ -142,4 +145,8 @@ if __name__ == "__main__":
     print("(2)", m.asset_threshold_cdf > m.asset_distribution_threshold_strict)
     print("(3)", m.asset_threshold_cdf > m.asset_distribution_threshold)
     print("(4)", m.asset_threshold_cdf > m.asset_distribution_threshold_intermediate)
-    print("(5)", m.asset_threshold_late_takeover_cdf > m.asset_distribution_threshold_laissez_faire)
+    print(
+        "(5)",
+        m.asset_threshold_late_takeover_cdf
+        > m.asset_distribution_threshold_laissez_faire,
+    )
