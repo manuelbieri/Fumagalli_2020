@@ -51,7 +51,7 @@ class IVisualize:
 
     @staticmethod
     def set_light_mode():
-        plt.style.use("science")
+        plt.style.use("default")
 
     def _set_legend(self) -> None:
         self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
