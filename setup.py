@@ -38,4 +38,5 @@ setup(
         "matplotlib>=3.5.2",
         "numpy>=1.22.4",
     ],  # change with new version
+    test_suite="Fumagalli_Motta_Tarantino_2020.tests"
 )

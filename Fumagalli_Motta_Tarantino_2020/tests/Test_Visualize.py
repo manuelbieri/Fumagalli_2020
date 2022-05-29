@@ -9,7 +9,8 @@ import Fumagalli_Motta_Tarantino_2020.Visualize as Visualize
 
 
 class TestVisualize(unittest.TestCase):
-    show_plots: bool = True
+    show_plots: bool = False
+    show_always: bool = True
 
     def setUpMock(self, **kwargs) -> None:
         self.mock: Models.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
@@ -126,11 +127,12 @@ class TestVisualize(unittest.TestCase):
         self.view_plot(show=TestVisualize.show_plots)
 
     def test_timeline_plot_takeover_shelving_credit_constraint(self):
+        Visualize.IVisualize.set_dark_mode()
         self.setUpMock(
             takeover=True, shelving=True, successful=False, credit_constrained=True
         )
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.view_plot(show=(not TestVisualize.show_plots))
+        self.view_plot(show=(TestVisualize.show_always or TestVisualize.show_plots))
 
     def test_payoff_plot(self):
         self.setUpMock()

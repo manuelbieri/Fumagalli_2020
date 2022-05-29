@@ -113,18 +113,37 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.setupModel()
         self.assertFalse(self.model.is_laissez_faire_optimal())
 
-    # TODO: Adjust test for tolerated harm on given calculation basis
     def test_tolerated_harm_strict(self):
         self.setupModel()
+        self.assertEqual(0, self.model.tolerated_harm)
 
     def test_tolerated_harm_intermediate_late_takeover_allowed(self):
         self.setupModel(
             merger_policy=Types.MergerPolicies.Intermediate_late_takeover_prohibited
         )
+        self.assertTrue(
+            self.are_floats_equal(
+                (1 - 0.5070508811267713)
+                * (
+                    0.7
+                    * (
+                        self.get_welfare_value("duopoly")
+                        - self.get_welfare_value("without_innovation")
+                    )
+                    - 0.1
+                ),
+                self.model.tolerated_harm,
+            )
+        )
 
     def test_tolerated_harm_intermediate_late_takeover_prohibited(self):
         self.setupModel(
             merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed
+        )
+        self.assertEqual(
+            self.get_welfare_value("duopoly")
+            - self.get_welfare_value("with_innovation"),
+            self.model.tolerated_harm,
         )
 
     def test_tolerated_harm_laissez_faire(self):

@@ -13,11 +13,9 @@ class TestBaseModel(unittest.TestCase):
         return abs(f1 - f2) < tolerance
 
     @staticmethod
-    def get_default_value(arg_name: str) -> float:
-        args_name = Models.BaseModel.__init__.__code__.co_varnames[
-            1:
-        ]  # "self" is not needed
-        default_value = Models.BaseModel.__init__.__defaults__
+    def get_default_value(arg_name: str, model=Models.BaseModel) -> float:
+        args_name = model.__init__.__code__.co_varnames[1:]  # "self" is not needed
+        default_value = model.__init__.__defaults__
         arg_index = args_name.index(f"{arg_name}")
         return default_value[arg_index]
 
@@ -36,6 +34,12 @@ class TestBaseModel(unittest.TestCase):
         except ValueError:
             startup_profit = 0
         return consumer_surplus + incumbent_profit + startup_profit
+
+    def get_default_cs_without_innovation(self) -> float:
+        return self.get_default_value("consumer_surplus_without_innovation")
+
+    def get_default_cs_duopoly(self) -> float:
+        return self.get_default_value("consumer_surplus_duopoly")
 
     def test_valid_setup_default_values(self):
         self.setupModel()
@@ -124,7 +128,7 @@ class TestBaseModel(unittest.TestCase):
         self.setupModel()
         self.assertTrue(
             self.are_floats_equal(
-                self.get_default_value("consumer_surplus_without_innovation"),
+                self.get_default_cs_without_innovation(),
                 self.model.cs_without_innovation,
             )
         )
@@ -136,7 +140,7 @@ class TestBaseModel(unittest.TestCase):
         )
         self.assertTrue(
             self.are_floats_equal(
-                self.get_default_value("consumer_surplus_duopoly"),
+                self.get_default_cs_duopoly(),
                 self.model.cs_duopoly,
             )
         )

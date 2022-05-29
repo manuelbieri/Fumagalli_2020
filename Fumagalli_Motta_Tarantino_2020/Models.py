@@ -363,9 +363,7 @@ class MergerPolicy(BaseModel):
             0 < self.asset_distribution_threshold < 1
         ), "Violates A.2 (has to be between 0 and 1)"
         if self.merger_policy is Types.MergerPolicies.Strict:
-            assert (
-                0 < self.asset_distribution_threshold_strict < 1
-            ), "Violates Condition 2 (has to be between 0 and 1)"
+            self._check_asset_distribution_threshold_strict()
         elif (
             self.merger_policy
             is Types.MergerPolicies.Intermediate_late_takeover_prohibited
@@ -381,6 +379,11 @@ class MergerPolicy(BaseModel):
             assert (
                 0 < self.asset_distribution_threshold_laissez_faire < 1
             ), "Violates Condition 4 (has to be between 0 and 1)"
+
+    def _check_asset_distribution_threshold_strict(self):
+        assert (
+            0 < self.asset_distribution_threshold_strict < 1
+        ), "Violates Condition 2 (has to be between 0 and 1)"
 
     @property
     def merger_policy(

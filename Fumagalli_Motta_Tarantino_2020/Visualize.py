@@ -41,8 +41,17 @@ class IVisualize:
         model: Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
             Model to plot the outcomes on asset range from.
         """
+        self.set_light_mode()
         self.model: Models.OptimalMergerPolicy = model
         self.fig, self.ax = plt.subplots(**kwargs)
+
+    @staticmethod
+    def set_dark_mode():
+        plt.style.use("dark_background")
+
+    @staticmethod
+    def set_light_mode():
+        plt.style.use("science")
 
     def _set_legend(self) -> None:
         self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
