@@ -161,7 +161,7 @@ class PerfectInformationModel(Models.OptimalMergerPolicy):
     def is_intermediate_optimal(self) -> bool:
         return (
             self.is_incumbent_expected_to_shelve()
-            and not self.is_strict_optimal()
+            and not self.is_competition_effect_dominating()
             and self.success_probability
             * (self.w_with_innovation - self.w_without_innovation)
             - self.development_costs

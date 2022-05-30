@@ -4,7 +4,6 @@ from typing import Optional
 
 import Fumagalli_Motta_Tarantino_2020.Configurations.Exceptions as Exceptions
 import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class ParameterModel:

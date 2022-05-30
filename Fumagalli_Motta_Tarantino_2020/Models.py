@@ -1036,7 +1036,7 @@ class OptimalMergerPolicy(MergerPolicy):
             self.is_incumbent_expected_to_shelve()
             and self.is_financial_imperfection_severe()
             and self.is_shelving_after_early_takeover_optimal()
-            and not self.is_strict_optimal()
+            and not self.is_competition_effect_dominating()
         )
 
     def is_intermediate_optimal(self) -> bool:
@@ -1057,19 +1057,25 @@ class OptimalMergerPolicy(MergerPolicy):
         return (
             self.is_incumbent_expected_to_shelve()
             and not self.is_shelving_after_early_takeover_optimal()
-            and not self.is_strict_optimal()
+            and not self.is_competition_effect_dominating()
         )
 
     def is_strict_optimal(self) -> bool:
         """
         Returns whether the strict merger policy is optimal.
 
-        The strict merger is optimal, if Condition 6 is met: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A})}$
+        The strict merger is optimal, if the other policies are not optimal.
 
         Returns
         -------
         True
             If the strict merger policy is optimal.
+        """
+        return not (self.is_intermediate_optimal() or self.is_laissez_faire_optimal())
+
+    def is_competition_effect_dominating(self) -> bool:
+        """
+        Condition 6: $\\frac{p(W^d-W^m)-K}{p(W^M-W^m)-K} \\ge \\frac{1-F(\\bar{A}^T)}{1-F(\\bar{A})}$
         """
         return (
             self.success_probability * (self.w_duopoly - self.w_without_innovation)
@@ -1107,7 +1113,7 @@ class OptimalMergerPolicy(MergerPolicy):
         Returns
         -------
         True
-            If the above mentioned condition is met.
+            If the above-mentioned condition is met.
         """
         return (
             self.asset_threshold_late_takeover_cdf

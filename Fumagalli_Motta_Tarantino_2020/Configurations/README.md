@@ -24,15 +24,16 @@ Change the `config_id` argument for a different configuration of parameters.
 
 See Fumagalli_Motta_Tarantino_2020.Models.BaseModel for the definition of the thresholds.
 
-|  ID  |     Shelving     | $F(\bar{A}) > \Gamma(\cdot)$ | $F(\bar{A}) > \Phi(\cdot)$ | $F(\bar{A}) > \Phi'(\cdot)$ | $F(\bar{A}^T) > \Phi^T(\cdot)$ | Optimized for  |
-|:----:|:----------------:|:----------------------------:|:--------------------------:|:---------------------------:|:------------------------------:|:---------------|
-|  1   |       True       |            False             |            True            |            True             |              True              | OptimalMerger  |
-|  2   |       True       |            False             |           False            |            False            |             False              | OptimalMerger  |
-|  3   |      False       |             True             |           False            |            False            |              True              | OptimalMerger  |
-|  4   |      False       |            False             |            True            |            True             |              True              | OptimalMerger  |
-|  5   |      False       |            False             |           False            |            False            |              True              | OptimalMerger  |
-|  30  |       True       |            False             |            True            |            True             |              True              | ProCompetitive |
-|  31  |       True       |            False             |           False            |            False            |             False              | ProCompetitive |
-|  32  |       True       |            False             |            True            |            True             |              True              | ProCompetitive |
-| *33* |       True       |            False             |            True            |            True             |              True              | ResourceWaste  |
-|  34  |       True       |             True             |           False            |            False            |             False              | ResourceWaste  |
+| ID  |     Shelving     | $F(\bar{A}) > \Gamma(\cdot)$ | $F(\bar{A}) > \Phi(\cdot)$ | $F(\bar{A}) > \Phi'(\cdot)$ | $F(\bar{A}^T) > \Phi^T(\cdot)$ | Optimized for  |
+|:---:|:----------------:|:----------------------------:|:--------------------------:|:---------------------------:|:------------------------------:|:---------------|
+|  1  |       True       |            False             |            True            |            True             |              True              | OptimalMerger  |
+|  2  |       True       |            False             |           False            |            False            |             False              | OptimalMerger  |
+|  3  |      False       |             True             |           False            |            False            |              True              | OptimalMerger  |
+|  4  |      False       |            False             |            True            |            True             |              True              | OptimalMerger  |
+|  5  |      False       |            False             |           False            |            False            |              True              | OptimalMerger  |
+| 30  |       True       |            False             |            True            |            True             |              True              | ProCompetitive |
+| 31  |       True       |            False             |           False            |            False            |             False              | ProCompetitive |
+| 32  |       True       |            False             |            True            |            True             |              True              | ProCompetitive |
+| 33  |       True       |            False             |            True            |            True             |              True              | ResourceWaste  |
+| 34  |       True       |             True             |           False            |            False            |             False              | ResourceWaste  |
+| 35  |       True       |             True             |            True            |            False            |              True              | ResourceWaste  |

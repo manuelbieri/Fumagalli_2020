@@ -54,12 +54,12 @@ class TestProCompetitive(Test.TestOptimalMergerPolicyModel):
         self.assertFalse(self.model.is_laissez_faire_optimal())
 
     def test_intermediate_optimal_merger_policy(self):
-        # TODO: Implement optimal merger policy
-        pass
+        self.setupModel()
+        self.assertFalse(self.model.is_intermediate_optimal())
 
     def test_strict_optimal_merger_policy(self):
-        # TODO: Implement optimal merger policy
-        pass
+        self.setupModel()
+        self.assertTrue(self.model.is_strict_optimal())
 
 
 class TestStrictProCompetitive(TestProCompetitive):
@@ -199,11 +199,7 @@ class TestResourceWaste(TestProCompetitive):
         self.setupModel(
             merger_policy=Types.MergerPolicies.Intermediate_late_takeover_prohibited
         )
-        self.assertTrue(
-            self.are_floats_equal(
-                -0.015119680, self.model.tolerated_harm, tolerance=10**-8
-            )
-        )
+        self.assertEqual(0, self.model.tolerated_harm)
 
     def test_string_representation(self):
         pass
@@ -234,9 +230,18 @@ class TestResourceWaste(TestProCompetitive):
         self.assertTrue(self.model.is_killer_acquisition())
 
     def test_intermediate_optimal_merger_policy(self):
-        # TODO: Implement optimal merger policy
-        pass
+        self.setUpConfiguration(config_id=35)
+        self.assertTrue(self.model.is_intermediate_optimal())
+
+    def test_laissez_faire_optimal_merger_policy(self):
+        self.setupModel()
+        self.assertTrue(self.model.is_laissez_faire_optimal())
 
     def test_strict_optimal_merger_policy(self):
-        # TODO: Implement optimal merger policy
-        pass
+        self.setupModel()
+        self.assertFalse(self.model.is_strict_optimal())
+
+    def test_strict_optimal_merger_policy_summary(self):
+        self.setupModel()
+        summary: Types.OptimalMergerPolicySummary = self.model.summary()
+        self.assertNotEqual(Types.MergerPolicies.Strict, summary.optimal_policy)

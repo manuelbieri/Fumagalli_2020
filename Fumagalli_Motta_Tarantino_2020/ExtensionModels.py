@@ -39,7 +39,7 @@ class ProCompetitiveModel(Models.OptimalMergerPolicy):
         )
 
     def _solve_game_late_takeover_prohibited(self) -> None:
-        if self.asset_threshold_cdf < self.asset_distribution_threshold_intermediate:
+        if self.asset_threshold_cdf <= self.asset_distribution_threshold_intermediate:
             self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             self._set_takeovers(
@@ -67,14 +67,11 @@ class ProCompetitiveModel(Models.OptimalMergerPolicy):
                         late_takeover=Types.Takeover.No,
                     )
 
+    def is_strict_optimal(self) -> bool:
+        return True
+
     def is_intermediate_optimal(self) -> bool:
-        return (
-            (
-                self.is_incumbent_expected_to_shelve()
-                and self.is_financial_imperfection_severe()
-            )
-            or not self.is_incumbent_expected_to_shelve()
-        ) and not self.is_strict_optimal()
+        return False
 
     def is_laissez_faire_optimal(self) -> bool:
         return False
@@ -95,17 +92,27 @@ class ResourceWaste(ProCompetitiveModel):
         ), "Adjusted assumption 4 in this model"
 
     def _calculate_h1(self) -> float:
-        return self.asset_threshold_cdf * (
-            self.success_probability
-            * (self.w_with_innovation - self.w_without_innovation)
-            - self.development_costs
-        )
+        return 0
 
     def _solve_game_strict_merger_policy(self) -> None:
         assert self.merger_policy is Types.MergerPolicies.Strict
-        if self.asset_threshold_cdf < self.asset_distribution_threshold_intermediate:
+        if self.asset_threshold_cdf <= self.asset_distribution_threshold_intermediate:
             self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             self._set_takeovers(
                 early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
             )
+
+    def is_strict_optimal(self) -> bool:
+        return False
+
+    def is_intermediate_optimal(self) -> bool:
+        return not self.is_laissez_faire_optimal()
+
+    def is_laissez_faire_optimal(self) -> bool:
+        return not self.is_financial_imperfection_severe() or (
+            self.is_financial_imperfection_severe()
+            and self.asset_threshold_cdf
+            > self.asset_distribution_threshold_intermediate
+            and not self.is_competition_effect_dominating()
+        )
