@@ -151,7 +151,9 @@ class BaseModel:
         assert (
             self.w_without_innovation < self.w_with_innovation < self.w_duopoly
         ), "Ranking of total welfare not valid (p.7)"
-        assert self.development_success is not None, "Development success is not optional"
+        assert (
+            self.development_success is not None
+        ), "Development success is not optional"
         self._check_assumption_one()
         self._check_assumption_two()
         self._check_assumption_three()

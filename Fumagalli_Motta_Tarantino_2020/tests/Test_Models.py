@@ -66,7 +66,7 @@ class TestProperties(TestBaseModel):
         self.assertTrue(self.are_floats_equal(value, property_.fget(self.model)))
 
     def _test_invalid_set(self, property_, **kwargs):
-        invalid_value = kwargs.get('invalid_value', 120)
+        invalid_value = kwargs.get("invalid_value", 120)
         self.assertRaises(
             AssertionError, lambda: property_.fset(self.model, invalid_value)
         )
@@ -82,9 +82,7 @@ class TestProperties(TestBaseModel):
         )
 
     def test_startup_assets(self):
-        self.abstract_property_test(
-            self.model_type.startup_assets, "startup_assets"
-        )
+        self.abstract_property_test(self.model_type.startup_assets, "startup_assets")
 
     def test_success_probability(self):
         self.abstract_property_test(
@@ -92,13 +90,12 @@ class TestProperties(TestBaseModel):
         )
 
     def test_private_benefit(self):
-        self.abstract_property_test(
-            self.model_type.private_benefit, "private_benefit"
-        )
+        self.abstract_property_test(self.model_type.private_benefit, "private_benefit")
 
     def test_incumbent_profit_without_innovation(self):
         self.abstract_property_test(
-            self.model_type.incumbent_profit_without_innovation, "incumbent_profit_without_innovation"
+            self.model_type.incumbent_profit_without_innovation,
+            "incumbent_profit_without_innovation",
         )
 
     def test_incumbent_profit_duopoly(self):
@@ -108,7 +105,8 @@ class TestProperties(TestBaseModel):
 
     def test_incumbent_profit_with_innovation(self):
         self.abstract_property_test(
-            self.model_type.incumbent_profit_with_innovation, "incumbent_profit_with_innovation"
+            self.model_type.incumbent_profit_with_innovation,
+            "incumbent_profit_with_innovation",
         )
 
     def test_startup_profit_duopoly(self):
@@ -149,7 +147,10 @@ class TestProperties(TestBaseModel):
         self.assertTrue(self.model.development_success)
         self.model.development_success = False
         self.assertFalse(self.model.development_success)
-        self.assertRaises(AssertionError, lambda: self.model_type.development_success.fset(self.model, None))
+        self.assertRaises(
+            AssertionError,
+            lambda: self.model_type.development_success.fset(self.model, None),
+        )
 
     def test_invalid_merger_policy(self):
         self.assertRaises(AssertionError, lambda: self.setupModel(merger_policy=None))
