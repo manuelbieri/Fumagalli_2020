@@ -1,7 +1,5 @@
-import Fumagalli_Motta_Tarantino_2020.tests.Test_Model as Test
-import Fumagalli_Motta_Tarantino_2020.Types as Types
-
-import Fumagalli_Motta_Tarantino_2020.AdditionalModels as AdditionalModels
+import Fumagalli_Motta_Tarantino_2020.tests.Test_Models as Test
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
@@ -9,7 +7,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.calculate_properties_profits_consumer_surplus()
 
     def setupModel(self, **kwargs) -> None:
-        self.model = AdditionalModels.MicroFoundationModel(**kwargs)
+        self.model = FMT20.MicroFoundationModel(**kwargs)
 
     def calculate_properties_profits_consumer_surplus(self) -> None:
         # calculations made with Gamma = 0.3
@@ -88,7 +86,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
     def test_intermediate_optimal_merger_policy(self):
         self.setupModel(gamma=0.2)
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.get_optimal_merger_policy(),
         )
         self.assertTrue(self.model.is_intermediate_optimal())
@@ -119,7 +117,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
 
     def test_tolerated_harm_intermediate_late_takeover_allowed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_prohibited
+            merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
         )
         self.assertTrue(
             self.are_floats_equal(
@@ -138,7 +136,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
 
     def test_tolerated_harm_intermediate_late_takeover_prohibited(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed
+            merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_allowed
         )
         self.assertEqual(
             self.get_welfare_value("duopoly")
@@ -147,13 +145,13 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         )
 
     def test_tolerated_harm_laissez_faire(self):
-        self.setupModel(merger_policy=Types.MergerPolicies.Laissez_faire)
+        self.setupModel(merger_policy=FMT20.MergerPolicies.Laissez_faire)
         self.assertEqual(float("inf"), self.model.tolerated_harm)
 
 
 class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
-        self.model = AdditionalModels.PerfectInformationModel(**kwargs)
+        self.model = FMT20.PerfectInformationModel(**kwargs)
 
     def test_laissez_faire_optimal_merger_policy(self):
         self.setupModel()
@@ -163,10 +161,10 @@ class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
 class TestStrictPerfectInformationModel(TestPerfectInformationModel):
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel()
-        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Strict, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
@@ -174,10 +172,10 @@ class TestStrictPerfectInformationModel(TestPerfectInformationModel):
 
     def test_not_profitable_credit_rationed(self):
         self.setupModel(startup_assets=0.01)
-        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Strict, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertFalse(self.model.is_owner_investing)
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
@@ -193,10 +191,10 @@ class TestStrictPerfectInformationModel(TestPerfectInformationModel):
             startup_profit_duopoly=0.11,
             incumbent_profit_with_innovation=0.4,
         )
-        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Strict, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
@@ -211,10 +209,10 @@ class TestStrictPerfectInformationModel(TestPerfectInformationModel):
             startup_profit_duopoly=0.11,
             incumbent_profit_with_innovation=0.4,
         )
-        self.assertEqual(Types.MergerPolicies.Strict, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Strict, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.Separating, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Separating, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
@@ -224,18 +222,18 @@ class TestStrictPerfectInformationModel(TestPerfectInformationModel):
 class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             consumer_surplus_duopoly=0.46,
             consumer_surplus_without_innovation=0.2,
             consumer_surplus_with_innovation=0.35,
         )
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.merger_policy,
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.Pooling, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
@@ -243,19 +241,19 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
     def test_not_profitable_not_credit_rationed_unsuccessful(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             consumer_surplus_duopoly=0.46,
             consumer_surplus_without_innovation=0.2,
             consumer_surplus_with_innovation=0.35,
             development_success=False,
         )
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.merger_policy,
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
@@ -263,7 +261,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_not_credit_rationed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             development_costs=0.09,
             incumbent_profit_without_innovation=0.35,
             consumer_surplus_duopoly=0.46,
@@ -271,12 +269,12 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
             consumer_surplus_with_innovation=0.35,
         )
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.merger_policy,
         )
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.Pooling, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
@@ -284,7 +282,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_credit_rationed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             private_benefit=0.075,
             startup_assets=0.005,
             development_costs=0.076,
@@ -298,12 +296,12 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
             consumer_surplus_with_innovation=0.35,
         )
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.merger_policy,
         )
         self.assertTrue(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.Separating, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Separating, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
@@ -312,11 +310,11 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
 
 class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
     def test_not_profitable_not_credit_rationed(self):
-        self.setupModel(merger_policy=Types.MergerPolicies.Laissez_faire)
-        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
+        self.setupModel(merger_policy=FMT20.MergerPolicies.Laissez_faire)
+        self.assertEqual(FMT20.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.Pooling, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertFalse(self.model.is_owner_investing)
         self.assertFalse(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
@@ -324,7 +322,7 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
     def test_not_profitable_credit_rationed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Laissez_faire,
+            merger_policy=FMT20.MergerPolicies.Laissez_faire,
             startup_assets=0.01,
             private_benefit=0.099,
             success_probability=0.51,
@@ -335,10 +333,10 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
             consumer_surplus_with_innovation=0.4,
             incumbent_profit_without_innovation=0.3,
         )
-        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertFalse(self.model.is_owner_investing)
         self.assertFalse(self.model.is_development_successful)
         self.assertFalse(self.model.is_early_takeover)
@@ -346,16 +344,16 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_not_credit_rationed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Laissez_faire,
+            merger_policy=FMT20.MergerPolicies.Laissez_faire,
             private_benefit=0.075,
             development_costs=0.078,
             success_probability=0.76,
             incumbent_profit_with_innovation=0.51,
         )
-        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.Pooling, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
@@ -363,7 +361,7 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
     def test_profitable_credit_rationed(self):
         self.setupModel(
-            merger_policy=Types.MergerPolicies.Laissez_faire,
+            merger_policy=FMT20.MergerPolicies.Laissez_faire,
             private_benefit=0.075,
             startup_assets=0.005,
             development_costs=0.076,
@@ -373,10 +371,10 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
             incumbent_profit_duopoly=0.05,
             startup_profit_duopoly=0.1,
         )
-        self.assertEqual(Types.MergerPolicies.Laissez_faire, self.model.merger_policy)
+        self.assertEqual(FMT20.MergerPolicies.Laissez_faire, self.model.merger_policy)
         self.assertTrue(self.model.is_startup_credit_rationed)
-        self.assertEqual(Types.Takeover.Separating, self.model.get_early_bidding_type)
-        self.assertEqual(Types.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Separating, self.model.get_early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
         self.assertTrue(self.model.is_owner_investing)
         self.assertTrue(self.model.is_development_successful)
         self.assertTrue(self.model.is_early_takeover)
@@ -385,13 +383,21 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
 
 class TestEquityModel(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
-        self.model = AdditionalModels.EquityContract(**kwargs)
+        self.model = FMT20.EquityContract(**kwargs)
 
     def test_thresholds(self):
         self.setupModel()
         self.assertEqual(
             self.model.asset_threshold, self.model.asset_threshold_late_takeover
         )
+
+    def test_debt_not_preferred(self):
+        self.setupModel()
+        self.assertFalse(self.model.does_startup_strictly_prefer_debt())
+
+    def test_debt_preferred(self):
+        self.setupModel(merger_policy=FMT20.MergerPolicies.Laissez_faire)
+        self.assertTrue(self.model.does_startup_strictly_prefer_debt())
 
     # TODO: Adjust optimal merger policies tests.
     def test_laissez_faire_optimal_merger_policy(self):

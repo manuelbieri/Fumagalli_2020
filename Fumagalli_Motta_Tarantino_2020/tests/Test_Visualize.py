@@ -2,10 +2,7 @@ from typing import Literal
 import unittest
 
 import Fumagalli_Motta_Tarantino_2020.tests.MockModels as MockModels
-
-import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020.Models as Models
-import Fumagalli_Motta_Tarantino_2020.Visualize as Visualize
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class TestVisualize(unittest.TestCase):
@@ -13,27 +10,25 @@ class TestVisualize(unittest.TestCase):
     show_always: bool = True
 
     def setUpMock(self, **kwargs) -> None:
-        self.mock: Models.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
+        self.mock: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
             **kwargs
         )
 
     def setUpVisualizer(
         self,
-        model: Models.OptimalMergerPolicy,
+        model: FMT20.OptimalMergerPolicy,
         plot_type: Literal[
             "Outcome", "Timeline", "MergerPolicies", "Payoff"
         ] = "Outcome",
     ) -> None:
         if plot_type == "Timeline":
-            self.visualizer: Visualize.IVisualize = Visualize.Timeline(model)
+            self.visualizer: FMT20.IVisualize = FMT20.Timeline(model)
         elif plot_type == "MergerPolicies":
-            self.visualizer: Visualize.IVisualize = Visualize.MergerPoliciesAssetRange(
-                model
-            )
+            self.visualizer: FMT20.IVisualize = FMT20.MergerPoliciesAssetRange(model)
         elif plot_type == "Payoff":
-            self.visualizer: Visualize.IVisualize = Visualize.Payoffs(model)
+            self.visualizer: FMT20.IVisualize = FMT20.Payoffs(model)
         else:
-            self.visualizer: Visualize.IVisualize = Visualize.AssetRange(model)
+            self.visualizer: FMT20.IVisualize = FMT20.AssetRange(model)
 
     def view_plot(self, show: bool = False) -> None:
         if show:
@@ -43,11 +38,11 @@ class TestVisualize(unittest.TestCase):
 
     def test_plot_interface(self):
         self.setUpMock()
-        self.assertRaises(NotImplementedError, Visualize.IVisualize(self.mock).plot)
+        self.assertRaises(NotImplementedError, FMT20.IVisualize(self.mock).plot)
 
     def test_essential_asset_thresholds(self):
         self.setUpMock(asset_threshold=2, asset_threshold_late_takeover=1)
-        self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
+        self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         thresholds = self.visualizer._get_asset_thresholds()
         self.assertEqual(6, len(thresholds))
         self.assertEqual("0.5", thresholds[0].name)
@@ -55,7 +50,7 @@ class TestVisualize(unittest.TestCase):
 
     def test_essential_asset_thresholds_negative_values(self):
         self.setUpMock()
-        self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
+        self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         thresholds = self.visualizer._get_asset_thresholds()
         self.assertEqual(6, len(thresholds))
         self.assertEqual(thresholds[0].value, 0.5)
@@ -66,7 +61,7 @@ class TestVisualize(unittest.TestCase):
             asset_threshold=1.2815515655446004,
             asset_threshold_late_takeover=0.5244005127080407,
         )
-        self.visualizer: Visualize.AssetRange = Visualize.AssetRange(self.mock)
+        self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         outcomes = self.visualizer._get_outcomes_asset_range()
         self.assertEqual(5, len(outcomes))
         self.assertTrue(outcomes[0].credit_rationed)
@@ -95,21 +90,21 @@ class TestVisualize(unittest.TestCase):
             asset_threshold=1.2815515655446004,
             asset_threshold_late_takeover=0.5244005127080407,
         )
-        self.visualizer: Visualize.MergerPoliciesAssetRange = (
-            Visualize.MergerPoliciesAssetRange(self.mock)
+        self.visualizer: FMT20.MergerPoliciesAssetRange = (
+            FMT20.MergerPoliciesAssetRange(self.mock)
         )
         outcomes = self.visualizer._get_outcomes_different_merger_policies()
         self.assertEqual(4, len(outcomes))
-        self.assertEqual(Types.MergerPolicies.Strict, outcomes[0][0].set_policy)
+        self.assertEqual(FMT20.MergerPolicies.Strict, outcomes[0][0].set_policy)
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_prohibited,
+            FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
             outcomes[1][0].set_policy,
         )
         self.assertEqual(
-            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             outcomes[2][0].set_policy,
         )
-        self.assertEqual(Types.MergerPolicies.Laissez_faire, outcomes[3][0].set_policy)
+        self.assertEqual(FMT20.MergerPolicies.Laissez_faire, outcomes[3][0].set_policy)
 
     def test_merger_policies_plot(self):
         self.setUpMock(asset_threshold=3, asset_threshold_late_takeover=1)
@@ -117,7 +112,7 @@ class TestVisualize(unittest.TestCase):
         self.view_plot(show=TestVisualize.show_plots)
 
     def test_timeline_plot(self):
-        self.setUpMock(policy=Types.MergerPolicies.Laissez_faire)
+        self.setUpMock(policy=FMT20.MergerPolicies.Laissez_faire)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.view_plot(show=TestVisualize.show_plots)
 
@@ -127,7 +122,7 @@ class TestVisualize(unittest.TestCase):
         self.view_plot(show=TestVisualize.show_plots)
 
     def test_timeline_plot_takeover_shelving_credit_constraint(self):
-        Visualize.IVisualize.set_dark_mode()
+        FMT20.IVisualize.set_dark_mode()
         self.setUpMock(
             takeover=True, shelving=True, successful=False, credit_constrained=True
         )

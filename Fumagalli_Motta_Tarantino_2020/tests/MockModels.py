@@ -1,7 +1,6 @@
 import unittest.mock as mock
 
-import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
@@ -12,25 +11,25 @@ def mock_optimal_merger_policy(
     shelving: bool = False,
     credit_constrained: bool = False,
     successful: bool = True,
-    policy: Types.MergerPolicies = Types.MergerPolicies.Intermediate_late_takeover_prohibited,
-) -> Models.OptimalMergerPolicy:
+    policy: FMT20.MergerPolicies = FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
+) -> FMT20.OptimalMergerPolicy:
     def set_summary(
         credit_rationed=False,
-        early_bidding_type=Types.Takeover.No,
-        late_bidding_type=Types.Takeover.No,
+        early_bidding_type=FMT20.Takeover.No,
+        late_bidding_type=FMT20.Takeover.No,
         development_attempt=True,
         development_outcome=True,
         early_takeover=False,
         late_takeover=False,
         set_policy=policy,
-    ) -> Types.OptimalMergerPolicySummary:
+    ) -> FMT20.OptimalMergerPolicySummary:
         if takeover:
-            early_bidding_type = Types.Takeover.Separating
+            early_bidding_type = FMT20.Takeover.Separating
             early_takeover = True
             development_attempt = not shelving
             development_outcome = successful
 
-        return Types.OptimalMergerPolicySummary(
+        return FMT20.OptimalMergerPolicySummary(
             credit_rationed=credit_rationed,
             set_policy=set_policy,
             early_bidding_type=early_bidding_type,
@@ -43,14 +42,14 @@ def mock_optimal_merger_policy(
         )
 
     def summary(
-        policy: Types.MergerPolicies = Types.MergerPolicies.Intermediate_late_takeover_prohibited,
+        policy: FMT20.MergerPolicies = FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
     ):
         if model.startup_assets < asset_threshold_late_takeover:
             return set_summary(
                 credit_rationed=True,
                 development_attempt=False,
                 development_outcome=False,
-                early_bidding_type=Types.Takeover.Separating,
+                early_bidding_type=FMT20.Takeover.Separating,
                 early_takeover=True,
                 set_policy=policy,
             )
@@ -58,13 +57,13 @@ def mock_optimal_merger_policy(
             return set_summary(
                 credit_rationed=False,
                 development_outcome=False,
-                early_bidding_type=Types.Takeover.Pooling,
+                early_bidding_type=FMT20.Takeover.Pooling,
                 early_takeover=False,
                 set_policy=policy,
             )
         return set_summary(set_policy=policy, credit_rationed=credit_constrained)
 
-    model: Models.OptimalMergerPolicy = mock.Mock(spec=Models.OptimalMergerPolicy)
+    model: FMT20.OptimalMergerPolicy = mock.Mock(spec=FMT20.OptimalMergerPolicy)
     type(model).merger_policy = policy
     type(model).startup_assets = 3.5
     type(model).private_benefit = 0.18

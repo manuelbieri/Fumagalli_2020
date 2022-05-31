@@ -1,8 +1,7 @@
-import Fumagalli_Motta_Tarantino_2020 as Models
-import Fumagalli_Motta_Tarantino_2020.Types as Types
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
-class ProCompetitiveModel(Models.OptimalMergerPolicy):
+class ProCompetitiveModel(FMT20.OptimalMergerPolicy):
     def __init__(self, consumer_surplus_without_innovation: float = 0.3, **kwargs):
         super(ProCompetitiveModel, self).__init__(
             consumer_surplus_without_innovation=consumer_surplus_without_innovation,
@@ -33,17 +32,17 @@ class ProCompetitiveModel(Models.OptimalMergerPolicy):
         return 0
 
     def _solve_game_strict_merger_policy(self) -> None:
-        assert self.merger_policy is Types.MergerPolicies.Strict
+        assert self.merger_policy is FMT20.MergerPolicies.Strict
         self._set_takeovers(
-            early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+            early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
         )
 
     def _solve_game_late_takeover_prohibited(self) -> None:
         if self.asset_threshold_cdf <= self.asset_distribution_threshold_intermediate:
-            self._set_takeovers(early_takeover=Types.Takeover.Pooling)
+            self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
         else:
             self._set_takeovers(
-                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+                early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
             )
 
     def _solve_game_late_takeover_allowed(self) -> None:
@@ -51,20 +50,20 @@ class ProCompetitiveModel(Models.OptimalMergerPolicy):
             self.asset_threshold_late_takeover_cdf
             < self.asset_distribution_threshold_laissez_faire
         ):
-            self._set_takeovers(early_takeover=Types.Takeover.Pooling)
+            self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
         else:
             if self.is_startup_credit_rationed:
                 self._set_takeovers(
-                    early_takeover=Types.Takeover.No,
-                    late_takeover=Types.Takeover.No,
+                    early_takeover=FMT20.Takeover.No,
+                    late_takeover=FMT20.Takeover.No,
                 )
             else:
                 if self.development_success:
-                    self._set_takeovers(late_takeover=Types.Takeover.Pooling)
+                    self._set_takeovers(late_takeover=FMT20.Takeover.Pooling)
                 else:
                     self._set_takeovers(
-                        early_takeover=Types.Takeover.No,
-                        late_takeover=Types.Takeover.No,
+                        early_takeover=FMT20.Takeover.No,
+                        late_takeover=FMT20.Takeover.No,
                     )
 
     def is_strict_optimal(self) -> bool:
@@ -95,12 +94,12 @@ class ResourceWaste(ProCompetitiveModel):
         return 0
 
     def _solve_game_strict_merger_policy(self) -> None:
-        assert self.merger_policy is Types.MergerPolicies.Strict
+        assert self.merger_policy is FMT20.MergerPolicies.Strict
         if self.asset_threshold_cdf <= self.asset_distribution_threshold_intermediate:
-            self._set_takeovers(early_takeover=Types.Takeover.Pooling)
+            self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
         else:
             self._set_takeovers(
-                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
+                early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
             )
 
     def is_strict_optimal(self) -> bool:

@@ -1,5 +1,4 @@
 import unittest
-
 import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
 
 
