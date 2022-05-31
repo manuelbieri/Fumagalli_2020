@@ -128,15 +128,6 @@ class BaseModel:
         # pre-conditions given for the parameters (p.6-8)
         self._check_preconditions()
 
-        # post-condition given (p.6-8)
-        self._check_postconditions()
-
-    def _check_postconditions(self):
-        assert (
-            self.w_without_innovation < self.w_with_innovation < self.w_duopoly
-        ), "Ranking of total welfare not valid (p.7)"
-        self._check_assumption_four()
-
     def _check_preconditions(self):
         self._check_merger_policy()
         # preconditions given (p.6-8)
@@ -144,7 +135,9 @@ class BaseModel:
         assert (
             0 < self.success_probability <= 1
         ), "Success probability of development has to be between 0 and 1"
-        self._check_startup_assets()
+        assert (
+            0 < self.startup_assets < self.development_costs
+        ), "Startup has not enough assets for development"
         assert (
             self.incumbent_profit_without_innovation > self.incumbent_profit_duopoly
         ), "Profit of the incumbent has to be bigger without the innovation than in the duopoly"
@@ -155,18 +148,18 @@ class BaseModel:
         assert (
             self.cs_with_innovation >= self.cs_without_innovation
         ), "Consumer surplus with the innovation has to weakly bigger than without the innovation"
+        assert (
+            self.w_without_innovation < self.w_with_innovation < self.w_duopoly
+        ), "Ranking of total welfare not valid (p.7)"
+        assert self.development_success is not None, "Development success is not optional"
         self._check_assumption_one()
         self._check_assumption_two()
         self._check_assumption_three()
+        self._check_assumption_four()
         self._check_assumption_five()
 
     def _check_merger_policy(self):
         assert self._merger_policy is not None
-
-    def _check_startup_assets(self):
-        assert (
-            0 < self.startup_assets < self.development_costs
-        ), "Startup has not enough assets for development"
 
     def _check_assumption_five(self):
         assert (
@@ -205,12 +198,23 @@ class BaseModel:
             > self.incumbent_profit_duopoly + self.startup_profit_duopoly
         ), "A1 not satisfied (p.7)"
 
+    def _recalculate_model(self) -> None:
+        """
+        Organizes the recalculation of the model after a property changed value.
+        """
+        self._check_preconditions()
+
     @property
     def development_costs(self) -> float:
         """
         ($K$) Fixed costs to invest for development.
         """
         return self._development_costs
+
+    @development_costs.setter
+    def development_costs(self, value: float) -> None:
+        self._development_costs = value
+        self._recalculate_model()
 
     @property
     def startup_assets(self) -> float:
@@ -221,16 +225,8 @@ class BaseModel:
 
     @startup_assets.setter
     def startup_assets(self, value: float) -> None:
-        """
-        ($A$) Assets of the startup at the beginning.
-
-        Parameters
-        ----------
-        value: float
-            New value for the start-up assets (important the assumptions have to remain valid).
-        """
         self._startup_assets = value
-        self._check_startup_assets()
+        self._recalculate_model()
 
     @property
     def success_probability(self) -> float:
@@ -238,6 +234,11 @@ class BaseModel:
         ($p$) Probability of success in case of effort (otherwise the projects fails for sure).
         """
         return self._success_probability
+
+    @success_probability.setter
+    def success_probability(self, value: float) -> None:
+        self._success_probability = value
+        self._recalculate_model()
 
     @property
     def development_success(self) -> bool:
@@ -248,12 +249,22 @@ class BaseModel:
         """
         return self._development_success
 
+    @development_success.setter
+    def development_success(self, value: bool) -> None:
+        self._development_success = value
+        self._recalculate_model()
+
     @property
     def private_benefit(self) -> float:
         """
         ($B$) Private benefit of the entrepreneur in case of failure.
         """
         return self._private_benefit
+
+    @private_benefit.setter
+    def private_benefit(self, value: float) -> None:
+        self._private_benefit = value
+        self._recalculate_model()
 
     @property
     def incumbent_profit_with_innovation(self):
@@ -262,12 +273,22 @@ class BaseModel:
         """
         return self._incumbent_profit_with_innovation
 
+    @incumbent_profit_with_innovation.setter
+    def incumbent_profit_with_innovation(self, value: float) -> None:
+        self._incumbent_profit_with_innovation = value
+        self._recalculate_model()
+
     @property
     def cs_with_innovation(self) -> float:
         """
         ($CS^M$) Consumer surplus for the case that the innovation is introduced by the incumbent into the market.
         """
         return self._cs_with_innovation
+
+    @cs_with_innovation.setter
+    def cs_with_innovation(self, value: float) -> None:
+        self._cs_with_innovation = value
+        self._recalculate_model()
 
     @property
     def w_with_innovation(self) -> float:
@@ -283,12 +304,22 @@ class BaseModel:
         """
         return self._incumbent_profit_without_innovation
 
+    @incumbent_profit_without_innovation.setter
+    def incumbent_profit_without_innovation(self, value: float) -> None:
+        self._incumbent_profit_without_innovation = value
+        self._recalculate_model()
+
     @property
     def cs_without_innovation(self) -> float:
         """
         ($CS^m$) Consumer surplus for the case that the innovation is not introduced by the incumbent into the market.
         """
         return self._cs_without_innovation
+
+    @cs_without_innovation.setter
+    def cs_without_innovation(self, value: float) -> None:
+        self._cs_without_innovation = value
+        self._recalculate_model()
 
     @property
     def w_without_innovation(self) -> float:
@@ -304,6 +335,11 @@ class BaseModel:
         """
         return self._startup_profit_duopoly
 
+    @startup_profit_duopoly.setter
+    def startup_profit_duopoly(self, value: float) -> None:
+        self._startup_profit_duopoly = value
+        self._recalculate_model()
+
     @property
     def incumbent_profit_duopoly(self) -> float:
         """
@@ -311,12 +347,22 @@ class BaseModel:
         """
         return self._incumbent_profit_duopoly
 
+    @incumbent_profit_duopoly.setter
+    def incumbent_profit_duopoly(self, value: float) -> None:
+        self._incumbent_profit_duopoly = value
+        self._recalculate_model()
+
     @property
     def cs_duopoly(self) -> float:
         """
         ($CS^d$) Consumer surplus for the case that the innovation is introduced into the market and a duopoly exists.
         """
         return self._cs_duopoly
+
+    @cs_duopoly.setter
+    def cs_duopoly(self, value: float) -> None:
+        self._cs_duopoly = value
+        self._recalculate_model()
 
     @property
     def w_duopoly(self) -> float:
@@ -753,11 +799,15 @@ class MergerPolicy(BaseModel):
         """
         Organizes the recalculation of the model after a property changed value.
         """
+        self._reset_takeovers()
+        super(MergerPolicy, self)._recalculate_model()
+        self._solve_game()
+
+    def _reset_takeovers(self):
         self._early_bid_attempt = None
         self._late_bid_attempt = None
         self._early_takeover = None
         self._late_takeover = None
-        self._solve_game()
 
     def _solve_game_laissez_faire(self) -> None:
         """

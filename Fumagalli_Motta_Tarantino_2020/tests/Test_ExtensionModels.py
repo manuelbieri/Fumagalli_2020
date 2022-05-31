@@ -1,31 +1,10 @@
 import Fumagalli_Motta_Tarantino_2020.tests.Test_Models as Test
-
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class TestProCompetitive(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.ProCompetitiveModel(**kwargs)
-
-    def setUpConfiguration(
-        self, config_id: int, merger_policy=FMT20.MergerPolicies.Strict, **kwargs
-    ) -> None:
-        config = FMT20.LoadParameters(config_id)
-        config.adjust_parameters(**kwargs)
-        config.params.merger_policy = merger_policy
-        self.setupModel(**config())
-
-    def get_default_cs_without_innovation(self) -> float:
-        return self.get_default_value(
-            "consumer_surplus_without_innovation",
-            model=FMT20.ProCompetitiveModel,
-        )
-
-    def test_welfare_properties(self):
-        self.setupModel()
-        self.assertTrue(self.are_floats_equal(0.9, self.model.w_duopoly))
-        self.assertTrue(self.are_floats_equal(0.7, self.model.w_without_innovation))
-        self.assertTrue(self.are_floats_equal(0.8, self.model.w_with_innovation))
 
     def test_tolerated_harm_strict(self):
         self.setupModel()
@@ -174,24 +153,6 @@ class TestIntermediateLateTakeoverAllowedProCompetitive(TestProCompetitive):
 class TestResourceWaste(TestProCompetitive):
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.ResourceWaste(**kwargs)
-
-    def get_default_cs_without_innovation(self) -> float:
-        return self.get_default_value(
-            "consumer_surplus_without_innovation",
-            model=FMT20.ProCompetitiveModel,
-        )
-
-    def get_default_cs_duopoly(self) -> float:
-        return self.get_default_value(
-            "consumer_surplus_duopoly",
-            model=FMT20.ResourceWaste,
-        )
-
-    def test_welfare_properties(self):
-        self.setupModel()
-        self.assertTrue(self.are_floats_equal(0.81, self.model.w_duopoly))
-        self.assertTrue(self.are_floats_equal(0.7, self.model.w_without_innovation))
-        self.assertTrue(self.are_floats_equal(0.8, self.model.w_with_innovation))
 
     def test_tolerated_harm_intermediate_late_takeover_prohibited(self):
         self.setupModel(
