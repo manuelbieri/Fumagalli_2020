@@ -18,17 +18,22 @@ class TestVisualize(unittest.TestCase):
         self,
         model: FMT20.OptimalMergerPolicy,
         plot_type: Literal[
-            "Outcome", "Timeline", "MergerPolicies", "Payoff"
+            "Outcome", "Timeline", "MergerPolicies", "Payoff", "Overview"
         ] = "Outcome",
+        **kwargs
     ) -> None:
         if plot_type == "Timeline":
-            self.visualizer: FMT20.IVisualize = FMT20.Timeline(model)
+            self.visualizer: FMT20.IVisualize = FMT20.Timeline(model, **kwargs)
         elif plot_type == "MergerPolicies":
-            self.visualizer: FMT20.IVisualize = FMT20.MergerPoliciesAssetRange(model)
+            self.visualizer: FMT20.IVisualize = FMT20.MergerPoliciesAssetRange(
+                model, **kwargs
+            )
         elif plot_type == "Payoff":
-            self.visualizer: FMT20.IVisualize = FMT20.Payoffs(model)
+            self.visualizer: FMT20.IVisualize = FMT20.Payoffs(model, **kwargs)
+        elif plot_type == "Overview":
+            self.visualizer: FMT20.IVisualize = FMT20.Overview(model, **kwargs)
         else:
-            self.visualizer: FMT20.IVisualize = FMT20.AssetRange(model)
+            self.visualizer: FMT20.IVisualize = FMT20.AssetRange(model, **kwargs)
 
     def view_plot(self, show: bool = False) -> None:
         if show:
@@ -127,9 +132,14 @@ class TestVisualize(unittest.TestCase):
             takeover=True, shelving=True, successful=False, credit_constrained=True
         )
         self.setUpVisualizer(self.mock, plot_type="Timeline")
-        self.view_plot(show=(TestVisualize.show_always or TestVisualize.show_plots))
+        self.view_plot(show=TestVisualize.show_plots)
 
     def test_payoff_plot(self):
         self.setUpMock()
-        self.setUpVisualizer(self.mock, plot_type="Payoff")
+        self.setUpVisualizer(self.mock, plot_type="Payoff", default_style=True)
         self.view_plot(show=TestVisualize.show_plots)
+
+    def test_overview_plot(self):
+        self.setUpMock()
+        self.setUpVisualizer(self.mock, plot_type="Overview")
+        self.view_plot(show=(TestVisualize.show_plots or TestVisualize.show_always))

@@ -1,12 +1,13 @@
 from abc import abstractmethod
+from typing import Optional
+import warnings
 
 import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
 
-import Fumagalli_Motta_Tarantino_2020 as Models
-import Fumagalli_Motta_Tarantino_2020.Types as Types
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class IVisualize:
@@ -33,28 +34,52 @@ class IVisualize:
         "pink",
     ]
     """Standard colors used in visualizations."""
+    fontsize = "medium"
+    """Default font size"""
 
-    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
+    def __init__(
+        self,
+        model: FMT20.OptimalMergerPolicy,
+        ax: Optional[plt.Axes] = None,
+        default_style=False,
+        **kwargs,
+    ):
         """
         Parameters
         ----------
         model: Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
-            Model to plot the outcomes on asset range from.
+            Model to plot the outcomes from a range of assets.
         """
-        self.set_light_mode()
-        self.model: Models.OptimalMergerPolicy = model
-        self.fig, self.ax = plt.subplots(**kwargs)
+        self.set_light_mode(use_default=default_style)
+        self.model: FMT20.OptimalMergerPolicy = model
+        self._set_axes(ax, **kwargs)
+        warnings.filterwarnings("ignore")
+
+    def _set_axes(self, ax, **kwargs):
+        if ax is None:
+            self.fig, self.ax = plt.subplots(**kwargs)
+        else:
+            self.ax = ax
+            self.fig = self.ax.get_figure()
+        self.ax.patch.set_alpha(0)
 
     @staticmethod
     def set_dark_mode():
         plt.style.use("dark_background")
 
     @staticmethod
-    def set_light_mode():
-        plt.style.use("default")
+    def set_light_mode(use_default=False):
+        if ("science" in plt.style.available) and not use_default:
+            plt.style.use("science")
+        else:
+            plt.style.use("default")
 
     def _set_legend(self) -> None:
-        self.ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
+        legend = self.ax.legend(
+            bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0
+        )
+        for entry in legend.legendHandles:
+            entry.set_alpha(1)
 
     def _set_tight_layout(self) -> None:
         self.fig.tight_layout()
@@ -108,15 +133,9 @@ class IVisualize:
         self.plot(**kwargs)
         self.fig.show()
 
-    @staticmethod
-    def _parameter_latex(model: Models.BaseModel) -> str:
+    def _parameter_latex(self, **kwargs) -> str:
         """
         Generates a legend for the parameter values of a Fumagalli_Motta_Tarantino_2020.Models.BaseModel in latex format.
-
-        Parameters
-        ----------
-        model: Fumagalli_Motta_Tarantino_2020.Models.BaseModel
-            Input model to generate the legend from.
 
         Returns
         -------
@@ -124,36 +143,40 @@ class IVisualize:
             Containing the legend for the parameter values.
         """
         separator_name_value = "="
-        separator_parameters = " | "
+        separator_parameters = kwargs.get("separator", " ; ")
         output_str = ""
         for (parameter, value, separator) in [
-            ("A", model.startup_assets, separator_parameters),
-            ("B", model.private_benefit, separator_parameters),
-            ("K", model.development_costs, separator_parameters),
-            ("p", model.success_probability, "\n"),
-            ("CS^m", model.cs_without_innovation, separator_parameters),
+            ("A", self.model.startup_assets, separator_parameters),
+            ("B", self.model.private_benefit, separator_parameters),
+            ("K", self.model.development_costs, separator_parameters),
+            ("p", self.model.success_probability, "\n"),
+            ("CS^m", self.model.cs_without_innovation, separator_parameters),
             (
                 "\\pi^m_I",
-                model.incumbent_profit_without_innovation,
+                self.model.incumbent_profit_without_innovation,
                 separator_parameters,
             ),
-            ("CS^M", model.cs_with_innovation, separator_parameters),
-            ("\\pi^M_I", model.incumbent_profit_with_innovation, separator_parameters),
-            ("CS^d", model.cs_duopoly, separator_parameters),
-            ("\\pi^d_I", model.incumbent_profit_duopoly, separator_parameters),
-            ("\\pi^d_S", model.startup_profit_duopoly, ""),
+            ("CS^M", self.model.cs_with_innovation, separator_parameters),
+            (
+                "\\pi^M_I",
+                self.model.incumbent_profit_with_innovation,
+                separator_parameters,
+            ),
+            ("CS^d", self.model.cs_duopoly, separator_parameters),
+            ("\\pi^d_I", self.model.incumbent_profit_duopoly, separator_parameters),
+            ("\\pi^d_S", self.model.startup_profit_duopoly, ""),
         ]:
             output_str += f"${parameter}{separator_name_value}{round(value, ndigits=3)}${separator}"
         return output_str
 
     @staticmethod
-    def _get_summary_latex(summary: Types.OptimalMergerPolicySummary) -> str:
+    def _get_summary_latex(summary: FMT20.OptimalMergerPolicySummary) -> str:
         """
         Generates a chronological entry for the legend based on the input model.
 
         Parameters
         ----------
-        summary: Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary
+        summary: Fumagalli_Motta_Tarantino_2020.FMT20.OptimalMergerPolicySummary
             Summary of the model.
 
         Returns
@@ -163,7 +186,6 @@ class IVisualize:
         """
         separator: str = "$\\to$"
         return (
-            f"{summary.optimal_policy.abbreviation()}: "
             f"{summary.early_bidding_type.abbreviation()}"
             f"{IVisualize._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
             f"{IVisualize._get_development_attempt_legend(summary.development_attempt)}"
@@ -173,13 +195,13 @@ class IVisualize:
         )
 
     @staticmethod
-    def _get_is_takeover_legend(bid_attempt: Types.Takeover, is_takeover: bool) -> str:
+    def _get_is_takeover_legend(bid_attempt: FMT20.Takeover, is_takeover: bool) -> str:
         """
         Generates a string representation for legend about the takeover (option and approval).
 
         Parameters
         ----------
-        bid_attempt: Fumagalli_Motta_Tarantino_2020.Types.Takeover
+        bid_attempt: Fumagalli_Motta_Tarantino_2020.FMT20.Takeover
             Option for takeover chosen by the incumbent.
         is_takeover: bool
             If true, the takeover is approved by AA and the start-up.
@@ -189,7 +211,7 @@ class IVisualize:
         str
             String representation for legend about takeover (option and approval).
         """
-        if bid_attempt is Types.Takeover.No:
+        if bid_attempt is FMT20.Takeover.No:
             return ""
         return "$(\\checkmark)$" if is_takeover else "$(\\times)$"
 
@@ -245,16 +267,80 @@ class IVisualize:
         """
         return (
             "${\\bf Merger\\thickspace policies}$:\n"
-            f"{Types.MergerPolicies.legend()}\n"
+            f"{FMT20.MergerPolicies.legend()}\n"
             "${\\bf Bidding\\thickspace types}$:\n"
-            f"{Types.Takeover.legend()}\n"
+            f"{FMT20.Takeover.legend()}\n"
             "${\\bf Takeover\\thickspace outcome\\thickspace}$:\n"
-            f"{Types.Takeover.Pooling.abbreviation()}|{Types.Takeover.Separating.abbreviation()}$(\\checkmark)$: Takeover is approved by the startup and AA\n"
-            f"{Types.Takeover.Pooling.abbreviation()}|{Types.Takeover.Separating.abbreviation()}$(\\times)$: Takeover is blocked  by AA or not accepted by the startup\n"
+            f"{FMT20.Takeover.Pooling.abbreviation()}|{FMT20.Takeover.Separating.abbreviation()}$(\\checkmark)$: Takeover is approved by the startup and AA\n"
+            f"{FMT20.Takeover.Pooling.abbreviation()}|{FMT20.Takeover.Separating.abbreviation()}$(\\times)$: Takeover is blocked  by AA or not accepted by the startup\n"
             "${\\bf Development\\thickspace outcome}$:\n"
             f"$\\emptyset$: Product development was shelved\n"
             f"$D(\\checkmark)$: Product development was attempted and successful\n"
             f"$D(\\times)$: Product development was attempted and not successful\n"
+        )
+
+    @staticmethod
+    def _get_payoff_legend(market_situations_only=False) -> str:
+        payoff_str = (
+            "$\\pi_S$: Profit of the start-up\n"
+            "$\\pi_I$: Profit of the incumbent\n"
+            "$CS$: Consumer surplus\n"
+            "$W$: Total welfare\n"
+            if not market_situations_only
+            else ""
+        )
+        return (
+            payoff_str + "$m$: Monopoly without the innovation\n"
+            "$M$: Monopoly after successful development by the incumbent\n"
+            "$d$: Duopoly (requires successful development by the start-up)\n"
+        )
+
+    def _get_model_characteristics_latex(self) -> str:
+        separator = " ; "
+        parameter_text = self._parameter_latex(separator=separator)
+        return (
+            f"\\textbf{{Parameters}}\n"
+            f"{parameter_text}\n\n"
+            f"\\textbf{{Thresholds for the Start-up Assets}}\n"
+            f"$F(\\bar{{A}}) = {self._round_floats(self.model.asset_threshold_cdf)}${separator}"
+            f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${separator}"
+            f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
+            f"$F(K) = {self._round_floats(self.model.asset_distribution.cumulative(self.model.development_costs))}$\n"
+            f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_strict)}${separator}"
+            f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold)}${separator}"
+            f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_intermediate)}${separator}"
+            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_laissez_faire)}$\n"
+        )
+
+    @staticmethod
+    def _round_floats(value: float, digits=3) -> str:
+        return f"{value:.{digits}f}"
+
+    def _get_model_characteristics_ax(self, ax: plt.Axes) -> None:
+        ax.set_title("Model Characteristics")
+        ax.axis("off")
+        ax.annotate(
+            self._get_model_characteristics_latex(),
+            xy=(0.5, 1),
+            xytext=(0, 0),
+            textcoords="offset points",
+            horizontalalignment="center",
+            verticalalignment="top",
+            fontsize=IVisualize.fontsize,
+        )
+        ax.annotate(
+            self._get_payoff_legend(market_situations_only=True),
+            xy=(0, 0.7),
+            horizontalalignment="left",
+            verticalalignment="top",
+            fontsize=IVisualize.fontsize,
+        )
+        ax.annotate(
+            self._get_symbol_legend(),
+            xy=(0, 0.57),
+            horizontalalignment="left",
+            verticalalignment="top",
+            fontsize=IVisualize.fontsize,
         )
 
 
@@ -263,25 +349,25 @@ class AssetRange(IVisualize):
     Visualizes the outcomes over an assets range for a specific model.
     """
 
-    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs) -> None:
+    def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs) -> None:
         super(AssetRange, self).__init__(model, **kwargs)
         self.labels: list[str] = []
         self.colors: dict[str, str] = {}
 
     def _get_outcomes_asset_range(
         self,
-    ) -> list[Types.OptimalMergerPolicySummary]:
+    ) -> list[FMT20.OptimalMergerPolicySummary]:
         """
         Generates a list with all essential threshold concerning the assets of a start-up and an additional list with
         summaries of the outcomes of the model in between the thresholds.
 
         Returns
         -------
-        (list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary])
+        (list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.FMT20.OptimalMergerPolicySummary])
             List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
         """
-        asset_range: list[Types.ThresholdItem] = self._get_asset_thresholds()
-        summaries: list[Types.OptimalMergerPolicySummary] = []
+        asset_range: list[FMT20.ThresholdItem] = self._get_asset_thresholds()
+        summaries: list[FMT20.OptimalMergerPolicySummary] = []
         for i in range(len(asset_range) - 1):
             self.model.startup_assets = (
                 self.model.asset_distribution.inverse_cumulative(asset_range[i].value)
@@ -292,22 +378,22 @@ class AssetRange(IVisualize):
             summaries.append(self.model.summary())
         return summaries
 
-    def _get_asset_thresholds(self) -> list[Types.ThresholdItem]:
+    def _get_asset_thresholds(self) -> list[FMT20.ThresholdItem]:
         """
         Generates a list with all essential threshold concerning the assets of a start-up.
 
         Returns
         -------
-        list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem]
+        list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem]
             List containing the essential asset thresholds in the model.
         """
-        min_threshold = Types.ThresholdItem("0.5", 0.5)
-        max_threshold = Types.ThresholdItem(
+        min_threshold = FMT20.ThresholdItem("0.5", 0.5)
+        max_threshold = FMT20.ThresholdItem(
             "$F(K)$",
             self.model.asset_distribution.cumulative(self.model.development_costs),
         )
         thresholds = self._get_essential_thresholds()
-        essential_thresholds: list[Types.ThresholdItem] = []
+        essential_thresholds: list[FMT20.ThresholdItem] = []
         for threshold in thresholds:
             if min_threshold.value < threshold.value < max_threshold.value:
                 essential_thresholds.append(threshold)
@@ -317,20 +403,20 @@ class AssetRange(IVisualize):
         return thresholds
 
     def _get_essential_thresholds(self):
-        thresholds: list[Types.ThresholdItem] = [
-            Types.ThresholdItem(
+        thresholds: list[FMT20.ThresholdItem] = [
+            FMT20.ThresholdItem(
                 "$\\Gamma$", self.model.asset_distribution_threshold_strict
             ),
-            Types.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold),
-            Types.ThresholdItem(
+            FMT20.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold),
+            FMT20.ThresholdItem(
                 "$\\Phi^T$", self.model.asset_distribution_threshold_laissez_faire
             ),
-            Types.ThresholdItem(
+            FMT20.ThresholdItem(
                 "$\\Phi^{\\prime}$",
                 self.model.asset_distribution_threshold_intermediate,
             ),
-            Types.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
-            Types.ThresholdItem(
+            FMT20.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
+            FMT20.ThresholdItem(
                 "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
             ),
         ]
@@ -338,14 +424,14 @@ class AssetRange(IVisualize):
 
     @staticmethod
     def _get_x_labels_ticks(
-        asset_thresholds: list[Types.ThresholdItem],
+        asset_thresholds: list[FMT20.ThresholdItem],
     ) -> (list[float], list[str]):
         """
         Generates the locations of the ticks on the x-axis and the corresponding labels on the x-axis.
 
         Parameters
         ----------
-        asset_thresholds: list[Fumagalli_Motta_Tarantino_2020.Types.ThresholdItem]
+        asset_thresholds: list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem]
             List with all threshold the assets.
 
         Returns
@@ -360,12 +446,14 @@ class AssetRange(IVisualize):
             x_labels.append(threshold.name)
         return x_ticks, x_labels
 
-    def _set_x_ticks(self, asset_thresholds: list[Types.ThresholdItem]) -> None:
+    def _set_x_ticks(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
         x_ticks, x_labels = self._get_x_labels_ticks(asset_thresholds)
         self.ax.xaxis.set_major_locator(FixedLocator(x_ticks[::2]))
         self.ax.xaxis.set_minor_locator(FixedLocator(x_ticks[1::2]))
-        self.ax.set_xticklabels(x_labels[::2])
-        self.ax.set_xticklabels(x_labels[1::2], minor=True)
+        self.ax.set_xticklabels(x_labels[::2], fontsize=IVisualize.fontsize)
+        self.ax.set_xticklabels(
+            x_labels[1::2], minor=True, fontsize=IVisualize.fontsize
+        )
         self.ax.tick_params(
             which="minor",
             bottom=False,
@@ -376,7 +464,7 @@ class AssetRange(IVisualize):
         )
         self.ax.tick_params(which="both", length=6, axis="x")
         for threshold in asset_thresholds:
-            if threshold.value != max(item.value for item in asset_thresholds):
+            if 0.5 < threshold.value < max(item.value for item in asset_thresholds):
                 self.ax.axvline(threshold.value, linestyle="--", color="k")
 
     @staticmethod
@@ -388,7 +476,7 @@ class AssetRange(IVisualize):
     def _set_y_ticks(self, bar_height, spacing, y_labels):
         y_ticks = self._get_y_ticks(spacing, bar_height, y_labels)
         self.ax.set_yticks(y_ticks)
-        self.ax.set_yticklabels(y_labels)
+        self.ax.set_yticklabels(y_labels, fontsize=IVisualize.fontsize)
 
     def _get_label_color(self, label) -> (str, str):
         """
@@ -411,7 +499,7 @@ class AssetRange(IVisualize):
         self.labels.append(label)
         return label, self.colors[label]
 
-    def _get_summaries(self) -> list[list[Types.OptimalMergerPolicySummary]]:
+    def _get_summaries(self) -> list[list[FMT20.OptimalMergerPolicySummary]]:
         return [self._get_outcomes_asset_range()]
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -452,30 +540,33 @@ class AssetRange(IVisualize):
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
+                fontsize=IVisualize.fontsize,
             )
         self.ax.margins(y=spacing, x=0)
         self._set_x_ticks(asset_range)
         self._set_y_ticks(bar_height, spacing, y_labels)
+        self.ax.yaxis.set_ticks_position("none")
         self.ax.set_xlabel("Cumulative Distribution Value of Assets $F(A)$")
         self.ax.set_ylabel("Merger Policy")
+        self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
         self._set_tight_layout()
         return self.fig, self.ax
 
 
 class MergerPoliciesAssetRange(AssetRange):
-    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
+    def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs):
         super(MergerPoliciesAssetRange, self).__init__(model, **kwargs)
 
     def _get_outcomes_different_merger_policies(
         self,
-    ) -> list[list[Types.OptimalMergerPolicySummary]]:
-        outcomes: list[list[Types.OptimalMergerPolicySummary]] = []
-        for merger_policy in Types.MergerPolicies:
+    ) -> list[list[FMT20.OptimalMergerPolicySummary]]:
+        outcomes: list[list[FMT20.OptimalMergerPolicySummary]] = []
+        for merger_policy in FMT20.MergerPolicies:
             self.model.merger_policy = merger_policy
             outcomes.append(self._get_outcomes_asset_range())
         return outcomes
 
-    def _get_summaries(self) -> list[list[Types.OptimalMergerPolicySummary]]:
+    def _get_summaries(self) -> list[list[FMT20.OptimalMergerPolicySummary]]:
         return self._get_outcomes_different_merger_policies()
 
 
@@ -484,7 +575,7 @@ class Timeline(IVisualize):
     Visualizes the timeline of events for a specific model.
     """
 
-    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
+    def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs):
         super(Timeline, self).__init__(model, **kwargs)
 
     def _prepare_content(self) -> (list[str], list[str]):
@@ -496,7 +587,7 @@ class Timeline(IVisualize):
         (list[str], list[str])
             List containing label for the events and list containing the points in time of the events.
         """
-        summary: Types.OptimalMergerPolicySummary = self.model.summary()
+        summary: FMT20.OptimalMergerPolicySummary = self.model.summary()
         values: list[str] = [
             "AA establishes "
             + self._policy_str(summary.set_policy)
@@ -526,13 +617,13 @@ class Timeline(IVisualize):
         return values, x_labels
 
     @staticmethod
-    def _takeover_attempt_str(takeover: Types.Takeover) -> str:
+    def _takeover_attempt_str(takeover: FMT20.Takeover) -> str:
         """
         Generate label for takeover event.
 
         Parameters
         ----------
-        takeover: Fumagalli_Motta_Tarantino_2020.Types.Takeover
+        takeover: Fumagalli_Motta_Tarantino_2020.FMT20.Takeover
             Option for takeover chosen by the incumbent.
 
         Returns
@@ -543,13 +634,13 @@ class Timeline(IVisualize):
         return str(takeover) + "\nby incumbent"
 
     @staticmethod
-    def _policy_str(policy: Types.MergerPolicies) -> str:
+    def _policy_str(policy: FMT20.MergerPolicies) -> str:
         """
         Generate label for establishing of merger policy event.
 
         Parameters
         ----------
-        policy: Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies
+        policy: Fumagalli_Motta_Tarantino_2020.FMT20.MergerPolicies
             Policy established by the AA at beginning.
 
         Returns
@@ -635,13 +726,14 @@ class Timeline(IVisualize):
 
         # Create figure and plot a stem plot with the date
         self.ax.set(title="Timeline")
-        self.ax.annotate(
-            self._parameter_latex(self.model),
-            xy=(math.fsum(x_ticks) / len(x_ticks), 1.9),
-            horizontalalignment="center",
-            verticalalignment="top",
-            fontsize="x-small",
-        )
+        if kwargs.get("parameters", True):
+            self.ax.annotate(
+                self._parameter_latex(),
+                xy=(math.fsum(x_ticks) / len(x_ticks), 1.9),
+                horizontalalignment="center",
+                verticalalignment="top",
+                fontsize=IVisualize.fontsize,
+            )
 
         self.ax.vlines(
             x_ticks, 0, levels, color="lightgray", linewidths=1
@@ -659,11 +751,13 @@ class Timeline(IVisualize):
                 textcoords="offset points",
                 horizontalalignment="center",
                 verticalalignment="bottom" if l > 0 else "top",
+                fontsize=IVisualize.fontsize,
             )
 
         # set x-axis
         self.ax.set_xticks(x_ticks)
         self.ax.set_xticklabels(x_labels)
+        self.ax.xaxis.set_ticks_position("bottom")
 
         # remove y-axis and spines
         self.ax.yaxis.set_visible(False)
@@ -691,6 +785,7 @@ class Payoffs(IVisualize):
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
+                fontsize=IVisualize.fontsize,
             )
         self._set_tight_layout()
 
@@ -718,10 +813,11 @@ class Payoffs(IVisualize):
             self.ax.annotate(
                 label,
                 xy=(x_coordinate, 0),
-                xytext=(0, -5),
+                xytext=(0, -15),
                 textcoords="offset points",
                 horizontalalignment="center",
-                verticalalignment="top",
+                verticalalignment="bottom",
+                fontsize=IVisualize.fontsize,
             )
             if number_bar > 3:
                 label = "__nolegend__"
@@ -735,7 +831,7 @@ class Payoffs(IVisualize):
                 color=self._get_color(number_bar),
                 alpha=kwargs.get("max_opacity", 1)
                 if number_bar in max_values
-                else kwargs.get("min_opacity", 0.5),
+                else kwargs.get("min_opacity", 0.6),
             )
             self.ax.tick_params(
                 axis="x",  # changes apply to the x-axis
@@ -766,8 +862,10 @@ class Payoffs(IVisualize):
         return spacing * (number_bar + 1 + group_spacing) + bar_width * number_bar
 
     @staticmethod
-    def _get_color(number_bar: int) -> str:
-        return IVisualize.colors[number_bar % 4]
+    def _get_color(number_bar: int, reverse_cycle=True) -> str:
+        color_id = number_bar % 4
+        color_id = len(IVisualize.colors) - color_id - 1 if reverse_cycle else color_id
+        return IVisualize.colors[color_id]
 
     def _get_payoffs(self) -> dict[str, float]:
         return {
@@ -785,14 +883,23 @@ class Payoffs(IVisualize):
             "$W^d$": self.model.w_duopoly,
         }
 
-    @staticmethod
-    def _get_payoff_legend() -> str:
-        return (
-            "$\\pi_S$: Profit of the start-up\n"
-            "$\\pi_I$: Profit of the incumbent\n"
-            "$CS$: Consumer surplus\n"
-            "$W$: Total welfare\n"
-            "$m$: Monopoly without the innovation\n"
-            "$M$: Monopoly after successful development by the incumbent\n"
-            "$d$: Duopoly (requires successful development by the start-up)\n"
-        )
+
+class Overview(IVisualize):
+    def __init__(self, model: FMT20.OptimalMergerPolicy, fig_size=(14, 10), **kwargs):
+        super().__init__(model, figsize=fig_size, constrained_layout=True, **kwargs)
+        plt.axis("off")
+
+    def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        spec = self.fig.add_gridspec(ncols=2, nrows=2)
+        ax_characteristics = self.fig.add_subplot(spec[0, 0])
+        ax_payoffs = self.fig.add_subplot(spec[0, 1])
+        ax_timeline = self.fig.add_subplot(spec[1, 0])
+        ax_merger_policies = self.fig.add_subplot(spec[1, 1])
+        self.fig.suptitle("$\\textbf{Model Overview}$")
+        timeline = Timeline(self.model, ax=ax_timeline)
+        payoffs = Payoffs(self.model, ax=ax_payoffs)
+        merger_policies = MergerPoliciesAssetRange(self.model, ax=ax_merger_policies)
+        self._get_model_characteristics_ax(ax_characteristics)
+        timeline.plot(legend=False, parameters=False)
+        payoffs.plot(legend=False)
+        merger_policies.plot(legend=False)

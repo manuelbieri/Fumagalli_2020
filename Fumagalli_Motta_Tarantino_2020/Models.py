@@ -32,7 +32,7 @@ class BaseModel:
     | 1(d) | The owner of the prototype engages in financial contracting (if needed). After that, uncertainty about the success or failure of the project resolves. |
     | 2(a) | $\t{I}$ can make a take-it-or-leave-it offer to $\t{S}$ (if it did not already buy it at t = 1, and if the development of the project was successful). |
     | 2(b) | The AA approves or blocks the takeover proposal.                                                                                                       |
-    | 3    | Active firms sell in the product market, payoffs are realised and contracts are honored.
+    | 3    | Active firms sell in the product market, payoffs are realised and contracts are honored.                                                               |
     """
 
     def __init__(
