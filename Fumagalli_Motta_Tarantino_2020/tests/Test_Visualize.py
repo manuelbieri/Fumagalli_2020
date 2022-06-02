@@ -136,10 +136,10 @@ class TestVisualize(unittest.TestCase):
 
     def test_payoff_plot(self):
         self.setUpMock()
-        self.setUpVisualizer(self.mock, plot_type="Payoff", default_style=True)
+        self.setUpVisualizer(self.mock, plot_type="Payoff", dark_mode=True)
         self.view_plot(show=TestVisualize.show_plots)
 
     def test_overview_plot(self):
         self.setUpMock()
-        self.setUpVisualizer(self.mock, plot_type="Overview")
+        self.setUpVisualizer(self.mock, plot_type="Overview", default_style=False)
         self.view_plot(show=(TestVisualize.show_plots or TestVisualize.show_always))
