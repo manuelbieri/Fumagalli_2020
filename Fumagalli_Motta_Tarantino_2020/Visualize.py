@@ -34,14 +34,15 @@ class IVisualize:
         "pink",
     ]
     """Standard colors used in visualizations."""
-    fontsize = "medium"
+    fontsize = "x-small"
     """Default font size"""
 
     def __init__(
         self,
         model: FMT20.OptimalMergerPolicy,
         ax: Optional[plt.Axes] = None,
-        default_style=False,
+        default_style=True,
+        dark_mode=False,
         **kwargs,
     ):
         """
@@ -50,7 +51,7 @@ class IVisualize:
         model: Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
             Model to plot the outcomes from a range of assets.
         """
-        self.set_light_mode(use_default=default_style)
+        self.set_mode(default_style, dark_mode)
         self.model: FMT20.OptimalMergerPolicy = model
         self._set_axes(ax, **kwargs)
         warnings.filterwarnings("ignore")
@@ -62,6 +63,12 @@ class IVisualize:
             self.ax = ax
             self.fig = self.ax.get_figure()
         self.ax.patch.set_alpha(0)
+
+    def set_mode(self, default_style, dark_mode):
+        if dark_mode:
+            self.set_dark_mode()
+        else:
+            self.set_light_mode(default_style)
 
     @staticmethod
     def set_dark_mode():
@@ -299,9 +306,9 @@ class IVisualize:
         separator = " ; "
         parameter_text = self._parameter_latex(separator=separator)
         return (
-            f"\\textbf{{Parameters}}\n"
+            f"${{\\bf Parameters}}$\n"
             f"{parameter_text}\n\n"
-            f"\\textbf{{Thresholds for the Start-up Assets}}\n"
+            f"${{\\bf Thresholds\\thickspace for\\thickspace the\\thickspace Start-up\\thickspace Assets}}$\n"
             f"$F(\\bar{{A}}) = {self._round_floats(self.model.asset_threshold_cdf)}${separator}"
             f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${separator}"
             f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
@@ -330,15 +337,15 @@ class IVisualize:
         )
         ax.annotate(
             self._get_payoff_legend(market_situations_only=True),
-            xy=(0, 0.7),
-            horizontalalignment="left",
+            xy=(0.5, 0.7),
+            horizontalalignment="center",
             verticalalignment="top",
             fontsize=IVisualize.fontsize,
         )
         ax.annotate(
             self._get_symbol_legend(),
-            xy=(0, 0.57),
-            horizontalalignment="left",
+            xy=(0.5, 0.57),
+            horizontalalignment="center",
             verticalalignment="top",
             fontsize=IVisualize.fontsize,
         )
@@ -589,9 +596,7 @@ class Timeline(IVisualize):
         """
         summary: FMT20.OptimalMergerPolicySummary = self.model.summary()
         values: list[str] = [
-            "AA establishes "
-            + self._policy_str(summary.set_policy)
-            + "\nmerger policy",
+            "AA establishes\n" + self._policy_str(summary.set_policy) + " policy",
             self._takeover_attempt_str(summary.early_bidding_type),
             self._takeover_str(summary.early_takeover),
             self._development_str(
@@ -895,7 +900,7 @@ class Overview(IVisualize):
         ax_payoffs = self.fig.add_subplot(spec[0, 1])
         ax_timeline = self.fig.add_subplot(spec[1, 0])
         ax_merger_policies = self.fig.add_subplot(spec[1, 1])
-        self.fig.suptitle("$\\textbf{Model Overview}$")
+        self.fig.suptitle("${\\bf Model\\thickspace Overview}$")
         timeline = Timeline(self.model, ax=ax_timeline)
         payoffs = Payoffs(self.model, ax=ax_payoffs)
         merger_policies = MergerPoliciesAssetRange(self.model, ax=ax_merger_policies)
