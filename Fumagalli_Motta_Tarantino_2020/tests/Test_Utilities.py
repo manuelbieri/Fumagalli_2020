@@ -41,15 +41,3 @@ class TestUniformDistributionFunction(TestNormalDistributionFunction):
             2.5,
             FMT20.Utilities.UniformDistributionFunction.inverse_cumulative(0.5, loc=2),
         )
-
-
-class TestProject(unittest.TestCase):
-    skip_test = False
-
-    def test_open_docs(self):
-        if not TestProject.skip_test:
-            self.assertTrue(FMT20.docs())
-
-    def test_open_repo(self):
-        if not TestProject.skip_test:
-            self.assertTrue(FMT20.repo())
