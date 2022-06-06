@@ -121,17 +121,23 @@ class TestVisualize(unittest.TestCase):
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.view_plot(show=TestVisualize.show_plots)
 
-    def test_timeline_plot_takeover_shelving(self):
-        self.setUpMock(takeover=True, shelving=True, successful=False)
+    def test_timeline_plot_takeover_development_not_successful(self):
+        self.setUpMock(set_outcome=True, is_owner_investing=True)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
         self.view_plot(show=TestVisualize.show_plots)
 
     def test_timeline_plot_takeover_shelving_credit_constraint(self):
         FMT20.IVisualize.set_dark_mode()
-        self.setUpMock(
-            takeover=True, shelving=True, successful=False, credit_constrained=True
-        )
+        self.setUpMock(set_outcome=True, is_early_takeover=False)
         self.setUpVisualizer(self.mock, plot_type="Timeline")
+        self.view_plot(show=TestVisualize.show_plots)
+
+    def test_timeline_set_model(self):
+        mock1: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
+        mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
+        self.setUpVisualizer(mock1, plot_type="Timeline")
+        self.view_plot(show=TestVisualize.show_plots)
+        self.visualizer.set_model(mock2)
         self.view_plot(show=TestVisualize.show_plots)
 
     def test_payoff_plot(self):

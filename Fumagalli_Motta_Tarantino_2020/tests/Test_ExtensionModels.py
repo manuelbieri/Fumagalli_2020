@@ -44,8 +44,8 @@ class TestStrictProCompetitive(TestProCompetitive):
         self.setUpConfiguration(config_id=30)
         self.assertEqual(FMT20.MergerPolicies.Strict, self.model.merger_policy)
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
-        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
 
@@ -61,8 +61,8 @@ class TestIntermediateLateTakeoverProhibitedProCompetitive(TestProCompetitive):
             self.model.merger_policy,
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
-        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
 
@@ -76,8 +76,8 @@ class TestIntermediateLateTakeoverProhibitedProCompetitive(TestProCompetitive):
             self.model.merger_policy,
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
-        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertTrue(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
         self.assertTrue(self.model.is_killer_acquisition())
@@ -95,8 +95,8 @@ class TestIntermediateLateTakeoverAllowedProCompetitive(TestProCompetitive):
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.late_bidding_type)
         self.assertFalse(self.model.is_early_takeover)
         self.assertTrue(self.model.is_late_takeover)
 
@@ -112,8 +112,8 @@ class TestIntermediateLateTakeoverAllowedProCompetitive(TestProCompetitive):
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
         self.assertFalse(self.model.is_startup_credit_rationed)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
 
@@ -128,8 +128,8 @@ class TestIntermediateLateTakeoverAllowedProCompetitive(TestProCompetitive):
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
         self.assertTrue(self.model.is_startup_credit_rationed)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
 
@@ -143,8 +143,8 @@ class TestIntermediateLateTakeoverAllowedProCompetitive(TestProCompetitive):
             self.model.merger_policy,
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
-        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertTrue(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
         self.assertTrue(self.model.is_killer_acquisition())
@@ -170,8 +170,8 @@ class TestResourceWaste(TestProCompetitive):
             self.model.merger_policy,
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
-        self.assertEqual(FMT20.Takeover.No, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertFalse(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
 
@@ -182,8 +182,8 @@ class TestResourceWaste(TestProCompetitive):
             self.model.merger_policy,
         )
         self.assertTrue(self.model.is_incumbent_expected_to_shelve())
-        self.assertEqual(FMT20.Takeover.Pooling, self.model.get_early_bidding_type)
-        self.assertEqual(FMT20.Takeover.No, self.model.get_late_bidding_type)
+        self.assertEqual(FMT20.Takeover.Pooling, self.model.early_bidding_type)
+        self.assertEqual(FMT20.Takeover.No, self.model.late_bidding_type)
         self.assertTrue(self.model.is_early_takeover)
         self.assertFalse(self.model.is_late_takeover)
         self.assertTrue(self.model.is_killer_acquisition())

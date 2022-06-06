@@ -81,6 +81,18 @@ class IVisualize:
         else:
             plt.style.use("default")
 
+    def set_model(self, m: FMT20.OptimalMergerPolicy) -> None:
+        self.model = m
+        self.ax.clear()
+        self._reset_legend()
+        self._set_axes(self.ax)
+
+    def _reset_legend(self):
+        try:
+            self.ax.get_legend().remove()
+        except AttributeError:
+            pass
+
     def _set_legend(self) -> None:
         legend = self.ax.legend(
             bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0
@@ -464,15 +476,15 @@ class AssetRange(IVisualize):
         self.ax.tick_params(
             which="minor",
             bottom=False,
-            top=True,
+            top=False,
             labelbottom=False,
             labeltop=True,
             axis="x",
         )
-        self.ax.tick_params(which="both", length=6, axis="x")
+        self.ax.tick_params(which="both", bottom=False, top=False, length=6, axis="x")
         for threshold in asset_thresholds:
             if 0.5 < threshold.value < max(item.value for item in asset_thresholds):
-                self.ax.axvline(threshold.value, linestyle="--", color="k")
+                self.ax.axvline(threshold.value, linestyle=":", color="k", lw=0.5)
 
     @staticmethod
     def _get_y_ticks(
@@ -594,19 +606,16 @@ class Timeline(IVisualize):
         (list[str], list[str])
             List containing label for the events and list containing the points in time of the events.
         """
-        summary: FMT20.OptimalMergerPolicySummary = self.model.summary()
         values: list[str] = [
-            "AA establishes\n" + self._policy_str(summary.set_policy) + " policy",
-            self._takeover_attempt_str(summary.early_bidding_type),
-            self._takeover_str(summary.early_takeover),
-            self._development_str(
-                summary.development_attempt,
-                summary.early_takeover,
-                self.model.is_killer_acquisition(),
-            ),
-            self._success_str(summary.development_outcome),
-            self._takeover_attempt_str(summary.late_bidding_type),
-            self._takeover_str(summary.late_takeover),
+            "Competition authority\nestablishes "
+            + self._policy_str()
+            + "\nmerger policy",
+            self._takeover_attempt_str(self.model.early_bidding_type),
+            self._takeover_str(self.model.is_early_takeover),
+            self._development_str(),
+            self._success_str(),
+            self._takeover_attempt_str(self.model.late_bidding_type),
+            self._takeover_str(self.model.is_late_takeover),
             "Payoffs",
         ]
         x_labels: list[str] = [
@@ -638,22 +647,16 @@ class Timeline(IVisualize):
         """
         return str(takeover) + "\nby incumbent"
 
-    @staticmethod
-    def _policy_str(policy: FMT20.MergerPolicies) -> str:
+    def _policy_str(self) -> str:
         """
         Generate label for establishing of merger policy event.
-
-        Parameters
-        ----------
-        policy: Fumagalli_Motta_Tarantino_2020.FMT20.MergerPolicies
-            Policy established by the AA at beginning.
 
         Returns
         -------
         str
             Label for establishing of merger policy event.
         """
-        policy_str = str(policy).lower()
+        policy_str = str(self.model.merger_policy).lower()
         if "intermediate" in policy_str:
             return policy_str.replace("intermediate", "intermediate\n")
         return policy_str
@@ -677,49 +680,46 @@ class Timeline(IVisualize):
             return "Takeover\napproved"
         return "No takeover\noccurs"
 
-    @staticmethod
-    def _development_str(
-        is_development: bool, is_early_takeover: bool, is_killer_acqui: bool
-    ) -> str:
+    def _development_str(self) -> str:
         """
         Generates a label about the development event (attempt and shelving).
-
-        Parameters
-        ----------
-        is_development: bool
-            True, if the owner is developing the product (otherwise, the product is shelved).
-        is_early_takeover: bool
-            True, if an early takeover occurs.
 
         Returns
         -------
         str
             Label about the development event (attempt and shelving).
         """
-        owner = "Incumbent" if is_early_takeover else "Start-up"
-        killer_acqui_str = "\n(killer acquisition)" if is_killer_acqui else ""
-        if is_development:
-            return f"{owner}\ndevelops product"
-        return f"{owner}\nshelves product{killer_acqui_str}"
+        if self.model.is_early_takeover:
+            return (
+                "Incumbent\n"
+                + ("develops" if self.model.is_owner_investing else "shelves")
+                + " product"
+                + "\n(killer acquisition)"
+                if self.model.is_killer_acquisition()
+                else ""
+            )
+        return (
+            "Start-up"
+            + ("" if self.model.is_owner_investing else " does not")
+            + "\nobtain"
+            + ("s" if self.model.is_owner_investing else "")
+            + " enough\nfinancial assets"
+        )
 
-    @staticmethod
-    def _success_str(is_successful: bool) -> str:
+    def _success_str(self) -> str:
         """
         Generates a label about the development outcome event.
-
-        Parameters
-        ----------
-        is_successful: bool
-            True, if the development of the product is successful.
 
         Returns
         -------
         str
             Label about the development outcome event.
         """
-        if is_successful:
-            return "Development is\nsuccessful"
-        return "Development is\nnot successful"
+        if self.model.is_owner_investing:
+            if self.model.is_development_successful:
+                return "Development is\nsuccessful"
+            return "Development is\nnot successful"
+        return "Development was\nnot attempted."
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         values, x_labels = self._prepare_content()
@@ -730,7 +730,7 @@ class Timeline(IVisualize):
         levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
 
         # Create figure and plot a stem plot with the date
-        self.ax.set(title="Timeline")
+        self.ax.set(title=kwargs.get("title", "Timeline"))
         if kwargs.get("parameters", True):
             self.ax.annotate(
                 self._parameter_latex(),
@@ -752,7 +752,7 @@ class Timeline(IVisualize):
             self.ax.annotate(
                 str(r),
                 xy=(d, l),
-                xytext=(0, np.sign(l) * 8),
+                xytext=(kwargs.get("x-offset", 0), np.sign(l) * 8),
                 textcoords="offset points",
                 horizontalalignment="center",
                 verticalalignment="bottom" if l > 0 else "top",
@@ -769,6 +769,7 @@ class Timeline(IVisualize):
         self.ax.spines[["left", "top", "right"]].set_visible(False)
 
         self.ax.margins(y=0.45)
+        self._set_tight_layout()
         return self.fig, self.ax
 
 
@@ -827,7 +828,7 @@ class Payoffs(IVisualize):
             if number_bar > 3:
                 label = "__nolegend__"
             else:
-                label = label[:-3] + "$"
+                label = self._set_payoff_label(label)
             self.ax.bar(
                 x=x_coordinate,
                 width=bar_width,
@@ -842,8 +843,20 @@ class Payoffs(IVisualize):
                 axis="x",  # changes apply to the x-axis
                 which="both",  # both major and minor ticks are affected
                 bottom=False,  # ticks along the bottom edge are off
+                top=False,
                 labelbottom=False,
             )  # labels along the bottom edge are off
+
+    @staticmethod
+    def _set_payoff_label(label) -> str:
+        payoff_type = label[:-3]
+        if "CS" in payoff_type:
+            return "Consumer Surplus"
+        if "W" in payoff_type:
+            return "Total Welfare"
+        if "I" in payoff_type:
+            return "Profit Incumbent ($\\pi_I$)"
+        return "Profit Start-up ($\\pi_S$)"
 
     @staticmethod
     def _set_max_values(payoffs: list[float]) -> list[int]:
@@ -890,8 +903,8 @@ class Payoffs(IVisualize):
 
 
 class Overview(IVisualize):
-    def __init__(self, model: FMT20.OptimalMergerPolicy, fig_size=(14, 10), **kwargs):
-        super().__init__(model, figsize=fig_size, constrained_layout=True, **kwargs)
+    def __init__(self, model: FMT20.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
+        super().__init__(model, figsize=figsize, constrained_layout=True, **kwargs)
         plt.axis("off")
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):

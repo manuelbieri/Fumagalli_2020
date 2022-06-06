@@ -526,7 +526,7 @@ class MergerPolicy(BaseModel):
         self._recalculate_model()
 
     @property
-    def get_early_bidding_type(self) -> Types.Takeover:
+    def early_bidding_type(self) -> Types.Takeover:
         """
         Returns the bidding attempt of the incumbent at $t = 1$.
 
@@ -536,7 +536,7 @@ class MergerPolicy(BaseModel):
         return self._early_bid_attempt
 
     @property
-    def get_late_bidding_type(self) -> Types.Takeover:
+    def late_bidding_type(self) -> Types.Takeover:
         """
         Returns the bidding attempt of the incumbent at $t = 2$.
 
@@ -1001,8 +1001,8 @@ class MergerPolicy(BaseModel):
         return Types.Summary(
             set_policy=self.merger_policy,
             credit_rationed=self.is_startup_credit_rationed,
-            early_bidding_type=self.get_early_bidding_type,
-            late_bidding_type=self.get_late_bidding_type,
+            early_bidding_type=self.early_bidding_type,
+            late_bidding_type=self.late_bidding_type,
             development_attempt=self.is_owner_investing,
             development_outcome=self.is_development_successful,
             early_takeover=self.is_early_takeover,
@@ -1028,11 +1028,11 @@ class MergerPolicy(BaseModel):
         return (
             f"Merger Policy: {self.merger_policy}\n"
             f"Is start-up credit rationed?: {self.is_startup_credit_rationed}\n"
-            f"Type of early takeover attempt: {self.get_early_bidding_type}\n"
+            f"Type of early takeover attempt: {self.early_bidding_type}\n"
             f"Is the early takeover approved?: {self.is_early_takeover}\n"
             f"Does the owner attempt the development?: {self.is_owner_investing}\n"
             f"Is the development successful?: {self.is_development_successful}\n"
-            f"Type of late takeover attempt: {self.get_late_bidding_type}\n"
+            f"Type of late takeover attempt: {self.late_bidding_type}\n"
             f"Is the late takeover approved?: {self.is_late_takeover}"
         )
 
@@ -1205,8 +1205,8 @@ class OptimalMergerPolicy(MergerPolicy):
         return Types.OptimalMergerPolicySummary(
             set_policy=self.merger_policy,
             credit_rationed=self.is_startup_credit_rationed,
-            early_bidding_type=self.get_early_bidding_type,
-            late_bidding_type=self.get_late_bidding_type,
+            early_bidding_type=self.early_bidding_type,
+            late_bidding_type=self.late_bidding_type,
             development_attempt=self.is_owner_investing,
             development_outcome=self.is_development_successful,
             early_takeover=self.is_early_takeover,
