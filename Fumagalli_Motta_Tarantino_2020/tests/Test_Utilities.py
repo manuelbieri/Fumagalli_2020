@@ -1,42 +1,55 @@
 import unittest
-import Fumagalli_Motta_Tarantino_2020.Utilities as Utilities
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class TestNormalDistributionFunction(unittest.TestCase):
     def test_cumulative_function(self):
-        self.assertEqual(0.5, Utilities.NormalDistributionFunction.cumulative(0))
+        self.assertEqual(0.5, FMT20.Utilities.NormalDistributionFunction.cumulative(0))
 
     def test_cumulative_function_adjusted_scale(self):
         self.assertEqual(
-            0.5, Utilities.NormalDistributionFunction.cumulative(0, scale=2)
+            0.5, FMT20.Utilities.NormalDistributionFunction.cumulative(0, scale=2)
         )
 
     def test_inverse_cumulative_function(self):
         self.assertEqual(
-            0, Utilities.NormalDistributionFunction.inverse_cumulative(0.5)
+            0, FMT20.Utilities.NormalDistributionFunction.inverse_cumulative(0.5)
         )
 
     def test_inverse_cumulative_function_adjusted_loc(self):
         self.assertEqual(
-            1, Utilities.NormalDistributionFunction.inverse_cumulative(0.5, loc=1)
+            1, FMT20.Utilities.NormalDistributionFunction.inverse_cumulative(0.5, loc=1)
         )
 
 
 class TestUniformDistributionFunction(TestNormalDistributionFunction):
     def test_cumulative_function(self):
-        self.assertEqual(0, Utilities.UniformDistributionFunction.cumulative(0))
+        self.assertEqual(0, FMT20.Utilities.UniformDistributionFunction.cumulative(0))
 
     def test_cumulative_function_adjusted_scale(self):
         self.assertEqual(
-            0.5, Utilities.UniformDistributionFunction.cumulative(1, scale=2)
+            0.5, FMT20.Utilities.UniformDistributionFunction.cumulative(1, scale=2)
         )
 
     def test_inverse_cumulative_function(self):
         self.assertEqual(
-            0.5, Utilities.UniformDistributionFunction.inverse_cumulative(0.5)
+            0.5, FMT20.Utilities.UniformDistributionFunction.inverse_cumulative(0.5)
         )
 
     def test_inverse_cumulative_function_adjusted_loc(self):
         self.assertEqual(
-            2.5, Utilities.UniformDistributionFunction.inverse_cumulative(0.5, loc=2)
+            2.5,
+            FMT20.Utilities.UniformDistributionFunction.inverse_cumulative(0.5, loc=2),
         )
+
+
+class TestProject(unittest.TestCase):
+    skip_test = False
+
+    def test_open_docs(self):
+        if not TestProject.skip_test:
+            self.assertTrue(FMT20.docs())
+
+    def test_open_repo(self):
+        if not TestProject.skip_test:
+            self.assertTrue(FMT20.repo())
