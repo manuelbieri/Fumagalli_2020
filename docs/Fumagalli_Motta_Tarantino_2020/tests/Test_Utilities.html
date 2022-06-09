@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 12.0.0"/>
+    <meta name="generator" content="pdoc 12.0.1"/>
     <title>Fumagalli_Motta_Tarantino_2020.tests.Test_Utilities API documentation</title>
             <link rel="icon" href="https://raw.githubusercontent.com/manuelbieri/Fumagalli_2020/64591aee9856c7163fb62434445546acda099f38/assets/visual/logo.svg"/>
 
@@ -85,21 +85,6 @@
                 </ul>
 
             </li>
-            <li>
-                    <a class="class" href="#TestProject">TestProject</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="variable" href="#TestProject.skip_test">skip_test</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#TestProject.test_open_docs">test_open_docs</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#TestProject.test_open_repo">test_open_repo</a>
-                        </li>
-                </ul>
-
-            </li>
     </ul>
 
 
@@ -165,18 +150,6 @@
 </span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>            <span class="mf">2.5</span><span class="p">,</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>            <span class="n">FMT20</span><span class="o">.</span><span class="n">Utilities</span><span class="o">.</span><span class="n">UniformDistributionFunction</span><span class="o">.</span><span class="n">inverse_cumulative</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>        <span class="p">)</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a><span class="k">class</span> <span class="nc">TestProject</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="n">skip_test</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>    <span class="k">def</span> <span class="nf">test_open_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">TestProject</span><span class="o">.</span><span class="n">skip_test</span><span class="p">:</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">FMT20</span><span class="o">.</span><span class="n">docs</span><span class="p">())</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>    <span class="k">def</span> <span class="nf">test_open_repo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">TestProject</span><span class="o">.</span><span class="n">skip_test</span><span class="p">:</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">FMT20</span><span class="o">.</span><span class="n">repo</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -638,197 +611,6 @@ attribute so can be configured by individual tests if required.</li>
                 <dd id="TestUniformDistributionFunction.assertNotAlmostEquals" class="function">assertNotAlmostEquals</dd>
                 <dd id="TestUniformDistributionFunction.failUnless" class="function">failUnless</dd>
                 <dd id="TestUniformDistributionFunction.assert_" class="function">assert_</dd>
-
-            </div>
-                                </dl>
-                            </div>
-                </section>
-                <section id="TestProject">
-                            <input id="TestProject-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
-            
-    <span class="def">class</span>
-    <span class="name">TestProject</span><wbr>(<span class="base">unittest.case.TestCase</span>):
-
-                <label class="view-source-button" for="TestProject-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#TestProject"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="TestProject-47"><a href="#TestProject-47"><span class="linenos">47</span></a><span class="k">class</span> <span class="nc">TestProject</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-</span><span id="TestProject-48"><a href="#TestProject-48"><span class="linenos">48</span></a>    <span class="n">skip_test</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="TestProject-49"><a href="#TestProject-49"><span class="linenos">49</span></a>
-</span><span id="TestProject-50"><a href="#TestProject-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">test_open_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="TestProject-51"><a href="#TestProject-51"><span class="linenos">51</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">TestProject</span><span class="o">.</span><span class="n">skip_test</span><span class="p">:</span>
-</span><span id="TestProject-52"><a href="#TestProject-52"><span class="linenos">52</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">FMT20</span><span class="o">.</span><span class="n">docs</span><span class="p">())</span>
-</span><span id="TestProject-53"><a href="#TestProject-53"><span class="linenos">53</span></a>
-</span><span id="TestProject-54"><a href="#TestProject-54"><span class="linenos">54</span></a>    <span class="k">def</span> <span class="nf">test_open_repo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="TestProject-55"><a href="#TestProject-55"><span class="linenos">55</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">TestProject</span><span class="o">.</span><span class="n">skip_test</span><span class="p">:</span>
-</span><span id="TestProject-56"><a href="#TestProject-56"><span class="linenos">56</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">FMT20</span><span class="o">.</span><span class="n">repo</span><span class="p">())</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>A class whose instances are single test cases.</p>
-
-<p>By default, the test code itself should be placed in a method named
-'runTest'.</p>
-
-<p>If the fixture may be used for many test cases, create as
-many test methods as are needed. When instantiating such a TestCase
-subclass, specify in the constructor arguments the name of the test method
-that the instance is to execute.</p>
-
-<p>Test authors should subclass TestCase for their own tests. Construction
-and deconstruction of the test's environment ('fixture') can be
-implemented by overriding the 'setUp' and 'tearDown' methods respectively.</p>
-
-<p>If it is necessary to override the __init__ method, the base class
-__init__ method must always be called. It is important that subclasses
-should not change the signature of their __init__ method, since instances
-of the classes are instantiated automatically by parts of the framework
-in order to be run.</p>
-
-<p>When subclassing TestCase, you can set these attributes:</p>
-
-<ul>
-<li>failureException: determines which exception will be raised when
-the instance's assertion methods fail; test methods raising this
-exception will be deemed to have 'failed' rather than 'errored'.</li>
-<li>longMessage: determines whether long messages (including repr of
-objects used in assert methods) will be printed on failure in <em>addition</em>
-to any explicit message passed.</li>
-<li>maxDiff: sets the maximum length of a diff in failure messages
-by assert methods using difflib. It is looked up as an instance
-attribute so can be configured by individual tests if required.</li>
-</ul>
-</div>
-
-
-                            <div id="TestProject.skip_test" class="classattr">
-                                <div class="attr variable">
-            <span class="name">skip_test</span><span class="default_value"> = False</span>
-
-        
-    </div>
-    <a class="headerlink" href="#TestProject.skip_test"></a>
-    
-    
-
-                            </div>
-                            <div id="TestProject.test_open_docs" class="classattr">
-                                        <input id="TestProject.test_open_docs-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">test_open_docs</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
-
-                <label class="view-source-button" for="TestProject.test_open_docs-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#TestProject.test_open_docs"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="TestProject.test_open_docs-50"><a href="#TestProject.test_open_docs-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">test_open_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="TestProject.test_open_docs-51"><a href="#TestProject.test_open_docs-51"><span class="linenos">51</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">TestProject</span><span class="o">.</span><span class="n">skip_test</span><span class="p">:</span>
-</span><span id="TestProject.test_open_docs-52"><a href="#TestProject.test_open_docs-52"><span class="linenos">52</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">FMT20</span><span class="o">.</span><span class="n">docs</span><span class="p">())</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
-                            <div id="TestProject.test_open_repo" class="classattr">
-                                        <input id="TestProject.test_open_repo-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">test_open_repo</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
-
-                <label class="view-source-button" for="TestProject.test_open_repo-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#TestProject.test_open_repo"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="TestProject.test_open_repo-54"><a href="#TestProject.test_open_repo-54"><span class="linenos">54</span></a>    <span class="k">def</span> <span class="nf">test_open_repo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="TestProject.test_open_repo-55"><a href="#TestProject.test_open_repo-55"><span class="linenos">55</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">TestProject</span><span class="o">.</span><span class="n">skip_test</span><span class="p">:</span>
-</span><span id="TestProject.test_open_repo-56"><a href="#TestProject.test_open_repo-56"><span class="linenos">56</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">FMT20</span><span class="o">.</span><span class="n">repo</span><span class="p">())</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
-                            <div class="inherited">
-                                <h5>Inherited Members</h5>
-                                <dl>
-                                    <div><dt>unittest.case.TestCase</dt>
-                                <dd id="TestProject.__init__" class="function">TestCase</dd>
-                <dd id="TestProject.failureException" class="class">failureException</dd>
-                <dd id="TestProject.longMessage" class="variable">longMessage</dd>
-                <dd id="TestProject.maxDiff" class="variable">maxDiff</dd>
-                <dd id="TestProject.addTypeEqualityFunc" class="function">addTypeEqualityFunc</dd>
-                <dd id="TestProject.addCleanup" class="function">addCleanup</dd>
-                <dd id="TestProject.addClassCleanup" class="function">addClassCleanup</dd>
-                <dd id="TestProject.setUp" class="function">setUp</dd>
-                <dd id="TestProject.tearDown" class="function">tearDown</dd>
-                <dd id="TestProject.setUpClass" class="function">setUpClass</dd>
-                <dd id="TestProject.tearDownClass" class="function">tearDownClass</dd>
-                <dd id="TestProject.countTestCases" class="function">countTestCases</dd>
-                <dd id="TestProject.defaultTestResult" class="function">defaultTestResult</dd>
-                <dd id="TestProject.shortDescription" class="function">shortDescription</dd>
-                <dd id="TestProject.id" class="function">id</dd>
-                <dd id="TestProject.subTest" class="function">subTest</dd>
-                <dd id="TestProject.run" class="function">run</dd>
-                <dd id="TestProject.doCleanups" class="function">doCleanups</dd>
-                <dd id="TestProject.doClassCleanups" class="function">doClassCleanups</dd>
-                <dd id="TestProject.debug" class="function">debug</dd>
-                <dd id="TestProject.skipTest" class="function">skipTest</dd>
-                <dd id="TestProject.fail" class="function">fail</dd>
-                <dd id="TestProject.assertFalse" class="function">assertFalse</dd>
-                <dd id="TestProject.assertTrue" class="function">assertTrue</dd>
-                <dd id="TestProject.assertRaises" class="function">assertRaises</dd>
-                <dd id="TestProject.assertWarns" class="function">assertWarns</dd>
-                <dd id="TestProject.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestProject.assertNoLogs" class="function">assertNoLogs</dd>
-                <dd id="TestProject.assertEqual" class="function">assertEqual</dd>
-                <dd id="TestProject.assertNotEqual" class="function">assertNotEqual</dd>
-                <dd id="TestProject.assertAlmostEqual" class="function">assertAlmostEqual</dd>
-                <dd id="TestProject.assertNotAlmostEqual" class="function">assertNotAlmostEqual</dd>
-                <dd id="TestProject.assertSequenceEqual" class="function">assertSequenceEqual</dd>
-                <dd id="TestProject.assertListEqual" class="function">assertListEqual</dd>
-                <dd id="TestProject.assertTupleEqual" class="function">assertTupleEqual</dd>
-                <dd id="TestProject.assertSetEqual" class="function">assertSetEqual</dd>
-                <dd id="TestProject.assertIn" class="function">assertIn</dd>
-                <dd id="TestProject.assertNotIn" class="function">assertNotIn</dd>
-                <dd id="TestProject.assertIs" class="function">assertIs</dd>
-                <dd id="TestProject.assertIsNot" class="function">assertIsNot</dd>
-                <dd id="TestProject.assertDictEqual" class="function">assertDictEqual</dd>
-                <dd id="TestProject.assertDictContainsSubset" class="function">assertDictContainsSubset</dd>
-                <dd id="TestProject.assertCountEqual" class="function">assertCountEqual</dd>
-                <dd id="TestProject.assertMultiLineEqual" class="function">assertMultiLineEqual</dd>
-                <dd id="TestProject.assertLess" class="function">assertLess</dd>
-                <dd id="TestProject.assertLessEqual" class="function">assertLessEqual</dd>
-                <dd id="TestProject.assertGreater" class="function">assertGreater</dd>
-                <dd id="TestProject.assertGreaterEqual" class="function">assertGreaterEqual</dd>
-                <dd id="TestProject.assertIsNone" class="function">assertIsNone</dd>
-                <dd id="TestProject.assertIsNotNone" class="function">assertIsNotNone</dd>
-                <dd id="TestProject.assertIsInstance" class="function">assertIsInstance</dd>
-                <dd id="TestProject.assertNotIsInstance" class="function">assertNotIsInstance</dd>
-                <dd id="TestProject.assertRaisesRegex" class="function">assertRaisesRegex</dd>
-                <dd id="TestProject.assertWarnsRegex" class="function">assertWarnsRegex</dd>
-                <dd id="TestProject.assertRegex" class="function">assertRegex</dd>
-                <dd id="TestProject.assertNotRegex" class="function">assertNotRegex</dd>
-                <dd id="TestProject.failUnlessRaises" class="function">failUnlessRaises</dd>
-                <dd id="TestProject.failIf" class="function">failIf</dd>
-                <dd id="TestProject.assertRaisesRegexp" class="function">assertRaisesRegexp</dd>
-                <dd id="TestProject.assertRegexpMatches" class="function">assertRegexpMatches</dd>
-                <dd id="TestProject.assertNotRegexpMatches" class="function">assertNotRegexpMatches</dd>
-                <dd id="TestProject.failUnlessEqual" class="function">failUnlessEqual</dd>
-                <dd id="TestProject.assertEquals" class="function">assertEquals</dd>
-                <dd id="TestProject.failIfEqual" class="function">failIfEqual</dd>
-                <dd id="TestProject.assertNotEquals" class="function">assertNotEquals</dd>
-                <dd id="TestProject.failUnlessAlmostEqual" class="function">failUnlessAlmostEqual</dd>
-                <dd id="TestProject.assertAlmostEquals" class="function">assertAlmostEquals</dd>
-                <dd id="TestProject.failIfAlmostEqual" class="function">failIfAlmostEqual</dd>
-                <dd id="TestProject.assertNotAlmostEquals" class="function">assertNotAlmostEquals</dd>
-                <dd id="TestProject.failUnless" class="function">failUnless</dd>
-                <dd id="TestProject.assert_" class="function">assert_</dd>
 
             </div>
                                 </dl>
