@@ -249,7 +249,7 @@ class IVisualize:
         str
             String representation for legend about the development attempt.
         """
-        return "$D$" if is_developing else "$\\emptyset$"
+        return "" if is_developing else "$\\emptyset$"
 
     @staticmethod
     def _get_development_outcome_legend(
@@ -271,7 +271,7 @@ class IVisualize:
             String representation for legend about the development outcome.
         """
         if is_developing:
-            return "$(\\checkmark)$" if is_successful else "$(\\times)$"
+            return "$\\checkmark$" if is_successful else "$\\times$"
         return ""
 
     @staticmethod
@@ -325,10 +325,10 @@ class IVisualize:
             f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${separator}"
             f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
             f"$F(K) = {self._round_floats(self.model.asset_distribution.cumulative(self.model.development_costs))}$\n"
-            f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_strict)}${separator}"
-            f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold)}${separator}"
-            f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_intermediate)}${separator}"
-            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_laissez_faire)}$\n"
+            f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_welfare)}${separator}"
+            f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
+            f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
+            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$\n"
         )
 
     @staticmethod
@@ -424,15 +424,15 @@ class AssetRange(IVisualize):
     def _get_essential_thresholds(self):
         thresholds: list[FMT20.ThresholdItem] = [
             FMT20.ThresholdItem(
-                "$\\Gamma$", self.model.asset_distribution_threshold_strict
+                "$\\Gamma$", self.model.asset_distribution_threshold_welfare
             ),
-            FMT20.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold),
+            FMT20.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold_profitable_without_late_takeover),
             FMT20.ThresholdItem(
-                "$\\Phi^T$", self.model.asset_distribution_threshold_laissez_faire
+                "$\\Phi^T$", self.model.asset_distribution_threshold_with_late_takeover
             ),
             FMT20.ThresholdItem(
                 "$\\Phi^{\\prime}$",
-                self.model.asset_distribution_threshold_intermediate,
+                self.model.asset_distribution_threshold_unprofitable_without_late_takeover,
             ),
             FMT20.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
             FMT20.ThresholdItem(

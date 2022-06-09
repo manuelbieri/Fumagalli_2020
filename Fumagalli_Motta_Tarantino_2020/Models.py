@@ -408,7 +408,7 @@ class MergerPolicy(BaseModel):
         Every threshold has to be between 0 and 1. If this condition is not satisfied, an assertion error is raised.
         """
         assert (
-            0 < self.asset_distribution_threshold < 1
+                0 < self.asset_distribution_threshold_profitable_without_late_takeover < 1
         ), "Violates A.2 (has to be between 0 and 1)"
         if self.merger_policy is Types.MergerPolicies.Strict:
             self._check_asset_distribution_threshold_strict()
@@ -418,19 +418,19 @@ class MergerPolicy(BaseModel):
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
-                0 <= self.asset_distribution_threshold_intermediate < 1
+                    0 <= self.asset_distribution_threshold_unprofitable_without_late_takeover < 1
             ), "Violates Condition A-3 (has to be between 0 and 1)"
         elif (
             self.merger_policy is Types.MergerPolicies.Laissez_faire
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
-                0 < self.asset_distribution_threshold_laissez_faire < 1
+                    0 < self.asset_distribution_threshold_with_late_takeover < 1
             ), "Violates Condition 4 (has to be between 0 and 1)"
 
     def _check_asset_distribution_threshold_strict(self):
         assert (
-            0 < self.asset_distribution_threshold_strict < 1
+                0 < self.asset_distribution_threshold_welfare < 1
         ), "Violates Condition 2 (has to be between 0 and 1)"
 
     @property
@@ -645,7 +645,7 @@ class MergerPolicy(BaseModel):
         return False
 
     @property
-    def asset_distribution_threshold_strict(self) -> float:
+    def asset_distribution_threshold_welfare(self) -> float:
         """
         Threshold defined in Lemma 3 :$\\;\\Gamma(\\cdot)=\\frac{p(W^d-W^M)}{p(W^d-W^m)-K}$
         """
@@ -657,7 +657,7 @@ class MergerPolicy(BaseModel):
         )
 
     @property
-    def asset_distribution_threshold(self) -> float:
+    def asset_distribution_threshold_profitable_without_late_takeover(self) -> float:
         """
         Threshold defined in Condition 3 :$\\;\\Phi(\\cdot)=\\frac{p(\\pi^M_I-\\pi^d_I-\\pi^d_S)}{p(\\pi^M_I-\\pi^d_I)-K}$
         """
@@ -675,7 +675,7 @@ class MergerPolicy(BaseModel):
         )
 
     @property
-    def asset_distribution_threshold_laissez_faire(self) -> float:
+    def asset_distribution_threshold_with_late_takeover(self) -> float:
         """
         Threshold defined in Condition 4 :$\\;\\Phi^T(\\cdot)=\\frac{p(\\pi^m_I-\\pi^M_I)+K}{p(\\pi^m_I+\\pi^d_S-\\pi^M_I)}$
         """
@@ -696,7 +696,7 @@ class MergerPolicy(BaseModel):
         )
 
     @property
-    def asset_distribution_threshold_intermediate(self) -> float:
+    def asset_distribution_threshold_unprofitable_without_late_takeover(self) -> float:
         """
         Threshold defined in A-3 :$\\;\\Phi^{\\prime}(\\cdot)=\\frac{p(\\pi^m_I-\\pi^d_I-\\pi^d_S)+K}{p(\\pi^m_I+\\pi^d_I)}$
         """
@@ -819,7 +819,7 @@ class MergerPolicy(BaseModel):
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_late_takeover_cdf
-                >= self.asset_distribution_threshold_laissez_faire
+                >= self.asset_distribution_threshold_with_late_takeover
             ):
                 if not self.is_startup_credit_rationed and self.development_success:
                     self._set_takeovers(late_takeover=Types.Takeover.Pooling)
@@ -890,7 +890,7 @@ class MergerPolicy(BaseModel):
         if self.is_incumbent_expected_to_shelve():
             if (
                 self.asset_threshold_cdf
-                >= self.asset_distribution_threshold_intermediate
+                >= self.asset_distribution_threshold_unprofitable_without_late_takeover
             ):
                 self._set_takeovers(
                     early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
@@ -898,7 +898,7 @@ class MergerPolicy(BaseModel):
             else:
                 self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
-            if self.asset_threshold_cdf >= self.asset_distribution_threshold:
+            if self.asset_threshold_cdf >= self.asset_distribution_threshold_profitable_without_late_takeover:
                 if self.is_startup_credit_rationed:
                     self._set_takeovers(early_takeover=Types.Takeover.Separating)
                 else:
@@ -920,11 +920,11 @@ class MergerPolicy(BaseModel):
             )
         else:
             if (
-                self.asset_distribution_threshold_strict
+                self.asset_distribution_threshold_welfare
                 < self.asset_threshold_cdf
                 < max(
-                    self.asset_distribution_threshold,
-                    self.asset_distribution_threshold_strict,
+                    self.asset_distribution_threshold_profitable_without_late_takeover,
+                    self.asset_distribution_threshold_welfare,
                 )
             ):
                 self._set_takeovers(early_takeover=Types.Takeover.Pooling)
@@ -1153,7 +1153,7 @@ class OptimalMergerPolicy(MergerPolicy):
         """
         return (
             self.asset_threshold_late_takeover_cdf
-            >= self.asset_distribution_threshold_laissez_faire
+            >= self.asset_distribution_threshold_with_late_takeover
         )
 
     def is_shelving_after_early_takeover_optimal(self) -> bool:

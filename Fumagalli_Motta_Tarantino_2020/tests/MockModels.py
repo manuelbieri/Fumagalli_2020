@@ -114,12 +114,12 @@ def mock_optimal_merger_policy(
     type(model).asset_threshold_late_takeover = mock.PropertyMock(
         return_value=asset_threshold_late_takeover
     )
-    type(model).asset_distribution_threshold = 0.4
-    type(model).asset_distribution_threshold_strict = 0.6
+    type(model).asset_distribution_threshold_profitable_without_late_takeover = 0.4
+    type(model).asset_distribution_threshold_welfare = 0.6
     type(model).asset_threshold_late_takeover_cdf = 0.7
-    type(model).asset_distribution_threshold_laissez_faire = 0.8
+    type(model).asset_distribution_threshold_with_late_takeover = 0.8
     type(model).asset_threshold_cdf = 0.9
-    type(model).asset_distribution_threshold_intermediate = 1
+    type(model).asset_distribution_threshold_unprofitable_without_late_takeover = 1
     type(model).early_bidding_type = FMT20.Takeover.Separating
     type(model).late_bidding_type = FMT20.Takeover.Pooling
     model.asset_distribution = FMT20.Utilities.NormalDistributionFunction
