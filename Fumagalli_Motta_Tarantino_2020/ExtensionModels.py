@@ -38,7 +38,10 @@ class ProCompetitiveModel(FMT20.OptimalMergerPolicy):
         )
 
     def _solve_game_late_takeover_prohibited(self) -> None:
-        if self.asset_threshold_cdf <= self.asset_distribution_threshold_unprofitable_without_late_takeover:
+        if (
+            self.asset_threshold_cdf
+            <= self.asset_distribution_threshold_unprofitable_without_late_takeover
+        ):
             self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
         else:
             self._set_takeovers(
@@ -95,7 +98,10 @@ class ResourceWaste(ProCompetitiveModel):
 
     def _solve_game_strict_merger_policy(self) -> None:
         assert self.merger_policy is FMT20.MergerPolicies.Strict
-        if self.asset_threshold_cdf <= self.asset_distribution_threshold_unprofitable_without_late_takeover:
+        if (
+            self.asset_threshold_cdf
+            <= self.asset_distribution_threshold_unprofitable_without_late_takeover
+        ):
             self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
         else:
             self._set_takeovers(

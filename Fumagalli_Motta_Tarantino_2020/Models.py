@@ -408,7 +408,7 @@ class MergerPolicy(BaseModel):
         Every threshold has to be between 0 and 1. If this condition is not satisfied, an assertion error is raised.
         """
         assert (
-                0 < self.asset_distribution_threshold_profitable_without_late_takeover < 1
+            0 < self.asset_distribution_threshold_profitable_without_late_takeover < 1
         ), "Violates A.2 (has to be between 0 and 1)"
         if self.merger_policy is Types.MergerPolicies.Strict:
             self._check_asset_distribution_threshold_strict()
@@ -418,19 +418,21 @@ class MergerPolicy(BaseModel):
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
-                    0 <= self.asset_distribution_threshold_unprofitable_without_late_takeover < 1
+                0
+                <= self.asset_distribution_threshold_unprofitable_without_late_takeover
+                < 1
             ), "Violates Condition A-3 (has to be between 0 and 1)"
         elif (
             self.merger_policy is Types.MergerPolicies.Laissez_faire
             and self.is_incumbent_expected_to_shelve()
         ):
             assert (
-                    0 < self.asset_distribution_threshold_with_late_takeover < 1
+                0 < self.asset_distribution_threshold_with_late_takeover < 1
             ), "Violates Condition 4 (has to be between 0 and 1)"
 
     def _check_asset_distribution_threshold_strict(self):
         assert (
-                0 < self.asset_distribution_threshold_welfare < 1
+            0 < self.asset_distribution_threshold_welfare < 1
         ), "Violates Condition 2 (has to be between 0 and 1)"
 
     @property
@@ -898,7 +900,10 @@ class MergerPolicy(BaseModel):
             else:
                 self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
-            if self.asset_threshold_cdf >= self.asset_distribution_threshold_profitable_without_late_takeover:
+            if (
+                self.asset_threshold_cdf
+                >= self.asset_distribution_threshold_profitable_without_late_takeover
+            ):
                 if self.is_startup_credit_rationed:
                     self._set_takeovers(early_takeover=Types.Takeover.Separating)
                 else:

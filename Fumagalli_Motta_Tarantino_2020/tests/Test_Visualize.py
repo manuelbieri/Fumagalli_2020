@@ -35,11 +35,11 @@ class TestVisualize(unittest.TestCase):
         else:
             self.visualizer: FMT20.IVisualize = FMT20.AssetRange(model, **kwargs)
 
-    def view_plot(self, show: bool = False) -> None:
+    def view_plot(self, show: bool = False, **kwargs) -> None:
         if show:
-            self.visualizer.show()
+            self.visualizer.show(**kwargs)
         else:
-            self.visualizer.plot()
+            self.visualizer.plot(**kwargs)
 
     def test_plot_interface(self):
         self.setUpMock()
@@ -50,7 +50,7 @@ class TestVisualize(unittest.TestCase):
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         thresholds = self.visualizer._get_asset_thresholds()
         self.assertEqual(6, len(thresholds))
-        self.assertEqual("0.5", thresholds[0].name)
+        self.assertEqual("$F(0)$", thresholds[0].name)
         self.assertEqual("$F(K)$", thresholds[-1].name)
 
     def test_essential_asset_thresholds_negative_values(self):
@@ -114,7 +114,12 @@ class TestVisualize(unittest.TestCase):
     def test_merger_policies_plot(self):
         self.setUpMock(asset_threshold=3, asset_threshold_late_takeover=1)
         self.setUpVisualizer(self.mock, plot_type="MergerPolicies")
-        self.view_plot(show=TestVisualize.show_plots)
+        self.view_plot(
+            show=TestVisualize.show_plots,
+            thresholds=True,
+            optimal_policy=True,
+            y_offset=-25,
+        )
 
     def test_timeline_plot(self):
         self.setUpMock(policy=FMT20.MergerPolicies.Laissez_faire)

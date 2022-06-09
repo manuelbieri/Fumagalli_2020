@@ -1,8 +1,10 @@
 from abc import abstractmethod
-from typing import Optional
+from typing import Optional, Callable
 import warnings
 
 import math
+
+import matplotlib.gridspec
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
@@ -56,7 +58,7 @@ class IVisualize:
         self._set_axes(ax, **kwargs)
         warnings.filterwarnings("ignore")
 
-    def _set_axes(self, ax, **kwargs):
+    def _set_axes(self, ax, **kwargs) -> None:
         if ax is None:
             self.fig, self.ax = plt.subplots(**kwargs)
         else:
@@ -64,19 +66,19 @@ class IVisualize:
             self.fig = self.ax.get_figure()
         self.ax.patch.set_alpha(0)
 
-    def set_mode(self, default_style, dark_mode):
+    def set_mode(self, default_style: bool, dark_mode: bool) -> None:
         if dark_mode:
             self.set_dark_mode()
         else:
             self.set_light_mode(default_style)
 
     @staticmethod
-    def set_dark_mode():
+    def set_dark_mode() -> None:
         plt.style.use("dark_background")
 
     @staticmethod
-    def set_light_mode(use_default=False):
-        if ("science" in plt.style.available) and not use_default:
+    def set_light_mode(default_style=False) -> None:
+        if ("science" in plt.style.available) and not default_style:
             plt.style.use("science")
         else:
             plt.style.use("default")
@@ -87,13 +89,13 @@ class IVisualize:
         self._reset_legend()
         self._set_axes(self.ax)
 
-    def _reset_legend(self):
+    def _reset_legend(self) -> None:
         try:
             self.ax.get_legend().remove()
         except AttributeError:
             pass
 
-    def _set_legend(self) -> None:
+    def _set_primary_legend(self) -> None:
         legend = self.ax.legend(
             bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0
         )
@@ -192,11 +194,6 @@ class IVisualize:
     def _get_summary_latex(summary: FMT20.OptimalMergerPolicySummary) -> str:
         """
         Generates a chronological entry for the legend based on the input model.
-
-        Parameters
-        ----------
-        summary: Fumagalli_Motta_Tarantino_2020.FMT20.OptimalMergerPolicySummary
-            Summary of the model.
 
         Returns
         -------
@@ -309,26 +306,44 @@ class IVisualize:
             else ""
         )
         return (
-            payoff_str + "$m$: Monopoly without the innovation\n"
+            f"{payoff_str}"
+            "$m$: Monopoly without the innovation\n"
             "$M$: Monopoly after successful development by the incumbent\n"
             "$d$: Duopoly (requires successful development by the start-up)\n"
         )
 
-    def _get_model_characteristics_latex(self) -> str:
-        separator = " ; "
-        parameter_text = self._parameter_latex(separator=separator)
+    def _get_model_characteristics_latex(
+        self,
+        separator=" ; ",
+        model_parameters=True,
+        thresholds_newline=True,
+        thresholds_title="Thresholds for the Start-up Assets",
+        optimal_policy=False,
+    ) -> str:
+        parameter_text = (
+            f"${{\\bf Parameters}}$\n{self._parameter_latex(separator=separator)}\n\n"
+            if model_parameters
+            else ""
+        )
+        optimal = (
+            f"Optimal policy: {self.model.get_optimal_merger_policy().abbreviation()}\n"
+            if optimal_policy
+            else ""
+        )
+        thresholds_title = thresholds_title.replace(" ", "\\thickspace ")
+        newline = "\n" if thresholds_newline else separator
         return (
-            f"${{\\bf Parameters}}$\n"
-            f"{parameter_text}\n\n"
-            f"${{\\bf Thresholds\\thickspace for\\thickspace the\\thickspace Start-up\\thickspace Assets}}$\n"
+            f"{parameter_text}"
+            f"${{\\bf {thresholds_title}}}$\n"
+            f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
+            f"$F(K) = {self._round_floats(self.model.asset_distribution.cumulative(self.model.development_costs))}${newline}"
             f"$F(\\bar{{A}}) = {self._round_floats(self.model.asset_threshold_cdf)}${separator}"
             f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${separator}"
-            f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
-            f"$F(K) = {self._round_floats(self.model.asset_distribution.cumulative(self.model.development_costs))}$\n"
             f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_welfare)}${separator}"
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
             f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$\n"
+            f"{optimal}"
         )
 
     @staticmethod
@@ -338,15 +353,20 @@ class IVisualize:
     def _get_model_characteristics_ax(self, ax: plt.Axes) -> None:
         ax.set_title("Model Characteristics")
         ax.axis("off")
+        self._annotate_model_characteristics(ax)
+        self._annotate_payoff_legend(ax)
+        self._annotate_symbol_legend(ax)
+
+    def _annotate_symbol_legend(self, ax: plt.Axes) -> None:
         ax.annotate(
-            self._get_model_characteristics_latex(),
-            xy=(0.5, 1),
-            xytext=(0, 0),
-            textcoords="offset points",
+            self._get_symbol_legend(),
+            xy=(0.5, 0.57),
             horizontalalignment="center",
             verticalalignment="top",
             fontsize=IVisualize.fontsize,
         )
+
+    def _annotate_payoff_legend(self, ax: plt.Axes) -> None:
         ax.annotate(
             self._get_payoff_legend(market_situations_only=True),
             xy=(0.5, 0.7),
@@ -354,9 +374,13 @@ class IVisualize:
             verticalalignment="top",
             fontsize=IVisualize.fontsize,
         )
+
+    def _annotate_model_characteristics(self, ax: plt.Axes) -> None:
         ax.annotate(
-            self._get_symbol_legend(),
-            xy=(0.5, 0.57),
+            self._get_model_characteristics_latex(),
+            xy=(0.5, 1),
+            xytext=(0, 0),
+            textcoords="offset points",
             horizontalalignment="center",
             verticalalignment="top",
             fontsize=IVisualize.fontsize,
@@ -406,27 +430,28 @@ class AssetRange(IVisualize):
         list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem]
             List containing the essential asset thresholds in the model.
         """
-        min_threshold = FMT20.ThresholdItem("0.5", 0.5)
-        max_threshold = FMT20.ThresholdItem(
-            "$F(K)$",
-            self.model.asset_distribution.cumulative(self.model.development_costs),
-        )
         thresholds = self._get_essential_thresholds()
         essential_thresholds: list[FMT20.ThresholdItem] = []
         for threshold in thresholds:
-            if min_threshold.value < threshold.value < max_threshold.value:
+            if self._valid_x_tick(threshold):
                 essential_thresholds.append(threshold)
         thresholds = sorted(essential_thresholds, key=lambda x: x.value)
-        thresholds.insert(0, min_threshold)
-        thresholds.append(max_threshold)
         return thresholds
 
-    def _get_essential_thresholds(self):
-        thresholds: list[FMT20.ThresholdItem] = [
+    def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
+        return [
+            FMT20.ThresholdItem("$F(0)$", self.model.asset_distribution.cumulative(0)),
+            FMT20.ThresholdItem(
+                "$F(K)$",
+                self.model.asset_distribution.cumulative(self.model.development_costs),
+            ),
             FMT20.ThresholdItem(
                 "$\\Gamma$", self.model.asset_distribution_threshold_welfare
             ),
-            FMT20.ThresholdItem("$\\Phi$", self.model.asset_distribution_threshold_profitable_without_late_takeover),
+            FMT20.ThresholdItem(
+                "$\\Phi$",
+                self.model.asset_distribution_threshold_profitable_without_late_takeover,
+            ),
             FMT20.ThresholdItem(
                 "$\\Phi^T$", self.model.asset_distribution_threshold_with_late_takeover
             ),
@@ -439,11 +464,9 @@ class AssetRange(IVisualize):
                 "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
             ),
         ]
-        return thresholds
 
-    @staticmethod
     def _get_x_labels_ticks(
-        asset_thresholds: list[FMT20.ThresholdItem],
+        self, asset_thresholds: list[FMT20.ThresholdItem]
     ) -> (list[float], list[str]):
         """
         Generates the locations of the ticks on the x-axis and the corresponding labels on the x-axis.
@@ -461,18 +484,18 @@ class AssetRange(IVisualize):
         x_ticks: list[float] = []
         x_labels: list[str] = []
         for threshold in asset_thresholds:
-            x_ticks.append(threshold.value)
-            x_labels.append(threshold.name)
+            if self._valid_x_tick(threshold):
+                x_ticks.append(threshold.value)
+                x_labels.append(threshold.name)
         return x_ticks, x_labels
 
-    def _set_x_ticks(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
+    def _set_x_axis(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
         x_ticks, x_labels = self._get_x_labels_ticks(asset_thresholds)
-        self.ax.xaxis.set_major_locator(FixedLocator(x_ticks[::2]))
-        self.ax.xaxis.set_minor_locator(FixedLocator(x_ticks[1::2]))
-        self.ax.set_xticklabels(x_labels[::2], fontsize=IVisualize.fontsize)
-        self.ax.set_xticklabels(
-            x_labels[1::2], minor=True, fontsize=IVisualize.fontsize
-        )
+        self._set_x_locators(x_ticks)
+        self._set_x_labels(x_labels)
+        self._set_x_ticks()
+
+    def _set_x_ticks(self) -> None:
         self.ax.tick_params(
             which="minor",
             bottom=False,
@@ -482,9 +505,28 @@ class AssetRange(IVisualize):
             axis="x",
         )
         self.ax.tick_params(which="both", bottom=False, top=False, length=6, axis="x")
+
+    def _set_x_labels(self, x_labels: list[str]) -> None:
+        self.ax.set_xticklabels(x_labels[::2], fontsize=IVisualize.fontsize)
+        self.ax.set_xticklabels(
+            x_labels[1::2], minor=True, fontsize=IVisualize.fontsize
+        )
+
+    def _set_x_locators(self, x_ticks: list[float]) -> None:
+        self.ax.xaxis.set_major_locator(FixedLocator(x_ticks[::2]))
+        self.ax.xaxis.set_minor_locator(FixedLocator(x_ticks[1::2]))
+
+    def _draw_vertical_lines(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
         for threshold in asset_thresholds:
-            if 0.5 < threshold.value < max(item.value for item in asset_thresholds):
+            if self._valid_x_tick(threshold):
                 self.ax.axvline(threshold.value, linestyle=":", color="k", lw=0.5)
+
+    def _valid_x_tick(self, threshold):
+        return (
+            self.model.asset_distribution.cumulative(0)
+            <= threshold.value
+            <= self.model.asset_distribution.cumulative(self.model.development_costs)
+        )
 
     @staticmethod
     def _get_y_ticks(
@@ -492,10 +534,11 @@ class AssetRange(IVisualize):
     ) -> list[float]:
         return [(i + 1) * spacing + bar_height * i for i in range(len(y_labels))]
 
-    def _set_y_ticks(self, bar_height, spacing, y_labels):
+    def _set_y_ticks(self, bar_height: float, spacing: float, y_labels: list[str]):
         y_ticks = self._get_y_ticks(spacing, bar_height, y_labels)
         self.ax.set_yticks(y_ticks)
         self.ax.set_yticklabels(y_labels, fontsize=IVisualize.fontsize)
+        self.ax.yaxis.set_ticks_position("none")
 
     def _get_label_color(self, label) -> (str, str):
         """
@@ -526,50 +569,118 @@ class AssetRange(IVisualize):
         merger_policies_summaries = self._get_summaries()
         assert asset_range is not None
         assert merger_policies_summaries is not None
+        self._clear_legend_list()
+        bar_height, spacing, y_labels = self._draw_all_bars(
+            asset_range, merger_policies_summaries, **kwargs
+        )
+        self._set_primary_legend()
+        self._set_secondary_legend(asset_range[0].value, kwargs.get("legend", True))
+        self._set_threshold_legend(
+            kwargs.get("thresholds", False),
+            kwargs.get("optimal_policy", False),
+            kwargs.get("y_offset", 0),
+        )
+        self.ax.margins(y=spacing, x=0)
+        self._draw_vertical_lines(asset_range)
+        self._set_x_axis(asset_range)
+        self._set_y_ticks(bar_height, spacing, y_labels)
+        self.ax.set_xlabel("Cumulative Distribution Value of Assets $F(A)$")
+        self.ax.set_ylabel("Merger Policy")
+        self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
+        self._set_tight_layout()
+        return self.fig, self.ax
+
+    def _clear_legend_list(self) -> None:
         self.labels.clear()
         self.colors.clear()
 
+    def _draw_all_bars(
+        self, asset_range, merger_policies_summaries, **kwargs
+    ) -> (float, float, list[str]):
         spacing: float = kwargs.get("spacing", 0.1)
         bar_height: float = kwargs.get("bar_height", 0.2)
         y_labels: list[str] = []
         for number_merger_policy, summaries in enumerate(merger_policies_summaries):
             y_labels.append(summaries[0].set_policy.abbreviation())
             for summary_index, summary in enumerate(summaries):
-                length: float = (
-                    asset_range[summary_index + 1].value
-                    - asset_range[summary_index].value
-                )
                 label: str = self._get_summary_latex(summary)
-                label, color = self._get_label_color(label)
-                self.ax.barh(
-                    y=spacing * (number_merger_policy + 1)
-                    + bar_height * number_merger_policy,
-                    width=length,
-                    left=asset_range[summary_index].value,
-                    height=bar_height,
-                    color=color,
-                    label=label,
+                length: float = self._get_bar_length(asset_range, summary_index)
+                y_coordinate = self._get_bar_y_coordinate(
+                    bar_height, number_merger_policy, spacing
                 )
-        self._set_legend()
-        if kwargs.get("legend", True):
+                self._draw_bar(
+                    y_coordinate,
+                    asset_range[summary_index].value,
+                    bar_height,
+                    length,
+                    label,
+                )
+        return bar_height, spacing, y_labels
+
+    @staticmethod
+    def _get_bar_length(
+        asset_range: list[FMT20.ThresholdItem], summary_index: int
+    ) -> float:
+        return asset_range[summary_index + 1].value - asset_range[summary_index].value
+
+    @staticmethod
+    def _get_bar_y_coordinate(
+        bar_height: float, number_merger_policy: int, spacing: float
+    ) -> float:
+        return spacing * (number_merger_policy + 1) + bar_height * number_merger_policy
+
+    def _draw_bar(
+        self,
+        y_coordinate: float,
+        x_coordinate: float,
+        bar_height: float,
+        length: float,
+        label: str,
+    ) -> None:
+        label, color = self._get_label_color(label)
+        self.ax.barh(
+            y=y_coordinate,
+            width=length,
+            left=x_coordinate,
+            height=bar_height,
+            color=color,
+            label=label,
+        )
+
+    def _set_threshold_legend(
+        self, show_legend: bool, show_optimal_policy: bool, y_offset: int
+    ) -> None:
+        if show_legend:
+            x_coordinate = self.model.asset_distribution.cumulative(
+                self.model.development_costs
+            )
+            self.ax.annotate(
+                self._get_model_characteristics_latex(
+                    separator="\n",
+                    model_parameters=False,
+                    thresholds_newline=False,
+                    thresholds_title="",
+                    optimal_policy=show_optimal_policy,
+                ),
+                xy=(x_coordinate, 1),
+                xytext=(10, y_offset),
+                textcoords="offset points",
+                horizontalalignment="left",
+                verticalalignment="top",
+                fontsize=IVisualize.fontsize,
+            )
+
+    def _set_secondary_legend(self, x_coordinate: float, show_legend: bool) -> None:
+        if show_legend:
             self.ax.annotate(
                 self._get_symbol_legend(),
-                xy=(asset_range[0].value, 0),
+                xy=(x_coordinate, 0),
                 xytext=(0, -50),
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
                 fontsize=IVisualize.fontsize,
             )
-        self.ax.margins(y=spacing, x=0)
-        self._set_x_ticks(asset_range)
-        self._set_y_ticks(bar_height, spacing, y_labels)
-        self.ax.yaxis.set_ticks_position("none")
-        self.ax.set_xlabel("Cumulative Distribution Value of Assets $F(A)$")
-        self.ax.set_ylabel("Merger Policy")
-        self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
-        self._set_tight_layout()
-        return self.fig, self.ax
 
 
 class MergerPoliciesAssetRange(AssetRange):
@@ -606,7 +717,7 @@ class Timeline(IVisualize):
         (list[str], list[str])
             List containing label for the events and list containing the points in time of the events.
         """
-        values: list[str] = [
+        stem_labels: list[str] = [
             "Competition authority\nestablishes "
             + self._policy_str()
             + "\nmerger policy",
@@ -628,7 +739,7 @@ class Timeline(IVisualize):
             "t=2b",
             "t=3",
         ]
-        return values, x_labels
+        return stem_labels, x_labels
 
     @staticmethod
     def _takeover_attempt_str(takeover: FMT20.Takeover) -> str:
@@ -722,68 +833,85 @@ class Timeline(IVisualize):
         return "Development was\nnot attempted."
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
-        values, x_labels = self._prepare_content()
-        x_ticks = range(len(x_labels))
-
-        # height of lines from points in time
-        # levels = np.tile([1, -1], int(np.ceil(len(x_ticks) / 2)))[: len(x_ticks)]
-        levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
+        stem_labels, x_labels = self._prepare_content()
+        x_ticks = list(range(len(x_labels)))
+        stem_levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
 
         # Create figure and plot a stem plot with the date
         self.ax.set(title=kwargs.get("title", "Timeline"))
-        if kwargs.get("parameters", True):
-            self.ax.annotate(
-                self._parameter_latex(),
-                xy=(math.fsum(x_ticks) / len(x_ticks), 1.9),
-                horizontalalignment="center",
-                verticalalignment="top",
-                fontsize=IVisualize.fontsize,
-            )
+        self._set_parameter_legend(
+            math.fsum(x_ticks) / len(x_ticks), kwargs.get("parameters", True)
+        )
+        self._draw_vertical_stems(stem_levels, x_ticks)
+        self._draw_baseline(x_ticks)
+        self._annotate_stems(
+            stem_levels, stem_labels, x_ticks, kwargs.get("x-offset", 0)
+        )
+        self._set_x_axis(x_labels, x_ticks)
+        self._set_y_axis()
+        self.ax.margins(y=0.45)
+        self._set_tight_layout()
+        return self.fig, self.ax
 
-        self.ax.vlines(
-            x_ticks, 0, levels, color="lightgray", linewidths=1
-        )  # The vertical stems.
-        self.ax.plot(
-            x_ticks, np.zeros_like(x_ticks), "-o", color="k", markerfacecolor="w"
-        )  # Baseline and markers on it.
-
-        # annotate lines
-        for d, l, r in zip(x_ticks, levels, values):
+    def _annotate_stems(
+        self,
+        levels: list[int],
+        stem_labels: list[str],
+        x_ticks: list[int],
+        x_offset: int,
+    ) -> None:
+        for d, l, r in zip(x_ticks, levels, stem_labels):
             self.ax.annotate(
                 str(r),
                 xy=(d, l),
-                xytext=(kwargs.get("x-offset", 0), np.sign(l) * 8),
+                xytext=(x_offset, np.sign(l) * 8),
                 textcoords="offset points",
                 horizontalalignment="center",
                 verticalalignment="bottom" if l > 0 else "top",
                 fontsize=IVisualize.fontsize,
             )
 
-        # set x-axis
+    def _draw_vertical_stems(self, levels: list[int], x_ticks: list[int]) -> None:
+        self.ax.vlines(x_ticks, 0, levels, color="lightgray", linewidths=1)
+
+    def _draw_baseline(self, x_ticks: list[int]) -> None:
+        self.ax.plot(
+            x_ticks, np.zeros_like(x_ticks), "-o", color="k", markerfacecolor="w"
+        )
+
+    def _set_x_axis(self, x_labels: list[str], x_ticks: list[int]) -> None:
         self.ax.set_xticks(x_ticks)
         self.ax.set_xticklabels(x_labels)
         self.ax.xaxis.set_ticks_position("bottom")
 
-        # remove y-axis and spines
+    def _set_y_axis(self) -> None:
         self.ax.yaxis.set_visible(False)
         self.ax.spines[["left", "top", "right"]].set_visible(False)
 
-        self.ax.margins(y=0.45)
-        self._set_tight_layout()
-        return self.fig, self.ax
+    def _set_parameter_legend(self, x_coordinate: float, show_parameters: bool) -> None:
+        if show_parameters:
+            self.ax.annotate(
+                self._parameter_latex(),
+                xy=(x_coordinate, 1.9),
+                horizontalalignment="center",
+                verticalalignment="top",
+                fontsize=IVisualize.fontsize,
+            )
 
 
 class Payoffs(IVisualize):
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         payoffs: dict[str, float] = self._get_payoffs()
-        bar_width = 0.35
-        spacing = 0.05
-
+        bar_width = kwargs.get("width", 0.35)
+        spacing = kwargs.get("spacing", 0.05)
         self._plot_payoffs_bars(payoffs, bar_width, spacing, **kwargs)
-
         self.ax.set_title("Payoffs for different Market Configurations")
-        self._set_legend()
-        if kwargs.get("legend", True):
+        self._set_primary_legend()
+        self._set_secondary_legend(bar_width, kwargs.get("legend", True))
+        self._set_tight_layout()
+
+    def _set_secondary_legend(self, bar_width: float, show_legend: bool) -> None:
+        if show_legend:
             self.ax.annotate(
                 self._get_payoff_legend(),
                 xy=(-bar_width, 0),
@@ -793,7 +921,6 @@ class Payoffs(IVisualize):
                 verticalalignment="top",
                 fontsize=IVisualize.fontsize,
             )
-        self._set_tight_layout()
 
     def _plot_payoffs_bars(
         self, payoffs: dict[str, float], bar_width: float, spacing: float, **kwargs
@@ -816,15 +943,7 @@ class Payoffs(IVisualize):
         max_values: list[int] = self._set_max_values(list(payoffs.values()))
         for number_bar, (label, height) in enumerate(payoffs.items()):
             x_coordinate: float = self._get_x_coordinate(bar_width, number_bar, spacing)
-            self.ax.annotate(
-                label,
-                xy=(x_coordinate, 0),
-                xytext=(0, -15),
-                textcoords="offset points",
-                horizontalalignment="center",
-                verticalalignment="bottom",
-                fontsize=IVisualize.fontsize,
-            )
+            self._set_x_label(label, x_coordinate)
             if number_bar > 3:
                 label = "__nolegend__"
             else:
@@ -839,13 +958,27 @@ class Payoffs(IVisualize):
                 if number_bar in max_values
                 else kwargs.get("min_opacity", 0.6),
             )
-            self.ax.tick_params(
-                axis="x",  # changes apply to the x-axis
-                which="both",  # both major and minor ticks are affected
-                bottom=False,  # ticks along the bottom edge are off
-                top=False,
-                labelbottom=False,
-            )  # labels along the bottom edge are off
+        self._set_x_ticks()
+
+    def _set_x_label(self, label: str, x_coordinate: float) -> None:
+        self.ax.annotate(
+            label,
+            xy=(x_coordinate, 0),
+            xytext=(0, -15),
+            textcoords="offset points",
+            horizontalalignment="center",
+            verticalalignment="bottom",
+            fontsize=IVisualize.fontsize,
+        )
+
+    def _set_x_ticks(self) -> None:
+        self.ax.tick_params(
+            axis="x",
+            which="both",
+            bottom=False,
+            top=False,
+            labelbottom=False,
+        )
 
     @staticmethod
     def _set_payoff_label(label) -> str:
@@ -875,7 +1008,7 @@ class Payoffs(IVisualize):
         return group_index * 4 + offset_index
 
     @staticmethod
-    def _get_x_coordinate(bar_width, number_bar, spacing):
+    def _get_x_coordinate(bar_width: float, number_bar: int, spacing: float) -> float:
         group_spacing: int = (math.trunc(number_bar / 4) % 4) * 8
         return spacing * (number_bar + 1 + group_spacing) + bar_width * number_bar
 
@@ -909,15 +1042,20 @@ class Overview(IVisualize):
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         spec = self.fig.add_gridspec(ncols=2, nrows=2)
-        ax_characteristics = self.fig.add_subplot(spec[0, 0])
-        ax_payoffs = self.fig.add_subplot(spec[0, 1])
-        ax_timeline = self.fig.add_subplot(spec[1, 0])
-        ax_merger_policies = self.fig.add_subplot(spec[1, 1])
         self.fig.suptitle("${\\bf Model\\thickspace Overview}$")
-        timeline = Timeline(self.model, ax=ax_timeline)
-        payoffs = Payoffs(self.model, ax=ax_payoffs)
-        merger_policies = MergerPoliciesAssetRange(self.model, ax=ax_merger_policies)
-        self._get_model_characteristics_ax(ax_characteristics)
-        timeline.plot(legend=False, parameters=False)
-        payoffs.plot(legend=False)
-        merger_policies.plot(legend=False)
+        self._generate_ax(spec[1, 0], Timeline, **kwargs)
+        self._generate_ax(spec[0, 1], Payoffs, **kwargs)
+        self._generate_ax(spec[1, 1], MergerPoliciesAssetRange, **kwargs)
+        self._generate_characteristics_ax(spec[0, 0])
+
+    def _generate_characteristics_ax(
+        self, coordinates: matplotlib.gridspec.GridSpec
+    ) -> None:
+        ax = self.fig.add_subplot(coordinates)
+        self._get_model_characteristics_ax(ax)
+
+    def _generate_ax(
+        self, coordinates: matplotlib.gridspec.GridSpec, visualizer: Callable, **kwargs
+    ) -> None:
+        ax = self.fig.add_subplot(coordinates)
+        visualizer(self.model, ax=ax).plot(legend=False, parameters=False, **kwargs)

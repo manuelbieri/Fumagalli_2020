@@ -126,5 +126,8 @@ def mock_optimal_merger_policy(
 
     set_outcome(model, **kwargs)
 
+    model.get_optimal_merger_policy = (
+        lambda: FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
+    )
     model.summary = lambda: summary(merger_policy=model.merger_policy)
     return model
