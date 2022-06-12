@@ -335,6 +335,14 @@ class IVisualize:
         return (
             f"{parameter_text}"
             f"${{\\bf {thresholds_title}}}$\n"
+            f"{self._get_model_characteristics_thresholds(separator, newline)}"
+            f"{optimal}"
+        )
+
+    def _get_model_characteristics_thresholds(
+        self, separator: str, newline: str
+    ) -> str:
+        return (
             f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
             f"$F(K) = {self._round_floats(self.model.asset_distribution.cumulative(self.model.development_costs))}${newline}"
             f"$F(\\bar{{A}}) = {self._round_floats(self.model.asset_threshold_cdf)}${separator}"
@@ -343,7 +351,6 @@ class IVisualize:
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
             f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$\n"
-            f"{optimal}"
         )
 
     @staticmethod
@@ -412,14 +419,17 @@ class AssetRange(IVisualize):
         asset_range: list[FMT20.ThresholdItem] = self._get_asset_thresholds()
         summaries: list[FMT20.OptimalMergerPolicySummary] = []
         for i in range(len(asset_range) - 1):
-            self.model.startup_assets = (
-                self.model.asset_distribution.inverse_cumulative(asset_range[i].value)
-                + self.model.asset_distribution.inverse_cumulative(
-                    asset_range[i + 1].value
-                )
-            ) / 2
+            self._set_model_startup_assets(asset_range[i], asset_range[i + 1])
             summaries.append(self.model.summary())
         return summaries
+
+    def _set_model_startup_assets(
+        self, lower_threshold: FMT20.ThresholdItem, upper_threshold: FMT20.ThresholdItem
+    ) -> None:
+        self.model.startup_assets = (
+            self.model.asset_distribution.inverse_cumulative(lower_threshold.value)
+            + self.model.asset_distribution.inverse_cumulative(upper_threshold.value)
+        ) / 2
 
     def _get_asset_thresholds(self) -> list[FMT20.ThresholdItem]:
         """
@@ -440,10 +450,10 @@ class AssetRange(IVisualize):
 
     def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
         return [
-            FMT20.ThresholdItem("$F(0)$", self.model.asset_distribution.cumulative(0)),
+            FMT20.ThresholdItem("$F(0)$", self._get_x_min()),
             FMT20.ThresholdItem(
                 "$F(K)$",
-                self.model.asset_distribution.cumulative(self.model.development_costs),
+                self._get_x_max(),
             ),
             FMT20.ThresholdItem(
                 "$\\Gamma$", self.model.asset_distribution_threshold_welfare
@@ -522,11 +532,7 @@ class AssetRange(IVisualize):
                 self.ax.axvline(threshold.value, linestyle=":", color="k", lw=0.5)
 
     def _valid_x_tick(self, threshold):
-        return (
-            self.model.asset_distribution.cumulative(0)
-            <= threshold.value
-            <= self.model.asset_distribution.cumulative(self.model.development_costs)
-        )
+        return self._get_x_min() <= threshold.value <= self._get_x_max()
 
     @staticmethod
     def _get_y_ticks(
@@ -584,7 +590,9 @@ class AssetRange(IVisualize):
         self._draw_vertical_lines(asset_range)
         self._set_x_axis(asset_range)
         self._set_y_ticks(bar_height, spacing, y_labels)
-        self.ax.set_xlabel("Cumulative Distribution Value of Assets $F(A)$")
+        self.ax.set_xlabel(
+            kwargs.get("x_label", "Cumulative Distribution Value of Assets $F(A)$")
+        )
         self.ax.set_ylabel("Merger Policy")
         self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
         self._set_tight_layout()
@@ -651,9 +659,7 @@ class AssetRange(IVisualize):
         self, show_legend: bool, show_optimal_policy: bool, y_offset: int
     ) -> None:
         if show_legend:
-            x_coordinate = self.model.asset_distribution.cumulative(
-                self.model.development_costs
-            )
+            x_coordinate = self._get_x_max()
             self.ax.annotate(
                 self._get_model_characteristics_latex(
                     separator="\n",
@@ -669,6 +675,12 @@ class AssetRange(IVisualize):
                 verticalalignment="top",
                 fontsize=IVisualize.fontsize,
             )
+
+    def _get_x_max(self):
+        return self.model.asset_distribution.cumulative(self.model.development_costs)
+
+    def _get_x_min(self):
+        return self.model.asset_distribution.cumulative(0)
 
     def _set_secondary_legend(self, x_coordinate: float, show_legend: bool) -> None:
         if show_legend:
@@ -692,12 +704,59 @@ class MergerPoliciesAssetRange(AssetRange):
     ) -> list[list[FMT20.OptimalMergerPolicySummary]]:
         outcomes: list[list[FMT20.OptimalMergerPolicySummary]] = []
         for merger_policy in FMT20.MergerPolicies:
-            self.model.merger_policy = merger_policy
-            outcomes.append(self._get_outcomes_asset_range())
+            try:
+                self.model.merger_policy = merger_policy
+                outcomes.append(self._get_outcomes_asset_range())
+            except AssertionError:
+                pass
         return outcomes
 
     def _get_summaries(self) -> list[list[FMT20.OptimalMergerPolicySummary]]:
         return self._get_outcomes_different_merger_policies()
+
+
+class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
+    def __init__(self, model: FMT20.PerfectInformationModel, **kwargs):
+        super(MergerPoliciesAssetRangePerfectInformation, self).__init__(
+            model, **kwargs
+        )
+
+    def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
+        return [
+            FMT20.ThresholdItem("$0$", 0),
+            FMT20.ThresholdItem(
+                "$K$",
+                self.model.development_costs,
+            ),
+            FMT20.ThresholdItem("$\\bar{A}$", self.model.asset_threshold),
+            FMT20.ThresholdItem(
+                "$\\bar{A}^T$", self.model.asset_threshold_late_takeover
+            ),
+        ]
+
+    def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        kwargs["x_label"] = kwargs.get("x_label", "Start-up Assets $A$")
+        return super(MergerPoliciesAssetRangePerfectInformation, self).plot(**kwargs)
+
+    def _set_model_startup_assets(
+        self, lower_threshold: FMT20.ThresholdItem, upper_threshold: FMT20.ThresholdItem
+    ) -> None:
+        self.model.startup_assets = (lower_threshold.value + upper_threshold.value) / 2
+
+    def _get_x_max(self) -> float:
+        return self.model.development_costs
+
+    def _get_x_min(self) -> float:
+        return 0
+
+    def _get_model_characteristics_thresholds(
+        self, separator: str, newline: str
+    ) -> str:
+        return (
+            f"$K = {self._round_floats(self.model.development_costs)}${separator}"
+            f"$\\bar{{A}} = {self._round_floats(self.model.asset_threshold)}${separator}"
+            f"$\\bar{{A}}^T = {self._round_floats(self.model.asset_threshold_late_takeover)}${separator}"
+        )
 
 
 class Timeline(IVisualize):
@@ -1045,8 +1104,17 @@ class Overview(IVisualize):
         self.fig.suptitle("${\\bf Model\\thickspace Overview}$")
         self._generate_ax(spec[1, 0], Timeline, **kwargs)
         self._generate_ax(spec[0, 1], Payoffs, **kwargs)
-        self._generate_ax(spec[1, 1], MergerPoliciesAssetRange, **kwargs)
+        self._generate_ax(
+            spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
+        )
         self._generate_characteristics_ax(spec[0, 0])
+
+    def _get_merger_policy_asset_range_type(self) -> Callable:
+        return (
+            MergerPoliciesAssetRangePerfectInformation
+            if type(self.model) is FMT20.PerfectInformationModel
+            else MergerPoliciesAssetRange
+        )
 
     def _generate_characteristics_ax(
         self, coordinates: matplotlib.gridspec.GridSpec

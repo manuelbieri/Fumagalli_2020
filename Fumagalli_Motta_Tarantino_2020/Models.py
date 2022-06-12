@@ -445,27 +445,12 @@ class MergerPolicy(BaseModel):
         The levels of tolerated harm are defined in A.4 (p.36ff.). See Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies
         for the available merger policies.
         """
-        # if self.tolerated_harm <= self._calculate_h0():
-        #     return Types.MergerPolicies.Strict
-        # if self.tolerated_harm < self._calculate_h1():
-        #     return Types.MergerPolicies.Intermediate_late_takeover_prohibited
-        # if self.tolerated_harm < self._calculate_h2():
-        #     return Types.MergerPolicies.Intermediate_late_takeover_allowed
         return self._merger_policy
 
     @merger_policy.setter
     def merger_policy(self, merger_policy: Types.MergerPolicies) -> None:
         self._merger_policy = merger_policy
-        # if merger_policy is Types.MergerPolicies.Strict:
-        #     self.tolerated_harm = 0
-        # elif (
-        #     merger_policy is Types.MergerPolicies.Intermediate_late_takeover_prohibited
-        # ):
-        #     self.tolerated_harm = (self._calculate_h0() + self._calculate_h1()) / 2
-        # elif merger_policy is Types.MergerPolicies.Intermediate_late_takeover_allowed:
-        #     self.tolerated_harm = (self._calculate_h1() + self._calculate_h2()) / 2
-        # else:
-        #     self.tolerated_harm = self._calculate_h2() + 1
+        self._check_merger_policy()
         self._recalculate_model()
 
     @property

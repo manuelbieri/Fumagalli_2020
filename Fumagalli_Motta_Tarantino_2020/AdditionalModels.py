@@ -1,3 +1,4 @@
+import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
@@ -112,7 +113,22 @@ class MicroFoundationModel(FMT20.OptimalMergerPolicy):
 
 
 class PerfectInformationModel(FMT20.OptimalMergerPolicy):
-    # TODO: Intermediate late takeover prohibited not available in this model
+    def __init__(
+        self,
+        merger_policy: Types.MergerPolicies = Types.MergerPolicies.Strict,
+        **kwargs
+    ):
+        super(PerfectInformationModel, self).__init__(
+            merger_policy=merger_policy, **kwargs
+        )
+
+    def _check_merger_policy(self):
+        super(PerfectInformationModel, self)._check_merger_policy()
+        assert (
+            self.merger_policy
+            is not Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        ), "This merger policy is not available in this model"
+
     def _solve_game_strict_merger_policy(self) -> None:
         assert self.merger_policy is FMT20.MergerPolicies.Strict
         if (
@@ -181,5 +197,3 @@ class EquityContract(FMT20.OptimalMergerPolicy):
         ]:
             return True
         return False
-
-    # TODO: Adjust optimal merger policies

@@ -154,3 +154,22 @@ class TestVisualize(unittest.TestCase):
         self.setUpMock()
         self.setUpVisualizer(self.mock, plot_type="Overview", default_style=False)
         self.view_plot(show=(TestVisualize.show_plots or TestVisualize.show_always))
+
+    def test_perfect_information_asset_range(self):
+        self.model = FMT20.PerfectInformationModel(
+            **FMT20.LoadParameters(config_id=50)()
+        )
+        self.visualizer = FMT20.MergerPoliciesAssetRangePerfectInformation(self.model)
+        self.view_plot(
+            show=TestVisualize.show_plots,
+            thresholds=True,
+            optimal_policy=True,
+            y_offset=-50,
+        )
+
+    def test_perfect_information_overview(self):
+        self.model = FMT20.PerfectInformationModel(
+            **FMT20.LoadParameters(config_id=51)()
+        )
+        self.visualizer = FMT20.Overview(self.model)
+        self.view_plot(show=TestVisualize.show_plots)

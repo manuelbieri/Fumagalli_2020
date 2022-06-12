@@ -21,7 +21,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.test_startup_profit_duopoly = self.test_incumbent_profit_duopoly
         self.test_cs_duopoly = 1.3 / (2.3**2)
 
-    def get_welfare_value(self, market_situation: str) -> float:
+    def get_welfare_value(self, market_situation: str, **kwargs) -> float:
         if market_situation == "duopoly":
             return (
                 self.test_cs_duopoly
@@ -152,6 +152,23 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
 class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.PerfectInformationModel(**kwargs)
+
+    def test_tolerated_harm_intermediate_late_takeover_allowed(self):
+        self.assertRaises(
+            AssertionError,
+            lambda: FMT20.PerfectInformationModel(
+                merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
+            ),
+        )
+
+    def test_set_invalid_merger_policy(self):
+        self.setupModel()
+        self.assertRaises(
+            AssertionError,
+            lambda: FMT20.PerfectInformationModel.merger_policy.fset(
+                self.model, FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
+            ),
+        )
 
     def test_laissez_faire_optimal_merger_policy(self):
         self.setupModel()
