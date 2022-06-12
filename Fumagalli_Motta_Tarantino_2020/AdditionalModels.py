@@ -197,3 +197,9 @@ class EquityContract(FMT20.OptimalMergerPolicy):
         ]:
             return True
         return False
+
+    def is_intermediate_optimal(self) -> bool:
+        return False
+
+    def is_laissez_faire_optimal(self) -> bool:
+        return False

@@ -416,9 +416,25 @@ class TestEquityModel(Test.TestOptimalMergerPolicyModel):
         self.setupModel(merger_policy=FMT20.MergerPolicies.Laissez_faire)
         self.assertTrue(self.model.does_startup_strictly_prefer_debt())
 
-    # TODO: Adjust optimal merger policies tests.
-    def test_laissez_faire_optimal_merger_policy(self):
-        pass
-
     def test_intermediate_optimal_merger_policy(self):
-        pass
+        self.setupModel(
+            private_benefit=0.09,
+            startup_profit_duopoly=0.15,
+            incumbent_profit_duopoly=0.16,
+            incumbent_profit_without_innovation=0.36,
+        )
+        self.assertFalse(self.model.is_intermediate_optimal())
+
+    def test_laissez_faire_optimal_merger_policy(self):
+        self.setupModel(
+            development_costs=3,
+            private_benefit=2,
+            consumer_surplus_with_innovation=4,
+            consumer_surplus_duopoly=6,
+            consumer_surplus_without_innovation=2,
+            incumbent_profit_duopoly=1,
+            incumbent_profit_without_innovation=3,
+            incumbent_profit_with_innovation=7,
+            startup_profit_duopoly=5,
+        )
+        self.assertFalse(self.model.is_laissez_faire_optimal())
