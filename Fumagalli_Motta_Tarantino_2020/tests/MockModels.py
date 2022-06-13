@@ -120,6 +120,7 @@ def mock_optimal_merger_policy(
     type(model).asset_distribution_threshold_with_late_takeover = 0.8
     type(model).asset_threshold_cdf = 0.9
     type(model).asset_distribution_threshold_unprofitable_without_late_takeover = 1
+    type(model).asset_distribution_threshold_shelving_approved = 0.91
     type(model).early_bidding_type = FMT20.Takeover.Separating
     type(model).late_bidding_type = FMT20.Takeover.Pooling
     model.asset_distribution = FMT20.Utilities.NormalDistributionFunction

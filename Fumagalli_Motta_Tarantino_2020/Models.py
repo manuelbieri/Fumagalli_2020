@@ -1092,7 +1092,7 @@ class OptimalMergerPolicy(MergerPolicy):
         return (
             self.is_incumbent_expected_to_shelve()
             and self.is_financial_imperfection_severe()
-            and self.is_shelving_after_early_takeover_optimal()
+            and not self.is_intermediate_policy_feasible()
             and not self.is_competition_effect_dominating()
         )
 
@@ -1113,7 +1113,7 @@ class OptimalMergerPolicy(MergerPolicy):
         """
         return (
             self.is_incumbent_expected_to_shelve()
-            and not self.is_shelving_after_early_takeover_optimal()
+            and self.is_intermediate_policy_feasible()
             and not self.is_competition_effect_dominating()
         )
 
@@ -1161,7 +1161,7 @@ class OptimalMergerPolicy(MergerPolicy):
             >= self.asset_distribution_threshold_with_late_takeover
         )
 
-    def is_shelving_after_early_takeover_optimal(self) -> bool:
+    def is_intermediate_policy_feasible(self) -> bool:
         """
         If the harm to welfare caused by an early takeover is lower than the one, caused by a late takeover, then also
         early takeovers must be approved, even in the case of a pooling offer followed by shelving. Such a scenario occurs
@@ -1174,13 +1174,11 @@ class OptimalMergerPolicy(MergerPolicy):
         """
         return (
             self.asset_threshold_late_takeover_cdf
-            >= self.asset_distribution_threshold_intermediate_approval_despite_shelving
+            < self.asset_distribution_threshold_shelving_approved
         )
 
     @property
-    def asset_distribution_threshold_intermediate_approval_despite_shelving(
-        self,
-    ) -> float:
+    def asset_distribution_threshold_shelving_approved(self) -> float:
         """
         Threshold defined in Condition 5 :$\\;\\Lambda(\\cdot)=\\frac{p(W^M-W^m)-K-(W^d-W^M)}{p(W^M-W^m)-K}$
         """

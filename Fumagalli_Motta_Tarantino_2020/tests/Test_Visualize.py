@@ -49,7 +49,7 @@ class TestVisualize(unittest.TestCase):
         self.setUpMock(asset_threshold=2, asset_threshold_late_takeover=1)
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         thresholds = self.visualizer._get_essential_thresholds()
-        self.assertEqual(6, len(thresholds))
+        self.assertEqual(7, len(thresholds))
         self.assertEqual("$F(0)$", thresholds[0].name)
         self.assertEqual("$F(K)$", thresholds[-1].name)
 
@@ -57,7 +57,7 @@ class TestVisualize(unittest.TestCase):
         self.setUpMock()
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         thresholds = self.visualizer._get_essential_thresholds()
-        self.assertEqual(6, len(thresholds))
+        self.assertEqual(7, len(thresholds))
         self.assertEqual(thresholds[0].value, 0.5)
         self.assertEqual(thresholds[-1].name, "$F(K)$")
 
@@ -68,7 +68,7 @@ class TestVisualize(unittest.TestCase):
         )
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         outcomes = self.visualizer._get_outcomes_asset_range()
-        self.assertEqual(5, len(outcomes))
+        self.assertEqual(6, len(outcomes))
         self.assertTrue(outcomes[0].credit_rationed)
         self.assertFalse(outcomes[0].development_outcome)
         self.assertTrue(outcomes[1].credit_rationed)
@@ -95,7 +95,7 @@ class TestVisualize(unittest.TestCase):
         mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
         mock2.development_costs = 0.3
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
-        self.assertEqual(6, len(self.visualizer._thresholds))
+        self.assertEqual(7, len(self.visualizer._thresholds))
         self.visualizer.set_model(mock2)
         self.assertEqual(3, len(self.visualizer._thresholds))
 

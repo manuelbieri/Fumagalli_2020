@@ -102,9 +102,9 @@ class IVisualize:
         for entry in legend.legendHandles:
             entry.set_alpha(1)
 
-    def _set_tight_layout(self, spacing: float = None) -> None:
-        if spacing is not None:
-            self.ax.margins(y=spacing, x=0)
+    def _set_tight_layout(self, y_spacing: float = None, x_spacing: float=0) -> None:
+        if y_spacing is not None or x_spacing is not None:
+            self.ax.margins(y=y_spacing, x=x_spacing)
         self.fig.tight_layout()
 
     @abstractmethod
@@ -353,6 +353,7 @@ class IVisualize:
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
             f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$\n"
+            f"$\Lambda(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_shelving_approved)}$\n"
         )
 
     def _get_asset_distribution_value(self, value: float) -> float:
@@ -497,6 +498,7 @@ class AssetRange(IVisualize):
             FMT20.ThresholdItem(
                 "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
             ),
+            FMT20.ThresholdItem("$\\Lambda(\\cdot)$", self.model.asset_distribution_threshold_shelving_approved)
         ]
 
     def _get_x_labels_ticks(self) -> (list[float], list[str]):
@@ -603,7 +605,7 @@ class AssetRange(IVisualize):
         self._set_x_axis(**kwargs)
         self._set_y_axis(bar_height, spacing, y_labels)
         self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
-        self._set_tight_layout(spacing=0)
+        self._set_tight_layout(y_spacing=spacing)
         return self.fig, self.ax
 
     def _set_y_axis(self, bar_height, spacing, y_labels):
@@ -930,7 +932,7 @@ class Timeline(IVisualize):
         self._draw_timeline(kwargs)
         self._set_x_axis()
         self._set_y_axis()
-        self._set_tight_layout(spacing=0.45)
+        self._set_tight_layout(y_spacing=0.45, x_spacing=0.01)
         return self.fig, self.ax
 
     def _draw_timeline(self, kwargs):
