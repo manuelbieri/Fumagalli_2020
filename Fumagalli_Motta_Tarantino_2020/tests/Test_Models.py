@@ -46,6 +46,18 @@ class TestBaseModel(CoreTest):
     def test_valid_setup_default_values(self):
         self.setupModel()
 
+    def test_uniform_distribution(self):
+        self.setupModel(
+            asset_distribution=FMT20.Utilities.UniformDistributionFunction,
+            standard_distribution=False,
+        )
+        self.assertEqual(
+            1,
+            self.model.asset_distribution.cumulative(
+                self.model.development_costs, **self.model.asset_distribution_kwargs
+            ),
+        )
+
 
 class TestProperties(TestBaseModel):
     def setUp(self) -> None:

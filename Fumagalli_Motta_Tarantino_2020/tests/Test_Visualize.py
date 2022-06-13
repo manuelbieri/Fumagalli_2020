@@ -161,10 +161,10 @@ class TestVisualize(unittest.TestCase):
         )
         self.visualizer = FMT20.MergerPoliciesAssetRangePerfectInformation(self.model)
         self.view_plot(
-            show=TestVisualize.show_plots,
+            show=TestVisualize.show_plots or True,
             thresholds=True,
             optimal_policy=True,
-            y_offset=-50,
+            y_offset=-40,
         )
 
     def test_perfect_information_overview(self):

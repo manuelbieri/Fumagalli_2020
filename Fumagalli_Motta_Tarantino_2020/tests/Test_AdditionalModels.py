@@ -155,7 +155,7 @@ class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
 
     def test_tolerated_harm_intermediate_late_takeover_allowed(self):
         self.assertRaises(
-            AssertionError,
+            FMT20.Exceptions.MergerPolicyNotAvailable,
             lambda: FMT20.PerfectInformationModel(
                 merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
             ),
@@ -164,7 +164,7 @@ class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
     def test_set_invalid_merger_policy(self):
         self.setupModel()
         self.assertRaises(
-            AssertionError,
+            FMT20.Exceptions.MergerPolicyNotAvailable,
             lambda: FMT20.PerfectInformationModel.merger_policy.fset(
                 self.model, FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
             ),

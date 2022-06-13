@@ -53,6 +53,7 @@ class BaseModel:
         asset_distribution: Union[
             Utilities.NormalDistributionFunction, Utilities.UniformDistributionFunction
         ] = Utilities.NormalDistributionFunction,
+        **kwargs,
     ):
         """
         Initializes a valid base model according to the assumptions given in the paper.
@@ -124,9 +125,19 @@ class BaseModel:
 
         # set asset distribution
         self.asset_distribution = asset_distribution
+        self._set_asset_distribution_kwargs(**kwargs)
 
         # pre-conditions given for the parameters (p.6-8)
         self._check_preconditions()
+
+    def _set_asset_distribution_kwargs(self, **kwargs) -> None:
+        if not kwargs.get("standard_distribution", True):
+            self.asset_distribution_kwargs = {
+                "loc": 0,
+                "scale": self.development_costs,
+            }
+        else:
+            self.asset_distribution_kwargs = {}
 
     def _check_preconditions(self):
         self._check_merger_policy()
@@ -487,7 +498,9 @@ class MergerPolicy(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold.
         """
-        return self.asset_distribution.cumulative(self.asset_threshold)
+        return self.asset_distribution.cumulative(
+            self.asset_threshold, **self.asset_distribution_kwargs
+        )
 
     @property
     def asset_threshold_late_takeover(self) -> float:
@@ -505,7 +518,9 @@ class MergerPolicy(BaseModel):
         """
         Returns the value of the continuous distribution function for the asset threshold under laissez-faire.
         """
-        return self.asset_distribution.cumulative(self.asset_threshold_late_takeover)
+        return self.asset_distribution.cumulative(
+            self.asset_threshold_late_takeover, **self.asset_distribution_kwargs
+        )
 
     @BaseModel.startup_assets.setter
     def startup_assets(self, value: float) -> None:

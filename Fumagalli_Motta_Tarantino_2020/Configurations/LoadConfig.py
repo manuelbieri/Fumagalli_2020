@@ -2,7 +2,7 @@ import csv
 import os.path
 from typing import Optional
 
-import Fumagalli_Motta_Tarantino_2020.Configurations.Exceptions as Exceptions
+import Fumagalli_Motta_Tarantino_2020.Configurations.ConfigExceptions as Exceptions
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 

@@ -83,8 +83,8 @@ class IVisualize:
         else:
             plt.style.use("default")
 
-    def set_model(self, m: FMT20.OptimalMergerPolicy) -> None:
-        self.model = m
+    def set_model(self, model: FMT20.OptimalMergerPolicy) -> None:
+        self.model = model
         self.ax.clear()
         self._reset_legend()
         self._set_axes(self.ax)
@@ -343,14 +343,24 @@ class IVisualize:
         self, separator: str, newline: str
     ) -> str:
         return (
-            f"$F(0) = {self._round_floats(self.model.asset_distribution.cumulative(0))}${separator}"
-            f"$F(K) = {self._round_floats(self.model.asset_distribution.cumulative(self.model.development_costs))}${newline}"
+            f"$F(0) = {self._round_floats(self._get_asset_distribution_value(0))}${separator}"
+            f"$F(K) = {self._round_floats(self._get_asset_distribution_value(self.model.development_costs))}${newline}"
             f"$F(\\bar{{A}}) = {self._round_floats(self.model.asset_threshold_cdf)}${separator}"
             f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${separator}"
             f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_welfare)}${separator}"
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
             f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$\n"
+        )
+
+    def _get_asset_distribution_value(self, value: float) -> float:
+        return self.model.asset_distribution.cumulative(
+            value, **self.model.asset_distribution_kwargs
+        )
+
+    def _get_inverse_asset_distribution_value(self, value: float) -> float:
+        return self.model.asset_distribution.inverse_cumulative(
+            value, **self.model.asset_distribution_kwargs
         )
 
     @staticmethod
@@ -427,8 +437,8 @@ class AssetRange(IVisualize):
         self, lower_threshold: FMT20.ThresholdItem, upper_threshold: FMT20.ThresholdItem
     ) -> None:
         self.model.startup_assets = (
-            self.model.asset_distribution.inverse_cumulative(lower_threshold.value)
-            + self.model.asset_distribution.inverse_cumulative(upper_threshold.value)
+            self._get_inverse_asset_distribution_value(lower_threshold.value)
+            + self._get_inverse_asset_distribution_value(upper_threshold.value)
         ) / 2
 
     def _get_asset_thresholds(self) -> list[FMT20.ThresholdItem]:
@@ -450,10 +460,11 @@ class AssetRange(IVisualize):
 
     def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
         return [
-            FMT20.ThresholdItem("$F(0)$", self._get_x_min()),
+            FMT20.ThresholdItem("$F(0)$", self._get_x_min(), include=True),
             FMT20.ThresholdItem(
                 "$F(K)$",
                 self._get_x_max(),
+                include=True,
             ),
             FMT20.ThresholdItem(
                 "$\\Gamma$", self.model.asset_distribution_threshold_welfare
@@ -528,11 +539,13 @@ class AssetRange(IVisualize):
 
     def _draw_vertical_lines(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
         for threshold in asset_thresholds:
-            if self._valid_x_tick(threshold):
+            if self._valid_x_tick(threshold) or threshold.include:
                 self.ax.axvline(threshold.value, linestyle=":", color="k", lw=0.5)
 
     def _valid_x_tick(self, threshold):
-        return self._get_x_min() <= threshold.value <= self._get_x_max()
+        return (
+            self._get_x_min() < threshold.value < self._get_x_max()
+        ) or threshold.include
 
     @staticmethod
     def _get_y_ticks(
@@ -660,6 +673,7 @@ class AssetRange(IVisualize):
     ) -> None:
         if show_legend:
             x_coordinate = self._get_x_max()
+            y_coordinate = self._get_y_max()
             self.ax.annotate(
                 self._get_model_characteristics_latex(
                     separator="\n",
@@ -668,7 +682,7 @@ class AssetRange(IVisualize):
                     thresholds_title="",
                     optimal_policy=show_optimal_policy,
                 ),
-                xy=(x_coordinate, 1),
+                xy=(x_coordinate, y_coordinate),
                 xytext=(10, y_offset),
                 textcoords="offset points",
                 horizontalalignment="left",
@@ -676,11 +690,15 @@ class AssetRange(IVisualize):
                 fontsize=IVisualize.fontsize,
             )
 
+    @staticmethod
+    def _get_y_max() -> float:
+        return 1
+
     def _get_x_max(self):
-        return self.model.asset_distribution.cumulative(self.model.development_costs)
+        return self._get_asset_distribution_value(self.model.development_costs)
 
     def _get_x_min(self):
-        return self.model.asset_distribution.cumulative(0)
+        return self._get_asset_distribution_value(0)
 
     def _set_secondary_legend(self, x_coordinate: float, show_legend: bool) -> None:
         if show_legend:
@@ -707,7 +725,7 @@ class MergerPoliciesAssetRange(AssetRange):
             try:
                 self.model.merger_policy = merger_policy
                 outcomes.append(self._get_outcomes_asset_range())
-            except AssertionError:
+            except FMT20.Exceptions.MergerPolicyNotAvailable:
                 pass
         return outcomes
 
@@ -723,11 +741,8 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
 
     def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
         return [
-            FMT20.ThresholdItem("$0$", 0),
-            FMT20.ThresholdItem(
-                "$K$",
-                self.model.development_costs,
-            ),
+            FMT20.ThresholdItem("$0$", self._get_x_min(), include=True),
+            FMT20.ThresholdItem("$K$", self._get_x_max(), include=True),
             FMT20.ThresholdItem("$\\bar{A}$", self.model.asset_threshold),
             FMT20.ThresholdItem(
                 "$\\bar{A}^T$", self.model.asset_threshold_late_takeover
@@ -742,6 +757,10 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
         self, lower_threshold: FMT20.ThresholdItem, upper_threshold: FMT20.ThresholdItem
     ) -> None:
         self.model.startup_assets = (lower_threshold.value + upper_threshold.value) / 2
+
+    @staticmethod
+    def _get_y_max() -> float:
+        return 0.55
 
     def _get_x_max(self) -> float:
         return self.model.development_costs

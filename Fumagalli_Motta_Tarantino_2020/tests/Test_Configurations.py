@@ -42,5 +42,5 @@ class TestLoadParameters(unittest.TestCase):
 
     def test_load_unavailable_id(self):
         self.assertRaises(
-            FMT20.Exceptions.IDNotAvailableError, lambda: self.setUpModel(0)
+            FMT20.ConfigExceptions.IDNotAvailableError, lambda: self.setUpModel(0)
         )

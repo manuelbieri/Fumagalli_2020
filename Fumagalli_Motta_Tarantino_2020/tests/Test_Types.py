@@ -39,3 +39,11 @@ class TestThresholdItem(unittest.TestCase):
             Types.ThresholdItem("c", 3),
         ]
         self.assertEqual(1, min(item.value for item in threshold_items))
+
+    def test_include(self):
+        threshold_items = [
+            Types.ThresholdItem("a", 1, include=True),
+            Types.ThresholdItem("b", 2),
+        ]
+        include_items = [item for item in threshold_items if item.include]
+        self.assertEqual(1, len(include_items))

@@ -124,10 +124,13 @@ class PerfectInformationModel(FMT20.OptimalMergerPolicy):
 
     def _check_merger_policy(self):
         super(PerfectInformationModel, self)._check_merger_policy()
-        assert (
+        if (
             self.merger_policy
-            is not Types.MergerPolicies.Intermediate_late_takeover_prohibited
-        ), "This merger policy is not available in this model"
+            is Types.MergerPolicies.Intermediate_late_takeover_prohibited
+        ):
+            raise FMT20.Exceptions.MergerPolicyNotAvailable(
+                "This merger policy is not available in this model"
+            )
 
     def _solve_game_strict_merger_policy(self) -> None:
         assert self.merger_policy is FMT20.MergerPolicies.Strict
