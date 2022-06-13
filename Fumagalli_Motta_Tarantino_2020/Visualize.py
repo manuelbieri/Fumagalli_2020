@@ -102,7 +102,7 @@ class IVisualize:
         for entry in legend.legendHandles:
             entry.set_alpha(1)
 
-    def _set_tight_layout(self, y_spacing: float = None, x_spacing: float=0) -> None:
+    def _set_tight_layout(self, y_spacing: float = None, x_spacing: float = 0) -> None:
         if y_spacing is not None or x_spacing is not None:
             self.ax.margins(y=y_spacing, x=x_spacing)
         self.fig.tight_layout()
@@ -498,7 +498,10 @@ class AssetRange(IVisualize):
             FMT20.ThresholdItem(
                 "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
             ),
-            FMT20.ThresholdItem("$\\Lambda(\\cdot)$", self.model.asset_distribution_threshold_shelving_approved)
+            FMT20.ThresholdItem(
+                "$\\Lambda(\\cdot)$",
+                self.model.asset_distribution_threshold_shelving_approved,
+            ),
         ]
 
     def _get_x_labels_ticks(self) -> (list[float], list[str]):
