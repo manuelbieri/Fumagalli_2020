@@ -125,13 +125,13 @@ class BaseModel:
 
         # set asset distribution
         self.asset_distribution = asset_distribution
-        self._set_asset_distribution_kwargs(**kwargs)
+        self._set_asset_distribution_kwargs()
 
         # pre-conditions given for the parameters (p.6-8)
         self._check_preconditions()
 
-    def _set_asset_distribution_kwargs(self, **kwargs) -> None:
-        if not kwargs.get("standard_distribution", True):
+    def _set_asset_distribution_kwargs(self) -> None:
+        if self.asset_distribution is Utilities.UniformDistributionFunction:
             self.asset_distribution_kwargs = {
                 "loc": 0,
                 "scale": self.development_costs,

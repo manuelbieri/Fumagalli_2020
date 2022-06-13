@@ -48,7 +48,7 @@ class TestVisualize(unittest.TestCase):
     def test_essential_asset_thresholds(self):
         self.setUpMock(asset_threshold=2, asset_threshold_late_takeover=1)
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
-        thresholds = self.visualizer._get_asset_thresholds()
+        thresholds = self.visualizer._get_essential_thresholds()
         self.assertEqual(6, len(thresholds))
         self.assertEqual("$F(0)$", thresholds[0].name)
         self.assertEqual("$F(K)$", thresholds[-1].name)
@@ -56,7 +56,7 @@ class TestVisualize(unittest.TestCase):
     def test_essential_asset_thresholds_negative_values(self):
         self.setUpMock()
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
-        thresholds = self.visualizer._get_asset_thresholds()
+        thresholds = self.visualizer._get_essential_thresholds()
         self.assertEqual(6, len(thresholds))
         self.assertEqual(thresholds[0].value, 0.5)
         self.assertEqual(thresholds[-1].name, "$F(K)$")
@@ -89,6 +89,15 @@ class TestVisualize(unittest.TestCase):
         self.setUpMock(asset_threshold=3, asset_threshold_late_takeover=1)
         self.setUpVisualizer(self.mock)
         self.view_plot(show=TestVisualize.show_plots)
+
+    def test_asset_range_set_model(self):
+        self.setUpMock()
+        mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
+        mock2.development_costs = 0.3
+        self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
+        self.assertEqual(6, len(self.visualizer._thresholds))
+        self.visualizer.set_model(mock2)
+        self.assertEqual(3, len(self.visualizer._thresholds))
 
     def test_outcomes_merger_policies(self):
         self.setUpMock(
@@ -161,7 +170,7 @@ class TestVisualize(unittest.TestCase):
         )
         self.visualizer = FMT20.MergerPoliciesAssetRangePerfectInformation(self.model)
         self.view_plot(
-            show=TestVisualize.show_plots or True,
+            show=TestVisualize.show_plots,
             thresholds=True,
             optimal_policy=True,
             y_offset=-40,

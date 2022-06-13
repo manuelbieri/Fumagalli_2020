@@ -413,6 +413,18 @@ class AssetRange(IVisualize):
         super(AssetRange, self).__init__(model, **kwargs)
         self.labels: list[str] = []
         self.colors: dict[str, str] = {}
+        self._thresholds: list[FMT20.ThresholdItem] = self._get_essential_thresholds()
+        self._check_thresholds()
+
+    def _check_thresholds(self) -> None:
+        assert (
+            self._thresholds is not None and len(self._thresholds) >= 2
+        ), "Essential thresholds are not valid"
+
+    def set_model(self, model: FMT20.OptimalMergerPolicy) -> None:
+        super(AssetRange, self).set_model(model)
+        self._thresholds = self._get_essential_thresholds()
+        self._check_thresholds()
 
     def _get_outcomes_asset_range(
         self,
@@ -426,10 +438,9 @@ class AssetRange(IVisualize):
         (list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.FMT20.OptimalMergerPolicySummary])
             List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
         """
-        asset_range: list[FMT20.ThresholdItem] = self._get_asset_thresholds()
         summaries: list[FMT20.OptimalMergerPolicySummary] = []
-        for i in range(len(asset_range) - 1):
-            self._set_model_startup_assets(asset_range[i], asset_range[i + 1])
+        for i in range(len(self._thresholds) - 1):
+            self._set_model_startup_assets(self._thresholds[i], self._thresholds[i + 1])
             summaries.append(self.model.summary())
         return summaries
 
@@ -441,7 +452,7 @@ class AssetRange(IVisualize):
             + self._get_inverse_asset_distribution_value(upper_threshold.value)
         ) / 2
 
-    def _get_asset_thresholds(self) -> list[FMT20.ThresholdItem]:
+    def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
         """
         Generates a list with all essential threshold concerning the assets of a start-up.
 
@@ -450,7 +461,7 @@ class AssetRange(IVisualize):
         list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem]
             List containing the essential asset thresholds in the model.
         """
-        thresholds = self._get_essential_thresholds()
+        thresholds = self._get_available_thresholds()
         essential_thresholds: list[FMT20.ThresholdItem] = []
         for threshold in thresholds:
             if self._valid_x_tick(threshold):
@@ -458,7 +469,7 @@ class AssetRange(IVisualize):
         thresholds = sorted(essential_thresholds, key=lambda x: x.value)
         return thresholds
 
-    def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
+    def _get_available_thresholds(self) -> list[FMT20.ThresholdItem]:
         return [
             FMT20.ThresholdItem("$F(0)$", self._get_x_min(), include=True),
             FMT20.ThresholdItem(
@@ -486,16 +497,9 @@ class AssetRange(IVisualize):
             ),
         ]
 
-    def _get_x_labels_ticks(
-        self, asset_thresholds: list[FMT20.ThresholdItem]
-    ) -> (list[float], list[str]):
+    def _get_x_labels_ticks(self) -> (list[float], list[str]):
         """
         Generates the locations of the ticks on the x-axis and the corresponding labels on the x-axis.
-
-        Parameters
-        ----------
-        asset_thresholds: list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem]
-            List with all threshold the assets.
 
         Returns
         -------
@@ -504,14 +508,13 @@ class AssetRange(IVisualize):
         """
         x_ticks: list[float] = []
         x_labels: list[str] = []
-        for threshold in asset_thresholds:
-            if self._valid_x_tick(threshold):
-                x_ticks.append(threshold.value)
-                x_labels.append(threshold.name)
+        for threshold in self._thresholds:
+            x_ticks.append(threshold.value)
+            x_labels.append(threshold.name)
         return x_ticks, x_labels
 
-    def _set_x_axis(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
-        x_ticks, x_labels = self._get_x_labels_ticks(asset_thresholds)
+    def _set_x_axis(self) -> None:
+        x_ticks, x_labels = self._get_x_labels_ticks()
         self._set_x_locators(x_ticks)
         self._set_x_labels(x_labels)
         self._set_x_ticks()
@@ -584,24 +587,24 @@ class AssetRange(IVisualize):
         return [self._get_outcomes_asset_range()]
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
-        asset_range = self._get_asset_thresholds()
         merger_policies_summaries = self._get_summaries()
-        assert asset_range is not None
         assert merger_policies_summaries is not None
         self._clear_legend_list()
         bar_height, spacing, y_labels = self._draw_all_bars(
-            asset_range, merger_policies_summaries, **kwargs
+            merger_policies_summaries, **kwargs
         )
         self._set_primary_legend()
-        self._set_secondary_legend(asset_range[0].value, kwargs.get("legend", True))
+        self._set_secondary_legend(
+            self._thresholds[0].value, kwargs.get("legend", True)
+        )
         self._set_threshold_legend(
             kwargs.get("thresholds", False),
             kwargs.get("optimal_policy", False),
             kwargs.get("y_offset", 0),
         )
         self.ax.margins(y=spacing, x=0)
-        self._draw_vertical_lines(asset_range)
-        self._set_x_axis(asset_range)
+        self._draw_vertical_lines(self._thresholds)
+        self._set_x_axis()
         self._set_y_ticks(bar_height, spacing, y_labels)
         self.ax.set_xlabel(
             kwargs.get("x_label", "Cumulative Distribution Value of Assets $F(A)$")
@@ -616,7 +619,7 @@ class AssetRange(IVisualize):
         self.colors.clear()
 
     def _draw_all_bars(
-        self, asset_range, merger_policies_summaries, **kwargs
+        self, merger_policies_summaries, **kwargs
     ) -> (float, float, list[str]):
         spacing: float = kwargs.get("spacing", 0.1)
         bar_height: float = kwargs.get("bar_height", 0.2)
@@ -625,24 +628,24 @@ class AssetRange(IVisualize):
             y_labels.append(summaries[0].set_policy.abbreviation())
             for summary_index, summary in enumerate(summaries):
                 label: str = self._get_summary_latex(summary)
-                length: float = self._get_bar_length(asset_range, summary_index)
+                length: float = self._get_bar_length(summary_index)
                 y_coordinate = self._get_bar_y_coordinate(
                     bar_height, number_merger_policy, spacing
                 )
                 self._draw_bar(
                     y_coordinate,
-                    asset_range[summary_index].value,
+                    self._thresholds[summary_index].value,
                     bar_height,
                     length,
                     label,
                 )
         return bar_height, spacing, y_labels
 
-    @staticmethod
-    def _get_bar_length(
-        asset_range: list[FMT20.ThresholdItem], summary_index: int
-    ) -> float:
-        return asset_range[summary_index + 1].value - asset_range[summary_index].value
+    def _get_bar_length(self, summary_index: int) -> float:
+        return (
+            self._thresholds[summary_index + 1].value
+            - self._thresholds[summary_index].value
+        )
 
     @staticmethod
     def _get_bar_y_coordinate(
@@ -739,7 +742,7 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
             model, **kwargs
         )
 
-    def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
+    def _get_available_thresholds(self) -> list[FMT20.ThresholdItem]:
         return [
             FMT20.ThresholdItem("$0$", self._get_x_min(), include=True),
             FMT20.ThresholdItem("$K$", self._get_x_max(), include=True),
