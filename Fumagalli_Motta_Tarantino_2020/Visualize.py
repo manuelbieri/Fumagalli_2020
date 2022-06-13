@@ -102,8 +102,10 @@ class IVisualize:
         for entry in legend.legendHandles:
             entry.set_alpha(1)
 
-    def _set_tight_layout(self) -> None:
+    def _set_tight_layout(self, spacing: float = None) -> None:
         self.fig.tight_layout()
+        if spacing is not None:
+            self.ax.margins(y=spacing, x=0)
 
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -513,11 +515,14 @@ class AssetRange(IVisualize):
             x_labels.append(threshold.name)
         return x_ticks, x_labels
 
-    def _set_x_axis(self) -> None:
+    def _set_x_axis(self, **kwargs) -> None:
         x_ticks, x_labels = self._get_x_labels_ticks()
         self._set_x_locators(x_ticks)
         self._set_x_labels(x_labels)
         self._set_x_ticks()
+        self.ax.set_xlabel(
+            kwargs.get("x_label", "Cumulative Distribution Value of Assets $F(A)$")
+        )
 
     def _set_x_ticks(self) -> None:
         self.ax.tick_params(
@@ -593,6 +598,19 @@ class AssetRange(IVisualize):
         bar_height, spacing, y_labels = self._draw_all_bars(
             merger_policies_summaries, **kwargs
         )
+        self._set_asset_range_legends(**kwargs)
+        self._draw_vertical_lines(self._thresholds)
+        self._set_x_axis(**kwargs)
+        self._set_y_axis(bar_height, spacing, y_labels)
+        self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
+        self._set_tight_layout(spacing=0)
+        return self.fig, self.ax
+
+    def _set_y_axis(self, bar_height, spacing, y_labels):
+        self._set_y_ticks(bar_height, spacing, y_labels)
+        self.ax.set_ylabel("Merger Policy")
+
+    def _set_asset_range_legends(self, **kwargs):
         self._set_primary_legend()
         self._set_secondary_legend(
             self._thresholds[0].value, kwargs.get("legend", True)
@@ -602,17 +620,6 @@ class AssetRange(IVisualize):
             kwargs.get("optimal_policy", False),
             kwargs.get("y_offset", 0),
         )
-        self.ax.margins(y=spacing, x=0)
-        self._draw_vertical_lines(self._thresholds)
-        self._set_x_axis()
-        self._set_y_ticks(bar_height, spacing, y_labels)
-        self.ax.set_xlabel(
-            kwargs.get("x_label", "Cumulative Distribution Value of Assets $F(A)$")
-        )
-        self.ax.set_ylabel("Merger Policy")
-        self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
-        self._set_tight_layout()
-        return self.fig, self.ax
 
     def _clear_legend_list(self) -> None:
         self.labels.clear()
@@ -788,8 +795,10 @@ class Timeline(IVisualize):
 
     def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs):
         super(Timeline, self).__init__(model, **kwargs)
+        self.stem_levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
+        self._x_ticks = list(range(len(self.stem_levels)))
 
-    def _prepare_content(self) -> (list[str], list[str]):
+    def _get_stem_label(self) -> list[str]:
         """
         Generates the label and points in time of the events in the model.
 
@@ -798,7 +807,7 @@ class Timeline(IVisualize):
         (list[str], list[str])
             List containing label for the events and list containing the points in time of the events.
         """
-        stem_labels: list[str] = [
+        return [
             "Competition authority\nestablishes "
             + self._policy_str()
             + "\nmerger policy",
@@ -810,7 +819,10 @@ class Timeline(IVisualize):
             self._takeover_str(self.model.is_late_takeover),
             "Payoffs",
         ]
-        x_labels: list[str] = [
+
+    @staticmethod
+    def _get_x_labels() -> list[str]:
+        return [
             "t=0",
             "t=1a",
             "t=1b",
@@ -820,7 +832,6 @@ class Timeline(IVisualize):
             "t=2b",
             "t=3",
         ]
-        return stem_labels, x_labels
 
     @staticmethod
     def _takeover_attempt_str(takeover: FMT20.Takeover) -> str:
@@ -914,34 +925,24 @@ class Timeline(IVisualize):
         return "Development was\nnot attempted."
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
-        stem_labels, x_labels = self._prepare_content()
-        x_ticks = list(range(len(x_labels)))
-        stem_levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
-
-        # Create figure and plot a stem plot with the date
         self.ax.set(title=kwargs.get("title", "Timeline"))
-        self._set_parameter_legend(
-            math.fsum(x_ticks) / len(x_ticks), kwargs.get("parameters", True)
-        )
-        self._draw_vertical_stems(stem_levels, x_ticks)
-        self._draw_baseline(x_ticks)
-        self._annotate_stems(
-            stem_levels, stem_labels, x_ticks, kwargs.get("x-offset", 0)
-        )
-        self._set_x_axis(x_labels, x_ticks)
+        self._set_parameter_legend(kwargs.get("parameters", True))
+        self._draw_timeline(kwargs)
+        self._set_x_axis()
         self._set_y_axis()
-        self.ax.margins(y=0.45)
-        self._set_tight_layout()
+        self._set_tight_layout(spacing=0.45)
         return self.fig, self.ax
+
+    def _draw_timeline(self, kwargs):
+        self._draw_vertical_stems()
+        self._draw_baseline()
+        self._annotate_stems(kwargs.get("x-offset", 0))
 
     def _annotate_stems(
         self,
-        levels: list[int],
-        stem_labels: list[str],
-        x_ticks: list[int],
         x_offset: int,
     ) -> None:
-        for d, l, r in zip(x_ticks, levels, stem_labels):
+        for d, l, r in zip(self._x_ticks, self.stem_levels, self._get_stem_label()):
             self.ax.annotate(
                 str(r),
                 xy=(d, l),
@@ -952,24 +953,31 @@ class Timeline(IVisualize):
                 fontsize=IVisualize.fontsize,
             )
 
-    def _draw_vertical_stems(self, levels: list[int], x_ticks: list[int]) -> None:
-        self.ax.vlines(x_ticks, 0, levels, color="lightgray", linewidths=1)
-
-    def _draw_baseline(self, x_ticks: list[int]) -> None:
-        self.ax.plot(
-            x_ticks, np.zeros_like(x_ticks), "-o", color="k", markerfacecolor="w"
+    def _draw_vertical_stems(self) -> None:
+        self.ax.vlines(
+            self._x_ticks, 0, self.stem_levels, color="lightgray", linewidths=1
         )
 
-    def _set_x_axis(self, x_labels: list[str], x_ticks: list[int]) -> None:
-        self.ax.set_xticks(x_ticks)
-        self.ax.set_xticklabels(x_labels)
+    def _draw_baseline(self) -> None:
+        self.ax.plot(
+            self._x_ticks,
+            np.zeros_like(self._x_ticks),
+            "-o",
+            color="k",
+            markerfacecolor="w",
+        )
+
+    def _set_x_axis(self) -> None:
+        self.ax.set_xticks(self._x_ticks)
+        self.ax.set_xticklabels(self._get_x_labels())
         self.ax.xaxis.set_ticks_position("bottom")
 
     def _set_y_axis(self) -> None:
         self.ax.yaxis.set_visible(False)
         self.ax.spines[["left", "top", "right"]].set_visible(False)
 
-    def _set_parameter_legend(self, x_coordinate: float, show_parameters: bool) -> None:
+    def _set_parameter_legend(self, show_parameters: bool) -> None:
+        x_coordinate = (math.fsum(self._x_ticks) / len(self._x_ticks),)
         if show_parameters:
             self.ax.annotate(
                 self._parameter_latex(),
