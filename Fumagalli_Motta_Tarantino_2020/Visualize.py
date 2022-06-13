@@ -103,9 +103,9 @@ class IVisualize:
             entry.set_alpha(1)
 
     def _set_tight_layout(self, spacing: float = None) -> None:
-        self.fig.tight_layout()
         if spacing is not None:
             self.ax.margins(y=spacing, x=0)
+        self.fig.tight_layout()
 
     @abstractmethod
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -798,7 +798,7 @@ class Timeline(IVisualize):
         self.stem_levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
         self._x_ticks = list(range(len(self.stem_levels)))
 
-    def _get_stem_label(self) -> list[str]:
+    def _get_stem_labels(self) -> list[str]:
         """
         Generates the label and points in time of the events in the model.
 
@@ -942,7 +942,7 @@ class Timeline(IVisualize):
         self,
         x_offset: int,
     ) -> None:
-        for d, l, r in zip(self._x_ticks, self.stem_levels, self._get_stem_label()):
+        for d, l, r in zip(self._x_ticks, self.stem_levels, self._get_stem_labels()):
             self.ax.annotate(
                 str(r),
                 xy=(d, l),
@@ -977,7 +977,7 @@ class Timeline(IVisualize):
         self.ax.spines[["left", "top", "right"]].set_visible(False)
 
     def _set_parameter_legend(self, show_parameters: bool) -> None:
-        x_coordinate = (math.fsum(self._x_ticks) / len(self._x_ticks),)
+        x_coordinate = math.fsum(self._x_ticks) / len(self._x_ticks)
         if show_parameters:
             self.ax.annotate(
                 self._parameter_latex(),
