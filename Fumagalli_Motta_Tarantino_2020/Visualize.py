@@ -1002,7 +1002,7 @@ class Payoffs(IVisualize):
         self.ax.set_title("Payoffs for different Market Configurations")
         self._set_primary_legend()
         self._set_secondary_legend(bar_width, kwargs.get("legend", True))
-        self._set_tight_layout()
+        self._set_tight_layout(x_spacing=spacing)
 
     def _set_secondary_legend(self, bar_width: float, show_legend: bool) -> None:
         if show_legend:
