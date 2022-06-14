@@ -7,7 +7,7 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.calculate_properties_profits_consumer_surplus()
 
     def setupModel(self, **kwargs) -> None:
-        self.model = FMT20.MicroFoundationModel(**kwargs)
+        self.model = FMT20.CournotCompetition(**kwargs)
 
     def calculate_properties_profits_consumer_surplus(self) -> None:
         # calculations made with Gamma = 0.3
@@ -151,12 +151,12 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
 
 class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
-        self.model = FMT20.PerfectInformationModel(**kwargs)
+        self.model = FMT20.PerfectInformation(**kwargs)
 
     def test_tolerated_harm_intermediate_late_takeover_allowed(self):
         self.assertRaises(
             FMT20.Exceptions.MergerPolicyNotAvailable,
-            lambda: FMT20.PerfectInformationModel(
+            lambda: FMT20.PerfectInformation(
                 merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
             ),
         )
@@ -165,7 +165,7 @@ class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
         self.setupModel()
         self.assertRaises(
             FMT20.Exceptions.MergerPolicyNotAvailable,
-            lambda: FMT20.PerfectInformationModel.merger_policy.fset(
+            lambda: FMT20.PerfectInformation.merger_policy.fset(
                 self.model, FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
             ),
         )

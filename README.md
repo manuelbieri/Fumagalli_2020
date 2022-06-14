@@ -28,34 +28,27 @@ $ pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
 ### Basic Usage
 
 ```python
-import Fumagalli_Motta_Tarantino_2020.Models as Model
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 # initialize the model (here you can adjust the parameters of the model)
-model: Model.OptimalMergerPolicy = Model.OptimalMergerPolicy()
+# all other models conform to the interface defined in FMT20.OptimalMergerPolicy
+model: FMT20.OptimalMergerPolicy = FMT20.OptimalMergerPolicy()
 
 # print a summary of the outcome
 print(model.summary())
+
+# plot a model overview
+FMT20.Overview(model).show()
 ```
 
-A tutorial is included with the notebook tutorial.ipynb.
+A tutorial is included with the notebook tutorial.ipynb. Additionally, find the latest documentation including all the details on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
 
-Find the latest documentation on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
+Note: mybinder.org is currently not supported, since the package needs at least python 3.9.
 
 ### Dependencies
 
-These packages include all the needed imports for the functionality of this package.
-
-| Package &emsp; | Version &emsp; | Annotation &emsp;                          |
-|:---------------|:--------------:|:-------------------------------------------|
-| scipy          |     1.8.1      | Always                                     |
-| numpy          |     1.22.4     | Always                                     |
-| matplotlib     |     3.5.2      | Always                                     |
-| black          |     22.3.0     | For consistent code formatting             |
-| jupyter        |     1.0.0      | For the demonstration in jupyter Notebooks |
-| IPython        |     8.3.0      | For the demonstration in jupyter Notebooks |
-| pdoc           |     12.0.0     | To generate the documentation from scratch |
-
-Install the dependencies with the following command (Note: Make sure you are operating in the same directory, where the `requirements.txt` is located.):
+Install the dependencies with the following command (Note: Make sure you are operating in the same directory, where the 
+`requirements.txt` is located.):
 
 ```shell
 $ pip install -r requirements.txt

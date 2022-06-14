@@ -1,9 +1,9 @@
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
-class ProCompetitiveModel(FMT20.OptimalMergerPolicy):
+class ProCompetitive(FMT20.OptimalMergerPolicy):
     def __init__(self, consumer_surplus_without_innovation: float = 0.3, **kwargs):
-        super(ProCompetitiveModel, self).__init__(
+        super(ProCompetitive, self).__init__(
             consumer_surplus_without_innovation=consumer_surplus_without_innovation,
             **kwargs
         )
@@ -79,7 +79,7 @@ class ProCompetitiveModel(FMT20.OptimalMergerPolicy):
         return False
 
 
-class ResourceWaste(ProCompetitiveModel):
+class ResourceWaste(ProCompetitive):
     def __init__(self, consumer_surplus_duopoly=0.41, **kwargs):
         super(ResourceWaste, self).__init__(
             consumer_surplus_duopoly=consumer_surplus_duopoly, **kwargs

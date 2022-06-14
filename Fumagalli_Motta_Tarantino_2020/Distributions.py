@@ -1,7 +1,7 @@
 import scipy.stats
 
 
-class NormalDistributionFunction:
+class NormalDistribution:
     """
     Represents a normal distribution function.
 
@@ -49,7 +49,7 @@ class NormalDistributionFunction:
         return scipy.stats.norm.ppf(q, **kwargs)
 
 
-class UniformDistributionFunction:
+class UniformDistribution:
     """
     Represents a uniform distribution function ($U_{[loc, loc+scale]}$).
 

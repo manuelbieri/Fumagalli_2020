@@ -6,7 +6,7 @@ import Fumagalli_Motta_Tarantino_2020.Configurations.ConfigExceptions as Excepti
 import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
-class ParameterModel:
+class _ParameterModel:
     def __init__(
         self,
         merger_policy: Types.MergerPolicies,
@@ -64,27 +64,27 @@ class LoadParameters:
     file_name: str = "params.csv"
 
     def __init__(self, config_id: int, file_path: Optional[str] = None):
-        self.id = config_id
-        self.file_path = self.set_path(file_path)
-        self.params: ParameterModel = self._select_configuration()
+        self._id = config_id
+        self._file_path = self._set_path(file_path)
+        self.params: _ParameterModel = self._select_configuration()
 
     @staticmethod
-    def set_path(file_path: Optional[str]) -> str:
+    def _set_path(file_path: Optional[str]) -> str:
         return (
             os.path.join(os.path.dirname(__file__), LoadParameters.file_name)
             if file_path is None
             else file_path
         )
 
-    def adjust_parameters(self, **kwargs):
+    def adjust_parameters(self, **kwargs) -> None:
         for (key, value) in kwargs.items():
             self.params.set(key, value)
 
-    def _select_configuration(self) -> ParameterModel:
+    def _select_configuration(self) -> _ParameterModel:
         configs = self._parse_file()
         for config in configs:
-            if config["id"] == self.id:
-                return ParameterModel(
+            if config["id"] == self._id:
+                return _ParameterModel(
                     merger_policy=Types.MergerPolicies.Strict,
                     development_costs=config["K"],
                     startup_assets=config["A"],
@@ -102,9 +102,9 @@ class LoadParameters:
         raise Exceptions.IDNotAvailableError("No configuration with this ID found.")
 
     def _parse_file(self):
-        with open(file=self.file_path, newline="") as f:
+        with open(file=self._file_path, newline="") as f:
             configs = [
-                {k: self.parse_value(v) for k, v in row.items()}
+                {k: self._parse_value(v) for k, v in row.items()}
                 for row in csv.DictReader(f, skipinitialspace=True)
             ]
         return configs
@@ -121,7 +121,7 @@ class LoadParameters:
         self.params.merger_policy = value
 
     @staticmethod
-    def parse_value(value):
+    def _parse_value(value):
         try:
             return int(value)
         except ValueError:

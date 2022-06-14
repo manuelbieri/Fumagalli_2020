@@ -2,11 +2,11 @@ import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
-class MicroFoundationModel(FMT20.OptimalMergerPolicy):
+class CournotCompetition(FMT20.OptimalMergerPolicy):
     def __init__(self, gamma=0.3, *args, **kwargs):
         assert 0 < gamma < 1, "Gamma has to be between 0 and 1."
         self._gamma = gamma
-        super(MicroFoundationModel, self).__init__(*args, **kwargs)
+        super(CournotCompetition, self).__init__(*args, **kwargs)
         assert (
             self.development_costs < self.success_probability / 4
         ), "K >= p/4 is not valid"
@@ -85,7 +85,7 @@ class MicroFoundationModel(FMT20.OptimalMergerPolicy):
     def is_strict_optimal(self) -> bool:
         return not self.is_intermediate_optimal()
 
-    def is_investment_cost_sufficiently_high(self) -> float:
+    def is_investment_cost_sufficiently_high(self) -> bool:
         return (
             (
                 -5 * (self.success_probability**3)
@@ -106,24 +106,24 @@ class MicroFoundationModel(FMT20.OptimalMergerPolicy):
             )
         ) > 0
 
-    def is_degree_substitutability_moderate(self):
+    def is_degree_substitutability_moderate(self) -> bool:
         return 0 < self.success_probability * (
             self.w_with_innovation - self.w_without_innovation
         ) - self.development_costs - (self.w_duopoly - self.w_with_innovation)
 
 
-class PerfectInformationModel(FMT20.OptimalMergerPolicy):
+class PerfectInformation(FMT20.OptimalMergerPolicy):
     def __init__(
         self,
         merger_policy: Types.MergerPolicies = Types.MergerPolicies.Strict,
         **kwargs
     ):
-        super(PerfectInformationModel, self).__init__(
+        super(PerfectInformation, self).__init__(
             merger_policy=merger_policy, **kwargs
         )
 
     def _check_merger_policy(self):
-        super(PerfectInformationModel, self)._check_merger_policy()
+        super(PerfectInformation, self)._check_merger_policy()
         if (
             self.merger_policy
             is Types.MergerPolicies.Intermediate_late_takeover_prohibited

@@ -50,24 +50,6 @@
         <h2>API Documentation</h2>
             <ul class="memberlist">
             <li>
-                    <a class="class" href="#ParameterModel">ParameterModel</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="function" href="#ParameterModel.__init__">ParameterModel</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#ParameterModel.get">get</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#ParameterModel.set">set</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#ParameterModel.merger_policy">merger_policy</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
                     <a class="class" href="#LoadParameters">LoadParameters</a>
                             <ul class="memberlist">
                         <li>
@@ -75,9 +57,6 @@
                         </li>
                         <li>
                                 <a class="variable" href="#LoadParameters.file_name">file_name</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#LoadParameters.set_path">set_path</a>
                         </li>
                         <li>
                                 <a class="function" href="#LoadParameters.adjust_parameters">adjust_parameters</a>
@@ -90,9 +69,6 @@
                         </li>
                         <li>
                                 <a class="function" href="#LoadParameters.set_merger_policy">set_merger_policy</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#LoadParameters.parse_value">parse_value</a>
                         </li>
                 </ul>
 
@@ -123,11 +99,11 @@
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="kn">import</span> <span class="nn">os.path</span>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Configurations.Exceptions</span> <span class="k">as</span> <span class="nn">Exceptions</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Configurations.ConfigExceptions</span> <span class="k">as</span> <span class="nn">Exceptions</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Types</span> <span class="k">as</span> <span class="nn">Types</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">class</span> <span class="nc">ParameterModel</span><span class="p">:</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="k">class</span> <span class="nc">_ParameterModel</span><span class="p">:</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>        <span class="n">merger_policy</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">,</span>
@@ -185,27 +161,27 @@
 </span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;params.csv&quot;</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">config_id</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="n">ParameterModel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_configuration</span><span class="p">()</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">config_id</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="n">_ParameterModel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_configuration</span><span class="p">()</span>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="k">def</span> <span class="nf">set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="k">def</span> <span class="nf">_set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="k">return</span> <span class="p">(</span>
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">LoadParameters</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>            <span class="k">else</span> <span class="n">file_path</span>
 </span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="p">)</span>
 </span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="k">def</span> <span class="nf">adjust_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="k">def</span> <span class="nf">adjust_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="k">def</span> <span class="nf">_select_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterModel</span><span class="p">:</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="k">def</span> <span class="nf">_select_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ParameterModel</span><span class="p">:</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="n">configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_file</span><span class="p">()</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>                <span class="k">return</span> <span class="n">ParameterModel</span><span class="p">(</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">:</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>                <span class="k">return</span> <span class="n">_ParameterModel</span><span class="p">(</span>
 </span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>                    <span class="n">merger_policy</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span><span class="p">,</span>
 </span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>                    <span class="n">development_costs</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">],</span>
 </span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>                    <span class="n">startup_assets</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
@@ -223,9 +199,9 @@
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="k">raise</span> <span class="n">Exceptions</span><span class="o">.</span><span class="n">IDNotAvailableError</span><span class="p">(</span><span class="s2">&quot;No configuration with this ID found.&quot;</span><span class="p">)</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span> <span class="nf">_parse_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>            <span class="n">configs</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>                <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>                <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>            <span class="p">]</span>
 </span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>        <span class="k">return</span> <span class="n">configs</span>
@@ -242,7 +218,7 @@
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">merger_policy</span> <span class="o">=</span> <span class="n">value</span>
 </span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="k">def</span> <span class="nf">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="k">def</span> <span class="nf">_parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>        <span class="k">try</span><span class="p">:</span>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -254,174 +230,6 @@
 
 
             </section>
-                <section id="ParameterModel">
-                            <input id="ParameterModel-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
-            
-    <span class="def">class</span>
-    <span class="name">ParameterModel</span>:
-
-                <label class="view-source-button" for="ParameterModel-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#ParameterModel"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ParameterModel-10"><a href="#ParameterModel-10"><span class="linenos">10</span></a><span class="k">class</span> <span class="nc">ParameterModel</span><span class="p">:</span>
-</span><span id="ParameterModel-11"><a href="#ParameterModel-11"><span class="linenos">11</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ParameterModel-12"><a href="#ParameterModel-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="ParameterModel-13"><a href="#ParameterModel-13"><span class="linenos">13</span></a>        <span class="n">merger_policy</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">,</span>
-</span><span id="ParameterModel-14"><a href="#ParameterModel-14"><span class="linenos">14</span></a>        <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-15"><a href="#ParameterModel-15"><span class="linenos">15</span></a>        <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-16"><a href="#ParameterModel-16"><span class="linenos">16</span></a>        <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-17"><a href="#ParameterModel-17"><span class="linenos">17</span></a>        <span class="n">development_success</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-</span><span id="ParameterModel-18"><a href="#ParameterModel-18"><span class="linenos">18</span></a>        <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-19"><a href="#ParameterModel-19"><span class="linenos">19</span></a>        <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-20"><a href="#ParameterModel-20"><span class="linenos">20</span></a>        <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-21"><a href="#ParameterModel-21"><span class="linenos">21</span></a>        <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-22"><a href="#ParameterModel-22"><span class="linenos">22</span></a>        <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-23"><a href="#ParameterModel-23"><span class="linenos">23</span></a>        <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-24"><a href="#ParameterModel-24"><span class="linenos">24</span></a>        <span class="n">consumer_surplus_with_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-25"><a href="#ParameterModel-25"><span class="linenos">25</span></a>        <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel-26"><a href="#ParameterModel-26"><span class="linenos">26</span></a>    <span class="p">):</span>
-</span><span id="ParameterModel-27"><a href="#ParameterModel-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ParameterModel-28"><a href="#ParameterModel-28"><span class="linenos">28</span></a>            <span class="s2">&quot;merger_policy&quot;</span><span class="p">:</span> <span class="n">merger_policy</span><span class="p">,</span>
-</span><span id="ParameterModel-29"><a href="#ParameterModel-29"><span class="linenos">29</span></a>            <span class="s2">&quot;development_costs&quot;</span><span class="p">:</span> <span class="n">development_costs</span><span class="p">,</span>
-</span><span id="ParameterModel-30"><a href="#ParameterModel-30"><span class="linenos">30</span></a>            <span class="s2">&quot;startup_assets&quot;</span><span class="p">:</span> <span class="n">startup_assets</span><span class="p">,</span>
-</span><span id="ParameterModel-31"><a href="#ParameterModel-31"><span class="linenos">31</span></a>            <span class="s2">&quot;success_probability&quot;</span><span class="p">:</span> <span class="n">success_probability</span><span class="p">,</span>
-</span><span id="ParameterModel-32"><a href="#ParameterModel-32"><span class="linenos">32</span></a>            <span class="s2">&quot;development_success&quot;</span><span class="p">:</span> <span class="n">development_success</span><span class="p">,</span>
-</span><span id="ParameterModel-33"><a href="#ParameterModel-33"><span class="linenos">33</span></a>            <span class="s2">&quot;private_benefit&quot;</span><span class="p">:</span> <span class="n">private_benefit</span><span class="p">,</span>
-</span><span id="ParameterModel-34"><a href="#ParameterModel-34"><span class="linenos">34</span></a>            <span class="s2">&quot;consumer_surplus_without_innovation&quot;</span><span class="p">:</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel-35"><a href="#ParameterModel-35"><span class="linenos">35</span></a>            <span class="s2">&quot;incumbent_profit_without_innovation&quot;</span><span class="p">:</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel-36"><a href="#ParameterModel-36"><span class="linenos">36</span></a>            <span class="s2">&quot;consumer_surplus_duopoly&quot;</span><span class="p">:</span> <span class="n">consumer_surplus_duopoly</span><span class="p">,</span>
-</span><span id="ParameterModel-37"><a href="#ParameterModel-37"><span class="linenos">37</span></a>            <span class="s2">&quot;incumbent_profit_duopoly&quot;</span><span class="p">:</span> <span class="n">incumbent_profit_duopoly</span><span class="p">,</span>
-</span><span id="ParameterModel-38"><a href="#ParameterModel-38"><span class="linenos">38</span></a>            <span class="s2">&quot;startup_profit_duopoly&quot;</span><span class="p">:</span> <span class="n">startup_profit_duopoly</span><span class="p">,</span>
-</span><span id="ParameterModel-39"><a href="#ParameterModel-39"><span class="linenos">39</span></a>            <span class="s2">&quot;consumer_surplus_with_innovation&quot;</span><span class="p">:</span> <span class="n">consumer_surplus_with_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel-40"><a href="#ParameterModel-40"><span class="linenos">40</span></a>            <span class="s2">&quot;incumbent_profit_with_innovation&quot;</span><span class="p">:</span> <span class="n">incumbent_profit_with_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel-41"><a href="#ParameterModel-41"><span class="linenos">41</span></a>        <span class="p">}</span>
-</span><span id="ParameterModel-42"><a href="#ParameterModel-42"><span class="linenos">42</span></a>
-</span><span id="ParameterModel-43"><a href="#ParameterModel-43"><span class="linenos">43</span></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-</span><span id="ParameterModel-44"><a href="#ParameterModel-44"><span class="linenos">44</span></a>        <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</span><span id="ParameterModel-45"><a href="#ParameterModel-45"><span class="linenos">45</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-</span><span id="ParameterModel-46"><a href="#ParameterModel-46"><span class="linenos">46</span></a>
-</span><span id="ParameterModel-47"><a href="#ParameterModel-47"><span class="linenos">47</span></a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-</span><span id="ParameterModel-48"><a href="#ParameterModel-48"><span class="linenos">48</span></a>        <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</span><span id="ParameterModel-49"><a href="#ParameterModel-49"><span class="linenos">49</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="ParameterModel-50"><a href="#ParameterModel-50"><span class="linenos">50</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span>
-</span><span id="ParameterModel-51"><a href="#ParameterModel-51"><span class="linenos">51</span></a>
-</span><span id="ParameterModel-52"><a href="#ParameterModel-52"><span class="linenos">52</span></a>    <span class="nd">@property</span>
-</span><span id="ParameterModel-53"><a href="#ParameterModel-53"><span class="linenos">53</span></a>    <span class="k">def</span> <span class="nf">merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">:</span>
-</span><span id="ParameterModel-54"><a href="#ParameterModel-54"><span class="linenos">54</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;merger_policy&quot;</span><span class="p">]</span>
-</span><span id="ParameterModel-55"><a href="#ParameterModel-55"><span class="linenos">55</span></a>
-</span><span id="ParameterModel-56"><a href="#ParameterModel-56"><span class="linenos">56</span></a>    <span class="nd">@merger_policy</span><span class="o">.</span><span class="n">setter</span>
-</span><span id="ParameterModel-57"><a href="#ParameterModel-57"><span class="linenos">57</span></a>    <span class="k">def</span> <span class="nf">merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">):</span>
-</span><span id="ParameterModel-58"><a href="#ParameterModel-58"><span class="linenos">58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;merger_policy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="ParameterModel-59"><a href="#ParameterModel-59"><span class="linenos">59</span></a>
-</span><span id="ParameterModel-60"><a href="#ParameterModel-60"><span class="linenos">60</span></a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="ParameterModel-61"><a href="#ParameterModel-61"><span class="linenos">61</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span>
-</span></pre></div>
-
-
-    
-
-                            <div id="ParameterModel.__init__" class="classattr">
-                                        <input id="ParameterModel.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="name">ParameterModel</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">merger_policy</span><span class="p">:</span> <span class="n"><a href="../Types.html#MergerPolicies">Fumagalli_Motta_Tarantino_2020</span><span class="o">.</span><span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</a></span>,</span><span class="param">	<span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">development_success</span><span class="p">:</span> <span class="nb">bool</span>,</span><span class="param">	<span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">consumer_surplus_with_innovation</span><span class="p">:</span> <span class="nb">float</span>,</span><span class="param">	<span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span></span>)</span>
-
-                <label class="view-source-button" for="ParameterModel.__init__-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#ParameterModel.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ParameterModel.__init__-11"><a href="#ParameterModel.__init__-11"><span class="linenos">11</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ParameterModel.__init__-12"><a href="#ParameterModel.__init__-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-13"><a href="#ParameterModel.__init__-13"><span class="linenos">13</span></a>        <span class="n">merger_policy</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-14"><a href="#ParameterModel.__init__-14"><span class="linenos">14</span></a>        <span class="n">development_costs</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-15"><a href="#ParameterModel.__init__-15"><span class="linenos">15</span></a>        <span class="n">startup_assets</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-16"><a href="#ParameterModel.__init__-16"><span class="linenos">16</span></a>        <span class="n">success_probability</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-17"><a href="#ParameterModel.__init__-17"><span class="linenos">17</span></a>        <span class="n">development_success</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-18"><a href="#ParameterModel.__init__-18"><span class="linenos">18</span></a>        <span class="n">private_benefit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-19"><a href="#ParameterModel.__init__-19"><span class="linenos">19</span></a>        <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-20"><a href="#ParameterModel.__init__-20"><span class="linenos">20</span></a>        <span class="n">incumbent_profit_without_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-21"><a href="#ParameterModel.__init__-21"><span class="linenos">21</span></a>        <span class="n">consumer_surplus_duopoly</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-22"><a href="#ParameterModel.__init__-22"><span class="linenos">22</span></a>        <span class="n">incumbent_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-23"><a href="#ParameterModel.__init__-23"><span class="linenos">23</span></a>        <span class="n">startup_profit_duopoly</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-24"><a href="#ParameterModel.__init__-24"><span class="linenos">24</span></a>        <span class="n">consumer_surplus_with_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-25"><a href="#ParameterModel.__init__-25"><span class="linenos">25</span></a>        <span class="n">incumbent_profit_with_innovation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-26"><a href="#ParameterModel.__init__-26"><span class="linenos">26</span></a>    <span class="p">):</span>
-</span><span id="ParameterModel.__init__-27"><a href="#ParameterModel.__init__-27"><span class="linenos">27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ParameterModel.__init__-28"><a href="#ParameterModel.__init__-28"><span class="linenos">28</span></a>            <span class="s2">&quot;merger_policy&quot;</span><span class="p">:</span> <span class="n">merger_policy</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-29"><a href="#ParameterModel.__init__-29"><span class="linenos">29</span></a>            <span class="s2">&quot;development_costs&quot;</span><span class="p">:</span> <span class="n">development_costs</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-30"><a href="#ParameterModel.__init__-30"><span class="linenos">30</span></a>            <span class="s2">&quot;startup_assets&quot;</span><span class="p">:</span> <span class="n">startup_assets</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-31"><a href="#ParameterModel.__init__-31"><span class="linenos">31</span></a>            <span class="s2">&quot;success_probability&quot;</span><span class="p">:</span> <span class="n">success_probability</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-32"><a href="#ParameterModel.__init__-32"><span class="linenos">32</span></a>            <span class="s2">&quot;development_success&quot;</span><span class="p">:</span> <span class="n">development_success</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-33"><a href="#ParameterModel.__init__-33"><span class="linenos">33</span></a>            <span class="s2">&quot;private_benefit&quot;</span><span class="p">:</span> <span class="n">private_benefit</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-34"><a href="#ParameterModel.__init__-34"><span class="linenos">34</span></a>            <span class="s2">&quot;consumer_surplus_without_innovation&quot;</span><span class="p">:</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-35"><a href="#ParameterModel.__init__-35"><span class="linenos">35</span></a>            <span class="s2">&quot;incumbent_profit_without_innovation&quot;</span><span class="p">:</span> <span class="n">incumbent_profit_without_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-36"><a href="#ParameterModel.__init__-36"><span class="linenos">36</span></a>            <span class="s2">&quot;consumer_surplus_duopoly&quot;</span><span class="p">:</span> <span class="n">consumer_surplus_duopoly</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-37"><a href="#ParameterModel.__init__-37"><span class="linenos">37</span></a>            <span class="s2">&quot;incumbent_profit_duopoly&quot;</span><span class="p">:</span> <span class="n">incumbent_profit_duopoly</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-38"><a href="#ParameterModel.__init__-38"><span class="linenos">38</span></a>            <span class="s2">&quot;startup_profit_duopoly&quot;</span><span class="p">:</span> <span class="n">startup_profit_duopoly</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-39"><a href="#ParameterModel.__init__-39"><span class="linenos">39</span></a>            <span class="s2">&quot;consumer_surplus_with_innovation&quot;</span><span class="p">:</span> <span class="n">consumer_surplus_with_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-40"><a href="#ParameterModel.__init__-40"><span class="linenos">40</span></a>            <span class="s2">&quot;incumbent_profit_with_innovation&quot;</span><span class="p">:</span> <span class="n">incumbent_profit_with_innovation</span><span class="p">,</span>
-</span><span id="ParameterModel.__init__-41"><a href="#ParameterModel.__init__-41"><span class="linenos">41</span></a>        <span class="p">}</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
-                            <div id="ParameterModel.get" class="classattr">
-                                        <input id="ParameterModel.get-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">key</span><span class="p">:</span> <span class="nb">str</span></span>)</span>
-
-                <label class="view-source-button" for="ParameterModel.get-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#ParameterModel.get"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ParameterModel.get-43"><a href="#ParameterModel.get-43"><span class="linenos">43</span></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-</span><span id="ParameterModel.get-44"><a href="#ParameterModel.get-44"><span class="linenos">44</span></a>        <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</span><span id="ParameterModel.get-45"><a href="#ParameterModel.get-45"><span class="linenos">45</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
-                            <div id="ParameterModel.set" class="classattr">
-                                        <input id="ParameterModel.set-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">set</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">key</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">value</span><span class="p">:</span> <span class="nb">float</span></span>)</span>
-
-                <label class="view-source-button" for="ParameterModel.set-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#ParameterModel.set"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ParameterModel.set-47"><a href="#ParameterModel.set-47"><span class="linenos">47</span></a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-</span><span id="ParameterModel.set-48"><a href="#ParameterModel.set-48"><span class="linenos">48</span></a>        <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</span><span id="ParameterModel.set-49"><a href="#ParameterModel.set-49"><span class="linenos">49</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="ParameterModel.set-50"><a href="#ParameterModel.set-50"><span class="linenos">50</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
-                            <div id="ParameterModel.merger_policy" class="classattr">
-                                <div class="attr variable">
-            <span class="name">merger_policy</span><span class="annotation">: <a href="../Types.html#MergerPolicies">Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies</a></span>
-
-        
-    </div>
-    <a class="headerlink" href="#ParameterModel.merger_policy"></a>
-    
-    
-
-                            </div>
-                </section>
                 <section id="LoadParameters">
                             <input id="LoadParameters-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
@@ -437,27 +245,27 @@
 </span><span id="LoadParameters-65"><a href="#LoadParameters-65"><span class="linenos"> 65</span></a>    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;params.csv&quot;</span>
 </span><span id="LoadParameters-66"><a href="#LoadParameters-66"><span class="linenos"> 66</span></a>
 </span><span id="LoadParameters-67"><a href="#LoadParameters-67"><span class="linenos"> 67</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="LoadParameters-68"><a href="#LoadParameters-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">config_id</span>
-</span><span id="LoadParameters-69"><a href="#LoadParameters-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-</span><span id="LoadParameters-70"><a href="#LoadParameters-70"><span class="linenos"> 70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="n">ParameterModel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_configuration</span><span class="p">()</span>
+</span><span id="LoadParameters-68"><a href="#LoadParameters-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">config_id</span>
+</span><span id="LoadParameters-69"><a href="#LoadParameters-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</span><span id="LoadParameters-70"><a href="#LoadParameters-70"><span class="linenos"> 70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="n">_ParameterModel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_configuration</span><span class="p">()</span>
 </span><span id="LoadParameters-71"><a href="#LoadParameters-71"><span class="linenos"> 71</span></a>
 </span><span id="LoadParameters-72"><a href="#LoadParameters-72"><span class="linenos"> 72</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="LoadParameters-73"><a href="#LoadParameters-73"><span class="linenos"> 73</span></a>    <span class="k">def</span> <span class="nf">set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="LoadParameters-73"><a href="#LoadParameters-73"><span class="linenos"> 73</span></a>    <span class="k">def</span> <span class="nf">_set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="LoadParameters-74"><a href="#LoadParameters-74"><span class="linenos"> 74</span></a>        <span class="k">return</span> <span class="p">(</span>
 </span><span id="LoadParameters-75"><a href="#LoadParameters-75"><span class="linenos"> 75</span></a>            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">LoadParameters</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 </span><span id="LoadParameters-76"><a href="#LoadParameters-76"><span class="linenos"> 76</span></a>            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span>
 </span><span id="LoadParameters-77"><a href="#LoadParameters-77"><span class="linenos"> 77</span></a>            <span class="k">else</span> <span class="n">file_path</span>
 </span><span id="LoadParameters-78"><a href="#LoadParameters-78"><span class="linenos"> 78</span></a>        <span class="p">)</span>
 </span><span id="LoadParameters-79"><a href="#LoadParameters-79"><span class="linenos"> 79</span></a>
-</span><span id="LoadParameters-80"><a href="#LoadParameters-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">adjust_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="LoadParameters-80"><a href="#LoadParameters-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">adjust_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="LoadParameters-81"><a href="#LoadParameters-81"><span class="linenos"> 81</span></a>        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span id="LoadParameters-82"><a href="#LoadParameters-82"><span class="linenos"> 82</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </span><span id="LoadParameters-83"><a href="#LoadParameters-83"><span class="linenos"> 83</span></a>
-</span><span id="LoadParameters-84"><a href="#LoadParameters-84"><span class="linenos"> 84</span></a>    <span class="k">def</span> <span class="nf">_select_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterModel</span><span class="p">:</span>
+</span><span id="LoadParameters-84"><a href="#LoadParameters-84"><span class="linenos"> 84</span></a>    <span class="k">def</span> <span class="nf">_select_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ParameterModel</span><span class="p">:</span>
 </span><span id="LoadParameters-85"><a href="#LoadParameters-85"><span class="linenos"> 85</span></a>        <span class="n">configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_file</span><span class="p">()</span>
 </span><span id="LoadParameters-86"><a href="#LoadParameters-86"><span class="linenos"> 86</span></a>        <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
-</span><span id="LoadParameters-87"><a href="#LoadParameters-87"><span class="linenos"> 87</span></a>            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
-</span><span id="LoadParameters-88"><a href="#LoadParameters-88"><span class="linenos"> 88</span></a>                <span class="k">return</span> <span class="n">ParameterModel</span><span class="p">(</span>
+</span><span id="LoadParameters-87"><a href="#LoadParameters-87"><span class="linenos"> 87</span></a>            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">:</span>
+</span><span id="LoadParameters-88"><a href="#LoadParameters-88"><span class="linenos"> 88</span></a>                <span class="k">return</span> <span class="n">_ParameterModel</span><span class="p">(</span>
 </span><span id="LoadParameters-89"><a href="#LoadParameters-89"><span class="linenos"> 89</span></a>                    <span class="n">merger_policy</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span><span class="p">,</span>
 </span><span id="LoadParameters-90"><a href="#LoadParameters-90"><span class="linenos"> 90</span></a>                    <span class="n">development_costs</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">],</span>
 </span><span id="LoadParameters-91"><a href="#LoadParameters-91"><span class="linenos"> 91</span></a>                    <span class="n">startup_assets</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span>
@@ -475,9 +283,9 @@
 </span><span id="LoadParameters-103"><a href="#LoadParameters-103"><span class="linenos">103</span></a>        <span class="k">raise</span> <span class="n">Exceptions</span><span class="o">.</span><span class="n">IDNotAvailableError</span><span class="p">(</span><span class="s2">&quot;No configuration with this ID found.&quot;</span><span class="p">)</span>
 </span><span id="LoadParameters-104"><a href="#LoadParameters-104"><span class="linenos">104</span></a>
 </span><span id="LoadParameters-105"><a href="#LoadParameters-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">_parse_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="LoadParameters-106"><a href="#LoadParameters-106"><span class="linenos">106</span></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="LoadParameters-106"><a href="#LoadParameters-106"><span class="linenos">106</span></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span><span id="LoadParameters-107"><a href="#LoadParameters-107"><span class="linenos">107</span></a>            <span class="n">configs</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="LoadParameters-108"><a href="#LoadParameters-108"><span class="linenos">108</span></a>                <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span><span id="LoadParameters-108"><a href="#LoadParameters-108"><span class="linenos">108</span></a>                <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </span><span id="LoadParameters-109"><a href="#LoadParameters-109"><span class="linenos">109</span></a>                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="LoadParameters-110"><a href="#LoadParameters-110"><span class="linenos">110</span></a>            <span class="p">]</span>
 </span><span id="LoadParameters-111"><a href="#LoadParameters-111"><span class="linenos">111</span></a>        <span class="k">return</span> <span class="n">configs</span>
@@ -494,7 +302,7 @@
 </span><span id="LoadParameters-122"><a href="#LoadParameters-122"><span class="linenos">122</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">merger_policy</span> <span class="o">=</span> <span class="n">value</span>
 </span><span id="LoadParameters-123"><a href="#LoadParameters-123"><span class="linenos">123</span></a>
 </span><span id="LoadParameters-124"><a href="#LoadParameters-124"><span class="linenos">124</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="LoadParameters-125"><a href="#LoadParameters-125"><span class="linenos">125</span></a>    <span class="k">def</span> <span class="nf">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+</span><span id="LoadParameters-125"><a href="#LoadParameters-125"><span class="linenos">125</span></a>    <span class="k">def</span> <span class="nf">_parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
 </span><span id="LoadParameters-126"><a href="#LoadParameters-126"><span class="linenos">126</span></a>        <span class="k">try</span><span class="p">:</span>
 </span><span id="LoadParameters-127"><a href="#LoadParameters-127"><span class="linenos">127</span></a>            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </span><span id="LoadParameters-128"><a href="#LoadParameters-128"><span class="linenos">128</span></a>        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -518,9 +326,9 @@
     </div>
     <a class="headerlink" href="#LoadParameters.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="LoadParameters.__init__-67"><a href="#LoadParameters.__init__-67"><span class="linenos">67</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="LoadParameters.__init__-68"><a href="#LoadParameters.__init__-68"><span class="linenos">68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">config_id</span>
-</span><span id="LoadParameters.__init__-69"><a href="#LoadParameters.__init__-69"><span class="linenos">69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-</span><span id="LoadParameters.__init__-70"><a href="#LoadParameters.__init__-70"><span class="linenos">70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="n">ParameterModel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_configuration</span><span class="p">()</span>
+</span><span id="LoadParameters.__init__-68"><a href="#LoadParameters.__init__-68"><span class="linenos">68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">config_id</span>
+</span><span id="LoadParameters.__init__-69"><a href="#LoadParameters.__init__-69"><span class="linenos">69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</span><span id="LoadParameters.__init__-70"><a href="#LoadParameters.__init__-70"><span class="linenos">70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span> <span class="n">_ParameterModel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_configuration</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -538,43 +346,18 @@
     
 
                             </div>
-                            <div id="LoadParameters.set_path" class="classattr">
-                                        <input id="LoadParameters.set_path-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">set_path</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
-
-                <label class="view-source-button" for="LoadParameters.set_path-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#LoadParameters.set_path"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="LoadParameters.set_path-72"><a href="#LoadParameters.set_path-72"><span class="linenos">72</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="LoadParameters.set_path-73"><a href="#LoadParameters.set_path-73"><span class="linenos">73</span></a>    <span class="k">def</span> <span class="nf">set_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="LoadParameters.set_path-74"><a href="#LoadParameters.set_path-74"><span class="linenos">74</span></a>        <span class="k">return</span> <span class="p">(</span>
-</span><span id="LoadParameters.set_path-75"><a href="#LoadParameters.set_path-75"><span class="linenos">75</span></a>            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">LoadParameters</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
-</span><span id="LoadParameters.set_path-76"><a href="#LoadParameters.set_path-76"><span class="linenos">76</span></a>            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span>
-</span><span id="LoadParameters.set_path-77"><a href="#LoadParameters.set_path-77"><span class="linenos">77</span></a>            <span class="k">else</span> <span class="n">file_path</span>
-</span><span id="LoadParameters.set_path-78"><a href="#LoadParameters.set_path-78"><span class="linenos">78</span></a>        <span class="p">)</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
                             <div id="LoadParameters.adjust_parameters" class="classattr">
                                         <input id="LoadParameters.adjust_parameters-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">adjust_parameters</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
+        <span class="name">adjust_parameters</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="LoadParameters.adjust_parameters-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#LoadParameters.adjust_parameters"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="LoadParameters.adjust_parameters-80"><a href="#LoadParameters.adjust_parameters-80"><span class="linenos">80</span></a>    <span class="k">def</span> <span class="nf">adjust_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="LoadParameters.adjust_parameters-80"><a href="#LoadParameters.adjust_parameters-80"><span class="linenos">80</span></a>    <span class="k">def</span> <span class="nf">adjust_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="LoadParameters.adjust_parameters-81"><a href="#LoadParameters.adjust_parameters-81"><span class="linenos">81</span></a>        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span id="LoadParameters.adjust_parameters-82"><a href="#LoadParameters.adjust_parameters-82"><span class="linenos">82</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </span></pre></div>
@@ -636,30 +419,6 @@
     <a class="headerlink" href="#LoadParameters.set_merger_policy"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="LoadParameters.set_merger_policy-121"><a href="#LoadParameters.set_merger_policy-121"><span class="linenos">121</span></a>    <span class="k">def</span> <span class="nf">set_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">):</span>
 </span><span id="LoadParameters.set_merger_policy-122"><a href="#LoadParameters.set_merger_policy-122"><span class="linenos">122</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">merger_policy</span> <span class="o">=</span> <span class="n">value</span>
-</span></pre></div>
-
-
-    
-
-                            </div>
-                            <div id="LoadParameters.parse_value" class="classattr">
-                                        <input id="LoadParameters.parse_value-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">parse_value</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">value</span></span>)</span>
-
-                <label class="view-source-button" for="LoadParameters.parse_value-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#LoadParameters.parse_value"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="LoadParameters.parse_value-124"><a href="#LoadParameters.parse_value-124"><span class="linenos">124</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="LoadParameters.parse_value-125"><a href="#LoadParameters.parse_value-125"><span class="linenos">125</span></a>    <span class="k">def</span> <span class="nf">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-</span><span id="LoadParameters.parse_value-126"><a href="#LoadParameters.parse_value-126"><span class="linenos">126</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="LoadParameters.parse_value-127"><a href="#LoadParameters.parse_value-127"><span class="linenos">127</span></a>            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-</span><span id="LoadParameters.parse_value-128"><a href="#LoadParameters.parse_value-128"><span class="linenos">128</span></a>        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-</span><span id="LoadParameters.parse_value-129"><a href="#LoadParameters.parse_value-129"><span class="linenos">129</span></a>            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </span></pre></div>
 
 

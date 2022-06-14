@@ -176,7 +176,7 @@
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="k">class</span> <span class="nc">TestProCompetitive</span><span class="p">(</span><span class="n">Test</span><span class="o">.</span><span class="n">TestOptimalMergerPolicyModel</span><span class="p">):</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>    <span class="k">def</span> <span class="nf">setupModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">ProCompetitiveModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">ProCompetitive</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>    <span class="k">def</span> <span class="nf">test_tolerated_harm_strict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">()</span>
@@ -393,7 +393,7 @@
     <a class="headerlink" href="#TestProCompetitive"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="TestProCompetitive-6"><a href="#TestProCompetitive-6"><span class="linenos"> 6</span></a><span class="k">class</span> <span class="nc">TestProCompetitive</span><span class="p">(</span><span class="n">Test</span><span class="o">.</span><span class="n">TestOptimalMergerPolicyModel</span><span class="p">):</span>
 </span><span id="TestProCompetitive-7"><a href="#TestProCompetitive-7"><span class="linenos"> 7</span></a>    <span class="k">def</span> <span class="nf">setupModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="TestProCompetitive-8"><a href="#TestProCompetitive-8"><span class="linenos"> 8</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">ProCompetitiveModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="TestProCompetitive-8"><a href="#TestProCompetitive-8"><span class="linenos"> 8</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">ProCompetitive</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="TestProCompetitive-9"><a href="#TestProCompetitive-9"><span class="linenos"> 9</span></a>
 </span><span id="TestProCompetitive-10"><a href="#TestProCompetitive-10"><span class="linenos">10</span></a>    <span class="k">def</span> <span class="nf">test_tolerated_harm_strict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="TestProCompetitive-11"><a href="#TestProCompetitive-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">()</span>
@@ -477,7 +477,7 @@ attribute so can be configured by individual tests if required.</li>
     </div>
     <a class="headerlink" href="#TestProCompetitive.setupModel"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="TestProCompetitive.setupModel-7"><a href="#TestProCompetitive.setupModel-7"><span class="linenos">7</span></a>    <span class="k">def</span> <span class="nf">setupModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="TestProCompetitive.setupModel-8"><a href="#TestProCompetitive.setupModel-8"><span class="linenos">8</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">ProCompetitiveModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="TestProCompetitive.setupModel-8"><a href="#TestProCompetitive.setupModel-8"><span class="linenos">8</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">ProCompetitive</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -701,6 +701,7 @@ attribute so can be configured by individual tests if required.</li>
             <div><dt><a href="Test_Models.html#TestBaseModel">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.TestBaseModel</a></dt>
                                 <dd id="TestProCompetitive.setUpConfiguration" class="function"><a href="Test_Models.html#TestBaseModel.setUpConfiguration">setUpConfiguration</a></dd>
                 <dd id="TestProCompetitive.test_valid_setup_default_values" class="function"><a href="Test_Models.html#TestBaseModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
+                <dd id="TestProCompetitive.test_uniform_distribution" class="function"><a href="Test_Models.html#TestBaseModel.test_uniform_distribution">test_uniform_distribution</a></dd>
 
             </div>
             <div><dt><a href="Test_Models.html#CoreTest">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.CoreTest</a></dt>
@@ -895,6 +896,7 @@ attribute so can be configured by individual tests if required.</li>
             <div><dt><a href="Test_Models.html#TestBaseModel">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.TestBaseModel</a></dt>
                                 <dd id="TestStrictProCompetitive.setUpConfiguration" class="function"><a href="Test_Models.html#TestBaseModel.setUpConfiguration">setUpConfiguration</a></dd>
                 <dd id="TestStrictProCompetitive.test_valid_setup_default_values" class="function"><a href="Test_Models.html#TestBaseModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
+                <dd id="TestStrictProCompetitive.test_uniform_distribution" class="function"><a href="Test_Models.html#TestBaseModel.test_uniform_distribution">test_uniform_distribution</a></dd>
 
             </div>
             <div><dt><a href="Test_Models.html#CoreTest">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.CoreTest</a></dt>
@@ -1149,6 +1151,7 @@ attribute so can be configured by individual tests if required.</li>
             <div><dt><a href="Test_Models.html#TestBaseModel">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.TestBaseModel</a></dt>
                                 <dd id="TestIntermediateLateTakeoverProhibitedProCompetitive.setUpConfiguration" class="function"><a href="Test_Models.html#TestBaseModel.setUpConfiguration">setUpConfiguration</a></dd>
                 <dd id="TestIntermediateLateTakeoverProhibitedProCompetitive.test_valid_setup_default_values" class="function"><a href="Test_Models.html#TestBaseModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
+                <dd id="TestIntermediateLateTakeoverProhibitedProCompetitive.test_uniform_distribution" class="function"><a href="Test_Models.html#TestBaseModel.test_uniform_distribution">test_uniform_distribution</a></dd>
 
             </div>
             <div><dt><a href="Test_Models.html#CoreTest">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.CoreTest</a></dt>
@@ -1503,6 +1506,7 @@ attribute so can be configured by individual tests if required.</li>
             <div><dt><a href="Test_Models.html#TestBaseModel">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.TestBaseModel</a></dt>
                                 <dd id="TestIntermediateLateTakeoverAllowedProCompetitive.setUpConfiguration" class="function"><a href="Test_Models.html#TestBaseModel.setUpConfiguration">setUpConfiguration</a></dd>
                 <dd id="TestIntermediateLateTakeoverAllowedProCompetitive.test_valid_setup_default_values" class="function"><a href="Test_Models.html#TestBaseModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
+                <dd id="TestIntermediateLateTakeoverAllowedProCompetitive.test_uniform_distribution" class="function"><a href="Test_Models.html#TestBaseModel.test_uniform_distribution">test_uniform_distribution</a></dd>
 
             </div>
             <div><dt><a href="Test_Models.html#CoreTest">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.CoreTest</a></dt>
@@ -1905,6 +1909,7 @@ attribute so can be configured by individual tests if required.</li>
             <div><dt><a href="Test_Models.html#TestBaseModel">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.TestBaseModel</a></dt>
                                 <dd id="TestResourceWaste.setUpConfiguration" class="function"><a href="Test_Models.html#TestBaseModel.setUpConfiguration">setUpConfiguration</a></dd>
                 <dd id="TestResourceWaste.test_valid_setup_default_values" class="function"><a href="Test_Models.html#TestBaseModel.test_valid_setup_default_values">test_valid_setup_default_values</a></dd>
+                <dd id="TestResourceWaste.test_uniform_distribution" class="function"><a href="Test_Models.html#TestBaseModel.test_uniform_distribution">test_uniform_distribution</a></dd>
 
             </div>
             <div><dt><a href="Test_Models.html#CoreTest">Fumagalli_Motta_Tarantino_2020.tests.Test_Models.CoreTest</a></dt>

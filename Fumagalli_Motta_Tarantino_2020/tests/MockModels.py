@@ -123,7 +123,7 @@ def mock_optimal_merger_policy(
     type(model).asset_distribution_threshold_shelving_approved = 0.91
     type(model).early_bidding_type = FMT20.Takeover.Separating
     type(model).late_bidding_type = FMT20.Takeover.Pooling
-    model.asset_distribution = FMT20.Utilities.NormalDistributionFunction
+    model.asset_distribution = FMT20.Distributions.NormalDistribution
     model.asset_distribution_kwargs = {}
 
     set_outcome(model, **kwargs)

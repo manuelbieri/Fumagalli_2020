@@ -160,7 +160,7 @@ class TestVisualize(unittest.TestCase):
         )
 
     def test_perfect_information_asset_range(self):
-        model = FMT20.PerfectInformationModel(**FMT20.LoadParameters(config_id=50)())
+        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=50)())
         self.setUpVisualizerCall(
             lambda: FMT20.MergerPoliciesAssetRangePerfectInformation(model),
             thresholds=True,
@@ -169,5 +169,5 @@ class TestVisualize(unittest.TestCase):
         )
 
     def test_perfect_information_overview(self):
-        model = FMT20.PerfectInformationModel(**FMT20.LoadParameters(config_id=51)())
+        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=51)())
         self.setUpVisualizerCall(lambda: FMT20.Overview(model))

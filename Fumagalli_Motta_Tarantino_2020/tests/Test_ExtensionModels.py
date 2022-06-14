@@ -4,7 +4,7 @@ import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 class TestProCompetitive(Test.TestOptimalMergerPolicyModel):
     def setupModel(self, **kwargs) -> None:
-        self.model = FMT20.ProCompetitiveModel(**kwargs)
+        self.model = FMT20.ProCompetitive(**kwargs)
 
     def test_tolerated_harm_strict(self):
         self.setupModel()
