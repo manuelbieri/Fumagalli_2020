@@ -118,9 +118,7 @@ class PerfectInformation(FMT20.OptimalMergerPolicy):
         merger_policy: Types.MergerPolicies = Types.MergerPolicies.Strict,
         **kwargs
     ):
-        super(PerfectInformation, self).__init__(
-            merger_policy=merger_policy, **kwargs
-        )
+        super(PerfectInformation, self).__init__(merger_policy=merger_policy, **kwargs)
 
     def _check_merger_policy(self):
         super(PerfectInformation, self)._check_merger_policy()

@@ -12,9 +12,7 @@ class TestNormalDistributionFunction(unittest.TestCase):
         )
 
     def test_inverse_cumulative_function(self):
-        self.assertEqual(
-            0, FMT20.Utilities.NormalDistribution.inverse_cumulative(0.5)
-        )
+        self.assertEqual(0, FMT20.Utilities.NormalDistribution.inverse_cumulative(0.5))
 
     def test_inverse_cumulative_function_adjusted_loc(self):
         self.assertEqual(
