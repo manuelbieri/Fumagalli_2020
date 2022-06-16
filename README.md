@@ -41,7 +41,7 @@ print(model.summary())
 FMT20.Overview(model).show()
 ```
 
-A tutorial is included with the notebook tutorial.ipynb. Additionally, find the latest documentation including all the details on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
+A tutorial is included with the notebook Tutorial.ipynb. Additionally, find the latest documentation including all the details on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
 
 Note: mybinder.org is currently not supported, since the package needs at least python 3.9.
 
