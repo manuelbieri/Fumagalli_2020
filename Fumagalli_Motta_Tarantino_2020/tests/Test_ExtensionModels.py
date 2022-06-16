@@ -191,6 +191,10 @@ class TestResourceWaste(TestProCompetitive):
     def test_intermediate_optimal_merger_policy(self):
         self.setUpConfiguration(config_id=35)
         self.assertTrue(self.model.is_intermediate_optimal())
+        self.assertEqual(
+            FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
+            self.model.get_optimal_merger_policy(),
+        )
 
     def test_laissez_faire_optimal_merger_policy(self):
         self.setupModel()
