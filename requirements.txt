@@ -11,4 +11,4 @@ ipython==8.4.0
 jupyter>=1.0.0
 
 # necessary for the documentation
-pdoc==12.0.1
+pdoc==12.0.2

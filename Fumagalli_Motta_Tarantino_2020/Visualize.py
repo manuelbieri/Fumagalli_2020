@@ -546,7 +546,7 @@ class Timeline(IVisualize):
         self._draw_timeline(kwargs)
         self._set_x_axis()
         self._set_y_axis()
-        self._set_tight_layout(y_spacing=0.45, x_spacing=0.01)
+        self._set_tight_layout(y_spacing=0.45, x_spacing=0.02)
         return self.fig, self.ax
 
     def _draw_timeline(self, kwargs):

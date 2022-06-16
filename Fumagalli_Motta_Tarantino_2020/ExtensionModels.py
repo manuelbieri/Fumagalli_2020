@@ -1,3 +1,4 @@
+import Fumagalli_Motta_Tarantino_2020.Types as Types
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
@@ -113,6 +114,10 @@ class ResourceWaste(ProCompetitive):
 
     def is_intermediate_optimal(self) -> bool:
         return not self.is_laissez_faire_optimal()
+
+    @staticmethod
+    def _get_intermediate_optimal_candidate() -> Types.MergerPolicies:
+        return FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
 
     def is_laissez_faire_optimal(self) -> bool:
         return not self.is_financial_imperfection_severe() or (

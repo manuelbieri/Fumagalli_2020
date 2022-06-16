@@ -1068,8 +1068,12 @@ class OptimalMergerPolicy(MergerPolicy):
         if self.is_laissez_faire_optimal():
             return Types.MergerPolicies.Laissez_faire
         if self.is_intermediate_optimal():
-            return Types.MergerPolicies.Intermediate_late_takeover_allowed
+            return self._get_intermediate_optimal_candidate()
         return Types.MergerPolicies.Strict
+
+    @staticmethod
+    def _get_intermediate_optimal_candidate() -> Types.MergerPolicies:
+        return Types.MergerPolicies.Intermediate_late_takeover_allowed
 
     def is_laissez_faire_optimal(self) -> bool:
         """
