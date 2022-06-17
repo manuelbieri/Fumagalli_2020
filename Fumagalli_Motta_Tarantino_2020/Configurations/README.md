@@ -34,6 +34,15 @@ See Fumagalli_Motta_Tarantino_2020.Models.BaseModel for the definition of the th
 | 30  |       True       |            False             |            True            |            True             |              True              | ProCompetitive |
 | 31  |       True       |            False             |           False            |            False            |             False              | ProCompetitive |
 | 32  |       True       |            False             |            True            |            True             |              True              | ProCompetitive |
-| 33  |       True       |            False             |            True            |            True             |              True              | ResourceWaste  |
-| 34  |       True       |             True             |           False            |            False            |             False              | ResourceWaste  |
-| 35  |       True       |             True             |            True            |            False            |              True              | ResourceWaste  |
+| 40  |       True       |            False             |            True            |            True             |              True              | ResourceWaste  |
+| 41  |       True       |             True             |           False            |            False            |             False              | ResourceWaste  |
+| 42  |       True       |             True             |            True            |            False            |              True              | ResourceWaste  |
+
+Further ranges of configurations are:
+- 1-5: Standard configurations for Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
+- 10-19: Configurations for Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy used in Figures.ipynb
+- 30-39: Configurations for Fumagalli_Motta_Tarantino_2020.ExtensionModels.ProCompetitive used in Figures.ipynb and tests 
+- 40-49: Configurations for Fumagalli_Motta_Tarantino_2020.ExtensionModels.ResourceWaste used in Figures.ipynb and tests
+- 50-59: Configurations for Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformation used in Figures.ipynb and tests
+
+Find the full set of configurations and their visualization in Notebooks/Configurations.ipynb.

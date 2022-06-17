@@ -164,7 +164,7 @@ class TestResourceWaste(TestProCompetitive):
         pass
 
     def test_not_profitable_above_threshold(self):
-        self.setUpConfiguration(config_id=34)
+        self.setUpConfiguration(config_id=41)
         self.assertEqual(
             FMT20.MergerPolicies.Strict,
             self.model.merger_policy,
@@ -176,7 +176,7 @@ class TestResourceWaste(TestProCompetitive):
         self.assertFalse(self.model.is_late_takeover)
 
     def test_not_profitable_below_threshold(self):
-        self.setUpConfiguration(config_id=33)
+        self.setUpConfiguration(config_id=40)
         self.assertEqual(
             FMT20.MergerPolicies.Strict,
             self.model.merger_policy,
@@ -189,7 +189,7 @@ class TestResourceWaste(TestProCompetitive):
         self.assertTrue(self.model.is_killer_acquisition())
 
     def test_intermediate_optimal_merger_policy(self):
-        self.setUpConfiguration(config_id=35)
+        self.setUpConfiguration(config_id=42)
         self.assertTrue(self.model.is_intermediate_optimal())
         self.assertEqual(
             FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
