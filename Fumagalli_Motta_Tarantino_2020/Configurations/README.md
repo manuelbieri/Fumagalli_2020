@@ -5,17 +5,17 @@ To make the life of the user easier, here are some predefined configuration of p
 ## How to use
 
 ```python
-from Fumagalli_Motta_Tarantino_2020 import *
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
-params = Config.LoadParameters(config_id=3) # load configuration
-model = OptimalMergerPolicy(**params()) # Do not forget the stars in front of the call
+params = FMT20.LoadParameters(config_id=3) # load configuration
+model = FMT20.OptimalMergerPolicy(**params()) # Do not forget the stars in front of the call
 
 # Advanced use
-params = Config.LoadParameters(config_id=2)
+params = FMT20.LoadParameters(config_id=2)
 params.adjust_parameters(development_costs=0.11) # change parameters in the configuration
-params.set_merger_policy(Types.MergerPolicies.Laissez_faire) # change merger policy
+params.set_merger_policy(FMT20.MergerPolicies.Laissez_faire) # change merger policy
 params.toggle_development_success() # change the development outcome to the opposite
-model_with_adjustments = OptimalMergerPolicy(**params())
+model_with_adjustments = FMT20.OptimalMergerPolicy(**params())
 ```
 
 Change the `config_id` argument for a different configuration of parameters.

@@ -103,11 +103,20 @@ class LoadParameters:
 
     def _parse_file(self):
         with open(file=self._file_path, newline="") as f:
-            configs = [
-                {k: self._parse_value(v) for k, v in row.items()}
-                for row in csv.DictReader(f, skipinitialspace=True)
-            ]
+            configs = []
+            for row in csv.DictReader(f, skipinitialspace=True):
+                if not self._is_comment_row(row):
+                    tmp = {}
+                    for k, v in row.items():
+                        tmp.update({k: self._parse_value(v)})
+                    configs.append(tmp)
         return configs
+
+    @staticmethod
+    def _is_comment_row(row: dict[str, str]) -> bool:
+        if row["id"].strip() == "#":
+            return True
+        return False
 
     def toggle_development_success(self) -> None:
         self.params.set(
