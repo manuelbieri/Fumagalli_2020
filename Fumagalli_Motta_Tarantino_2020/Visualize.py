@@ -48,7 +48,15 @@ class IVisualize:
         Parameters
         ----------
         model: Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
-            Model to plot the outcomes from a range of assets.
+            Model to create the visualization from.
+        ax: Optional[matplotlib.pyplot.Axes]
+            Axes used for the plot, if not specified, a new set of axes is generated.
+        default_style: bool
+            If true, default matplotlib style is used.
+        dark_mode
+            If true, dark mode is used.
+        **kwargs
+            Arguments for the creation of a new figure.
         """
         self._set_mode(default_style, dark_mode)
         self.model: FMT20.OptimalMergerPolicy = model
@@ -81,6 +89,29 @@ class IVisualize:
             plt.style.use("default")
 
     def set_model(self, model: FMT20.OptimalMergerPolicy) -> None:
+        """
+        Change the model for the visualization.
+
+        Example
+        -------
+        ```python
+        import Fumagalli_Motta_Tarantino_2020 as FMT20
+
+        model_one = FMT20.OptimalMergerPolicy()
+        model_two = FMT20.OptimalMergerPolicy(development_success=False)
+        visualizer = FMT20.MergerPoliciesAssetRange(model_one)
+        visualizer.show()
+        # set the new model
+        visualizer.set_model(model_two)
+        # replot (overwrites the previous plot)
+        visualizer.show()
+        ```
+
+        Parameters
+        ----------
+        model: Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy
+            New model to generate the plots from.
+        """
         self.model = model
         self.ax.clear()
         self._reset_legend()
@@ -605,6 +636,10 @@ class Timeline(IVisualize):
 
 
 class Payoffs(IVisualize):
+    """
+    Visualizes the payoffs for a specific model.
+    """
+
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         payoffs: dict[str, float] = self._get_payoffs()
         bar_width = kwargs.get("width", 0.35)

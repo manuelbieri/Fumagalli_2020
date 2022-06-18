@@ -625,7 +625,7 @@ class MergerPolicy(BaseModel):
         - $A < \\bar{A}$, the start-up is credit-rationed and cannot invest.
         - $A \\ge \\bar{A}$, the start-up obtains external funding.
 
-        Laissez-Faire and Intermediate (late takeover allowed): $$
+        Laissez-Faire and Intermediate (late takeover allowed):
         - $A < \\bar{A}^T$, the start-up is credit-rationed and cannot invest.
         - $A \\ge \\bar{A}^T$, the start-up obtains external funding.
 
@@ -1000,7 +1000,7 @@ class MergerPolicy(BaseModel):
 
         Returns
         -------
-        Types.Summary
+        Fumagalli_Motta_Tarantino_2020.Types.Summary
             Containing the result of the model with the defined parameters.
         """
         return Types.Summary(
@@ -1201,12 +1201,12 @@ class OptimalMergerPolicy(MergerPolicy):
         """
         Returns the calculated outcome of the model with the defined parameters.
 
-        Additional information compared to Fumagalli_Motta_Tarantino_2020.Models.MergerPolicyModel.summary:
+        Additional information compared to Fumagalli_Motta_Tarantino_2020.Models.MergerPolicy.summary:
         - 'optimal_policy' : Fumagalli_Motta_Tarantino_2020.Types.MergerPolicies -> Defines the welfare maximizing merger policy.
 
         Returns
         -------
-        Types.Summary
+        Fumagalli_Motta_Tarantino_2020.Types.OptimalMergerPolicySummary
             Containing the result of the model with the defined parameters.
         """
         return Types.OptimalMergerPolicySummary(

@@ -7,6 +7,11 @@ import Fumagalli_Motta_Tarantino_2020.Types as Types
 
 
 class _ParameterModel:
+    """
+    Holds all parameters (excluding the asset distribution) for a
+    Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy  model and all child classes using the same parameters.
+    """
+
     def __init__(
         self,
         merger_policy: Types.MergerPolicies,
@@ -40,10 +45,19 @@ class _ParameterModel:
         }
 
     def get(self, key: str):
+        """
+        Returns the value for a specific parameter value
+        """
         assert key in self.params.keys()
         return self.params[key]
 
     def set(self, key: str, value: float):
+        """
+        Sets the value of a specific parameter value.
+
+        For the merger policy use the designated setter
+        (Fumagalli_Motta_Tarantino_2020.Configurations.LoadConfig.merger_policy).
+        """
         assert key in self.params.keys()
         self.params[key] = value
         assert self.params[key] == value
@@ -57,13 +71,31 @@ class _ParameterModel:
         self.params["merger_policy"] = value
 
     def __call__(self, *args, **kwargs) -> dict:
+        """
+        Returns a dict containing all the parameters and their values.
+        """
         return self.params
 
 
 class LoadParameters:
+    """
+    Loads a specfic configuration from a file.
+    """
+
     file_name: str = "params.csv"
+    """Filename of the configuration file."""
 
     def __init__(self, config_id: int, file_path: Optional[str] = None):
+        """
+        Initializes a valid object with a valid path to the configuration file and a valid id for the configuration.
+
+        Parameters
+        ----------
+        config_id: int
+            ID of the configuration (Fumagalli_Motta_Tarantino_2020.Configurations)
+        file_path: str
+            Path to configuration file, if not set, then the standard file is used.
+        """
         self._id = config_id
         self._file_path = self._set_path(file_path)
         self.params: _ParameterModel = self._select_configuration()
@@ -77,6 +109,16 @@ class LoadParameters:
         )
 
     def adjust_parameters(self, **kwargs) -> None:
+        """
+        Change parameter values of the configuration.
+
+        You can change as many values as you wish with one call.
+
+        Parameters
+        ----------
+        **kwargs
+          Form: {"name_of_parameter": new_value_of_parameter, ...}
+        """
         for (key, value) in kwargs.items():
             self.params.set(key, value)
 
@@ -119,14 +161,26 @@ class LoadParameters:
         return False
 
     def toggle_development_success(self) -> None:
+        """
+        Changes the value of the development success (if attempted) to the exact opposite.
+
+        - False $\Rightarrow$ True
+        - True $\Rightarrow$ False
+        """
         self.params.set(
             "development_success", not self.params.get("development_success")
         )
 
     def set_startup_assets(self, value: float):
+        """
+        Sets the value of the start-up assets.
+        """
         self.params.set("startup_assets", value)
 
     def set_merger_policy(self, value: Types.MergerPolicies):
+        """
+        Sets the merger policy.
+        """
         self.params.merger_policy = value
 
     @staticmethod
@@ -137,4 +191,7 @@ class LoadParameters:
             return float(value)
 
     def __call__(self, *args, **kwargs) -> dict:
+        """
+        Returns a dict containing all the parameters and their values.
+        """
         return self.params()

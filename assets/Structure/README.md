@@ -14,48 +14,49 @@ This is the annotated folder structure:
 ```
 .github
    |-- workflows
-   |   |-- Black.yml  # checks the code style on errors
-   |   |-- CodeCov.yml  # pushes the newest CI results to codecov.io
-   |   |-- PyPI.yml  # pushes releases automatically on PyPI
-   |   |-- codeql-analysis.yml  # checks for weaknesses in code
-Fumagalli_Motta_Tarantino_2020  # package as published on PyPI
-   |-- AdditionalModels.py  # MicroFoundationModel and PerfectInformationModel
-   |-- Models.py  # BaseModel, MergerPolicy and OptimalMergerPolicy
-   |-- Types.py  # Additional enums and dataclasses
-   |-- Utilities.py  # useful classes for support in models
-   |-- Visualize.py  # visualizations for the models
-   |-- __init__.py
-   |-- tests  # includes tests for the models and visualizations
-   |   |-- MockModels.py
-   |   |-- TestCases.md
-   |   |-- Test_AdditionalModels.py
-   |   |-- Test_Model.py
-   |   |-- Test_Utilities.py
-   |   |-- Test_Visualize.py
+   |   |-- Black.yml  # Checks the code style on errors
+   |   |-- CodeCov.yml  # Pushes the newest CI results to codecov.io
+   |   |-- PyPI.yml  # Publishes releases automatically on PyPI
+   |   |-- codeql-analysis.yml  # Checks for weaknesses in code
+Fumagalli_Motta_Tarantino_2020  # Package as published on PyPI
+   |-- Configurations  # Package to load preset configurations
+   |-- Notebooks
+   |   |-- Analysis.ipynb  # Contains a narrative analysis of the models
+   |   |-- Configurations.ipynb  # Plots all preset configurations
+   |   |-- Figures.ipynb  # Generates all figures used in thesis
+   |   |-- Tutorial.ipynb  # Contains a tutorial for the package
    |   |-- __init__.py
-Notebooks
-   |-- README.md  # introduction to the provided notebooks
+   |-- tests  # Test package, which tests all classes in the main package
+   |-- AdditionalModels.py  # Models: CournotCompetition, EquityContract and PerfectInformation
+   |-- Distributions.py  # Provides a uniform and normal distribution (respective their cumulative function and inverse)
+   |-- Exceptions.py  # Provides useful custom exceptions
+   |-- ExtensionModels.py  # Models: ProCompetitive and ResourceWaste
+   |-- Models.py  # Provides the implementation of the base model
+   |-- Project.py  # Contains information about the project
+   |-- Types.py  # Provides Enum (merger policies and bidding types) and dataclasses
+   |-- Visualize.py  # Provides visualization interface and Timeline and payoff plots
+   |-- VisualizeRanges.py  # Provides plots for ranges and an overview plot
    |-- __init__.py
-   |-- test.ipynb
-assets  # additional ressources regarding the code
-   |-- Strucutre  # contains informations about the project and code structure
+assets  # Additional ressources regarding the code
+   |-- Structure  # Contains informations about the project and code structure
+   |   |-- README.md  # This file
    |   |-- class_diagram.drawio  # UML class diagram
-   |   |-- tree.sh  # generated this tree of the project structure
-   |-- code style  # bash scripts for automatic check and enforcement of code style
+   |   |-- tree.sh  # Generates this tree of the project structure
+   |-- code style  # Bash scripts for automatic check and enforcement of code style
    |   |-- check_black.sh
    |   |-- run_black.sh
-   |-- visual  # contains graphics such as images and sketches
+   |-- visual  # Contains graphics
+   |   |-- class_diagram.svg
    |   |-- logo.svg
-docs  # contains the files for the documentation page (automatically generated with pdoc)
-   |-- build.sh  # bash script to execute build of documentation
-CITATION.cff  # for citation of the repository
-Fumagalli et al (2020) - Shelving or developing  # Original paper
-README.md  # introduction to the package
-LICENSE
-requirements.txt  # needed dependcies for the package
-setup.py  # setup script for publication on PyPI
+docs  # Contains the files for the documentation page (automatically generated with pdoc)
+   |-- build.sh  # Bash script for automatic build of documentation
+CITATION.cff  # Citation of the repository
+Fumagalli et al (2020) - Shelving or developing The Aquisition of potential competitors under financial constraints.pdf
+LICENSE  # MIT
+README.md  # Introduction to the repository
+requirements.txt  # Dependcies for the repository
+setup.py  # Setup script for publication on PyPI
 ```
-
 
 ## Class diagram
 

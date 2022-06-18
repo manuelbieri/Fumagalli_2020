@@ -913,7 +913,13 @@
 
 <ul>
 <li><strong>model</strong> (<a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a>):
-Model to plot the outcomes from a range of assets.</li>
+Model to create the visualization from.</li>
+<li><strong>ax</strong> (Optional[matplotlib.pyplot.Axes]):
+Axes used for the plot, if not specified, a new set of axes is generated.</li>
+<li><strong>default_style</strong> (bool):
+If true, default matplotlib style is used.</li>
+<li><strong>dark_mode</strong>: If true, dark mode is used.</li>
+<li><strong>**kwargs</strong>: Arguments for the creation of a new figure.</li>
 </ul>
 </div>
 
@@ -921,7 +927,7 @@ Model to plot the outcomes from a range of assets.</li>
                             </div>
                             <div id="AssetRange.colors" class="classattr">
                                 <div class="attr variable">
-            <span class="name">colors</span><span class="annotation">: dict[str, str]</span><span class="default_value"> = [&#39;indianred&#39;, &#39;salmon&#39;, &#39;khaki&#39;, &#39;greenyellow&#39;, &#39;limegreen&#39;, &#39;turquoise&#39;, &#39;powderblue&#39;, &#39;lavender&#39;, &#39;thistle&#39;, &#39;lavenderblush&#39;, &#39;pink&#39;]</span>
+            <span class="name">colors</span><span class="annotation">: list[str]</span><span class="default_value"> = [&#39;indianred&#39;, &#39;salmon&#39;, &#39;khaki&#39;, &#39;greenyellow&#39;, &#39;limegreen&#39;, &#39;turquoise&#39;, &#39;powderblue&#39;, &#39;lavender&#39;, &#39;thistle&#39;, &#39;lavenderblush&#39;, &#39;pink&#39;]</span>
 
         
     </div>
@@ -950,7 +956,30 @@ Model to plot the outcomes from a range of assets.</li>
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Change the model for the visualization.</p>
+
+<h6 id="example">Example</h6>
+
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
+
+<span class="n">model_one</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+<span class="n">model_two</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">visualizer</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPoliciesAssetRange</span><span class="p">(</span><span class="n">model_one</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># set the new model</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">model_two</span><span class="p">)</span>
+<span class="c1"># replot (overwrites the previous plot)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>model</strong> (<a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a>):
+New model to generate the plots from.</li>
+</ul>
+</div>
+
 
                             </div>
                             <div id="AssetRange.plot" class="classattr">
@@ -1074,7 +1103,13 @@ fig.show()
 
 <ul>
 <li><strong>model</strong> (<a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a>):
-Model to plot the outcomes from a range of assets.</li>
+Model to create the visualization from.</li>
+<li><strong>ax</strong> (Optional[matplotlib.pyplot.Axes]):
+Axes used for the plot, if not specified, a new set of axes is generated.</li>
+<li><strong>default_style</strong> (bool):
+If true, default matplotlib style is used.</li>
+<li><strong>dark_mode</strong>: If true, dark mode is used.</li>
+<li><strong>**kwargs</strong>: Arguments for the creation of a new figure.</li>
 </ul>
 </div>
 
@@ -1179,7 +1214,13 @@ Model to plot the outcomes from a range of assets.</li>
 
 <ul>
 <li><strong>model</strong> (<a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a>):
-Model to plot the outcomes from a range of assets.</li>
+Model to create the visualization from.</li>
+<li><strong>ax</strong> (Optional[matplotlib.pyplot.Axes]):
+Axes used for the plot, if not specified, a new set of axes is generated.</li>
+<li><strong>default_style</strong> (bool):
+If true, default matplotlib style is used.</li>
+<li><strong>dark_mode</strong>: If true, dark mode is used.</li>
+<li><strong>**kwargs</strong>: Arguments for the creation of a new figure.</li>
 </ul>
 </div>
 
@@ -1321,7 +1362,13 @@ with mybinder.org is not guaranteed (uses at the moment python 3.7).</p>
 
 <ul>
 <li><strong>model</strong> (<a href="Models.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy</a>):
-Model to plot the outcomes from a range of assets.</li>
+Model to create the visualization from.</li>
+<li><strong>ax</strong> (Optional[matplotlib.pyplot.Axes]):
+Axes used for the plot, if not specified, a new set of axes is generated.</li>
+<li><strong>default_style</strong> (bool):
+If true, default matplotlib style is used.</li>
+<li><strong>dark_mode</strong>: If true, dark mode is used.</li>
+<li><strong>**kwargs</strong>: Arguments for the creation of a new figure.</li>
 </ul>
 </div>
 

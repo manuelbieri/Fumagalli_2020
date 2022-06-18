@@ -17,8 +17,7 @@ Install the latest release from [PyPi](https://pypi.org/project/Fumagalli-Motta-
 ```shell
 $ pip install Fumagalli-Motta-Tarantino-2020
 ```
-
-Or alternatively, install the package directly from source:
+Or alternatively, install this package directly from source:
 
 ```shell
 $ pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
@@ -39,11 +38,17 @@ print(model.summary())
 
 # plot a model overview
 FMT20.Overview(model).show()
+
+# open API-documentation
+FMT20.docs()
+
+# open GitHub-repository
+FMT20.repo()
 ```
 
 A tutorial is included with the notebook Tutorial.ipynb. Additionally, find the latest documentation including all the details on [manuelbieri.ch/fumagalli_2020](https://manuelbieri.ch/Fumagalli_2020/).
 
-Note: mybinder.org is currently not supported, since the package needs at least python 3.9.
+Note: mybinder.org is currently not supported, since this package needs at least python 3.9.
 
 ### Dependencies
 

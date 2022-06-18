@@ -38,6 +38,9 @@ setup(
         "matplotlib>=3.5.2",
         "numpy>=1.22.4",
     ],  # change with new version
-    package_data={"Fumagalli_Motta_Tarantino_2020.Configurations": ["params.csv"]},
+    package_data={
+        "Fumagalli_Motta_Tarantino_2020.Configurations": ["params.csv"],
+        "Fumagalli_Motta_Tarantino_2020.Notebooks": ["*.ipynb"],
+    },
     test_suite="Fumagalli_Motta_Tarantino_2020.tests",
 )
