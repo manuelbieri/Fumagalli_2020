@@ -205,14 +205,14 @@ class AssetRange(FMT20.IVisualize):
         self._set_asset_range_legends(**kwargs)
         self._draw_vertical_lines(self._thresholds)
         self._set_x_axis(**kwargs)
-        self._set_y_axis(bar_height, spacing, y_labels)
+        self._set_y_axis(bar_height, spacing, y_labels, **kwargs)
         self.ax.set_title(kwargs.get("title", "Outcome dependent on Start-up Assets"))
         self._set_tight_layout(y_spacing=spacing)
         return self.fig, self.ax
 
-    def _set_y_axis(self, bar_height, spacing, y_labels):
+    def _set_y_axis(self, bar_height, spacing, y_labels, **kwargs):
         self._set_y_ticks(bar_height, spacing, y_labels)
-        self.ax.set_ylabel("Merger Policy")
+        self.ax.set_ylabel(kwargs.get("y_label", "Merger Policy"))
 
     def _set_asset_range_legends(self, **kwargs):
         self._set_primary_legend()
