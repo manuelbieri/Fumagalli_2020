@@ -6,7 +6,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-import Fumagalli_Motta_Tarantino_2020 as FMT20
+import Fumagalli_Motta_Tarantino_2020.Models as FMT20
 
 
 class IVisualize:

@@ -1,6 +1,6 @@
 import unittest
 
-import Fumagalli_Motta_Tarantino_2020.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
 
 
 class TestThresholdItem(unittest.TestCase):

@@ -1,8 +1,9 @@
-import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020 as FMT20
+import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Models.Exceptions as Exceptions
+import Fumagalli_Motta_Tarantino_2020.Models.Base as Base
 
 
-class CournotCompetition(FMT20.OptimalMergerPolicy):
+class CournotCompetition(Base.OptimalMergerPolicy):
     def __init__(self, gamma=0.3, *args, **kwargs):
         assert 0 < gamma < 1, "Gamma has to be between 0 and 1."
         self._gamma = gamma
@@ -112,7 +113,7 @@ class CournotCompetition(FMT20.OptimalMergerPolicy):
         ) - self.development_costs - (self.w_duopoly - self.w_with_innovation)
 
 
-class PerfectInformation(FMT20.OptimalMergerPolicy):
+class PerfectInformation(Base.OptimalMergerPolicy):
     def __init__(
         self,
         merger_policy: Types.MergerPolicies = Types.MergerPolicies.Strict,
@@ -126,51 +127,51 @@ class PerfectInformation(FMT20.OptimalMergerPolicy):
             self.merger_policy
             is Types.MergerPolicies.Intermediate_late_takeover_prohibited
         ):
-            raise FMT20.Exceptions.MergerPolicyNotAvailable(
+            raise Exceptions.MergerPolicyNotAvailable(
                 "This merger policy is not available in this model"
             )
 
     def _solve_game_strict_merger_policy(self) -> None:
-        assert self.merger_policy is FMT20.MergerPolicies.Strict
+        assert self.merger_policy is Types.MergerPolicies.Strict
         if (
             self.is_startup_credit_rationed
             and not self.is_incumbent_expected_to_shelve()
         ):
-            self._set_takeovers(early_takeover=FMT20.Takeover.Separating)
+            self._set_takeovers(early_takeover=Types.Takeover.Separating)
         else:
             self._set_takeovers(
-                early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
             )
 
     def _solve_game_laissez_faire(self) -> None:
-        assert self.merger_policy is FMT20.MergerPolicies.Laissez_faire
+        assert self.merger_policy is Types.MergerPolicies.Laissez_faire
         if self.is_startup_credit_rationed and self.is_incumbent_expected_to_shelve():
             self._set_takeovers(
-                early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
             )
         else:
             if self.is_startup_credit_rationed:
-                self._set_takeovers(early_takeover=FMT20.Takeover.Separating)
+                self._set_takeovers(early_takeover=Types.Takeover.Separating)
             else:
-                self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
 
     def _solve_game_late_takeover_allowed(self) -> None:
         assert (
             self.merger_policy
-            is FMT20.MergerPolicies.Intermediate_late_takeover_allowed
+            is Types.MergerPolicies.Intermediate_late_takeover_allowed
         )
         if self.is_incumbent_expected_to_shelve():
             if self.is_startup_credit_rationed or not self.development_success:
                 self._set_takeovers(
-                    early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
+                    early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
                 )
             else:
-                self._set_takeovers(late_takeover=FMT20.Takeover.Pooling)
+                self._set_takeovers(late_takeover=Types.Takeover.Pooling)
         else:
             if self.is_startup_credit_rationed:
-                self._set_takeovers(early_takeover=FMT20.Takeover.Separating)
+                self._set_takeovers(early_takeover=Types.Takeover.Separating)
             else:
-                self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
+                self._set_takeovers(early_takeover=Types.Takeover.Pooling)
 
     def is_laissez_faire_optimal(self) -> bool:
         return False
@@ -186,15 +187,15 @@ class PerfectInformation(FMT20.OptimalMergerPolicy):
         )
 
 
-class EquityContract(FMT20.OptimalMergerPolicy):
+class EquityContract(Base.OptimalMergerPolicy):
     @property
     def asset_threshold_late_takeover(self) -> float:
         return self.asset_threshold
 
     def does_startup_strictly_prefer_debt(self) -> bool:
         if self.merger_policy in [
-            FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
-            FMT20.MergerPolicies.Laissez_faire,
+            Types.MergerPolicies.Intermediate_late_takeover_allowed,
+            Types.MergerPolicies.Laissez_faire,
         ]:
             return True
         return False

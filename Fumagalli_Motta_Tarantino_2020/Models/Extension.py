@@ -1,8 +1,8 @@
-import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020 as FMT20
+import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Models.Base as Base
 
 
-class ProCompetitive(FMT20.OptimalMergerPolicy):
+class ProCompetitive(Base.OptimalMergerPolicy):
     def __init__(self, consumer_surplus_without_innovation: float = 0.3, **kwargs):
         super(ProCompetitive, self).__init__(
             consumer_surplus_without_innovation=consumer_surplus_without_innovation,
@@ -33,9 +33,9 @@ class ProCompetitive(FMT20.OptimalMergerPolicy):
         return 0
 
     def _solve_game_strict_merger_policy(self) -> None:
-        assert self.merger_policy is FMT20.MergerPolicies.Strict
+        assert self.merger_policy is Types.MergerPolicies.Strict
         self._set_takeovers(
-            early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
+            early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
         )
 
     def _solve_game_late_takeover_prohibited(self) -> None:
@@ -43,10 +43,10 @@ class ProCompetitive(FMT20.OptimalMergerPolicy):
             self.asset_threshold_cdf
             < self.asset_distribution_threshold_unprofitable_without_late_takeover
         ):
-            self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
+            self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             self._set_takeovers(
-                early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
             )
 
     def _solve_game_late_takeover_allowed(self) -> None:
@@ -54,20 +54,20 @@ class ProCompetitive(FMT20.OptimalMergerPolicy):
             self.asset_threshold_late_takeover_cdf
             < self.asset_distribution_threshold_with_late_takeover
         ):
-            self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
+            self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             if self.is_startup_credit_rationed:
                 self._set_takeovers(
-                    early_takeover=FMT20.Takeover.No,
-                    late_takeover=FMT20.Takeover.No,
+                    early_takeover=Types.Takeover.No,
+                    late_takeover=Types.Takeover.No,
                 )
             else:
                 if self.development_success:
-                    self._set_takeovers(late_takeover=FMT20.Takeover.Pooling)
+                    self._set_takeovers(late_takeover=Types.Takeover.Pooling)
                 else:
                     self._set_takeovers(
-                        early_takeover=FMT20.Takeover.No,
-                        late_takeover=FMT20.Takeover.No,
+                        early_takeover=Types.Takeover.No,
+                        late_takeover=Types.Takeover.No,
                     )
 
     def is_strict_optimal(self) -> bool:
@@ -98,15 +98,15 @@ class ResourceWaste(ProCompetitive):
         return 0
 
     def _solve_game_strict_merger_policy(self) -> None:
-        assert self.merger_policy is FMT20.MergerPolicies.Strict
+        assert self.merger_policy is Types.MergerPolicies.Strict
         if (
             self.asset_threshold_cdf
             < self.asset_distribution_threshold_unprofitable_without_late_takeover
         ):
-            self._set_takeovers(early_takeover=FMT20.Takeover.Pooling)
+            self._set_takeovers(early_takeover=Types.Takeover.Pooling)
         else:
             self._set_takeovers(
-                early_takeover=FMT20.Takeover.No, late_takeover=FMT20.Takeover.No
+                early_takeover=Types.Takeover.No, late_takeover=Types.Takeover.No
             )
 
     def is_strict_optimal(self) -> bool:
@@ -117,7 +117,7 @@ class ResourceWaste(ProCompetitive):
 
     @staticmethod
     def _get_intermediate_optimal_candidate() -> Types.MergerPolicies:
-        return FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
+        return Types.MergerPolicies.Intermediate_late_takeover_prohibited
 
     def is_laissez_faire_optimal(self) -> bool:
         return not self.is_financial_imperfection_severe() or (

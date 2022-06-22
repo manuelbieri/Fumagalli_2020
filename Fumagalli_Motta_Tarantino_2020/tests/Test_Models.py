@@ -48,7 +48,7 @@ class TestBaseModel(CoreTest):
 
     def test_uniform_distribution(self):
         self.setupModel(
-            asset_distribution=FMT20.Utilities.UniformDistribution,
+            asset_distribution=FMT20.Distributions.UniformDistribution,
             standard_distribution=False,
         )
         self.assertEqual(

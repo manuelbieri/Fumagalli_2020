@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
-import Fumagalli_Motta_Tarantino_2020.Types as Types
-import Fumagalli_Motta_Tarantino_2020.Distributions as Utilities
+import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Models.Distributions as Distributions
 
 
 class BaseModel:
@@ -51,8 +51,8 @@ class BaseModel:
         consumer_surplus_with_innovation: float = 0.3,
         incumbent_profit_with_innovation: float = 0.5,
         asset_distribution: Union[
-            Utilities.NormalDistribution, Utilities.UniformDistribution
-        ] = Utilities.NormalDistribution,
+            Distributions.NormalDistribution, Distributions.UniformDistribution
+        ] = Distributions.NormalDistribution,
         **kwargs,
     ):
         """
@@ -131,7 +131,7 @@ class BaseModel:
         self._check_preconditions()
 
     def _set_asset_distribution_kwargs(self) -> None:
-        if self.asset_distribution is Utilities.UniformDistribution:
+        if self.asset_distribution is Distributions.UniformDistribution:
             self.asset_distribution_kwargs = {
                 "loc": 0,
                 "scale": self.development_costs,

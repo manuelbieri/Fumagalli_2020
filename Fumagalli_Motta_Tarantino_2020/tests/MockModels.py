@@ -1,15 +1,15 @@
 import unittest.mock as mock
 
-import Fumagalli_Motta_Tarantino_2020 as FMT20
+import Fumagalli_Motta_Tarantino_2020.Models as Models
 
 
 def mock_optimal_merger_policy(
     asset_threshold: float = 0.5,
     asset_threshold_late_takeover: float = -1,
     credit_constrained: bool = False,
-    policy: FMT20.MergerPolicies = FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
+    policy: Models.MergerPolicies = Models.MergerPolicies.Intermediate_late_takeover_prohibited,
     **kwargs
-) -> FMT20.OptimalMergerPolicy:
+) -> Models.OptimalMergerPolicy:
     """
     Creates a mock model of Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy.
     """
@@ -38,18 +38,18 @@ def mock_optimal_merger_policy(
 
     def set_summary(
         credit_rationed=False,
-        early_bidding_type=FMT20.Takeover.No,
-        late_bidding_type=FMT20.Takeover.No,
+        early_bidding_type=Models.Takeover.No,
+        late_bidding_type=Models.Takeover.No,
         development_attempt=True,
         development_outcome=True,
         early_takeover=False,
         late_takeover=False,
         set_policy=policy,
-    ) -> FMT20.OptimalMergerPolicySummary:
+    ) -> Models.OptimalMergerPolicySummary:
         """
         Sets the returned summary for the model.
         """
-        return FMT20.OptimalMergerPolicySummary(
+        return Models.OptimalMergerPolicySummary(
             credit_rationed=credit_rationed,
             set_policy=set_policy,
             early_bidding_type=early_bidding_type,
@@ -62,7 +62,7 @@ def mock_optimal_merger_policy(
         )
 
     def summary(
-        merger_policy: FMT20.MergerPolicies = FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
+        merger_policy: Models.MergerPolicies = Models.MergerPolicies.Intermediate_late_takeover_prohibited,
     ):
         """
         Regulates the returned summaries given the asset thresholds.
@@ -72,7 +72,7 @@ def mock_optimal_merger_policy(
                 credit_rationed=True,
                 development_attempt=False,
                 development_outcome=False,
-                early_bidding_type=FMT20.Takeover.Separating,
+                early_bidding_type=Models.Takeover.Separating,
                 early_takeover=True,
                 set_policy=merger_policy,
             )
@@ -80,13 +80,13 @@ def mock_optimal_merger_policy(
             return set_summary(
                 credit_rationed=False,
                 development_outcome=False,
-                early_bidding_type=FMT20.Takeover.Pooling,
+                early_bidding_type=Models.Takeover.Pooling,
                 early_takeover=False,
                 set_policy=merger_policy,
             )
         return set_summary(set_policy=merger_policy, credit_rationed=credit_constrained)
 
-    model: FMT20.OptimalMergerPolicy = mock.Mock(spec=FMT20.OptimalMergerPolicy)
+    model: Models.OptimalMergerPolicy = mock.Mock(spec=Models.OptimalMergerPolicy)
     type(model).merger_policy = policy
     type(model).startup_assets = 3.5
     type(model).private_benefit = 0.18
@@ -121,15 +121,15 @@ def mock_optimal_merger_policy(
     type(model).asset_threshold_cdf = 0.9
     type(model).asset_distribution_threshold_unprofitable_without_late_takeover = 1
     type(model).asset_distribution_threshold_shelving_approved = 0.91
-    type(model).early_bidding_type = FMT20.Takeover.Separating
-    type(model).late_bidding_type = FMT20.Takeover.Pooling
-    model.asset_distribution = FMT20.Distributions.NormalDistribution
+    type(model).early_bidding_type = Models.Takeover.Separating
+    type(model).late_bidding_type = Models.Takeover.Pooling
+    model.asset_distribution = Models.Distributions.NormalDistribution
     model.asset_distribution_kwargs = {}
 
     set_outcome(model, **kwargs)
 
     model.get_optimal_merger_policy = (
-        lambda: FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
+        lambda: Models.MergerPolicies.Intermediate_late_takeover_prohibited
     )
     model.summary = lambda: summary(merger_policy=model.merger_policy)
     return model

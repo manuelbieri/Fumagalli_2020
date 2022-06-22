@@ -3,7 +3,7 @@ import os.path
 from typing import Optional
 
 import Fumagalli_Motta_Tarantino_2020.Configurations.ConfigExceptions as Exceptions
-import Fumagalli_Motta_Tarantino_2020.Types as Types
+import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
 
 
 class _ParameterModel:

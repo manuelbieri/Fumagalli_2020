@@ -3,19 +3,20 @@ import matplotlib.gridspec
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
 
-import Fumagalli_Motta_Tarantino_2020 as FMT20
+import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize as Visualize
 
 
-class AssetRange(FMT20.IVisualize):
+class AssetRange(Visualize.IVisualize):
     """
     Visualizes the outcomes over an assets range for a specific model.
     """
 
-    def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs) -> None:
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs) -> None:
         super(AssetRange, self).__init__(model, **kwargs)
         self.labels: list[str] = []
         self.colors: dict[str, str] = {}
-        self._thresholds: list[FMT20.ThresholdItem] = self._get_essential_thresholds()
+        self._thresholds: list[Models.ThresholdItem] = self._get_essential_thresholds()
         self._check_thresholds()
 
     def _check_thresholds(self) -> None:
@@ -23,14 +24,14 @@ class AssetRange(FMT20.IVisualize):
             self._thresholds is not None and len(self._thresholds) >= 2
         ), "Essential thresholds are not valid"
 
-    def set_model(self, model: FMT20.OptimalMergerPolicy) -> None:
+    def set_model(self, model: Models.OptimalMergerPolicy) -> None:
         super(AssetRange, self).set_model(model)
         self._thresholds = self._get_essential_thresholds()
         self._check_thresholds()
 
     def _get_outcomes_asset_range(
         self,
-    ) -> list[FMT20.OptimalMergerPolicySummary]:
+    ) -> list[Models.OptimalMergerPolicySummary]:
         """
         Generates a list with all essential threshold concerning the assets of a start-up and an additional list with
         summaries of the outcomes of the model in between the thresholds.
@@ -40,21 +41,23 @@ class AssetRange(FMT20.IVisualize):
         (list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.FMT20.OptimalMergerPolicySummary])
             List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
         """
-        summaries: list[FMT20.OptimalMergerPolicySummary] = []
+        summaries: list[Models.OptimalMergerPolicySummary] = []
         for i in range(len(self._thresholds) - 1):
             self._set_model_startup_assets(self._thresholds[i], self._thresholds[i + 1])
             summaries.append(self.model.summary())
         return summaries
 
     def _set_model_startup_assets(
-        self, lower_threshold: FMT20.ThresholdItem, upper_threshold: FMT20.ThresholdItem
+        self,
+        lower_threshold: Models.ThresholdItem,
+        upper_threshold: Models.ThresholdItem,
     ) -> None:
         self.model.startup_assets = (
             self._get_inverse_asset_distribution_value(lower_threshold.value)
             + self._get_inverse_asset_distribution_value(upper_threshold.value)
         ) / 2
 
-    def _get_essential_thresholds(self) -> list[FMT20.ThresholdItem]:
+    def _get_essential_thresholds(self) -> list[Models.ThresholdItem]:
         """
         Generates a list with all essential threshold concerning the assets of a start-up.
 
@@ -64,40 +67,40 @@ class AssetRange(FMT20.IVisualize):
             List containing the essential asset thresholds in the model.
         """
         thresholds = self._get_available_thresholds()
-        essential_thresholds: list[FMT20.ThresholdItem] = []
+        essential_thresholds: list[Models.ThresholdItem] = []
         for threshold in thresholds:
             if self._valid_x_tick(threshold):
                 essential_thresholds.append(threshold)
         thresholds = sorted(essential_thresholds, key=lambda x: x.value)
         return thresholds
 
-    def _get_available_thresholds(self) -> list[FMT20.ThresholdItem]:
+    def _get_available_thresholds(self) -> list[Models.ThresholdItem]:
         return [
-            FMT20.ThresholdItem("$F(0)$", self._get_x_min(), include=True),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem("$F(0)$", self._get_x_min(), include=True),
+            Models.ThresholdItem(
                 "$F(K)$",
                 self._get_x_max(),
                 include=True,
             ),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem(
                 "$\\Gamma$", self.model.asset_distribution_threshold_welfare
             ),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem(
                 "$\\Phi$",
                 self.model.asset_distribution_threshold_profitable_without_late_takeover,
             ),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem(
                 "$\\Phi^T$", self.model.asset_distribution_threshold_with_late_takeover
             ),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem(
                 "$\\Phi^{\\prime}$",
                 self.model.asset_distribution_threshold_unprofitable_without_late_takeover,
             ),
-            FMT20.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem("$F(\\bar{A})$", self.model.asset_threshold_cdf),
+            Models.ThresholdItem(
                 "$F(\\bar{A}^T)$", self.model.asset_threshold_late_takeover_cdf
             ),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem(
                 "$\\Lambda(\\cdot)$",
                 self.model.asset_distribution_threshold_shelving_approved,
             ),
@@ -140,16 +143,18 @@ class AssetRange(FMT20.IVisualize):
         self.ax.tick_params(which="both", bottom=False, top=False, length=6, axis="x")
 
     def _set_x_labels(self, x_labels: list[str]) -> None:
-        self.ax.set_xticklabels(x_labels[::2], fontsize=FMT20.IVisualize.fontsize)
+        self.ax.set_xticklabels(x_labels[::2], fontsize=Visualize.IVisualize.fontsize)
         self.ax.set_xticklabels(
-            x_labels[1::2], minor=True, fontsize=FMT20.IVisualize.fontsize
+            x_labels[1::2], minor=True, fontsize=Visualize.IVisualize.fontsize
         )
 
     def _set_x_locators(self, x_ticks: list[float]) -> None:
         self.ax.xaxis.set_major_locator(FixedLocator(x_ticks[::2]))
         self.ax.xaxis.set_minor_locator(FixedLocator(x_ticks[1::2]))
 
-    def _draw_vertical_lines(self, asset_thresholds: list[FMT20.ThresholdItem]) -> None:
+    def _draw_vertical_lines(
+        self, asset_thresholds: list[Models.ThresholdItem]
+    ) -> None:
         for threshold in asset_thresholds:
             if self._valid_x_tick(threshold) or threshold.include:
                 self.ax.axvline(threshold.value, linestyle=":", color="k", lw=0.5)
@@ -168,7 +173,7 @@ class AssetRange(FMT20.IVisualize):
     def _set_y_ticks(self, bar_height: float, spacing: float, y_labels: list[str]):
         y_ticks = self._get_y_ticks(spacing, bar_height, y_labels)
         self.ax.set_yticks(y_ticks)
-        self.ax.set_yticklabels(y_labels, fontsize=FMT20.IVisualize.fontsize)
+        self.ax.set_yticklabels(y_labels, fontsize=Visualize.IVisualize.fontsize)
         self.ax.yaxis.set_ticks_position("none")
 
     def _get_label_color(self, label) -> (str, str):
@@ -188,11 +193,11 @@ class AssetRange(FMT20.IVisualize):
         """
         if label in self.labels:
             return "_nolegend_", self.colors[label]
-        self.colors[label] = FMT20.IVisualize.colors[len(self.labels)]
+        self.colors[label] = Visualize.IVisualize.colors[len(self.labels)]
         self.labels.append(label)
         return label, self.colors[label]
 
-    def _get_summaries(self) -> list[list[FMT20.OptimalMergerPolicySummary]]:
+    def _get_summaries(self) -> list[list[Models.OptimalMergerPolicySummary]]:
         return [self._get_outcomes_asset_range()]
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -301,7 +306,7 @@ class AssetRange(FMT20.IVisualize):
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
-                fontsize=FMT20.IVisualize.fontsize,
+                fontsize=Visualize.IVisualize.fontsize,
             )
 
     @staticmethod
@@ -323,42 +328,42 @@ class AssetRange(FMT20.IVisualize):
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
-                fontsize=FMT20.IVisualize.fontsize,
+                fontsize=Visualize.IVisualize.fontsize,
             )
 
 
 class MergerPoliciesAssetRange(AssetRange):
-    def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs):
+    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
         super(MergerPoliciesAssetRange, self).__init__(model, **kwargs)
 
     def _get_outcomes_different_merger_policies(
         self,
-    ) -> list[list[FMT20.OptimalMergerPolicySummary]]:
-        outcomes: list[list[FMT20.OptimalMergerPolicySummary]] = []
-        for merger_policy in FMT20.MergerPolicies:
+    ) -> list[list[Models.OptimalMergerPolicySummary]]:
+        outcomes: list[list[Models.OptimalMergerPolicySummary]] = []
+        for merger_policy in Models.MergerPolicies:
             try:
                 self.model.merger_policy = merger_policy
                 outcomes.append(self._get_outcomes_asset_range())
-            except FMT20.Exceptions.MergerPolicyNotAvailable:
+            except Models.Exceptions.MergerPolicyNotAvailable:
                 pass
         return outcomes
 
-    def _get_summaries(self) -> list[list[FMT20.OptimalMergerPolicySummary]]:
+    def _get_summaries(self) -> list[list[Models.OptimalMergerPolicySummary]]:
         return self._get_outcomes_different_merger_policies()
 
 
 class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
-    def __init__(self, model: FMT20.PerfectInformation, **kwargs):
+    def __init__(self, model: Models.PerfectInformation, **kwargs):
         super(MergerPoliciesAssetRangePerfectInformation, self).__init__(
             model, **kwargs
         )
 
-    def _get_available_thresholds(self) -> list[FMT20.ThresholdItem]:
+    def _get_available_thresholds(self) -> list[Models.ThresholdItem]:
         return [
-            FMT20.ThresholdItem("$0$", self._get_x_min(), include=True),
-            FMT20.ThresholdItem("$K$", self._get_x_max(), include=True),
-            FMT20.ThresholdItem("$\\bar{A}$", self.model.asset_threshold),
-            FMT20.ThresholdItem(
+            Models.ThresholdItem("$0$", self._get_x_min(), include=True),
+            Models.ThresholdItem("$K$", self._get_x_max(), include=True),
+            Models.ThresholdItem("$\\bar{A}$", self.model.asset_threshold),
+            Models.ThresholdItem(
                 "$\\bar{A}^T$", self.model.asset_threshold_late_takeover
             ),
         ]
@@ -368,7 +373,9 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
         return super(MergerPoliciesAssetRangePerfectInformation, self).plot(**kwargs)
 
     def _set_model_startup_assets(
-        self, lower_threshold: FMT20.ThresholdItem, upper_threshold: FMT20.ThresholdItem
+        self,
+        lower_threshold: Models.ThresholdItem,
+        upper_threshold: Models.ThresholdItem,
     ) -> None:
         self.model.startup_assets = (lower_threshold.value + upper_threshold.value) / 2
 
@@ -392,16 +399,16 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
         )
 
 
-class Overview(FMT20.IVisualize):
-    def __init__(self, model: FMT20.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
+class Overview(Visualize.IVisualize):
+    def __init__(self, model: Models.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
         super().__init__(model, figsize=figsize, constrained_layout=True, **kwargs)
         plt.axis("off")
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         spec = self.fig.add_gridspec(ncols=2, nrows=2)
         self.fig.suptitle("${\\bf Model\\thickspace Overview}$")
-        self._generate_ax(spec[1, 0], FMT20.Timeline, **kwargs)
-        self._generate_ax(spec[0, 1], FMT20.Payoffs, **kwargs)
+        self._generate_ax(spec[1, 0], Visualize.Timeline, **kwargs)
+        self._generate_ax(spec[0, 1], Visualize.Payoffs, **kwargs)
         self._generate_ax(
             spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
         )
@@ -410,7 +417,7 @@ class Overview(FMT20.IVisualize):
     def _get_merger_policy_asset_range_type(self) -> Callable:
         return (
             MergerPoliciesAssetRangePerfectInformation
-            if type(self.model) is FMT20.PerfectInformation
+            if type(self.model) is Models.PerfectInformation
             else MergerPoliciesAssetRange
         )
 
