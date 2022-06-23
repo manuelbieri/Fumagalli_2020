@@ -45,6 +45,12 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#basic-usage">Basic Usage</a></li>
+  <li><a href="#available-visualizations">Available Visualizations</a></li>
+</ul>
+
 
         <h2>Submodules</h2>
         <ul>
@@ -67,13 +73,75 @@
                     <h1 class="modulename">
 <a href="./../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.Visualizations    </h1>
 
-                
+                        <div class="docstring"><p>This submodule provides the implementations for the visualization of the models in <a href="Models.html">Fumagalli_Motta_Tarantino_2020.Models</a>.</p>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+
+<span class="c1"># see list below for available visualizations</span>
+<span class="n">visualizer</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">Overview</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># show the plot in a canvas</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># exceptional use for <a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a></span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">PerfectInformation</span><span class="p">()</span>
+
+<span class="c1"># for the outcome for different merger policies over range of assets</span>
+<span class="n">visualizer_perfect_information</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPoliciesAssetRangePerfectInformation</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">visualizer_perfect_information</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="available-visualizations">Available Visualizations</h2>
+
+<p>The following models are available:</p>
+
+<ul>
+<li><a href="Visualizations/Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a>
+<ul>
+<li>Interface for all visualizations</li>
+<li>Do not try to initialize this class, it will fail for sure sooner or later</li>
+</ul></li>
+<li><a href="Visualizations/Visualize.html#Timeline">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline</a> ($\Rightarrow$ inherits from Visualize.IVisualize)
+<ul>
+<li>Timeline of events for a specific model</li>
+</ul></li>
+<li><a href="Visualizations/Visualize.html#Payoffs">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs</a> ($\Rightarrow$ inherits from Visualize.IVisualize)
+<ul>
+<li>Payoffs for different market configurations and stakeholders in a specific model</li>
+</ul></li>
+<li><a href="Visualizations/VisualizeRanges.html#AssetRange">Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.AssetRange</a> ($\Rightarrow$ inherits from Visualize.IVisualize)
+<ul>
+<li>Outcomes for the set merger policy over a range of assets</li>
+</ul></li>
+<li><a href="Visualizations/VisualizeRanges.html#MergerPoliciesAssetRange">Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange</a> ($\Rightarrow$ inherits from VisualizeRanges.AssetRange)
+<ul>
+<li>Outcomes for the all available merger policies over a range of assets</li>
+</ul></li>
+<li><a href="Visualizations/VisualizeRanges.html#MergerPoliciesAssetRangePerfectInformation">Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRangePerfectInformation</a> ($\Rightarrow$ inherits from VisualizeRanges.MergerPoliciesAssetRange)
+<ul>
+<li>Outcomes for the set merger policy over a range of assets for <a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a></li>
+</ul></li>
+<li><a href="Visualizations/VisualizeRanges.html#Overview">Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.Overview</a> ($\Rightarrow$ inherits from Visualize.IVisualize)
+<ul>
+<li>Combines Timeline, Payoffs and MergerPoliciesAssetRange for a specific model in one plot</li>
+</ul></li>
+</ul>
+</div>
+
                         <input id="Visualizations-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="Visualizations-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges</span> <span class="kn">import</span> <span class="o">*</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="sd">.. include:: README.md</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges</span> <span class="kn">import</span> <span class="o">*</span>
 </span></pre></div>
 
 

@@ -45,11 +45,17 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#basic-usage">Basic Usage</a></li>
+  <li><a href="#available-models">Available Models</a></li>
+</ul>
+
 
         <h2>Submodules</h2>
         <ul>
                 <li><a href="Models/Base.html">Base</a></li>
-                <li><a href="Models/BaseExpanded.html">BaseExpanded</a></li>
+                <li><a href="Models/BaseExtended.html">BaseExtended</a></li>
                 <li><a href="Models/Distributions.html">Distributions</a></li>
                 <li><a href="Models/Exceptions.html">Exceptions</a></li>
                 <li><a href="Models/Extension.html">Extension</a></li>
@@ -71,15 +77,83 @@
                     <h1 class="modulename">
 <a href="./../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.Models    </h1>
 
-                
+                        <div class="docstring"><p>This submodule provides the implementations of the models presented in Fumagalli et al. (2020) as well as extension of 
+these models by Manuel Bieri.</p>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
+
+<span class="c1"># see list below for the available models</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
+
+<span class="c1"># print summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># get summary as dict</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+
+<span class="c1"># check whether a killer acquisition occurred</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_killer_acquisition</span><span class="p">())</span>
+
+<span class="c1"># get the optimal merger policy</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_optimal_merger_policy</span><span class="p">())</span>
+</code></pre></div>
+
+<h2 id="available-models">Available Models</h2>
+
+<p>The following models are available:</p>
+
+<ul>
+<li><a href="Models/Base.html#BaseModel">Fumagalli_Motta_Tarantino_2020.Models.Base.BaseModel</a>
+<ul>
+<li>Validates input parameters according to section 2 of Fumagalli et al. (2020)</li>
+<li>Use always <a href="Models/Base.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy</a> instead</li>
+</ul></li>
+<li><a href="Models/Base.html#MergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy</a> ($\Rightarrow$ inherits from Base.BaseModel)
+<ul>
+<li>Implements the logic of merger policies presented in sections 3-5 of Fumagalli et al. (2020)</li>
+<li>Use always <a href="Models/Base.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy</a> instead</li>
+</ul></li>
+<li><a href="Models/Base.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy</a> ($\Rightarrow$ inherits from Base.MergerPolicy)
+<ul>
+<li>Implements the logic of optimal merger policies presented in section 6 of Fumagalli et al. (2020)</li>
+<li>Used as standard model, since it implements all the logic from the basic model</li>
+</ul></li>
+<li><a href="Models/BaseExtended.html#CournotCompetition">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.CournotCompetition</a> ($\Rightarrow$ inherits from Base.OptimalMergerPolicy)
+<ul>
+<li>Implements the logic of the model presented in section 7 of Fumagalli et al. (2020)</li>
+</ul></li>
+<li><a href="Models/BaseExtended.html#EquityContract">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.EquityContract</a> ($\Rightarrow$ inherits from Base.OptimalMergerPolicy)
+<ul>
+<li>Implements the logic of the model presented in section 8.4 of Fumagalli et al. (2020)</li>
+</ul></li>
+<li><a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a> ($\Rightarrow$ inherits from Base.OptimalMergerPolicy)
+<ul>
+<li>Implements the logic of the model presented in section 8.5 of Fumagalli et al. (2020)</li>
+</ul></li>
+<li><a href="Models/Extension.html#ProCompetitive">Fumagalli_Motta_Tarantino_2020.Models.Extension.ProCompetitive</a> ($\Rightarrow$ inherits from Base.OptimalMergerPolicy)
+<ul>
+<li>Implements the logic of the model presented in section A.3 of "Extension of Fumagalli et al (2020).pdf"</li>
+</ul></li>
+<li><a href="Models/Extension.html#ResourceWaste">Fumagalli_Motta_Tarantino_2020.Models.Extension.ResourceWaste</a> ($\Rightarrow$ inherits from Extension.ProCompetitive)
+<ul>
+<li>Implements the logic of the model presented in section A.4 of "Extension of Fumagalli et al (2020).pdf"</li>
+</ul></li>
+</ul>
+</div>
+
                         <input id="Models-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="Models-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Base</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Extension</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.BaseExpanded</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Types</span> <span class="kn">import</span> <span class="o">*</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="sd">.. include:: README.md</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Base</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Extension</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">6</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">7</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Types</span> <span class="kn">import</span> <span class="o">*</span>
 </span></pre></div>
 
 

@@ -1,4 +1,4 @@
-# Preset Configurations
+# Configurations
 
 To make the life of the user easier, here are some predefined configuration of parameters with specific characteristics.
 
