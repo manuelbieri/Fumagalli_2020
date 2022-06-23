@@ -23,10 +23,10 @@ print(model.get_optimal_merger_policy())
 
 ## Available Models
 The following models are available:
-- Fumagalli_Motta_Tarantino_2020.Models.Base.BaseModel
+- Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel
   - Validates input parameters according to section 2 of Fumagalli et al. (2020)
   - Use always Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy instead
-- Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy ($\Rightarrow$ inherits from Base.BaseModel)
+- Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy ($\Rightarrow$ inherits from Base.CoreModel)
   - Implements the logic of merger policies presented in sections 3-5 of Fumagalli et al. (2020)
   - Use always Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy instead
 - Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy ($\Rightarrow$ inherits from Base.MergerPolicy)

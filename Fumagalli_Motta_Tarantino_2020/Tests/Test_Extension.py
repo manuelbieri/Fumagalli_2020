@@ -1,8 +1,8 @@
-import Fumagalli_Motta_Tarantino_2020.tests.Test_Models as Test
+import Fumagalli_Motta_Tarantino_2020.Tests.Test_Base as Test
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
-class TestProCompetitive(Test.TestOptimalMergerPolicyModel):
+class TestProCompetitive(Test.TestOptimalMergerPolicy):
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.ProCompetitive(**kwargs)
 

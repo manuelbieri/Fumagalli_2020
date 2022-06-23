@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 12.0.2"/>
-    <title>Fumagalli_Motta_Tarantino_2020.tests API documentation</title>
+    <title>Fumagalli_Motta_Tarantino_2020.Tests API documentation</title>
             <link rel="icon" href="https://raw.githubusercontent.com/manuelbieri/Fumagalli_2020/64591aee9856c7163fb62434445546acda099f38/assets/visual/logo.svg"/>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
@@ -50,28 +50,25 @@
   <li><a href="#explanations-about-the-unittests">Explanations about the Unittests</a>
   <ul>
     <li><a href="#glossary-about-the-naming-of-tests">Glossary about the naming of tests</a></li>
-    <li><a href="#mocks">Mocks</a></li>
-    <li><a href="#testbasemodel">TestBaseModel</a></li>
-    <li><a href="#testmergerpolicymodel">TestMergerPolicyModel</a></li>
-    <li><a href="#testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</a></li>
-    <li><a href="#testmircofoundationmodel">TestMircoFoundationModel</a></li>
-    <li><a href="#testperfectinformationmodel">TestPerfectInformationModel</a></li>
-    <li><a href="#testvisualize">TestVisualize</a></li>
+    <li><a href="#fumagalli_motta_tarantino_2020testsmockmodels">Fumagalli_Motta_Tarantino_2020.Tests.MockModels</a></li>
+    <li><a href="#fumagalli_motta_tarantino_2020teststest_base">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base</a></li>
+    <li><a href="#fumagalli_motta_tarantino_2020teststest_baseextended">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended</a></li>
+    <li><a href="#fumagalli_motta_tarantino_2020teststest_visualize">Fumagalli_Motta_Tarantino_2020.Tests.Test_Visualize</a></li>
   </ul></li>
 </ul>
 
 
         <h2>Submodules</h2>
         <ul>
-                <li><a href="tests/MockModels.html">MockModels</a></li>
-                <li><a href="tests/Test_AdditionalModels.html">Test_AdditionalModels</a></li>
-                <li><a href="tests/Test_Configurations.html">Test_Configurations</a></li>
-                <li><a href="tests/Test_Distributions.html">Test_Distributions</a></li>
-                <li><a href="tests/Test_ExtensionModels.html">Test_ExtensionModels</a></li>
-                <li><a href="tests/Test_Models.html">Test_Models</a></li>
-                <li><a href="tests/Test_NotebookUtilities.html">Test_NotebookUtilities</a></li>
-                <li><a href="tests/Test_Types.html">Test_Types</a></li>
-                <li><a href="tests/Test_Visualize.html">Test_Visualize</a></li>
+                <li><a href="Tests/MockModels.html">MockModels</a></li>
+                <li><a href="Tests/Test_Base.html">Test_Base</a></li>
+                <li><a href="Tests/Test_BaseExtended.html">Test_BaseExtended</a></li>
+                <li><a href="Tests/Test_Configurations.html">Test_Configurations</a></li>
+                <li><a href="Tests/Test_Distributions.html">Test_Distributions</a></li>
+                <li><a href="Tests/Test_Extension.html">Test_Extension</a></li>
+                <li><a href="Tests/Test_NotebookUtilities.html">Test_NotebookUtilities</a></li>
+                <li><a href="Tests/Test_Types.html">Test_Types</a></li>
+                <li><a href="Tests/Test_Visualize.html">Test_Visualize</a></li>
         </ul>
 
 
@@ -87,7 +84,7 @@
     <main class="pdoc">
             <section class="module-info">
                     <h1 class="modulename">
-<a href="./../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.tests    </h1>
+<a href="./../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.Tests    </h1>
 
                         <div class="docstring"><h1 id="explanations-about-the-unittests">Explanations about the Unittests</h1>
 
@@ -136,14 +133,18 @@
 
 <p>$F$ may correspond to $F(\bar{A})$ or $F(\bar{A}^T)$ and $\Phi$ to $\Phi(\cdot)$, $\Phi^\prime(\cdot)$ or $\Phi^T(\cdot)$.</p>
 
-<h2 id="mocks">Mocks</h2>
+<h2 id="fumagalli_motta_tarantino_2020testsmockmodels"><a href="Tests/MockModels.html">Fumagalli_Motta_Tarantino_2020.Tests.MockModels</a></h2>
 
 <p>MockModels provides a stub for the OptimalMergerPolicy - class, this is used to test classes for visualizations independently
 of the implementation of the models.</p>
 
-<h2 id="testbasemodel">TestBaseModel</h2>
+<h2 id="fumagalli_motta_tarantino_2020teststest_base"><a href="Tests/Test_Base.html">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base</a></h2>
 
-<p>This testcase test, whether Fumagalli_Motta_Tarantino_2020.Models.BaseModel works as expected.</p>
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestcoremodel"><a href="Tests/Test_Base.html#TestCoreModel">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestCoreModel</a></h3>
+
+<p>This testcase test, whether <a href="Models/Base.html#CoreModel">Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel</a> is set up in a valid way.</p>
+
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestproperties"><a href="Tests/Test_Base.html#TestProperties">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestProperties</a></h3>
 
 <p>This testcase includes tests for the following matters:</p>
 
@@ -152,11 +153,11 @@ of the implementation of the models.</p>
 <li>Test necessary conditions for correct values (see pre- and post-conditions)</li>
 </ul>
 
-<h2 id="testmergerpolicymodel">TestMergerPolicyModel</h2>
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestmergerpolicy"><a href="Tests/Test_Base.html#TestMergerPolicy">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestMergerPolicy</a></h3>
 
-<p>This  testcase tests, whether Fumagalli_Motta_Tarantino_2020.Models.MergerPolicy properly works.</p>
+<p>This  testcase tests, whether <a href="Models/Base.html#MergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy</a> properly works.</p>
 
-<h3 id="testlaissezfairemergerpolicymodel">TestLaissezFaireMergerPolicyModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestlaissezfairemergerpolicy"><a href="Tests/Test_Base.html#TestLaissezFaireMergerPolicy">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestLaissezFaireMergerPolicy</a></h3>
 
 <p>This testcase tests, whether the implemented logic for a laissez-faire merger policy works as expected. The following tests are included:</p>
 
@@ -255,7 +256,7 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h3 id="testintermediatelatetakeoverallowedmergerpolicymodel">TestIntermediateLateTakeoverAllowedMergerPolicyModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestintermediatelatetakeoverallowedmergerpolicy"><a href="Tests/Test_Base.html#TestIntermediateLateTakeoverAllowedMergerPolicy">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestIntermediateLateTakeoverAllowedMergerPolicy</a></h3>
 
 <p>This testcase tests, whether the implemented logic for an intermediate merger policy (late takeovers are allowed) works as expected. The following tests are included:</p>
 
@@ -336,7 +337,7 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h3 id="testintermediatelatetakeoverprohibitedmergerpolicymodel">TestIntermediateLateTakeoverProhibitedMergerPolicyModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestintermediatelatetakeoverprohibitedmergerpolicy"><a href="Tests/Test_Base.html#TestIntermediateLateTakeoverProhibitedMergerPolicy">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestIntermediateLateTakeoverProhibitedMergerPolicy</a></h3>
 
 <p>This testcase tests, whether the implemented logic for an intermediate merger policy (late takeovers are prohibited) works as expected. The following tests are included:</p>
 
@@ -417,7 +418,7 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h3 id="teststrictmergerpolicymodel">TestStrictMergerPolicyModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseteststrictmergerpolicy"><a href="Tests/Test_Base.html#TestStrictMergerPolicy">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestStrictMergerPolicy</a></h3>
 
 <p>This testcase tests, whether the implemented logic for a strict merger policy works as expected. The following tests are included:</p>
 
@@ -498,21 +499,25 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h2 id="testoptimalmergerpolicymodel">TestOptimalMergerPolicyModel</h2>
+<p>Additionally, the recalculations of the model after changed properties are tested.</p>
 
-<p>This testcase tests all possibilities for an optimal merger policy in Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy.</p>
+<h3 id="fumagalli_motta_tarantino_2020teststest_basetestoptimalmergerpolicy"><a href="Tests/Test_Base.html#TestOptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base.TestOptimalMergerPolicy</a></h3>
 
-<h2 id="testmircofoundationmodel">TestMircoFoundationModel</h2>
+<p>This testcase tests all possibilities for an optimal merger policy in <a href="Models/Base.html#OptimalMergerPolicy">Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy</a>.</p>
 
-<p>This testcase tests the adjustments made for the Fumagalli_Motta_Tarantino_2020.AdditionalModels.MicroFoundationModel, which is largely based on the OptimalMergerPolicyModel.</p>
+<h2 id="fumagalli_motta_tarantino_2020teststest_baseextended"><a href="Tests/Test_BaseExtended.html">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended</a></h2>
 
-<h2 id="testperfectinformationmodel">TestPerfectInformationModel</h2>
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseextendedtestcournotcompetition"><a href="Tests/Test_BaseExtended.html#TestCournotCompetition">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended.TestCournotCompetition</a></h3>
 
-<p>This testcase tests, whether the implemented logic in Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel works as expected.</p>
+<p>This testcase tests the adjustments made for the <a href="Models/BaseExtended.html#CournotCompetition">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.CournotCompetition</a>, which is largely based on the OptimalMergerPolicyModel.</p>
 
-<h3 id="teststrictperfectinformationmodel">TestStrictPerfectInformationModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseextendedtestperfectinformation"><a href="Tests/Test_BaseExtended.html#TestPerfectInformation">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended.TestPerfectInformation</a></h3>
 
-<p>This testcase tests, whether the implemented logic in Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel for a strict merger policy works as expected. The following tests are included:</p>
+<p>This testcase tests, whether the implemented logic in <a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a> works as expected.</p>
+
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseextendedteststrictperfectinformation"><a href="Tests/Test_BaseExtended.html#TestStrictPerfectInformation">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended.TestStrictPerfectInformation</a></h3>
+
+<p>This testcase tests, whether the implemented logic in <a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a> for a strict merger policy works as expected. The following tests are included:</p>
 
 <table>
 <thead>
@@ -571,9 +576,9 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h3 id="testintermediateperfectinformationmodel">TestIntermediatePerfectInformationModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseextendedtestintermediateperfectinformation"><a href="Tests/Test_BaseExtended.html#TestIntermediatePerfectInformation">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended.TestIntermediatePerfectInformation</a></h3>
 
-<p>This testcase tests, whether the implemented logic in Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel for an intermediate merger policy (late takeovers are allowed) works as expected. The following tests are included:</p>
+<p>This testcase tests, whether the implemented logic in <a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a> for an intermediate merger policy (late takeovers are allowed) works as expected. The following tests are included:</p>
 
 <table>
 <thead>
@@ -642,9 +647,9 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h3 id="testlaissezfaireperfectinformationmodel">TestLaissezFairePerfectInformationModel</h3>
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseextendedtestlaissezfaireperfectinformation"><a href="Tests/Test_BaseExtended.html#TestLaissezFairePerfectInformation">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended.TestLaissezFairePerfectInformation</a></h3>
 
-<p>This testcase tests, whether the implemented logic in Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformationModel for a laissez-faire merger policy works as expected. The following tests are included:</p>
+<p>This testcase tests, whether the implemented logic in <a href="Models/BaseExtended.html#PerfectInformation">Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation</a> for a laissez-faire merger policy works as expected. The following tests are included:</p>
 
 <table>
 <thead>
@@ -703,26 +708,30 @@ of the implementation of the models.</p>
 </tbody>
 </table>
 
-<h2 id="testvisualize">TestVisualize</h2>
+<h3 id="fumagalli_motta_tarantino_2020teststest_baseextendedtestequitycontract"><a href="Tests/Test_BaseExtended.html#TestEquityContract">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended.TestEquityContract</a></h3>
 
-<p>This testcase test the plots in Fumagalli_Motta_Tarantino_2020.Visualization made with mock objects. The plots are tested by eye, since currently no method exists, to write
+<p>This testcase tests, whether the implemented logic in Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.Equity works as expected.</p>
+
+<h2 id="fumagalli_motta_tarantino_2020teststest_visualize"><a href="Tests/Test_Visualize.html">Fumagalli_Motta_Tarantino_2020.Tests.Test_Visualize</a></h2>
+
+<p>This testcase test the plots in <a href="Visualizations.html">Fumagalli_Motta_Tarantino_2020.Visualizations</a> made with mock objects. The plots are tested by eye, since currently no method exists, to write
 stable unitest for matplotlib. </p>
 </div>
 
-                        <input id="tests-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                        <input id="Tests-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
-                        <label class="view-source-button" for="tests-view-source"><span>View Source</span></label>
+                        <label class="view-source-button" for="Tests-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="sd">.. include:: TestCases.md</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="sd">.. include:: README.md</span>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_AdditionalModels</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_Configurations</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_Visualize</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_Types</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_Distributions</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_ExtensionModels</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.tests.Test_Models</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_BaseExtended</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_Configurations</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_Visualize</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_Types</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_Distributions</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_Extension</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Tests.Test_Base</span> <span class="kn">import</span> <span class="o">*</span>
 </span></pre></div>
 
 

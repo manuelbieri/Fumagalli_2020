@@ -1,11 +1,11 @@
 from typing import Callable
 import unittest
 
-import Fumagalli_Motta_Tarantino_2020.tests.MockModels as MockModels
+import Fumagalli_Motta_Tarantino_2020.Tests.MockModels as MockModels
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
-class TestVisualize(unittest.TestCase):
+class CoreVisualizationTest(unittest.TestCase):
     show_all: bool = False
 
     def setUp(self) -> None:
@@ -38,7 +38,9 @@ class TestVisualize(unittest.TestCase):
             self.show_figure()
 
     def show_figure(self) -> None:
-        if (self.show_plot or TestVisualize.show_all) and not self.never_show_plot:
+        if (
+            self.show_plot or CoreVisualizationTest.show_all
+        ) and not self.never_show_plot:
             self.visualizer.show(**self.kwargs)
         else:
             self.visualizer.plot(**self.kwargs)
@@ -47,6 +49,53 @@ class TestVisualize(unittest.TestCase):
         self.setUpMock()
         self.assertRaises(NotImplementedError, FMT20.IVisualize(self.mock).plot)
 
+
+class TestVisualize(CoreVisualizationTest):
+    def test_timeline_plot(self):
+        self.setUpMock(policy=FMT20.MergerPolicies.Laissez_faire)
+        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
+
+    def test_timeline_plot_takeover_development_not_successful(self):
+        self.setUpMock(set_outcome=True, is_owner_investing=True)
+        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
+
+    def test_timeline_plot_takeover_shelving_credit_constraint(self):
+        self.setUpMock(set_outcome=True, is_early_takeover=False)
+        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
+
+    def test_timeline_set_model(self):
+        mock1: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
+        mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
+            policy=FMT20.MergerPolicies.Laissez_faire
+        )
+        self.setUpVisualizerCall(lambda: FMT20.Timeline(mock1), show_plot_now=True)
+        self.visualizer.set_model(mock2)
+
+    def test_payoff_plot(self):
+        self.setUpMock()
+        self.setUpVisualizerCall(lambda: FMT20.Payoffs(self.mock, dark_mode=True))
+
+    def test_overview_plot(self):
+        self.setUpMock()
+        self.setUpVisualizerCall(
+            lambda: FMT20.Overview(self.mock, default_style=False), show_plot=True
+        )
+
+    def test_perfect_information_asset_range(self):
+        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=50)())
+        self.setUpVisualizerCall(
+            lambda: FMT20.MergerPoliciesAssetRangePerfectInformation(model),
+            thresholds=True,
+            optimal_policy=True,
+            y_offset=-40,
+        )
+
+    def test_perfect_information_overview(self):
+        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=51)())
+        self.setUpVisualizerCall(lambda: FMT20.Overview(model))
+
+
+class TestVisualizeRanges(CoreVisualizationTest):
     def test_essential_asset_thresholds(self):
         self.setUpMock(asset_threshold=2, asset_threshold_late_takeover=1)
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
@@ -128,46 +177,3 @@ class TestVisualize(unittest.TestCase):
             optimal_policy=True,
             y_offset=-25,
         )
-
-    def test_timeline_plot(self):
-        self.setUpMock(policy=FMT20.MergerPolicies.Laissez_faire)
-        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
-
-    def test_timeline_plot_takeover_development_not_successful(self):
-        self.setUpMock(set_outcome=True, is_owner_investing=True)
-        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
-
-    def test_timeline_plot_takeover_shelving_credit_constraint(self):
-        self.setUpMock(set_outcome=True, is_early_takeover=False)
-        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
-
-    def test_timeline_set_model(self):
-        mock1: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
-        mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
-            policy=FMT20.MergerPolicies.Laissez_faire
-        )
-        self.setUpVisualizerCall(lambda: FMT20.Timeline(mock1), show_plot_now=True)
-        self.visualizer.set_model(mock2)
-
-    def test_payoff_plot(self):
-        self.setUpMock()
-        self.setUpVisualizerCall(lambda: FMT20.Payoffs(self.mock, dark_mode=True))
-
-    def test_overview_plot(self):
-        self.setUpMock()
-        self.setUpVisualizerCall(
-            lambda: FMT20.Overview(self.mock, default_style=False), show_plot=True
-        )
-
-    def test_perfect_information_asset_range(self):
-        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=50)())
-        self.setUpVisualizerCall(
-            lambda: FMT20.MergerPoliciesAssetRangePerfectInformation(model),
-            thresholds=True,
-            optimal_policy=True,
-            y_offset=-40,
-        )
-
-    def test_perfect_information_overview(self):
-        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=51)())
-        self.setUpVisualizerCall(lambda: FMT20.Overview(model))

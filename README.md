@@ -61,13 +61,13 @@ $ pip install -r requirements.txt
 
 ### Tests
 
-Run the unittests shipped in Fumagalli_Motta_Tarantino_2020.tests with the following command (pay attention to the current working directory):
+Run the unittests shipped in Fumagalli_Motta_Tarantino_2020.Tests with the following command (pay attention to the current working directory):
 
 ```shell
-$ python -m unittest discover Fumagalli_Motta_Tarantino_2020/tests
+$ python -m unittest discover Fumagalli_Motta_Tarantino_2020/Tests
 ```
 
-For explanations about the tests, have a look at [TestCases.md](Fumagalli_Motta_Tarantino_2020/tests/TestCases.md) . See [codecov.io](https://app.codecov.io/gh/manuelbieri/Fumagalli_2020) for a detailed report about the test coverage.
+For explanations about the tests, have a look at Fumagalli_Motta_Tarantino_2020.Tests. See [codecov.io](https://app.codecov.io/gh/manuelbieri/Fumagalli_2020) for a detailed report about the test coverage.
 
 ### Generate Documentation
 Generate the documentation with the following command:

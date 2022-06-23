@@ -1,8 +1,11 @@
-import Fumagalli_Motta_Tarantino_2020.tests.Test_Models as Test
+import Fumagalli_Motta_Tarantino_2020.Tests.Test_Base as Test
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
-class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
+class TestCournotCompetition(Test.TestOptimalMergerPolicy):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.CournotCompetition.
+    """
     def setUp(self) -> None:
         self.calculate_properties_profits_consumer_surplus()
 
@@ -10,7 +13,11 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.model = FMT20.CournotCompetition(**kwargs)
 
     def calculate_properties_profits_consumer_surplus(self) -> None:
-        # calculations made with Gamma = 0.3
+        """
+        Calculates the properties defined by the cournot competition.
+
+        As default gamma is assumed to be 0.3.
+        """
         self.test_incumbent_profit_without_innovation = 0.25
         self.test_cs_without_innovation = 0.125
 
@@ -149,7 +156,10 @@ class TestMircoFoundationModel(Test.TestOptimalMergerPolicyModel):
         self.assertEqual(float("inf"), self.model.tolerated_harm)
 
 
-class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
+class TestPerfectInformation(Test.TestOptimalMergerPolicy):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation.
+    """
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.PerfectInformation(**kwargs)
 
@@ -175,7 +185,7 @@ class TestPerfectInformationModel(Test.TestOptimalMergerPolicyModel):
         self.assertFalse(self.model.is_laissez_faire_optimal())
 
 
-class TestStrictPerfectInformationModel(TestPerfectInformationModel):
+class TestStrictPerfectInformation(TestPerfectInformation):
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel()
         self.assertEqual(FMT20.MergerPolicies.Strict, self.model.merger_policy)
@@ -236,7 +246,7 @@ class TestStrictPerfectInformationModel(TestPerfectInformationModel):
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
+class TestIntermediatePerfectInformation(TestPerfectInformation):
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel(
             merger_policy=FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
@@ -325,7 +335,7 @@ class TestIntermediatePerfectInformationModel(TestPerfectInformationModel):
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
+class TestLaissezFairePerfectInformation(TestPerfectInformation):
     def test_not_profitable_not_credit_rationed(self):
         self.setupModel(merger_policy=FMT20.MergerPolicies.Laissez_faire)
         self.assertEqual(FMT20.MergerPolicies.Laissez_faire, self.model.merger_policy)
@@ -398,7 +408,10 @@ class TestLaissezFairePerfectInformationModel(TestPerfectInformationModel):
         self.assertFalse(self.model.is_late_takeover)
 
 
-class TestEquityModel(Test.TestOptimalMergerPolicyModel):
+class TestEquityContract(Test.TestOptimalMergerPolicy):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.EquityContract.
+    """
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.EquityContract(**kwargs)
 

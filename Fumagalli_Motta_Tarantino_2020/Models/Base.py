@@ -4,7 +4,7 @@ import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
 import Fumagalli_Motta_Tarantino_2020.Models.Distributions as Distributions
 
 
-class BaseModel:
+class CoreModel:
     """
     There are three players in our game: an Antitrust Authority (AA), which at the beginning of the game decides its
     merger policy; a monopolist $\t{I}$ncumbent; and a $\t{S}$tart-up. The start-up owns a “prototype” (or project)
@@ -389,7 +389,7 @@ class BaseModel:
         )
 
 
-class MergerPolicy(BaseModel):
+class MergerPolicy(CoreModel):
     """
     In this class all merger policies and their respective outcomes are calculated.
 
@@ -522,9 +522,9 @@ class MergerPolicy(BaseModel):
             self.asset_threshold_late_takeover, **self.asset_distribution_kwargs
         )
 
-    @BaseModel.startup_assets.setter
+    @CoreModel.startup_assets.setter
     def startup_assets(self, value: float) -> None:
-        BaseModel.startup_assets.fset(self, value)
+        CoreModel.startup_assets.fset(self, value)
         self._recalculate_model()
 
     @property

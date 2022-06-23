@@ -42,5 +42,5 @@ setup(
         "Fumagalli_Motta_Tarantino_2020.Configurations": ["params.csv"],
         "Fumagalli_Motta_Tarantino_2020.Notebooks": ["*.ipynb"],
     },
-    test_suite="Fumagalli_Motta_Tarantino_2020.tests",
+    test_suite="Fumagalli_Motta_Tarantino_2020.Tests",
 )
