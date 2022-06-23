@@ -6,6 +6,7 @@ class TestCournotCompetition(Test.TestOptimalMergerPolicy):
     """
     Tests Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.CournotCompetition.
     """
+
     def setUp(self) -> None:
         self.calculate_properties_profits_consumer_surplus()
 
@@ -160,6 +161,7 @@ class TestPerfectInformation(Test.TestOptimalMergerPolicy):
     """
     Tests Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation.
     """
+
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.PerfectInformation(**kwargs)
 
@@ -412,6 +414,7 @@ class TestEquityContract(Test.TestOptimalMergerPolicy):
     """
     Tests Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.EquityContract.
     """
+
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.EquityContract(**kwargs)
 

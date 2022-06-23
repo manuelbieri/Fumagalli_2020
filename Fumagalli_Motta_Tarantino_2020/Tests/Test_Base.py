@@ -8,6 +8,7 @@ class CoreTest(unittest.TestCase):
     """
     Provides useful methods for the use in tests.
     """
+
     @staticmethod
     def are_floats_equal(f1: float, f2: float, tolerance: float = 10 ** (-10)) -> float:
         """
@@ -51,7 +52,11 @@ class CoreTest(unittest.TestCase):
         arg_index = args_name.index(f"{arg_name}")
         return default_value[arg_index]
 
-    def get_welfare_value(self, market_situation: Literal["duopoly", "with_innovation", "without_innovation"], model=FMT20.CoreModel) -> float:
+    def get_welfare_value(
+        self,
+        market_situation: Literal["duopoly", "with_innovation", "without_innovation"],
+        model=FMT20.CoreModel,
+    ) -> float:
         """
         Calculates the default value of welfare for a specific model and market situation.
 
@@ -92,6 +97,7 @@ class TestCoreModel(CoreTest):
     """
     Provides methods for model setup and tests valid setup of model.
     """
+
     def setupModel(self, **kwargs) -> None:
         """
         Sets up a model for a test.
@@ -145,6 +151,7 @@ class TestProperties(TestCoreModel):
     """
     Tests properties for Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy.
     """
+
     def setUp(self) -> None:
         self.model_type = self.get_model_type()
         self.model = self.model_type()
@@ -153,7 +160,9 @@ class TestProperties(TestCoreModel):
     def get_model_type():
         return FMT20.MergerPolicy
 
-    def abstract_property_test(self, property_, property_name: str, invalid_value=120) -> None:
+    def abstract_property_test(
+        self, property_, property_name: str, invalid_value=120
+    ) -> None:
         """
         Skeleton for all tests of model properties.
 
@@ -275,6 +284,7 @@ class TestMergerPolicy(TestCoreModel):
     """
     Tests Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy.
     """
+
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.MergerPolicy(**kwargs)
 
@@ -856,6 +866,7 @@ class TestOptimalMergerPolicy(TestMergerPolicy):
     """
     Tests Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy.
     """
+
     def setupModel(self, **kwargs) -> None:
         self.model = FMT20.OptimalMergerPolicy(**kwargs)
 
