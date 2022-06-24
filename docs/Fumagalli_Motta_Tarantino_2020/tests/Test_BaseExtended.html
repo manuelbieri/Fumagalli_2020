@@ -637,11 +637,11 @@
 </span><span id="L-426"><a href="#L-426"><span class="linenos">426</span></a>
 </span><span id="L-427"><a href="#L-427"><span class="linenos">427</span></a>    <span class="k">def</span> <span class="nf">test_debt_not_preferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-428"><a href="#L-428"><span class="linenos">428</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">()</span>
-</span><span id="L-429"><a href="#L-429"><span class="linenos">429</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_strictly_prefer_debt</span><span class="p">())</span>
+</span><span id="L-429"><a href="#L-429"><span class="linenos">429</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_prefer_debt</span><span class="p">())</span>
 </span><span id="L-430"><a href="#L-430"><span class="linenos">430</span></a>
 </span><span id="L-431"><a href="#L-431"><span class="linenos">431</span></a>    <span class="k">def</span> <span class="nf">test_debt_preferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-432"><a href="#L-432"><span class="linenos">432</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">(</span><span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">)</span>
-</span><span id="L-433"><a href="#L-433"><span class="linenos">433</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_strictly_prefer_debt</span><span class="p">())</span>
+</span><span id="L-433"><a href="#L-433"><span class="linenos">433</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_prefer_debt</span><span class="p">())</span>
 </span><span id="L-434"><a href="#L-434"><span class="linenos">434</span></a>
 </span><span id="L-435"><a href="#L-435"><span class="linenos">435</span></a>    <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-436"><a href="#L-436"><span class="linenos">436</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">(</span>
@@ -1251,7 +1251,6 @@ To calculate the total welfare for</li>
                 <dd id="TestCournotCompetition.assertRaises" class="function">assertRaises</dd>
                 <dd id="TestCournotCompetition.assertWarns" class="function">assertWarns</dd>
                 <dd id="TestCournotCompetition.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestCournotCompetition.assertNoLogs" class="function">assertNoLogs</dd>
                 <dd id="TestCournotCompetition.assertEqual" class="function">assertEqual</dd>
                 <dd id="TestCournotCompetition.assertNotEqual" class="function">assertNotEqual</dd>
                 <dd id="TestCournotCompetition.assertAlmostEqual" class="function">assertAlmostEqual</dd>
@@ -1491,7 +1490,6 @@ To calculate the total welfare for</li>
                 <dd id="TestPerfectInformation.assertRaises" class="function">assertRaises</dd>
                 <dd id="TestPerfectInformation.assertWarns" class="function">assertWarns</dd>
                 <dd id="TestPerfectInformation.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestPerfectInformation.assertNoLogs" class="function">assertNoLogs</dd>
                 <dd id="TestPerfectInformation.assertEqual" class="function">assertEqual</dd>
                 <dd id="TestPerfectInformation.assertNotEqual" class="function">assertNotEqual</dd>
                 <dd id="TestPerfectInformation.assertAlmostEqual" class="function">assertAlmostEqual</dd>
@@ -1796,7 +1794,6 @@ To calculate the total welfare for</li>
                 <dd id="TestStrictPerfectInformation.assertRaises" class="function">assertRaises</dd>
                 <dd id="TestStrictPerfectInformation.assertWarns" class="function">assertWarns</dd>
                 <dd id="TestStrictPerfectInformation.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestStrictPerfectInformation.assertNoLogs" class="function">assertNoLogs</dd>
                 <dd id="TestStrictPerfectInformation.assertEqual" class="function">assertEqual</dd>
                 <dd id="TestStrictPerfectInformation.assertNotEqual" class="function">assertNotEqual</dd>
                 <dd id="TestStrictPerfectInformation.assertAlmostEqual" class="function">assertAlmostEqual</dd>
@@ -2164,7 +2161,6 @@ To calculate the total welfare for</li>
                 <dd id="TestIntermediatePerfectInformation.assertRaises" class="function">assertRaises</dd>
                 <dd id="TestIntermediatePerfectInformation.assertWarns" class="function">assertWarns</dd>
                 <dd id="TestIntermediatePerfectInformation.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestIntermediatePerfectInformation.assertNoLogs" class="function">assertNoLogs</dd>
                 <dd id="TestIntermediatePerfectInformation.assertEqual" class="function">assertEqual</dd>
                 <dd id="TestIntermediatePerfectInformation.assertNotEqual" class="function">assertNotEqual</dd>
                 <dd id="TestIntermediatePerfectInformation.assertAlmostEqual" class="function">assertAlmostEqual</dd>
@@ -2500,7 +2496,6 @@ To calculate the total welfare for</li>
                 <dd id="TestLaissezFairePerfectInformation.assertRaises" class="function">assertRaises</dd>
                 <dd id="TestLaissezFairePerfectInformation.assertWarns" class="function">assertWarns</dd>
                 <dd id="TestLaissezFairePerfectInformation.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestLaissezFairePerfectInformation.assertNoLogs" class="function">assertNoLogs</dd>
                 <dd id="TestLaissezFairePerfectInformation.assertEqual" class="function">assertEqual</dd>
                 <dd id="TestLaissezFairePerfectInformation.assertNotEqual" class="function">assertNotEqual</dd>
                 <dd id="TestLaissezFairePerfectInformation.assertAlmostEqual" class="function">assertAlmostEqual</dd>
@@ -2608,11 +2603,11 @@ To calculate the total welfare for</li>
 </span><span id="TestEquityContract-427"><a href="#TestEquityContract-427"><span class="linenos">427</span></a>
 </span><span id="TestEquityContract-428"><a href="#TestEquityContract-428"><span class="linenos">428</span></a>    <span class="k">def</span> <span class="nf">test_debt_not_preferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="TestEquityContract-429"><a href="#TestEquityContract-429"><span class="linenos">429</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">()</span>
-</span><span id="TestEquityContract-430"><a href="#TestEquityContract-430"><span class="linenos">430</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_strictly_prefer_debt</span><span class="p">())</span>
+</span><span id="TestEquityContract-430"><a href="#TestEquityContract-430"><span class="linenos">430</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_prefer_debt</span><span class="p">())</span>
 </span><span id="TestEquityContract-431"><a href="#TestEquityContract-431"><span class="linenos">431</span></a>
 </span><span id="TestEquityContract-432"><a href="#TestEquityContract-432"><span class="linenos">432</span></a>    <span class="k">def</span> <span class="nf">test_debt_preferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="TestEquityContract-433"><a href="#TestEquityContract-433"><span class="linenos">433</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">(</span><span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">)</span>
-</span><span id="TestEquityContract-434"><a href="#TestEquityContract-434"><span class="linenos">434</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_strictly_prefer_debt</span><span class="p">())</span>
+</span><span id="TestEquityContract-434"><a href="#TestEquityContract-434"><span class="linenos">434</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_prefer_debt</span><span class="p">())</span>
 </span><span id="TestEquityContract-435"><a href="#TestEquityContract-435"><span class="linenos">435</span></a>
 </span><span id="TestEquityContract-436"><a href="#TestEquityContract-436"><span class="linenos">436</span></a>    <span class="k">def</span> <span class="nf">test_intermediate_optimal_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="TestEquityContract-437"><a href="#TestEquityContract-437"><span class="linenos">437</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">(</span>
@@ -2707,7 +2702,7 @@ To calculate the total welfare for</li>
     <a class="headerlink" href="#TestEquityContract.test_debt_not_preferred"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="TestEquityContract.test_debt_not_preferred-428"><a href="#TestEquityContract.test_debt_not_preferred-428"><span class="linenos">428</span></a>    <span class="k">def</span> <span class="nf">test_debt_not_preferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="TestEquityContract.test_debt_not_preferred-429"><a href="#TestEquityContract.test_debt_not_preferred-429"><span class="linenos">429</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">()</span>
-</span><span id="TestEquityContract.test_debt_not_preferred-430"><a href="#TestEquityContract.test_debt_not_preferred-430"><span class="linenos">430</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_strictly_prefer_debt</span><span class="p">())</span>
+</span><span id="TestEquityContract.test_debt_not_preferred-430"><a href="#TestEquityContract.test_debt_not_preferred-430"><span class="linenos">430</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_prefer_debt</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -2727,7 +2722,7 @@ To calculate the total welfare for</li>
     <a class="headerlink" href="#TestEquityContract.test_debt_preferred"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="TestEquityContract.test_debt_preferred-432"><a href="#TestEquityContract.test_debt_preferred-432"><span class="linenos">432</span></a>    <span class="k">def</span> <span class="nf">test_debt_preferred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="TestEquityContract.test_debt_preferred-433"><a href="#TestEquityContract.test_debt_preferred-433"><span class="linenos">433</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setupModel</span><span class="p">(</span><span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">)</span>
-</span><span id="TestEquityContract.test_debt_preferred-434"><a href="#TestEquityContract.test_debt_preferred-434"><span class="linenos">434</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_strictly_prefer_debt</span><span class="p">())</span>
+</span><span id="TestEquityContract.test_debt_preferred-434"><a href="#TestEquityContract.test_debt_preferred-434"><span class="linenos">434</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">does_startup_prefer_debt</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -2820,7 +2815,6 @@ To calculate the total welfare for</li>
                 <dd id="TestEquityContract.assertRaises" class="function">assertRaises</dd>
                 <dd id="TestEquityContract.assertWarns" class="function">assertWarns</dd>
                 <dd id="TestEquityContract.assertLogs" class="function">assertLogs</dd>
-                <dd id="TestEquityContract.assertNoLogs" class="function">assertNoLogs</dd>
                 <dd id="TestEquityContract.assertEqual" class="function">assertEqual</dd>
                 <dd id="TestEquityContract.assertNotEqual" class="function">assertNotEqual</dd>
                 <dd id="TestEquityContract.assertAlmostEqual" class="function">assertAlmostEqual</dd>

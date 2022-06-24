@@ -398,7 +398,7 @@ class MergerPolicy(CoreModel):
 
     def __init__(self, *args, **kwargs):
         """
-        Takes the same arguments as BaseModel.__init__.
+        Takes the same arguments as Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel.__init__.
         """
         super(MergerPolicy, self).__init__(*args, **kwargs)
         self._probability_credit_constrained_default: float = 0
@@ -1079,14 +1079,12 @@ class OptimalMergerPolicy(MergerPolicy):
         """
         Returns whether a laissez-faire policy is optimal.
 
-
         A laissez-faire policy (that authorises any takeover) is optimal, if:
         1. Incumbent is expected to shelve ($p(\\pi^M_I-\\pi^m_I) < K$).
         2. Financial imperfections are severe ($F(\\bar{A}^T)\\ge\\Phi^T(\\cdot)$).
         3. Approving early takeovers followed by shelving is optimal ($F(\\bar{A}^T)\\ge\\Lambda(\\cdot)$).
         4. Detrimental effect of less intense product market competition is dominated by the benefit of making it more
         likely that the innovation is commercialised (Condition 6 not satisfied).
-
 
         Returns
         -------
@@ -1167,14 +1165,12 @@ class OptimalMergerPolicy(MergerPolicy):
 
     def is_intermediate_policy_feasible(self) -> bool:
         """
-        If the harm to welfare caused by an early takeover is lower than the one, caused by a late takeover, then also
-        early takeovers must be approved, even in the case of a pooling offer followed by shelving. Such a scenario occurs
-        if (and only if): $F(\\bar{A}^T)\\ge\\Lambda(\\cdot)$
+        Returns whether an intermediate (with late takeovers) merger policy is feasible.
 
         Returns
         -------
         True
-            If the above-mentioned condition is met.
+            If an intermediate policy is feasible.
         """
         return (
             self.asset_threshold_late_takeover_cdf

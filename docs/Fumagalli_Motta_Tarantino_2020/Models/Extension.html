@@ -115,134 +115,185 @@
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="k">class</span> <span class="nc">ProCompetitive</span><span class="p">(</span><span class="n">Base</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">):</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>            <span class="o">**</span><span class="n">kwargs</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>        <span class="p">)</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>
-</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>        <span class="k">assert</span> <span class="p">(</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="k">def</span> <span class="nf">_check_asset_distribution_threshold_strict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>        <span class="k">pass</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="p">)</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>            <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>        <span class="p">)</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>        <span class="p">):</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>            <span class="p">)</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_with_late_takeover</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="p">):</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>                    <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>                    <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>                <span class="p">)</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>                <span class="k">else</span><span class="p">:</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>                        <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>                        <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>                    <span class="p">)</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="k">return</span> <span class="kc">True</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="k">return</span> <span class="kc">False</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>        <span class="k">return</span> <span class="kc">False</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="k">class</span> <span class="nc">ResourceWaste</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">):</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mf">0.41</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResourceWaste</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="n">consumer_surplus_duopoly</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>        <span class="p">)</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        <span class="k">assert</span> <span class="p">(</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="p">):</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>            <span class="p">)</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>        <span class="k">return</span> <span class="kc">False</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">()</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">    Relaxes the assumption (A4), that the innovation of the start-up is always welfare beneficial. Instead, the</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">    innovation is only welfare beneficial if the start-up develops and markets the innovation. In contrast, owned by the</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">    incumbent, the innovation reduces the total welfare. This is implying a pure positive effect of the innovation on</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">    competition.</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>            <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>        <span class="p">)</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>        <span class="k">assert</span> <span class="p">(</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    <span class="k">def</span> <span class="nf">_check_asset_distribution_threshold_strict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>        <span class="k">pass</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="p">)</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>            <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>        <span class="p">)</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>        <span class="p">):</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>            <span class="p">)</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_with_late_takeover</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>        <span class="p">):</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>                    <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>                    <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>                <span class="p">)</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>                <span class="k">else</span><span class="p">:</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>                        <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>                        <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>                    <span class="p">)</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        In this model a strict merger policy is always optimal.</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="k">return</span> <span class="kc">True</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        In this model an intermediate merger policy is never optimal.</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        In this model a laissez-faire merger policy is never optimal.</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="k">class</span> <span class="nc">ResourceWaste</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">):</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">    In this model is assumed, that the innovation is never welfare beneficial, therefore a development is always a waste</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">    of resources regarding total welfare.</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mf">0.41</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResourceWaste</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="n">consumer_surplus_duopoly</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="p">)</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>        <span class="k">assert</span> <span class="p">(</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>    <span class="k">def</span> <span class="nf">_get_intermediate_optimal_candidate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">:</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="k">return</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_prohibited</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe_without_late_takeover</span><span class="p">()</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_competition_effect_dominating</span><span class="p">()</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="p">)</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe_without_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="k">return</span> <span class="p">(</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>            <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="p">)</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="p">):</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>            <span class="p">)</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">        In this model is a strict merger policy never optimal</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        Returns whether the intermediate (WITHOUT late takeovers) merger policy is optimal.</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        The intermediate (WITHOUT late takeovers) merger is optimal, if a laissez-faire merger policy is not optimal.</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">        Returns</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        -------</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        True</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">            If the intermediate (WITHOUT late takeovers) merger policy is optimal.</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">()</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>    <span class="k">def</span> <span class="nf">_get_intermediate_optimal_candidate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">:</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>        <span class="k">return</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_prohibited</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        Returns whether a laissez-faire policy is optimal.</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        A laissez-faire policy (that authorises any takeover) is optimal, if:</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        1. Financial imperfections are not severe ($F(\\bar{A}^T)&lt;\\Phi^T(\\cdot)$).</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        Or as well if:</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        1. Financial imperfections are always severe ($F(\\bar{A}^T)\\ge\\Phi^T(\\cdot)$ and</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        $F(\\bar{A})\\ge\\Phi(\\cdot)$).</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">        2. Detrimental effect of less intense product market competition is dominated by the benefit of making it more</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        likely that the innovation is commercialised (Condition 6 not satisfied).</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">        Returns</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">        -------</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">        True</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">            If a laissez-faire merger policy is optimal.</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe_without_late_takeover</span><span class="p">()</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_competition_effect_dominating</span><span class="p">()</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="p">)</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe_without_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="k">return</span> <span class="p">(</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>            <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -259,88 +310,104 @@
     </div>
     <a class="headerlink" href="#ProCompetitive"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive-6"><a href="#ProCompetitive-6"><span class="linenos"> 6</span></a><span class="k">class</span> <span class="nc">ProCompetitive</span><span class="p">(</span><span class="n">Base</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">):</span>
-</span><span id="ProCompetitive-7"><a href="#ProCompetitive-7"><span class="linenos"> 7</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="ProCompetitive-8"><a href="#ProCompetitive-8"><span class="linenos"> 8</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ProCompetitive-9"><a href="#ProCompetitive-9"><span class="linenos"> 9</span></a>            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
-</span><span id="ProCompetitive-10"><a href="#ProCompetitive-10"><span class="linenos">10</span></a>            <span class="o">**</span><span class="n">kwargs</span>
-</span><span id="ProCompetitive-11"><a href="#ProCompetitive-11"><span class="linenos">11</span></a>        <span class="p">)</span>
-</span><span id="ProCompetitive-12"><a href="#ProCompetitive-12"><span class="linenos">12</span></a>
-</span><span id="ProCompetitive-13"><a href="#ProCompetitive-13"><span class="linenos">13</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ProCompetitive-14"><a href="#ProCompetitive-14"><span class="linenos">14</span></a>        <span class="k">assert</span> <span class="p">(</span>
-</span><span id="ProCompetitive-15"><a href="#ProCompetitive-15"><span class="linenos">15</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
-</span><span id="ProCompetitive-16"><a href="#ProCompetitive-16"><span class="linenos">16</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="ProCompetitive-17"><a href="#ProCompetitive-17"><span class="linenos">17</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-</span><span id="ProCompetitive-18"><a href="#ProCompetitive-18"><span class="linenos">18</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="ProCompetitive-19"><a href="#ProCompetitive-19"><span class="linenos">19</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
-</span><span id="ProCompetitive-20"><a href="#ProCompetitive-20"><span class="linenos">20</span></a>
-</span><span id="ProCompetitive-21"><a href="#ProCompetitive-21"><span class="linenos">21</span></a>    <span class="k">def</span> <span class="nf">_check_asset_distribution_threshold_strict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ProCompetitive-22"><a href="#ProCompetitive-22"><span class="linenos">22</span></a>        <span class="k">pass</span>
-</span><span id="ProCompetitive-23"><a href="#ProCompetitive-23"><span class="linenos">23</span></a>
-</span><span id="ProCompetitive-24"><a href="#ProCompetitive-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="ProCompetitive-25"><a href="#ProCompetitive-25"><span class="linenos">25</span></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="ProCompetitive-26"><a href="#ProCompetitive-26"><span class="linenos">26</span></a>
-</span><span id="ProCompetitive-27"><a href="#ProCompetitive-27"><span class="linenos">27</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="ProCompetitive-28"><a href="#ProCompetitive-28"><span class="linenos">28</span></a>        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
-</span><span id="ProCompetitive-29"><a href="#ProCompetitive-29"><span class="linenos">29</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="ProCompetitive-30"><a href="#ProCompetitive-30"><span class="linenos">30</span></a>            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-</span><span id="ProCompetitive-31"><a href="#ProCompetitive-31"><span class="linenos">31</span></a>        <span class="p">)</span>
-</span><span id="ProCompetitive-32"><a href="#ProCompetitive-32"><span class="linenos">32</span></a>
-</span><span id="ProCompetitive-33"><a href="#ProCompetitive-33"><span class="linenos">33</span></a>    <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="ProCompetitive-34"><a href="#ProCompetitive-34"><span class="linenos">34</span></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="ProCompetitive-35"><a href="#ProCompetitive-35"><span class="linenos">35</span></a>
-</span><span id="ProCompetitive-36"><a href="#ProCompetitive-36"><span class="linenos">36</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ProCompetitive-37"><a href="#ProCompetitive-37"><span class="linenos">37</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
-</span><span id="ProCompetitive-38"><a href="#ProCompetitive-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="ProCompetitive-39"><a href="#ProCompetitive-39"><span class="linenos">39</span></a>            <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
-</span><span id="ProCompetitive-40"><a href="#ProCompetitive-40"><span class="linenos">40</span></a>        <span class="p">)</span>
-</span><span id="ProCompetitive-41"><a href="#ProCompetitive-41"><span class="linenos">41</span></a>
-</span><span id="ProCompetitive-42"><a href="#ProCompetitive-42"><span class="linenos">42</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ProCompetitive-43"><a href="#ProCompetitive-43"><span class="linenos">43</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="ProCompetitive-44"><a href="#ProCompetitive-44"><span class="linenos">44</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="ProCompetitive-45"><a href="#ProCompetitive-45"><span class="linenos">45</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="ProCompetitive-46"><a href="#ProCompetitive-46"><span class="linenos">46</span></a>        <span class="p">):</span>
-</span><span id="ProCompetitive-47"><a href="#ProCompetitive-47"><span class="linenos">47</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="ProCompetitive-48"><a href="#ProCompetitive-48"><span class="linenos">48</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="ProCompetitive-49"><a href="#ProCompetitive-49"><span class="linenos">49</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="ProCompetitive-50"><a href="#ProCompetitive-50"><span class="linenos">50</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
-</span><span id="ProCompetitive-51"><a href="#ProCompetitive-51"><span class="linenos">51</span></a>            <span class="p">)</span>
-</span><span id="ProCompetitive-52"><a href="#ProCompetitive-52"><span class="linenos">52</span></a>
-</span><span id="ProCompetitive-53"><a href="#ProCompetitive-53"><span class="linenos">53</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ProCompetitive-54"><a href="#ProCompetitive-54"><span class="linenos">54</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="ProCompetitive-55"><a href="#ProCompetitive-55"><span class="linenos">55</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
-</span><span id="ProCompetitive-56"><a href="#ProCompetitive-56"><span class="linenos">56</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_with_late_takeover</span>
-</span><span id="ProCompetitive-57"><a href="#ProCompetitive-57"><span class="linenos">57</span></a>        <span class="p">):</span>
-</span><span id="ProCompetitive-58"><a href="#ProCompetitive-58"><span class="linenos">58</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="ProCompetitive-59"><a href="#ProCompetitive-59"><span class="linenos">59</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="ProCompetitive-60"><a href="#ProCompetitive-60"><span class="linenos">60</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
-</span><span id="ProCompetitive-61"><a href="#ProCompetitive-61"><span class="linenos">61</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="ProCompetitive-62"><a href="#ProCompetitive-62"><span class="linenos">62</span></a>                    <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="ProCompetitive-63"><a href="#ProCompetitive-63"><span class="linenos">63</span></a>                    <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="ProCompetitive-64"><a href="#ProCompetitive-64"><span class="linenos">64</span></a>                <span class="p">)</span>
-</span><span id="ProCompetitive-65"><a href="#ProCompetitive-65"><span class="linenos">65</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="ProCompetitive-66"><a href="#ProCompetitive-66"><span class="linenos">66</span></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
-</span><span id="ProCompetitive-67"><a href="#ProCompetitive-67"><span class="linenos">67</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="ProCompetitive-68"><a href="#ProCompetitive-68"><span class="linenos">68</span></a>                <span class="k">else</span><span class="p">:</span>
-</span><span id="ProCompetitive-69"><a href="#ProCompetitive-69"><span class="linenos">69</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="ProCompetitive-70"><a href="#ProCompetitive-70"><span class="linenos">70</span></a>                        <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="ProCompetitive-71"><a href="#ProCompetitive-71"><span class="linenos">71</span></a>                        <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
-</span><span id="ProCompetitive-72"><a href="#ProCompetitive-72"><span class="linenos">72</span></a>                    <span class="p">)</span>
-</span><span id="ProCompetitive-73"><a href="#ProCompetitive-73"><span class="linenos">73</span></a>
-</span><span id="ProCompetitive-74"><a href="#ProCompetitive-74"><span class="linenos">74</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ProCompetitive-75"><a href="#ProCompetitive-75"><span class="linenos">75</span></a>        <span class="k">return</span> <span class="kc">True</span>
-</span><span id="ProCompetitive-76"><a href="#ProCompetitive-76"><span class="linenos">76</span></a>
-</span><span id="ProCompetitive-77"><a href="#ProCompetitive-77"><span class="linenos">77</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ProCompetitive-78"><a href="#ProCompetitive-78"><span class="linenos">78</span></a>        <span class="k">return</span> <span class="kc">False</span>
-</span><span id="ProCompetitive-79"><a href="#ProCompetitive-79"><span class="linenos">79</span></a>
-</span><span id="ProCompetitive-80"><a href="#ProCompetitive-80"><span class="linenos">80</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ProCompetitive-81"><a href="#ProCompetitive-81"><span class="linenos">81</span></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="ProCompetitive-7"><a href="#ProCompetitive-7"><span class="linenos"> 7</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-8"><a href="#ProCompetitive-8"><span class="linenos"> 8</span></a><span class="sd">    Relaxes the assumption (A4), that the innovation of the start-up is always welfare beneficial. Instead, the</span>
+</span><span id="ProCompetitive-9"><a href="#ProCompetitive-9"><span class="linenos"> 9</span></a><span class="sd">    innovation is only welfare beneficial if the start-up develops and markets the innovation. In contrast, owned by the</span>
+</span><span id="ProCompetitive-10"><a href="#ProCompetitive-10"><span class="linenos">10</span></a><span class="sd">    incumbent, the innovation reduces the total welfare. This is implying a pure positive effect of the innovation on</span>
+</span><span id="ProCompetitive-11"><a href="#ProCompetitive-11"><span class="linenos">11</span></a><span class="sd">    competition.</span>
+</span><span id="ProCompetitive-12"><a href="#ProCompetitive-12"><span class="linenos">12</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-13"><a href="#ProCompetitive-13"><span class="linenos">13</span></a>
+</span><span id="ProCompetitive-14"><a href="#ProCompetitive-14"><span class="linenos">14</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="ProCompetitive-15"><a href="#ProCompetitive-15"><span class="linenos">15</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="ProCompetitive-16"><a href="#ProCompetitive-16"><span class="linenos">16</span></a>            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
+</span><span id="ProCompetitive-17"><a href="#ProCompetitive-17"><span class="linenos">17</span></a>            <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="ProCompetitive-18"><a href="#ProCompetitive-18"><span class="linenos">18</span></a>        <span class="p">)</span>
+</span><span id="ProCompetitive-19"><a href="#ProCompetitive-19"><span class="linenos">19</span></a>
+</span><span id="ProCompetitive-20"><a href="#ProCompetitive-20"><span class="linenos">20</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="ProCompetitive-21"><a href="#ProCompetitive-21"><span class="linenos">21</span></a>        <span class="k">assert</span> <span class="p">(</span>
+</span><span id="ProCompetitive-22"><a href="#ProCompetitive-22"><span class="linenos">22</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+</span><span id="ProCompetitive-23"><a href="#ProCompetitive-23"><span class="linenos">23</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="ProCompetitive-24"><a href="#ProCompetitive-24"><span class="linenos">24</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+</span><span id="ProCompetitive-25"><a href="#ProCompetitive-25"><span class="linenos">25</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="ProCompetitive-26"><a href="#ProCompetitive-26"><span class="linenos">26</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
+</span><span id="ProCompetitive-27"><a href="#ProCompetitive-27"><span class="linenos">27</span></a>
+</span><span id="ProCompetitive-28"><a href="#ProCompetitive-28"><span class="linenos">28</span></a>    <span class="k">def</span> <span class="nf">_check_asset_distribution_threshold_strict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="ProCompetitive-29"><a href="#ProCompetitive-29"><span class="linenos">29</span></a>        <span class="k">pass</span>
+</span><span id="ProCompetitive-30"><a href="#ProCompetitive-30"><span class="linenos">30</span></a>
+</span><span id="ProCompetitive-31"><a href="#ProCompetitive-31"><span class="linenos">31</span></a>    <span class="k">def</span> <span class="nf">_calculate_h0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="ProCompetitive-32"><a href="#ProCompetitive-32"><span class="linenos">32</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="ProCompetitive-33"><a href="#ProCompetitive-33"><span class="linenos">33</span></a>
+</span><span id="ProCompetitive-34"><a href="#ProCompetitive-34"><span class="linenos">34</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="ProCompetitive-35"><a href="#ProCompetitive-35"><span class="linenos">35</span></a>        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+</span><span id="ProCompetitive-36"><a href="#ProCompetitive-36"><span class="linenos">36</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="ProCompetitive-37"><a href="#ProCompetitive-37"><span class="linenos">37</span></a>            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+</span><span id="ProCompetitive-38"><a href="#ProCompetitive-38"><span class="linenos">38</span></a>        <span class="p">)</span>
+</span><span id="ProCompetitive-39"><a href="#ProCompetitive-39"><span class="linenos">39</span></a>
+</span><span id="ProCompetitive-40"><a href="#ProCompetitive-40"><span class="linenos">40</span></a>    <span class="k">def</span> <span class="nf">_calculate_h2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="ProCompetitive-41"><a href="#ProCompetitive-41"><span class="linenos">41</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="ProCompetitive-42"><a href="#ProCompetitive-42"><span class="linenos">42</span></a>
+</span><span id="ProCompetitive-43"><a href="#ProCompetitive-43"><span class="linenos">43</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ProCompetitive-44"><a href="#ProCompetitive-44"><span class="linenos">44</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
+</span><span id="ProCompetitive-45"><a href="#ProCompetitive-45"><span class="linenos">45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="ProCompetitive-46"><a href="#ProCompetitive-46"><span class="linenos">46</span></a>            <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+</span><span id="ProCompetitive-47"><a href="#ProCompetitive-47"><span class="linenos">47</span></a>        <span class="p">)</span>
+</span><span id="ProCompetitive-48"><a href="#ProCompetitive-48"><span class="linenos">48</span></a>
+</span><span id="ProCompetitive-49"><a href="#ProCompetitive-49"><span class="linenos">49</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_prohibited</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ProCompetitive-50"><a href="#ProCompetitive-50"><span class="linenos">50</span></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="ProCompetitive-51"><a href="#ProCompetitive-51"><span class="linenos">51</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="ProCompetitive-52"><a href="#ProCompetitive-52"><span class="linenos">52</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="ProCompetitive-53"><a href="#ProCompetitive-53"><span class="linenos">53</span></a>        <span class="p">):</span>
+</span><span id="ProCompetitive-54"><a href="#ProCompetitive-54"><span class="linenos">54</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="ProCompetitive-55"><a href="#ProCompetitive-55"><span class="linenos">55</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="ProCompetitive-56"><a href="#ProCompetitive-56"><span class="linenos">56</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="ProCompetitive-57"><a href="#ProCompetitive-57"><span class="linenos">57</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+</span><span id="ProCompetitive-58"><a href="#ProCompetitive-58"><span class="linenos">58</span></a>            <span class="p">)</span>
+</span><span id="ProCompetitive-59"><a href="#ProCompetitive-59"><span class="linenos">59</span></a>
+</span><span id="ProCompetitive-60"><a href="#ProCompetitive-60"><span class="linenos">60</span></a>    <span class="k">def</span> <span class="nf">_solve_game_late_takeover_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ProCompetitive-61"><a href="#ProCompetitive-61"><span class="linenos">61</span></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="ProCompetitive-62"><a href="#ProCompetitive-62"><span class="linenos">62</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_late_takeover_cdf</span>
+</span><span id="ProCompetitive-63"><a href="#ProCompetitive-63"><span class="linenos">63</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_with_late_takeover</span>
+</span><span id="ProCompetitive-64"><a href="#ProCompetitive-64"><span class="linenos">64</span></a>        <span class="p">):</span>
+</span><span id="ProCompetitive-65"><a href="#ProCompetitive-65"><span class="linenos">65</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="ProCompetitive-66"><a href="#ProCompetitive-66"><span class="linenos">66</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="ProCompetitive-67"><a href="#ProCompetitive-67"><span class="linenos">67</span></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_startup_credit_rationed</span><span class="p">:</span>
+</span><span id="ProCompetitive-68"><a href="#ProCompetitive-68"><span class="linenos">68</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="ProCompetitive-69"><a href="#ProCompetitive-69"><span class="linenos">69</span></a>                    <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="ProCompetitive-70"><a href="#ProCompetitive-70"><span class="linenos">70</span></a>                    <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="ProCompetitive-71"><a href="#ProCompetitive-71"><span class="linenos">71</span></a>                <span class="p">)</span>
+</span><span id="ProCompetitive-72"><a href="#ProCompetitive-72"><span class="linenos">72</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="ProCompetitive-73"><a href="#ProCompetitive-73"><span class="linenos">73</span></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_success</span><span class="p">:</span>
+</span><span id="ProCompetitive-74"><a href="#ProCompetitive-74"><span class="linenos">74</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="ProCompetitive-75"><a href="#ProCompetitive-75"><span class="linenos">75</span></a>                <span class="k">else</span><span class="p">:</span>
+</span><span id="ProCompetitive-76"><a href="#ProCompetitive-76"><span class="linenos">76</span></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="ProCompetitive-77"><a href="#ProCompetitive-77"><span class="linenos">77</span></a>                        <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="ProCompetitive-78"><a href="#ProCompetitive-78"><span class="linenos">78</span></a>                        <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+</span><span id="ProCompetitive-79"><a href="#ProCompetitive-79"><span class="linenos">79</span></a>                    <span class="p">)</span>
+</span><span id="ProCompetitive-80"><a href="#ProCompetitive-80"><span class="linenos">80</span></a>
+</span><span id="ProCompetitive-81"><a href="#ProCompetitive-81"><span class="linenos">81</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ProCompetitive-82"><a href="#ProCompetitive-82"><span class="linenos">82</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-83"><a href="#ProCompetitive-83"><span class="linenos">83</span></a><span class="sd">        In this model a strict merger policy is always optimal.</span>
+</span><span id="ProCompetitive-84"><a href="#ProCompetitive-84"><span class="linenos">84</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-85"><a href="#ProCompetitive-85"><span class="linenos">85</span></a>        <span class="k">return</span> <span class="kc">True</span>
+</span><span id="ProCompetitive-86"><a href="#ProCompetitive-86"><span class="linenos">86</span></a>
+</span><span id="ProCompetitive-87"><a href="#ProCompetitive-87"><span class="linenos">87</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ProCompetitive-88"><a href="#ProCompetitive-88"><span class="linenos">88</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-89"><a href="#ProCompetitive-89"><span class="linenos">89</span></a><span class="sd">        In this model an intermediate merger policy is never optimal.</span>
+</span><span id="ProCompetitive-90"><a href="#ProCompetitive-90"><span class="linenos">90</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-91"><a href="#ProCompetitive-91"><span class="linenos">91</span></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="ProCompetitive-92"><a href="#ProCompetitive-92"><span class="linenos">92</span></a>
+</span><span id="ProCompetitive-93"><a href="#ProCompetitive-93"><span class="linenos">93</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ProCompetitive-94"><a href="#ProCompetitive-94"><span class="linenos">94</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-95"><a href="#ProCompetitive-95"><span class="linenos">95</span></a><span class="sd">        In this model a laissez-faire merger policy is never optimal.</span>
+</span><span id="ProCompetitive-96"><a href="#ProCompetitive-96"><span class="linenos">96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive-97"><a href="#ProCompetitive-97"><span class="linenos">97</span></a>        <span class="k">return</span> <span class="kc">False</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Add functionality to determine the optimal merger policy for a given set of parameters.</p>
-
-<p>Annotation: As discussed in section 5.1, a policy that is more lenient with respect to early acquisitions is always
-dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.</p>
+            <div class="docstring"><p>Relaxes the assumption (A4), that the innovation of the start-up is always welfare beneficial. Instead, the
+innovation is only welfare beneficial if the start-up develops and markets the innovation. In contrast, owned by the
+incumbent, the innovation reduces the total welfare. This is implying a pure positive effect of the innovation on
+competition.</p>
 </div>
 
 
@@ -354,15 +421,15 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
 
     </div>
     <a class="headerlink" href="#ProCompetitive.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.__init__-7"><a href="#ProCompetitive.__init__-7"><span class="linenos"> 7</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="ProCompetitive.__init__-8"><a href="#ProCompetitive.__init__-8"><span class="linenos"> 8</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ProCompetitive.__init__-9"><a href="#ProCompetitive.__init__-9"><span class="linenos"> 9</span></a>            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
-</span><span id="ProCompetitive.__init__-10"><a href="#ProCompetitive.__init__-10"><span class="linenos">10</span></a>            <span class="o">**</span><span class="n">kwargs</span>
-</span><span id="ProCompetitive.__init__-11"><a href="#ProCompetitive.__init__-11"><span class="linenos">11</span></a>        <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.__init__-14"><a href="#ProCompetitive.__init__-14"><span class="linenos">14</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_without_innovation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="ProCompetitive.__init__-15"><a href="#ProCompetitive.__init__-15"><span class="linenos">15</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="ProCompetitive.__init__-16"><a href="#ProCompetitive.__init__-16"><span class="linenos">16</span></a>            <span class="n">consumer_surplus_without_innovation</span><span class="o">=</span><span class="n">consumer_surplus_without_innovation</span><span class="p">,</span>
+</span><span id="ProCompetitive.__init__-17"><a href="#ProCompetitive.__init__-17"><span class="linenos">17</span></a>            <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="ProCompetitive.__init__-18"><a href="#ProCompetitive.__init__-18"><span class="linenos">18</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Takes the same arguments as BaseModel.__init__.</p>
+            <div class="docstring"><p>Takes the same arguments as <a href="Base.html#CoreModel.__init__">Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel.__init__</a>.</p>
 </div>
 
 
@@ -378,20 +445,15 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
 
     </div>
     <a class="headerlink" href="#ProCompetitive.is_strict_optimal"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.is_strict_optimal-74"><a href="#ProCompetitive.is_strict_optimal-74"><span class="linenos">74</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ProCompetitive.is_strict_optimal-75"><a href="#ProCompetitive.is_strict_optimal-75"><span class="linenos">75</span></a>        <span class="k">return</span> <span class="kc">True</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.is_strict_optimal-81"><a href="#ProCompetitive.is_strict_optimal-81"><span class="linenos">81</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ProCompetitive.is_strict_optimal-82"><a href="#ProCompetitive.is_strict_optimal-82"><span class="linenos">82</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive.is_strict_optimal-83"><a href="#ProCompetitive.is_strict_optimal-83"><span class="linenos">83</span></a><span class="sd">        In this model a strict merger policy is always optimal.</span>
+</span><span id="ProCompetitive.is_strict_optimal-84"><a href="#ProCompetitive.is_strict_optimal-84"><span class="linenos">84</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive.is_strict_optimal-85"><a href="#ProCompetitive.is_strict_optimal-85"><span class="linenos">85</span></a>        <span class="k">return</span> <span class="kc">True</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Returns whether the strict merger policy is optimal.</p>
-
-<p>The strict merger is optimal, if the other policies are not optimal.</p>
-
-<h6 id="returns">Returns</h6>
-
-<ul>
-<li><strong>True</strong>: If the strict merger policy is optimal.</li>
-</ul>
+            <div class="docstring"><p>In this model a strict merger policy is always optimal.</p>
 </div>
 
 
@@ -407,27 +469,15 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
 
     </div>
     <a class="headerlink" href="#ProCompetitive.is_intermediate_optimal"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.is_intermediate_optimal-77"><a href="#ProCompetitive.is_intermediate_optimal-77"><span class="linenos">77</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ProCompetitive.is_intermediate_optimal-78"><a href="#ProCompetitive.is_intermediate_optimal-78"><span class="linenos">78</span></a>        <span class="k">return</span> <span class="kc">False</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.is_intermediate_optimal-87"><a href="#ProCompetitive.is_intermediate_optimal-87"><span class="linenos">87</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ProCompetitive.is_intermediate_optimal-88"><a href="#ProCompetitive.is_intermediate_optimal-88"><span class="linenos">88</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive.is_intermediate_optimal-89"><a href="#ProCompetitive.is_intermediate_optimal-89"><span class="linenos">89</span></a><span class="sd">        In this model an intermediate merger policy is never optimal.</span>
+</span><span id="ProCompetitive.is_intermediate_optimal-90"><a href="#ProCompetitive.is_intermediate_optimal-90"><span class="linenos">90</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive.is_intermediate_optimal-91"><a href="#ProCompetitive.is_intermediate_optimal-91"><span class="linenos">91</span></a>        <span class="k">return</span> <span class="kc">False</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Returns whether an intermediate merger policy (late takeover allowed) is optimal.</p>
-
-<p>An intermediate merger policy (late takeovers allowed) is optimal, if:</p>
-
-<ol>
-<li>Incumbent is expected to shelve ($p(\pi^M_I-\pi^m_I) &lt; K$).</li>
-<li>Approving early takeovers followed by shelving is not optimal ($F(\bar{A}^T) &lt; \Lambda(\cdot)$).</li>
-<li>Detrimental effect of less intense product market competition is dominated by the benefit of making it more
-likely that the innovation is commercialised (Condition 6 not satisfied).</li>
-</ol>
-
-<h6 id="returns">Returns</h6>
-
-<ul>
-<li><strong>True</strong>: If an intermediate merger policy (late takeover allowed) is optimal.</li>
-</ul>
+            <div class="docstring"><p>In this model an intermediate merger policy is never optimal.</p>
 </div>
 
 
@@ -443,28 +493,15 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 
     </div>
     <a class="headerlink" href="#ProCompetitive.is_laissez_faire_optimal"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.is_laissez_faire_optimal-80"><a href="#ProCompetitive.is_laissez_faire_optimal-80"><span class="linenos">80</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ProCompetitive.is_laissez_faire_optimal-81"><a href="#ProCompetitive.is_laissez_faire_optimal-81"><span class="linenos">81</span></a>        <span class="k">return</span> <span class="kc">False</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ProCompetitive.is_laissez_faire_optimal-93"><a href="#ProCompetitive.is_laissez_faire_optimal-93"><span class="linenos">93</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ProCompetitive.is_laissez_faire_optimal-94"><a href="#ProCompetitive.is_laissez_faire_optimal-94"><span class="linenos">94</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ProCompetitive.is_laissez_faire_optimal-95"><a href="#ProCompetitive.is_laissez_faire_optimal-95"><span class="linenos">95</span></a><span class="sd">        In this model a laissez-faire merger policy is never optimal.</span>
+</span><span id="ProCompetitive.is_laissez_faire_optimal-96"><a href="#ProCompetitive.is_laissez_faire_optimal-96"><span class="linenos">96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ProCompetitive.is_laissez_faire_optimal-97"><a href="#ProCompetitive.is_laissez_faire_optimal-97"><span class="linenos">97</span></a>        <span class="k">return</span> <span class="kc">False</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Returns whether a laissez-faire policy is optimal.</p>
-
-<p>A laissez-faire policy (that authorises any takeover) is optimal, if:</p>
-
-<ol>
-<li>Incumbent is expected to shelve ($p(\pi^M_I-\pi^m_I) &lt; K$).</li>
-<li>Financial imperfections are severe ($F(\bar{A}^T)\ge\Phi^T(\cdot)$).</li>
-<li>Approving early takeovers followed by shelving is optimal ($F(\bar{A}^T)\ge\Lambda(\cdot)$).</li>
-<li>Detrimental effect of less intense product market competition is dominated by the benefit of making it more
-likely that the innovation is commercialised (Condition 6 not satisfied).</li>
-</ol>
-
-<h6 id="returns">Returns</h6>
-
-<ul>
-<li><strong>True</strong>: If a laissez-faire merger policy is optimal.</li>
-</ul>
+            <div class="docstring"><p>In this model a laissez-faire merger policy is never optimal.</p>
 </div>
 
 
@@ -536,64 +573,97 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 
     </div>
     <a class="headerlink" href="#ResourceWaste"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste-84"><a href="#ResourceWaste-84"><span class="linenos"> 84</span></a><span class="k">class</span> <span class="nc">ResourceWaste</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">):</span>
-</span><span id="ResourceWaste-85"><a href="#ResourceWaste-85"><span class="linenos"> 85</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mf">0.41</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="ResourceWaste-86"><a href="#ResourceWaste-86"><span class="linenos"> 86</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResourceWaste</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ResourceWaste-87"><a href="#ResourceWaste-87"><span class="linenos"> 87</span></a>            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="n">consumer_surplus_duopoly</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-</span><span id="ResourceWaste-88"><a href="#ResourceWaste-88"><span class="linenos"> 88</span></a>        <span class="p">)</span>
-</span><span id="ResourceWaste-89"><a href="#ResourceWaste-89"><span class="linenos"> 89</span></a>
-</span><span id="ResourceWaste-90"><a href="#ResourceWaste-90"><span class="linenos"> 90</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ResourceWaste-91"><a href="#ResourceWaste-91"><span class="linenos"> 91</span></a>        <span class="k">assert</span> <span class="p">(</span>
-</span><span id="ResourceWaste-92"><a href="#ResourceWaste-92"><span class="linenos"> 92</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
-</span><span id="ResourceWaste-93"><a href="#ResourceWaste-93"><span class="linenos"> 93</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="ResourceWaste-94"><a href="#ResourceWaste-94"><span class="linenos"> 94</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
-</span><span id="ResourceWaste-95"><a href="#ResourceWaste-95"><span class="linenos"> 95</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
-</span><span id="ResourceWaste-96"><a href="#ResourceWaste-96"><span class="linenos"> 96</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
-</span><span id="ResourceWaste-97"><a href="#ResourceWaste-97"><span class="linenos"> 97</span></a>
-</span><span id="ResourceWaste-98"><a href="#ResourceWaste-98"><span class="linenos"> 98</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="ResourceWaste-99"><a href="#ResourceWaste-99"><span class="linenos"> 99</span></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="ResourceWaste-100"><a href="#ResourceWaste-100"><span class="linenos">100</span></a>
-</span><span id="ResourceWaste-101"><a href="#ResourceWaste-101"><span class="linenos">101</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="ResourceWaste-102"><a href="#ResourceWaste-102"><span class="linenos">102</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
-</span><span id="ResourceWaste-103"><a href="#ResourceWaste-103"><span class="linenos">103</span></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="ResourceWaste-104"><a href="#ResourceWaste-104"><span class="linenos">104</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="ResourceWaste-105"><a href="#ResourceWaste-105"><span class="linenos">105</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="ResourceWaste-106"><a href="#ResourceWaste-106"><span class="linenos">106</span></a>        <span class="p">):</span>
-</span><span id="ResourceWaste-107"><a href="#ResourceWaste-107"><span class="linenos">107</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
-</span><span id="ResourceWaste-108"><a href="#ResourceWaste-108"><span class="linenos">108</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="ResourceWaste-109"><a href="#ResourceWaste-109"><span class="linenos">109</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
-</span><span id="ResourceWaste-110"><a href="#ResourceWaste-110"><span class="linenos">110</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
-</span><span id="ResourceWaste-111"><a href="#ResourceWaste-111"><span class="linenos">111</span></a>            <span class="p">)</span>
-</span><span id="ResourceWaste-112"><a href="#ResourceWaste-112"><span class="linenos">112</span></a>
-</span><span id="ResourceWaste-113"><a href="#ResourceWaste-113"><span class="linenos">113</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ResourceWaste-114"><a href="#ResourceWaste-114"><span class="linenos">114</span></a>        <span class="k">return</span> <span class="kc">False</span>
-</span><span id="ResourceWaste-115"><a href="#ResourceWaste-115"><span class="linenos">115</span></a>
-</span><span id="ResourceWaste-116"><a href="#ResourceWaste-116"><span class="linenos">116</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ResourceWaste-117"><a href="#ResourceWaste-117"><span class="linenos">117</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste-100"><a href="#ResourceWaste-100"><span class="linenos">100</span></a><span class="k">class</span> <span class="nc">ResourceWaste</span><span class="p">(</span><span class="n">ProCompetitive</span><span class="p">):</span>
+</span><span id="ResourceWaste-101"><a href="#ResourceWaste-101"><span class="linenos">101</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-102"><a href="#ResourceWaste-102"><span class="linenos">102</span></a><span class="sd">    In this model is assumed, that the innovation is never welfare beneficial, therefore a development is always a waste</span>
+</span><span id="ResourceWaste-103"><a href="#ResourceWaste-103"><span class="linenos">103</span></a><span class="sd">    of resources regarding total welfare.</span>
+</span><span id="ResourceWaste-104"><a href="#ResourceWaste-104"><span class="linenos">104</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-105"><a href="#ResourceWaste-105"><span class="linenos">105</span></a>
+</span><span id="ResourceWaste-106"><a href="#ResourceWaste-106"><span class="linenos">106</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mf">0.41</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="ResourceWaste-107"><a href="#ResourceWaste-107"><span class="linenos">107</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResourceWaste</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="ResourceWaste-108"><a href="#ResourceWaste-108"><span class="linenos">108</span></a>            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="n">consumer_surplus_duopoly</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="ResourceWaste-109"><a href="#ResourceWaste-109"><span class="linenos">109</span></a>        <span class="p">)</span>
+</span><span id="ResourceWaste-110"><a href="#ResourceWaste-110"><span class="linenos">110</span></a>
+</span><span id="ResourceWaste-111"><a href="#ResourceWaste-111"><span class="linenos">111</span></a>    <span class="k">def</span> <span class="nf">_check_assumption_four</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="ResourceWaste-112"><a href="#ResourceWaste-112"><span class="linenos">112</span></a>        <span class="k">assert</span> <span class="p">(</span>
+</span><span id="ResourceWaste-113"><a href="#ResourceWaste-113"><span class="linenos">113</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span>
+</span><span id="ResourceWaste-114"><a href="#ResourceWaste-114"><span class="linenos">114</span></a>            <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_with_innovation</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="ResourceWaste-115"><a href="#ResourceWaste-115"><span class="linenos">115</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_success_probability</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_duopoly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_without_innovation</span><span class="p">)</span>
+</span><span id="ResourceWaste-116"><a href="#ResourceWaste-116"><span class="linenos">116</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">development_costs</span>
+</span><span id="ResourceWaste-117"><a href="#ResourceWaste-117"><span class="linenos">117</span></a>        <span class="p">),</span> <span class="s2">&quot;Adjusted assumption 4 in this model&quot;</span>
 </span><span id="ResourceWaste-118"><a href="#ResourceWaste-118"><span class="linenos">118</span></a>
-</span><span id="ResourceWaste-119"><a href="#ResourceWaste-119"><span class="linenos">119</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="ResourceWaste-120"><a href="#ResourceWaste-120"><span class="linenos">120</span></a>    <span class="k">def</span> <span class="nf">_get_intermediate_optimal_candidate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">:</span>
-</span><span id="ResourceWaste-121"><a href="#ResourceWaste-121"><span class="linenos">121</span></a>        <span class="k">return</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_prohibited</span>
-</span><span id="ResourceWaste-122"><a href="#ResourceWaste-122"><span class="linenos">122</span></a>
-</span><span id="ResourceWaste-123"><a href="#ResourceWaste-123"><span class="linenos">123</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ResourceWaste-124"><a href="#ResourceWaste-124"><span class="linenos">124</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
-</span><span id="ResourceWaste-125"><a href="#ResourceWaste-125"><span class="linenos">125</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
-</span><span id="ResourceWaste-126"><a href="#ResourceWaste-126"><span class="linenos">126</span></a>            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe_without_late_takeover</span><span class="p">()</span>
-</span><span id="ResourceWaste-127"><a href="#ResourceWaste-127"><span class="linenos">127</span></a>            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_competition_effect_dominating</span><span class="p">()</span>
-</span><span id="ResourceWaste-128"><a href="#ResourceWaste-128"><span class="linenos">128</span></a>        <span class="p">)</span>
-</span><span id="ResourceWaste-129"><a href="#ResourceWaste-129"><span class="linenos">129</span></a>
-</span><span id="ResourceWaste-130"><a href="#ResourceWaste-130"><span class="linenos">130</span></a>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe_without_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ResourceWaste-131"><a href="#ResourceWaste-131"><span class="linenos">131</span></a>        <span class="k">return</span> <span class="p">(</span>
-</span><span id="ResourceWaste-132"><a href="#ResourceWaste-132"><span class="linenos">132</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="ResourceWaste-133"><a href="#ResourceWaste-133"><span class="linenos">133</span></a>            <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="ResourceWaste-134"><a href="#ResourceWaste-134"><span class="linenos">134</span></a>        <span class="p">)</span>
+</span><span id="ResourceWaste-119"><a href="#ResourceWaste-119"><span class="linenos">119</span></a>    <span class="k">def</span> <span class="nf">_calculate_h1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="ResourceWaste-120"><a href="#ResourceWaste-120"><span class="linenos">120</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="ResourceWaste-121"><a href="#ResourceWaste-121"><span class="linenos">121</span></a>
+</span><span id="ResourceWaste-122"><a href="#ResourceWaste-122"><span class="linenos">122</span></a>    <span class="k">def</span> <span class="nf">_solve_game_strict_merger_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="ResourceWaste-123"><a href="#ResourceWaste-123"><span class="linenos">123</span></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">merger_policy</span> <span class="ow">is</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Strict</span>
+</span><span id="ResourceWaste-124"><a href="#ResourceWaste-124"><span class="linenos">124</span></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="ResourceWaste-125"><a href="#ResourceWaste-125"><span class="linenos">125</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="ResourceWaste-126"><a href="#ResourceWaste-126"><span class="linenos">126</span></a>            <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="ResourceWaste-127"><a href="#ResourceWaste-127"><span class="linenos">127</span></a>        <span class="p">):</span>
+</span><span id="ResourceWaste-128"><a href="#ResourceWaste-128"><span class="linenos">128</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span><span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">)</span>
+</span><span id="ResourceWaste-129"><a href="#ResourceWaste-129"><span class="linenos">129</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="ResourceWaste-130"><a href="#ResourceWaste-130"><span class="linenos">130</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_set_takeovers</span><span class="p">(</span>
+</span><span id="ResourceWaste-131"><a href="#ResourceWaste-131"><span class="linenos">131</span></a>                <span class="n">early_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">late_takeover</span><span class="o">=</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span>
+</span><span id="ResourceWaste-132"><a href="#ResourceWaste-132"><span class="linenos">132</span></a>            <span class="p">)</span>
+</span><span id="ResourceWaste-133"><a href="#ResourceWaste-133"><span class="linenos">133</span></a>
+</span><span id="ResourceWaste-134"><a href="#ResourceWaste-134"><span class="linenos">134</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ResourceWaste-135"><a href="#ResourceWaste-135"><span class="linenos">135</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-136"><a href="#ResourceWaste-136"><span class="linenos">136</span></a><span class="sd">        In this model is a strict merger policy never optimal</span>
+</span><span id="ResourceWaste-137"><a href="#ResourceWaste-137"><span class="linenos">137</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-138"><a href="#ResourceWaste-138"><span class="linenos">138</span></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="ResourceWaste-139"><a href="#ResourceWaste-139"><span class="linenos">139</span></a>
+</span><span id="ResourceWaste-140"><a href="#ResourceWaste-140"><span class="linenos">140</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ResourceWaste-141"><a href="#ResourceWaste-141"><span class="linenos">141</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-142"><a href="#ResourceWaste-142"><span class="linenos">142</span></a><span class="sd">        Returns whether the intermediate (WITHOUT late takeovers) merger policy is optimal.</span>
+</span><span id="ResourceWaste-143"><a href="#ResourceWaste-143"><span class="linenos">143</span></a>
+</span><span id="ResourceWaste-144"><a href="#ResourceWaste-144"><span class="linenos">144</span></a><span class="sd">        The intermediate (WITHOUT late takeovers) merger is optimal, if a laissez-faire merger policy is not optimal.</span>
+</span><span id="ResourceWaste-145"><a href="#ResourceWaste-145"><span class="linenos">145</span></a>
+</span><span id="ResourceWaste-146"><a href="#ResourceWaste-146"><span class="linenos">146</span></a><span class="sd">        Returns</span>
+</span><span id="ResourceWaste-147"><a href="#ResourceWaste-147"><span class="linenos">147</span></a><span class="sd">        -------</span>
+</span><span id="ResourceWaste-148"><a href="#ResourceWaste-148"><span class="linenos">148</span></a><span class="sd">        True</span>
+</span><span id="ResourceWaste-149"><a href="#ResourceWaste-149"><span class="linenos">149</span></a><span class="sd">            If the intermediate (WITHOUT late takeovers) merger policy is optimal.</span>
+</span><span id="ResourceWaste-150"><a href="#ResourceWaste-150"><span class="linenos">150</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-151"><a href="#ResourceWaste-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">()</span>
+</span><span id="ResourceWaste-152"><a href="#ResourceWaste-152"><span class="linenos">152</span></a>
+</span><span id="ResourceWaste-153"><a href="#ResourceWaste-153"><span class="linenos">153</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="ResourceWaste-154"><a href="#ResourceWaste-154"><span class="linenos">154</span></a>    <span class="k">def</span> <span class="nf">_get_intermediate_optimal_candidate</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="p">:</span>
+</span><span id="ResourceWaste-155"><a href="#ResourceWaste-155"><span class="linenos">155</span></a>        <span class="k">return</span> <span class="n">Types</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Intermediate_late_takeover_prohibited</span>
+</span><span id="ResourceWaste-156"><a href="#ResourceWaste-156"><span class="linenos">156</span></a>
+</span><span id="ResourceWaste-157"><a href="#ResourceWaste-157"><span class="linenos">157</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ResourceWaste-158"><a href="#ResourceWaste-158"><span class="linenos">158</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-159"><a href="#ResourceWaste-159"><span class="linenos">159</span></a><span class="sd">        Returns whether a laissez-faire policy is optimal.</span>
+</span><span id="ResourceWaste-160"><a href="#ResourceWaste-160"><span class="linenos">160</span></a>
+</span><span id="ResourceWaste-161"><a href="#ResourceWaste-161"><span class="linenos">161</span></a><span class="sd">        A laissez-faire policy (that authorises any takeover) is optimal, if:</span>
+</span><span id="ResourceWaste-162"><a href="#ResourceWaste-162"><span class="linenos">162</span></a><span class="sd">        1. Financial imperfections are not severe ($F(\\bar{A}^T)&lt;\\Phi^T(\\cdot)$).</span>
+</span><span id="ResourceWaste-163"><a href="#ResourceWaste-163"><span class="linenos">163</span></a>
+</span><span id="ResourceWaste-164"><a href="#ResourceWaste-164"><span class="linenos">164</span></a><span class="sd">        Or as well if:</span>
+</span><span id="ResourceWaste-165"><a href="#ResourceWaste-165"><span class="linenos">165</span></a><span class="sd">        1. Financial imperfections are always severe ($F(\\bar{A}^T)\\ge\\Phi^T(\\cdot)$ and</span>
+</span><span id="ResourceWaste-166"><a href="#ResourceWaste-166"><span class="linenos">166</span></a><span class="sd">        $F(\\bar{A})\\ge\\Phi(\\cdot)$).</span>
+</span><span id="ResourceWaste-167"><a href="#ResourceWaste-167"><span class="linenos">167</span></a><span class="sd">        2. Detrimental effect of less intense product market competition is dominated by the benefit of making it more</span>
+</span><span id="ResourceWaste-168"><a href="#ResourceWaste-168"><span class="linenos">168</span></a><span class="sd">        likely that the innovation is commercialised (Condition 6 not satisfied).</span>
+</span><span id="ResourceWaste-169"><a href="#ResourceWaste-169"><span class="linenos">169</span></a>
+</span><span id="ResourceWaste-170"><a href="#ResourceWaste-170"><span class="linenos">170</span></a><span class="sd">        Returns</span>
+</span><span id="ResourceWaste-171"><a href="#ResourceWaste-171"><span class="linenos">171</span></a><span class="sd">        -------</span>
+</span><span id="ResourceWaste-172"><a href="#ResourceWaste-172"><span class="linenos">172</span></a><span class="sd">        True</span>
+</span><span id="ResourceWaste-173"><a href="#ResourceWaste-173"><span class="linenos">173</span></a><span class="sd">            If a laissez-faire merger policy is optimal.</span>
+</span><span id="ResourceWaste-174"><a href="#ResourceWaste-174"><span class="linenos">174</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste-175"><a href="#ResourceWaste-175"><span class="linenos">175</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
+</span><span id="ResourceWaste-176"><a href="#ResourceWaste-176"><span class="linenos">176</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
+</span><span id="ResourceWaste-177"><a href="#ResourceWaste-177"><span class="linenos">177</span></a>            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe_without_late_takeover</span><span class="p">()</span>
+</span><span id="ResourceWaste-178"><a href="#ResourceWaste-178"><span class="linenos">178</span></a>            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_competition_effect_dominating</span><span class="p">()</span>
+</span><span id="ResourceWaste-179"><a href="#ResourceWaste-179"><span class="linenos">179</span></a>        <span class="p">)</span>
+</span><span id="ResourceWaste-180"><a href="#ResourceWaste-180"><span class="linenos">180</span></a>
+</span><span id="ResourceWaste-181"><a href="#ResourceWaste-181"><span class="linenos">181</span></a>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe_without_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="ResourceWaste-182"><a href="#ResourceWaste-182"><span class="linenos">182</span></a>        <span class="k">return</span> <span class="p">(</span>
+</span><span id="ResourceWaste-183"><a href="#ResourceWaste-183"><span class="linenos">183</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="ResourceWaste-184"><a href="#ResourceWaste-184"><span class="linenos">184</span></a>            <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="ResourceWaste-185"><a href="#ResourceWaste-185"><span class="linenos">185</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Add functionality to determine the optimal merger policy for a given set of parameters.</p>
-
-<p>Annotation: As discussed in section 5.1, a policy that is more lenient with respect to early acquisitions is always
-dominated by a strict merger policy. Therefore, only the three remaining policies are discussed.</p>
+            <div class="docstring"><p>In this model is assumed, that the innovation is never welfare beneficial, therefore a development is always a waste
+of resources regarding total welfare.</p>
 </div>
 
 
@@ -607,14 +677,14 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
 
     </div>
     <a class="headerlink" href="#ResourceWaste.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.__init__-85"><a href="#ResourceWaste.__init__-85"><span class="linenos">85</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mf">0.41</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="ResourceWaste.__init__-86"><a href="#ResourceWaste.__init__-86"><span class="linenos">86</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResourceWaste</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ResourceWaste.__init__-87"><a href="#ResourceWaste.__init__-87"><span class="linenos">87</span></a>            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="n">consumer_surplus_duopoly</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-</span><span id="ResourceWaste.__init__-88"><a href="#ResourceWaste.__init__-88"><span class="linenos">88</span></a>        <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.__init__-106"><a href="#ResourceWaste.__init__-106"><span class="linenos">106</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="mf">0.41</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="ResourceWaste.__init__-107"><a href="#ResourceWaste.__init__-107"><span class="linenos">107</span></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResourceWaste</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="ResourceWaste.__init__-108"><a href="#ResourceWaste.__init__-108"><span class="linenos">108</span></a>            <span class="n">consumer_surplus_duopoly</span><span class="o">=</span><span class="n">consumer_surplus_duopoly</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="ResourceWaste.__init__-109"><a href="#ResourceWaste.__init__-109"><span class="linenos">109</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Takes the same arguments as BaseModel.__init__.</p>
+            <div class="docstring"><p>Takes the same arguments as <a href="Base.html#CoreModel.__init__">Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel.__init__</a>.</p>
 </div>
 
 
@@ -630,20 +700,15 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
 
     </div>
     <a class="headerlink" href="#ResourceWaste.is_strict_optimal"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_strict_optimal-113"><a href="#ResourceWaste.is_strict_optimal-113"><span class="linenos">113</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ResourceWaste.is_strict_optimal-114"><a href="#ResourceWaste.is_strict_optimal-114"><span class="linenos">114</span></a>        <span class="k">return</span> <span class="kc">False</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_strict_optimal-134"><a href="#ResourceWaste.is_strict_optimal-134"><span class="linenos">134</span></a>    <span class="k">def</span> <span class="nf">is_strict_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ResourceWaste.is_strict_optimal-135"><a href="#ResourceWaste.is_strict_optimal-135"><span class="linenos">135</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste.is_strict_optimal-136"><a href="#ResourceWaste.is_strict_optimal-136"><span class="linenos">136</span></a><span class="sd">        In this model is a strict merger policy never optimal</span>
+</span><span id="ResourceWaste.is_strict_optimal-137"><a href="#ResourceWaste.is_strict_optimal-137"><span class="linenos">137</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste.is_strict_optimal-138"><a href="#ResourceWaste.is_strict_optimal-138"><span class="linenos">138</span></a>        <span class="k">return</span> <span class="kc">False</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Returns whether the strict merger policy is optimal.</p>
-
-<p>The strict merger is optimal, if the other policies are not optimal.</p>
-
-<h6 id="returns">Returns</h6>
-
-<ul>
-<li><strong>True</strong>: If the strict merger policy is optimal.</li>
-</ul>
+            <div class="docstring"><p>In this model is a strict merger policy never optimal</p>
 </div>
 
 
@@ -659,26 +724,29 @@ dominated by a strict merger policy. Therefore, only the three remaining policie
 
     </div>
     <a class="headerlink" href="#ResourceWaste.is_intermediate_optimal"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_intermediate_optimal-116"><a href="#ResourceWaste.is_intermediate_optimal-116"><span class="linenos">116</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ResourceWaste.is_intermediate_optimal-117"><a href="#ResourceWaste.is_intermediate_optimal-117"><span class="linenos">117</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_intermediate_optimal-140"><a href="#ResourceWaste.is_intermediate_optimal-140"><span class="linenos">140</span></a>    <span class="k">def</span> <span class="nf">is_intermediate_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-141"><a href="#ResourceWaste.is_intermediate_optimal-141"><span class="linenos">141</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-142"><a href="#ResourceWaste.is_intermediate_optimal-142"><span class="linenos">142</span></a><span class="sd">        Returns whether the intermediate (WITHOUT late takeovers) merger policy is optimal.</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-143"><a href="#ResourceWaste.is_intermediate_optimal-143"><span class="linenos">143</span></a>
+</span><span id="ResourceWaste.is_intermediate_optimal-144"><a href="#ResourceWaste.is_intermediate_optimal-144"><span class="linenos">144</span></a><span class="sd">        The intermediate (WITHOUT late takeovers) merger is optimal, if a laissez-faire merger policy is not optimal.</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-145"><a href="#ResourceWaste.is_intermediate_optimal-145"><span class="linenos">145</span></a>
+</span><span id="ResourceWaste.is_intermediate_optimal-146"><a href="#ResourceWaste.is_intermediate_optimal-146"><span class="linenos">146</span></a><span class="sd">        Returns</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-147"><a href="#ResourceWaste.is_intermediate_optimal-147"><span class="linenos">147</span></a><span class="sd">        -------</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-148"><a href="#ResourceWaste.is_intermediate_optimal-148"><span class="linenos">148</span></a><span class="sd">        True</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-149"><a href="#ResourceWaste.is_intermediate_optimal-149"><span class="linenos">149</span></a><span class="sd">            If the intermediate (WITHOUT late takeovers) merger policy is optimal.</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-150"><a href="#ResourceWaste.is_intermediate_optimal-150"><span class="linenos">150</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste.is_intermediate_optimal-151"><a href="#ResourceWaste.is_intermediate_optimal-151"><span class="linenos">151</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">()</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Returns whether an intermediate merger policy (late takeover allowed) is optimal.</p>
+            <div class="docstring"><p>Returns whether the intermediate (WITHOUT late takeovers) merger policy is optimal.</p>
 
-<p>An intermediate merger policy (late takeovers allowed) is optimal, if:</p>
-
-<ol>
-<li>Incumbent is expected to shelve ($p(\pi^M_I-\pi^m_I) &lt; K$).</li>
-<li>Approving early takeovers followed by shelving is not optimal ($F(\bar{A}^T) &lt; \Lambda(\cdot)$).</li>
-<li>Detrimental effect of less intense product market competition is dominated by the benefit of making it more
-likely that the innovation is commercialised (Condition 6 not satisfied).</li>
-</ol>
+<p>The intermediate (WITHOUT late takeovers) merger is optimal, if a laissez-faire merger policy is not optimal.</p>
 
 <h6 id="returns">Returns</h6>
 
 <ul>
-<li><strong>True</strong>: If an intermediate merger policy (late takeover allowed) is optimal.</li>
+<li><strong>True</strong>: If the intermediate (WITHOUT late takeovers) merger policy is optimal.</li>
 </ul>
 </div>
 
@@ -695,12 +763,29 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 
     </div>
     <a class="headerlink" href="#ResourceWaste.is_laissez_faire_optimal"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_laissez_faire_optimal-123"><a href="#ResourceWaste.is_laissez_faire_optimal-123"><span class="linenos">123</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="ResourceWaste.is_laissez_faire_optimal-124"><a href="#ResourceWaste.is_laissez_faire_optimal-124"><span class="linenos">124</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
-</span><span id="ResourceWaste.is_laissez_faire_optimal-125"><a href="#ResourceWaste.is_laissez_faire_optimal-125"><span class="linenos">125</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
-</span><span id="ResourceWaste.is_laissez_faire_optimal-126"><a href="#ResourceWaste.is_laissez_faire_optimal-126"><span class="linenos">126</span></a>            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe_without_late_takeover</span><span class="p">()</span>
-</span><span id="ResourceWaste.is_laissez_faire_optimal-127"><a href="#ResourceWaste.is_laissez_faire_optimal-127"><span class="linenos">127</span></a>            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_competition_effect_dominating</span><span class="p">()</span>
-</span><span id="ResourceWaste.is_laissez_faire_optimal-128"><a href="#ResourceWaste.is_laissez_faire_optimal-128"><span class="linenos">128</span></a>        <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_laissez_faire_optimal-157"><a href="#ResourceWaste.is_laissez_faire_optimal-157"><span class="linenos">157</span></a>    <span class="k">def</span> <span class="nf">is_laissez_faire_optimal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-158"><a href="#ResourceWaste.is_laissez_faire_optimal-158"><span class="linenos">158</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-159"><a href="#ResourceWaste.is_laissez_faire_optimal-159"><span class="linenos">159</span></a><span class="sd">        Returns whether a laissez-faire policy is optimal.</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-160"><a href="#ResourceWaste.is_laissez_faire_optimal-160"><span class="linenos">160</span></a>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-161"><a href="#ResourceWaste.is_laissez_faire_optimal-161"><span class="linenos">161</span></a><span class="sd">        A laissez-faire policy (that authorises any takeover) is optimal, if:</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-162"><a href="#ResourceWaste.is_laissez_faire_optimal-162"><span class="linenos">162</span></a><span class="sd">        1. Financial imperfections are not severe ($F(\\bar{A}^T)&lt;\\Phi^T(\\cdot)$).</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-163"><a href="#ResourceWaste.is_laissez_faire_optimal-163"><span class="linenos">163</span></a>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-164"><a href="#ResourceWaste.is_laissez_faire_optimal-164"><span class="linenos">164</span></a><span class="sd">        Or as well if:</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-165"><a href="#ResourceWaste.is_laissez_faire_optimal-165"><span class="linenos">165</span></a><span class="sd">        1. Financial imperfections are always severe ($F(\\bar{A}^T)\\ge\\Phi^T(\\cdot)$ and</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-166"><a href="#ResourceWaste.is_laissez_faire_optimal-166"><span class="linenos">166</span></a><span class="sd">        $F(\\bar{A})\\ge\\Phi(\\cdot)$).</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-167"><a href="#ResourceWaste.is_laissez_faire_optimal-167"><span class="linenos">167</span></a><span class="sd">        2. Detrimental effect of less intense product market competition is dominated by the benefit of making it more</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-168"><a href="#ResourceWaste.is_laissez_faire_optimal-168"><span class="linenos">168</span></a><span class="sd">        likely that the innovation is commercialised (Condition 6 not satisfied).</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-169"><a href="#ResourceWaste.is_laissez_faire_optimal-169"><span class="linenos">169</span></a>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-170"><a href="#ResourceWaste.is_laissez_faire_optimal-170"><span class="linenos">170</span></a><span class="sd">        Returns</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-171"><a href="#ResourceWaste.is_laissez_faire_optimal-171"><span class="linenos">171</span></a><span class="sd">        -------</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-172"><a href="#ResourceWaste.is_laissez_faire_optimal-172"><span class="linenos">172</span></a><span class="sd">        True</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-173"><a href="#ResourceWaste.is_laissez_faire_optimal-173"><span class="linenos">173</span></a><span class="sd">            If a laissez-faire merger policy is optimal.</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-174"><a href="#ResourceWaste.is_laissez_faire_optimal-174"><span class="linenos">174</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-175"><a href="#ResourceWaste.is_laissez_faire_optimal-175"><span class="linenos">175</span></a>        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-176"><a href="#ResourceWaste.is_laissez_faire_optimal-176"><span class="linenos">176</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe</span><span class="p">()</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-177"><a href="#ResourceWaste.is_laissez_faire_optimal-177"><span class="linenos">177</span></a>            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_financial_imperfection_severe_without_late_takeover</span><span class="p">()</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-178"><a href="#ResourceWaste.is_laissez_faire_optimal-178"><span class="linenos">178</span></a>            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_competition_effect_dominating</span><span class="p">()</span>
+</span><span id="ResourceWaste.is_laissez_faire_optimal-179"><a href="#ResourceWaste.is_laissez_faire_optimal-179"><span class="linenos">179</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 
@@ -709,9 +794,14 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 <p>A laissez-faire policy (that authorises any takeover) is optimal, if:</p>
 
 <ol>
-<li>Incumbent is expected to shelve ($p(\pi^M_I-\pi^m_I) &lt; K$).</li>
-<li>Financial imperfections are severe ($F(\bar{A}^T)\ge\Phi^T(\cdot)$).</li>
-<li>Approving early takeovers followed by shelving is optimal ($F(\bar{A}^T)\ge\Lambda(\cdot)$).</li>
+<li>Financial imperfections are not severe ($F(\bar{A}^T)&lt;\Phi^T(\cdot)$).</li>
+</ol>
+
+<p>Or as well if:</p>
+
+<ol>
+<li>Financial imperfections are always severe ($F(\bar{A}^T)\ge\Phi^T(\cdot)$ and
+$F(\bar{A})\ge\Phi(\cdot)$).</li>
 <li>Detrimental effect of less intense product market competition is dominated by the benefit of making it more
 likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 </ol>
@@ -736,11 +826,11 @@ likely that the innovation is commercialised (Condition 6 not satisfied).</li>
 
     </div>
     <a class="headerlink" href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-130"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-130"><span class="linenos">130</span></a>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe_without_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-131"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-131"><span class="linenos">131</span></a>        <span class="k">return</span> <span class="p">(</span>
-</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-132"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-132"><span class="linenos">132</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
-</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-133"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-133"><span class="linenos">133</span></a>            <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
-</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-134"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-134"><span class="linenos">134</span></a>        <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-181"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-181"><span class="linenos">181</span></a>    <span class="k">def</span> <span class="nf">is_financial_imperfection_severe_without_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-182"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-182"><span class="linenos">182</span></a>        <span class="k">return</span> <span class="p">(</span>
+</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-183"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-183"><span class="linenos">183</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">asset_threshold_cdf</span>
+</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-184"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-184"><span class="linenos">184</span></a>            <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">asset_distribution_threshold_unprofitable_without_late_takeover</span>
+</span><span id="ResourceWaste.is_financial_imperfection_severe_without_late_takeover-185"><a href="#ResourceWaste.is_financial_imperfection_severe_without_late_takeover-185"><span class="linenos">185</span></a>        <span class="p">)</span>
 </span></pre></div>
 
 

@@ -2,7 +2,7 @@ import unittest
 from Fumagalli_Motta_Tarantino_2020.Notebooks.NotebookUtilities import *
 
 
-class TestUtilities(unittest.TestCase):
+class TestNotebookUtilities(unittest.TestCase):
     """
     Tests Fumagalli_Motta_Tarantino_2020.Notebooks.NotebookUtilities.
     """

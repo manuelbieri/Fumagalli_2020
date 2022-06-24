@@ -426,11 +426,11 @@ class TestEquityContract(Test.TestOptimalMergerPolicy):
 
     def test_debt_not_preferred(self):
         self.setupModel()
-        self.assertFalse(self.model.does_startup_strictly_prefer_debt())
+        self.assertFalse(self.model.does_startup_prefer_debt())
 
     def test_debt_preferred(self):
         self.setupModel(merger_policy=FMT20.MergerPolicies.Laissez_faire)
-        self.assertTrue(self.model.does_startup_strictly_prefer_debt())
+        self.assertTrue(self.model.does_startup_prefer_debt())
 
     def test_intermediate_optimal_merger_policy(self):
         self.setupModel(

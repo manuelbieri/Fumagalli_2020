@@ -3,6 +3,13 @@ import Fumagalli_Motta_Tarantino_2020.Models.Base as Base
 
 
 class ProCompetitive(Base.OptimalMergerPolicy):
+    """
+    Relaxes the assumption (A4), that the innovation of the start-up is always welfare beneficial. Instead, the
+    innovation is only welfare beneficial if the start-up develops and markets the innovation. In contrast, owned by the
+    incumbent, the innovation reduces the total welfare. This is implying a pure positive effect of the innovation on
+    competition.
+    """
+
     def __init__(self, consumer_surplus_without_innovation: float = 0.3, **kwargs):
         super(ProCompetitive, self).__init__(
             consumer_surplus_without_innovation=consumer_surplus_without_innovation,
@@ -71,16 +78,30 @@ class ProCompetitive(Base.OptimalMergerPolicy):
                     )
 
     def is_strict_optimal(self) -> bool:
+        """
+        In this model a strict merger policy is always optimal.
+        """
         return True
 
     def is_intermediate_optimal(self) -> bool:
+        """
+        In this model an intermediate merger policy is never optimal.
+        """
         return False
 
     def is_laissez_faire_optimal(self) -> bool:
+        """
+        In this model a laissez-faire merger policy is never optimal.
+        """
         return False
 
 
 class ResourceWaste(ProCompetitive):
+    """
+    In this model is assumed, that the innovation is never welfare beneficial, therefore a development is always a waste
+    of resources regarding total welfare.
+    """
+
     def __init__(self, consumer_surplus_duopoly=0.41, **kwargs):
         super(ResourceWaste, self).__init__(
             consumer_surplus_duopoly=consumer_surplus_duopoly, **kwargs
@@ -110,9 +131,22 @@ class ResourceWaste(ProCompetitive):
             )
 
     def is_strict_optimal(self) -> bool:
+        """
+        In this model is a strict merger policy never optimal
+        """
         return False
 
     def is_intermediate_optimal(self) -> bool:
+        """
+        Returns whether the intermediate (WITHOUT late takeovers) merger policy is optimal.
+
+        The intermediate (WITHOUT late takeovers) merger is optimal, if a laissez-faire merger policy is not optimal.
+
+        Returns
+        -------
+        True
+            If the intermediate (WITHOUT late takeovers) merger policy is optimal.
+        """
         return not self.is_laissez_faire_optimal()
 
     @staticmethod
@@ -120,6 +154,23 @@ class ResourceWaste(ProCompetitive):
         return Types.MergerPolicies.Intermediate_late_takeover_prohibited
 
     def is_laissez_faire_optimal(self) -> bool:
+        """
+        Returns whether a laissez-faire policy is optimal.
+
+        A laissez-faire policy (that authorises any takeover) is optimal, if:
+        1. Financial imperfections are not severe ($F(\\bar{A}^T)<\\Phi^T(\\cdot)$).
+
+        Or as well if:
+        1. Financial imperfections are always severe ($F(\\bar{A}^T)\\ge\\Phi^T(\\cdot)$ and
+        $F(\\bar{A})\\ge\\Phi(\\cdot)$).
+        2. Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+        likely that the innovation is commercialised (Condition 6 not satisfied).
+
+        Returns
+        -------
+        True
+            If a laissez-faire merger policy is optimal.
+        """
         return not self.is_financial_imperfection_severe() or (
             self.is_financial_imperfection_severe()
             and self.is_financial_imperfection_severe_without_late_takeover()

@@ -4,13 +4,31 @@ import Fumagalli_Motta_Tarantino_2020.Models.Base as Base
 
 
 class CournotCompetition(Base.OptimalMergerPolicy):
+    """
+    In this model is assumed that the product of the start-up is an imperfect substitute of the existing product of the
+    incumbent. The competition in the market is like a Cournot Competition.
+
+    See section 7 of Fumagalli et al. (2020).
+    """
+
     def __init__(self, gamma=0.3, *args, **kwargs):
+        """
+
+        Parameters
+        ----------
+        gamma:float
+            Degree of substitutability of the product of the start-up and the existing product of the incumbent
+            (between 0 and 1).
+        """
         assert 0 < gamma < 1, "Gamma has to be between 0 and 1."
         self._gamma = gamma
         super(CournotCompetition, self).__init__(*args, **kwargs)
         assert (
             self.development_costs < self.success_probability / 4
         ), "K >= p/4 is not valid"
+        self._calculate_cournot_payoffs()
+
+    def _calculate_cournot_payoffs(self):
         self._incumbent_profit_without_innovation = 0.25
         self._cs_without_innovation = 0.125
         self._incumbent_profit_with_innovation = 1 / (2 + 2 * self.gamma)
@@ -46,21 +64,11 @@ class CournotCompetition(Base.OptimalMergerPolicy):
             < self.development_costs
         ), "A5 adjusted for the micro foundation model."
 
-    def incumbent_expected_additional_profit_from_innovation(self) -> float:
-        return (self.success_probability - 4 * self.development_costs) / (
-            self.success_probability + 4 * self.development_costs
-        ) - self.gamma
-
-    @property
-    def asset_threshold(self) -> float:
-        return (
-            self.private_benefit
-            + self.development_costs
-            - (self.success_probability / ((2 + self.gamma) ** 2))
-        )
-
     @property
     def gamma(self) -> float:
+        """
+        Degree of substitutability of the product of the start-up and the existing product of the incumbent.
+        """
         return self._gamma
 
     @property
@@ -74,19 +82,45 @@ class CournotCompetition(Base.OptimalMergerPolicy):
         )
 
     def is_laissez_faire_optimal(self) -> bool:
+        """
+        In this model a laissez-faire merger policy is never optimal.
+        """
         return False
 
     def is_intermediate_optimal(self) -> bool:
+        """
+        Returns whether an intermediate merger policy (late takeover allowed) is optimal.
+
+        An intermediate merger policy (late takeovers allowed) is optimal, if:
+        1. The investment is sufficiently large.
+        2. The degree of substitutability is moderate.
+        3. Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+        likely that the innovation is commercialised (Condition 6 not satisfied).
+
+        Returns
+        -------
+        True
+            If an intermediate merger policy (late takeover allowed) is optimal.
+        """
         return (
-            self.is_investment_cost_sufficiently_high()
-            and self.is_degree_substitutability_moderate()
-            and self.is_financial_imperfection_severe()
+            self.is_intermediate_policy_feasible()
+            and not self.is_competition_effect_dominating()
         )
 
     def is_strict_optimal(self) -> bool:
         return not self.is_intermediate_optimal()
 
-    def is_investment_cost_sufficiently_high(self) -> bool:
+    def is_intermediate_policy_feasible(self) -> bool:
+        """
+        Returns whether an intermediate (with late takeovers) merger policy is feasible.
+
+        This implies, that the investment costs are sufficiently high and the degree of substitutability is moderate.
+
+        Returns
+        -------
+        True
+            If an intermediate policy is feasible.
+        """
         return (
             (
                 -5 * (self.success_probability**3)
@@ -107,19 +141,15 @@ class CournotCompetition(Base.OptimalMergerPolicy):
             )
         ) > 0
 
-    def is_degree_substitutability_moderate(self) -> bool:
-        return 0 < self.success_probability * (
-            self.w_with_innovation - self.w_without_innovation
-        ) - self.development_costs - (self.w_duopoly - self.w_with_innovation)
-
 
 class PerfectInformation(Base.OptimalMergerPolicy):
-    def __init__(
-        self,
-        merger_policy: Types.MergerPolicies = Types.MergerPolicies.Strict,
-        **kwargs
-    ):
-        super(PerfectInformation, self).__init__(merger_policy=merger_policy, **kwargs)
+    """
+    Assume the incumbent knows the realisation of the start-up’s resources when it bids at t = 1(a) and the AA also
+    knows it when it reviews the merger proposal. We maintain the assumption that, when it establishes the standard for
+    merger policy at t = 0, the AA only knows the distribution of A
+
+    See section 8.5 of Fumagalli et al. (2020).
+    """
 
     def _check_merger_policy(self):
         super(PerfectInformation, self)._check_merger_policy()
@@ -174,13 +204,35 @@ class PerfectInformation(Base.OptimalMergerPolicy):
                 self._set_takeovers(early_takeover=Types.Takeover.Pooling)
 
     def is_laissez_faire_optimal(self) -> bool:
+        """
+        In this model a laissez-faire merger policy is never optimal.
+        """
         return False
 
     def is_intermediate_optimal(self) -> bool:
+        """
+        Returns whether an intermediate merger policy (late takeover allowed) is optimal.
+
+        An intermediate merger policy (late takeovers allowed) is optimal, if:
+        1. Incumbent is expected to shelve ($p(\\pi^M_I-\\pi^m_I) < K$).
+        2. The intermediate policy is feasible.
+        3. Detrimental effect of less intense product market competition is dominated by the benefit of making it more
+        likely that the innovation is commercialised (Condition 6 not satisfied).
+
+        Returns
+        -------
+        True
+            If an intermediate merger policy (late takeover allowed) is optimal.
+        """
         return (
             self.is_incumbent_expected_to_shelve()
             and not self.is_competition_effect_dominating()
-            and self.success_probability
+            and self.is_intermediate_policy_feasible()
+        )
+
+    def is_intermediate_policy_feasible(self) -> bool:
+        return (
+            self.success_probability
             * (self.w_with_innovation - self.w_without_innovation)
             - self.development_costs
             >= self.w_duopoly - self.w_with_innovation
@@ -188,11 +240,31 @@ class PerfectInformation(Base.OptimalMergerPolicy):
 
 
 class EquityContract(Base.OptimalMergerPolicy):
+    """
+    Aan equity contract gives rise to different results in the financial contracting game. With equity, when the
+    incumbent acquires the start-up in $t = 2$, it pays the investors and the entrepreneur. Going backwards, the
+    investors do not expect an increase in the pledgeable income, and there is no relaxation of financial constraints,
+    as much as under the strict merger policy. It follows that under the laissez-faire or the intermediate policy the
+    start-up will prefer debt to equity.
+
+    See section 8.4 of Fumagalli et al. (2020).
+    """
+
     @property
     def asset_threshold_late_takeover(self) -> float:
         return self.asset_threshold
 
-    def does_startup_strictly_prefer_debt(self) -> bool:
+    def does_startup_prefer_debt(self) -> bool:
+        """
+        Returns whether the start-up prefers debt or equity.
+
+        The start-up prefers debt to equity, if late takeovers are allowed.
+
+        Returns
+        -------
+        True
+            If the start-up prefers debt to equity.
+        """
         if self.merger_policy in [
             Types.MergerPolicies.Intermediate_late_takeover_allowed,
             Types.MergerPolicies.Laissez_faire,
@@ -201,7 +273,13 @@ class EquityContract(Base.OptimalMergerPolicy):
         return False
 
     def is_intermediate_optimal(self) -> bool:
+        """
+        In this model an intermediate merger policy is never optimal.
+        """
         return False
 
     def is_laissez_faire_optimal(self) -> bool:
+        """
+        In this model a laissez-faire merger policy is never optimal.
+        """
         return False
