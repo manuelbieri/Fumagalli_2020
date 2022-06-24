@@ -92,7 +92,13 @@ class TestCournotCompetition(Test.TestOptimalMergerPolicy):
         )
 
     def test_intermediate_optimal_merger_policy(self):
-        self.setupModel(gamma=0.2)
+        self.setupModel(
+            development_costs=0.12,
+            startup_assets=0.09,
+            success_probability=0.87,
+            private_benefit=0.09,
+            gamma=0.12,
+        )
         self.assertEqual(
             FMT20.MergerPolicies.Intermediate_late_takeover_allowed,
             self.model.get_optimal_merger_policy(),
