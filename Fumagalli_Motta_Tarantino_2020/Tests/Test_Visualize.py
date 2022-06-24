@@ -1,7 +1,7 @@
 from typing import Callable
 import unittest
 
-import Fumagalli_Motta_Tarantino_2020.Tests.MockModels as MockModels
+import Fumagalli_Motta_Tarantino_2020.Tests.Mock as Mock
 import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
@@ -27,9 +27,7 @@ class CoreVisualizationTest(unittest.TestCase):
         **kwargs
             Arguments for the mock (See Fumagalli_Motta_Tarantino_2020.Tests.MockModels).
         """
-        self.mock: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
-            **kwargs
-        )
+        self.mock: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy(**kwargs)
 
     def setUpVisualizerCall(
         self,
@@ -103,8 +101,8 @@ class TestVisualize(CoreVisualizationTest):
         self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
 
     def test_timeline_set_model(self):
-        mock1: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
-        mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
+        mock1: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy()
+        mock2: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy(
             policy=FMT20.MergerPolicies.Laissez_faire
         )
         self.setUpVisualizerCall(lambda: FMT20.Timeline(mock1), show_plot_now=True)
@@ -185,7 +183,7 @@ class TestVisualizeRanges(CoreVisualizationTest):
 
     def test_asset_range_set_model(self):
         self.setUpMock()
-        mock2: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy()
+        mock2: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy()
         mock2.development_costs = 0.3
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
         self.assertEqual(7, len(self.visualizer._thresholds))

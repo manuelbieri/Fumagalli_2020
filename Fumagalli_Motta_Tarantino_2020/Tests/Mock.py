@@ -1,6 +1,8 @@
 import unittest.mock as mock
+from mockito import when
 
 import Fumagalli_Motta_Tarantino_2020.Models as Models
+import Fumagalli_Motta_Tarantino_2020.Configurations as Configurations
 
 
 def mock_optimal_merger_policy(
@@ -133,3 +135,39 @@ def mock_optimal_merger_policy(
     )
     model.summary = lambda: summary(merger_policy=model.merger_policy)
     return model
+
+
+def mock_parameter_model_generator(
+    strict_optimal=False,
+    intermediate_optimal=False,
+    laissez_faire_optimal=False,
+    killer_acquisition=False,
+    invalid_parameter_model=False,
+    callable_condition=False,
+    **kwargs
+) -> Configurations.ParameterModelGenerator:
+    """
+    Creates a mock model of Fumagalli_Motta_Tarantino_2020.Configurations.FindConfig.ParameterModelGenerator.
+    """
+    generator: Configurations.ParameterModelGenerator = mock.Mock(
+        spec=Configurations.ParameterModelGenerator
+    )
+    config10 = Configurations.LoadParameters(10)
+    config11 = Configurations.LoadParameters(11)
+    config15 = Configurations.LoadParameters(15)
+    config16 = Configurations.LoadParameters(16)
+    if strict_optimal:
+        when(generator).get_parameter_model().thenReturn(config15).thenReturn(config10)
+    elif intermediate_optimal:
+        when(generator).get_parameter_model().thenReturn(config10).thenReturn(config15)
+    elif laissez_faire_optimal or callable_condition:
+        when(generator).get_parameter_model().thenReturn(config10).thenReturn(config16)
+    elif killer_acquisition:
+        config10.set_merger_policy(Models.MergerPolicies.Laissez_faire)
+        when(generator).get_parameter_model(
+            merger_policy=Models.MergerPolicies.Laissez_faire
+        ).thenReturn(config11).thenReturn(config10)
+    elif invalid_parameter_model:
+        config16.adjust_parameters(development_costs=10)
+        when(generator).get_parameter_model().thenReturn(config16).thenReturn(config15)
+    return generator
