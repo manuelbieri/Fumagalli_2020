@@ -4,6 +4,10 @@ import Fumagalli_Motta_Tarantino_2020.Models.Types as Types
 
 
 class TestThresholdItem(unittest.TestCase):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Models.Types.ThresholdItem.
+    """
+
     def test_comparison_true_unequal(self):
         a = Types.ThresholdItem("a", 1)
         b = Types.ThresholdItem("b", 2)

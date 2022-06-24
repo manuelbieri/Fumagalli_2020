@@ -3,6 +3,10 @@ from Fumagalli_Motta_Tarantino_2020.Notebooks.NotebookUtilities import *
 
 
 class TestUtilities(unittest.TestCase):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Notebooks.NotebookUtilities.
+    """
+
     def test_get_model_by_id_optimal_merger_policy(self):
         m = get_model_by_id(3)
         self.assertEqual(FMT20.OptimalMergerPolicy, type(m))

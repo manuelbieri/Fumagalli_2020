@@ -3,6 +3,12 @@ import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class TestNormalDistributionFunction(unittest.TestCase):
+    """
+    Tests the available distributions for the models.
+
+    See Fumagalli_Motta_Tarantino_2020.Models.Distributions
+    """
+
     def test_cumulative_function(self):
         self.assertEqual(0.5, FMT20.Distributions.NormalDistribution.cumulative(0))
 

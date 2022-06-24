@@ -3,6 +3,12 @@ import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class TestLoadParameters(unittest.TestCase):
+    """
+    Tests the loading of preset configurations.
+
+    See: Fumagalli_Motta_Tarantino_2020.Configurations
+    """
+
     def setUpModel(self, config_id: int):
         self.config = FMT20.LoadParameters(config_id)
         self.model = FMT20.OptimalMergerPolicy(**self.config())

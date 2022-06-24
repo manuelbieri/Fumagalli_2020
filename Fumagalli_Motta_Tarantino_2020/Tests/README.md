@@ -1,6 +1,9 @@
 # Explanations about the Unittests
+[![CI](https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/CodeCov.yml/badge.svg)](https://github.com/manuelbieri/Fumagalli_2020/actions/workflows/CodeCov.yml)
+[![codecov](https://codecov.io/gh/manuelbieri/Fumagalli_2020/branch/master/graph/badge.svg?token=RRZ3PJI9U1)](https://codecov.io/gh/manuelbieri/Fumagalli_2020)
 
-In this file the different Test cases used, are explained. Tests written in bold letters are not yet implemented, but needed for full coverage.
+This file provides an overview of the available testcases. Check out the codecov.io report for the details about the coverage (click on the badge above).
+
 
 ## Glossary about the naming of tests
 

@@ -121,6 +121,7 @@ class ThresholdItem:
     name: str
     value: float
     include: bool = False
+    """Marks this ThresholdItem with high priority."""
 
     def __eq__(self, other):
         return self.value == other.value
@@ -132,7 +133,7 @@ class ThresholdItem:
 @dataclass(frozen=True)
 class Summary:
     """
-    Summary of Fumagalli_Motta_Tarantino_2020.Models.MergerPolicy.
+    Summary of Fumagalli_Motta_Tarantino_2020.Models.Base.MergerPolicy.
     """
 
     set_policy: MergerPolicies
@@ -148,7 +149,7 @@ class Summary:
 @dataclass(frozen=True)
 class OptimalMergerPolicySummary(Summary):
     """
-    Summary of Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy.
+    Summary of Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy.
     """
 
     optimal_policy: MergerPolicies

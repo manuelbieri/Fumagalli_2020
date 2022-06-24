@@ -6,7 +6,12 @@ import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 class CoreVisualizationTest(unittest.TestCase):
+    """
+    Provides useful methods for the use in tests.
+    """
+
     show_all: bool = False
+    """If true, all plots in the tests are shown."""
 
     def setUp(self) -> None:
         self.show_plot = None
@@ -14,6 +19,14 @@ class CoreVisualizationTest(unittest.TestCase):
         self.visualizer = None
 
     def setUpMock(self, **kwargs) -> None:
+        """
+        Sets up a mock for Fumagalli_Motta_Tarantino_2020.Models.Base.OptimalMergerPolicy.
+
+        Parameters
+        ----------
+        **kwargs
+            Arguments for the mock (See Fumagalli_Motta_Tarantino_2020.Tests.MockModels).
+        """
         self.mock: FMT20.OptimalMergerPolicy = MockModels.mock_optimal_merger_policy(
             **kwargs
         )
@@ -26,6 +39,22 @@ class CoreVisualizationTest(unittest.TestCase):
         show_plot_now: bool = False,
         **kwargs
     ) -> None:
+        """
+        Sets up the call for the specified visualizer.
+
+        Parameters
+        ----------
+        plot_type
+            Type of the visualizer (conforms to Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize)
+        show_plot: bool
+            If true, the plots is shown.
+        never_show_plot: bool
+            If true, the plot is never shown.
+        show_plot_now: bool
+            If true, the plots is immediately shown.
+        **kwargs
+            Arguments for Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize.plot
+        """
         self.visualizer: FMT20.IVisualize = plot_type()
         self.show_plot = show_plot
         self.never_show_plot = never_show_plot
@@ -34,10 +63,16 @@ class CoreVisualizationTest(unittest.TestCase):
             self.show_figure()
 
     def tearDown(self) -> None:
+        """
+        If specified before, the plot is shown created in the test is shown at the end.
+        """
         if self.visualizer is not None and self.show_plot is not None:
             self.show_figure()
 
     def show_figure(self) -> None:
+        """
+        Decides to show the plot based on the arguments of the visualizer call.
+        """
         if (
             self.show_plot or CoreVisualizationTest.show_all
         ) and not self.never_show_plot:
@@ -51,6 +86,10 @@ class CoreVisualizationTest(unittest.TestCase):
 
 
 class TestVisualize(CoreVisualizationTest):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline and Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs.
+    """
+
     def test_timeline_plot(self):
         self.setUpMock(policy=FMT20.MergerPolicies.Laissez_faire)
         self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
@@ -96,6 +135,11 @@ class TestVisualize(CoreVisualizationTest):
 
 
 class TestVisualizeRanges(CoreVisualizationTest):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.AssetRange, Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange and
+    Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.Overview.
+    """
+
     def test_essential_asset_thresholds(self):
         self.setUpMock(asset_threshold=2, asset_threshold_late_takeover=1)
         self.visualizer: FMT20.AssetRange = FMT20.AssetRange(self.mock)
