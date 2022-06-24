@@ -321,8 +321,8 @@ class IVisualize:
             f"{FMT20.Takeover.Pooling.abbreviation()}|{FMT20.Takeover.Separating.abbreviation()}$(\\times)$: Takeover is blocked  by AA or not accepted by the startup\n"
             "${\\bf Development\\thickspace outcome}$:\n"
             f"$\\emptyset$: Product development was shelved\n"
-            f"$D(\\checkmark)$: Product development was attempted and successful\n"
-            f"$D(\\times)$: Product development was attempted and not successful\n"
+            f"$\\checkmark$: Product development was attempted and successful\n"
+            f"$\\times$: Product development was attempted and not successful\n"
         )
 
     @staticmethod
@@ -338,7 +338,7 @@ class IVisualize:
         return (
             f"{payoff_str}"
             "$m$: Monopoly without the innovation\n"
-            "$M$: Monopoly after successful development by the incumbent\n"
+            "$M$: Monopoly (innovation in possession of incumbent)\n"
             "$d$: Duopoly (requires successful development by the start-up)\n"
         )
 
@@ -374,13 +374,13 @@ class IVisualize:
     ) -> str:
         return (
             f"$F(0) = {self._round_floats(self._get_asset_distribution_value(0))}${separator}"
-            f"$F(K) = {self._round_floats(self._get_asset_distribution_value(self.model.development_costs))}${newline}"
+            f"$F(K) = {self._round_floats(self._get_asset_distribution_value(self.model.development_costs))}${separator}"
             f"$F(\\bar{{A}}) = {self._round_floats(self.model.asset_threshold_cdf)}${separator}"
-            f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${separator}"
+            f"$F(\\bar{{A}}^T) = {self._round_floats(self.model.asset_threshold_late_takeover_cdf)}${newline}"
             f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_welfare)}${separator}"
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
-            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$\n"
+            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$"
             f"$\Lambda(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_shelving_approved)}$\n"
         )
 
