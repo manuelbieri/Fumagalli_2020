@@ -398,32 +398,32 @@ class IVisualize:
     def _round_floats(value: float, digits=3) -> str:
         return f"{value:.{digits}f}"
 
-    def _get_model_characteristics_ax(self, ax: plt.Axes) -> None:
+    def _get_model_characteristics_ax(self, ax: plt.Axes, **kwargs) -> None:
         ax.set_title("Model Characteristics")
         ax.axis("off")
-        self._annotate_model_characteristics(ax)
-        self._annotate_payoff_legend(ax)
-        self._annotate_symbol_legend(ax)
+        self._annotate_model_characteristics(ax, **kwargs)
+        self._annotate_payoff_legend(ax, **kwargs)
+        self._annotate_symbol_legend(ax, **kwargs)
 
-    def _annotate_symbol_legend(self, ax: plt.Axes) -> None:
+    def _annotate_symbol_legend(self, ax: plt.Axes, **kwargs) -> None:
         ax.annotate(
             self._get_symbol_legend(),
             xy=(0.5, 0.57),
             horizontalalignment="center",
             verticalalignment="top",
-            fontsize=IVisualize.fontsize,
+            fontsize=kwargs.get("fontsize", IVisualize.fontsize),
         )
 
-    def _annotate_payoff_legend(self, ax: plt.Axes) -> None:
+    def _annotate_payoff_legend(self, ax: plt.Axes, **kwargs) -> None:
         ax.annotate(
             self._get_payoff_legend(market_situations_only=True),
             xy=(0.5, 0.7),
             horizontalalignment="center",
             verticalalignment="top",
-            fontsize=IVisualize.fontsize,
+            fontsize=kwargs.get("fontsize", IVisualize.fontsize),
         )
 
-    def _annotate_model_characteristics(self, ax: plt.Axes) -> None:
+    def _annotate_model_characteristics(self, ax: plt.Axes, **kwargs) -> None:
         ax.annotate(
             self._get_model_characteristics_latex(),
             xy=(0.5, 1),
@@ -431,7 +431,7 @@ class IVisualize:
             textcoords="offset points",
             horizontalalignment="center",
             verticalalignment="top",
-            fontsize=IVisualize.fontsize,
+            fontsize=kwargs.get("fontsize", IVisualize.fontsize),
         )
 
 

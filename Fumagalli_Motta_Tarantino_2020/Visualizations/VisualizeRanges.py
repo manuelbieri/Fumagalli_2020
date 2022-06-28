@@ -402,6 +402,14 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
 class Overview(Visualize.IVisualize):
     def __init__(self, model: Models.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
         super().__init__(model, figsize=figsize, constrained_layout=True, **kwargs)
+        self._clear_main_axes()
+
+    def set_model(self, model: Models.OptimalMergerPolicy) -> None:
+        super(Overview, self).set_model(model)
+        self._clear_main_axes()
+
+    @staticmethod
+    def _clear_main_axes() -> None:
         plt.axis("off")
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
@@ -413,6 +421,7 @@ class Overview(Visualize.IVisualize):
             spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
         )
         self._generate_characteristics_ax(spec[0, 0])
+        return self.fig, self.ax
 
     def _get_merger_policy_asset_range_type(self) -> Callable:
         return (
@@ -425,7 +434,7 @@ class Overview(Visualize.IVisualize):
         self, coordinates: matplotlib.gridspec.GridSpec
     ) -> None:
         ax = self.fig.add_subplot(coordinates)
-        self._get_model_characteristics_ax(ax)
+        self._get_model_characteristics_ax(ax, fontsize=5)
 
     def _generate_ax(
         self, coordinates: matplotlib.gridspec.GridSpec, visualizer: Callable, **kwargs
