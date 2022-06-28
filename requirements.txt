@@ -10,7 +10,7 @@ black==22.6.0
 jupyter-black~=0.3.1
 
 # necessary for the jupyter notebook
-ipython~=8.4.0
+ipython>=7.31.0
 jupyter~=1.0.0
 ## necessary for interactive plots in jupyter notebooks
 ipywidgets==7.7.1
