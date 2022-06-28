@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Optional
 import matplotlib.gridspec
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
@@ -402,22 +402,36 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
 class Overview(Visualize.IVisualize):
     def __init__(self, model: Models.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
         super().__init__(model, figsize=figsize, constrained_layout=True, **kwargs)
+        self.timeline: Optional[Visualize.IVisualize] = None
+        self.payoffs: Optional[Visualize.IVisualize] = None
+        self.range: Optional[Visualize.IVisualize] = None
         self._clear_main_axes()
 
     def set_model(self, model: Models.OptimalMergerPolicy) -> None:
+        assert (
+            self.timeline is not None
+            and self.payoffs is not None
+            and self.range is not None
+        )
         super(Overview, self).set_model(model)
-        self._clear_main_axes()
+        self.timeline.set_model(model)
+        self.payoffs.set_model(model)
+        self.range.set_model(model)
+        self.fig.clear()
 
-    @staticmethod
-    def _clear_main_axes() -> None:
+    def _clear_main_axes(self) -> None:
         plt.axis("off")
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
         spec = self.fig.add_gridspec(ncols=2, nrows=2)
         self.fig.suptitle("${\\bf Model\\thickspace Overview}$")
-        self._generate_ax(spec[1, 0], Visualize.Timeline, **kwargs)
-        self._generate_ax(spec[0, 1], Visualize.Payoffs, **kwargs)
-        self._generate_ax(
+        self.timeline = self._generate_visualizer(
+            spec[1, 0], Visualize.Timeline, **kwargs
+        )
+        self.payoffs = self._generate_visualizer(
+            spec[0, 1], Visualize.Payoffs, **kwargs
+        )
+        self.range = self._generate_visualizer(
             spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
         )
         self._generate_characteristics_ax(spec[0, 0])
@@ -436,8 +450,10 @@ class Overview(Visualize.IVisualize):
         ax = self.fig.add_subplot(coordinates)
         self._get_model_characteristics_ax(ax, fontsize=5)
 
-    def _generate_ax(
+    def _generate_visualizer(
         self, coordinates: matplotlib.gridspec.GridSpec, visualizer: Callable, **kwargs
-    ) -> None:
+    ) -> Visualize.IVisualize:
         ax = self.fig.add_subplot(coordinates)
-        visualizer(self.model, ax=ax).plot(legend=False, parameters=False, **kwargs)
+        visualization: Visualize.IVisualize = visualizer(self.model, ax=ax)
+        visualization.plot(legend=False, parameters=False, **kwargs)
+        return visualization

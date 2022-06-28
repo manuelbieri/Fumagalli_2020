@@ -34,7 +34,7 @@ class CoreVisualizationTest(unittest.TestCase):
         plot_type: Callable,
         show_plot: bool = False,
         never_show_plot: bool = False,
-        show_plot_now: bool = False,
+        show_now: bool = False,
         **kwargs
     ) -> None:
         """
@@ -48,7 +48,7 @@ class CoreVisualizationTest(unittest.TestCase):
             If true, the plots is shown.
         never_show_plot: bool
             If true, the plot is never shown.
-        show_plot_now: bool
+        show_now: bool
             If true, the plots is immediately shown.
         **kwargs
             Arguments for Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize.plot
@@ -57,7 +57,10 @@ class CoreVisualizationTest(unittest.TestCase):
         self.show_plot = show_plot
         self.never_show_plot = never_show_plot
         self.kwargs = kwargs
-        if show_plot_now:
+        self._show_plot_now(show_now)
+
+    def _show_plot_now(self, show_now):
+        if show_now:
             self.show_figure()
 
     def tearDown(self) -> None:
@@ -72,8 +75,8 @@ class CoreVisualizationTest(unittest.TestCase):
         Decides to show the plot based on the arguments of the visualizer call.
         """
         if (
-            self.show_plot or CoreVisualizationTest.show_all
-        ) and not self.never_show_plot:
+            self.show_plot and not self.never_show_plot
+        ) or CoreVisualizationTest.show_all:
             self.visualizer.show(**self.kwargs)
         else:
             self.visualizer.plot(**self.kwargs)
@@ -85,7 +88,8 @@ class CoreVisualizationTest(unittest.TestCase):
 
 class TestVisualize(CoreVisualizationTest):
     """
-    Tests Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline and Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs.
+    Tests Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline and
+    Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs.
     """
 
     def test_timeline_plot(self):
@@ -105,7 +109,7 @@ class TestVisualize(CoreVisualizationTest):
         mock2: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy(
             policy=FMT20.MergerPolicies.Laissez_faire
         )
-        self.setUpVisualizerCall(lambda: FMT20.Timeline(mock1), show_plot_now=True)
+        self.setUpVisualizerCall(lambda: FMT20.Timeline(mock1), show_now=True)
         self.visualizer.set_model(mock2)
 
     def test_payoff_plot(self):
@@ -131,10 +135,16 @@ class TestVisualize(CoreVisualizationTest):
         model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=51)())
         self.setUpVisualizerCall(lambda: FMT20.Overview(model))
 
+    def test_set_model_overview(self):
+        model = FMT20.PerfectInformation(**FMT20.LoadParameters(config_id=51)())
+        self.setUpVisualizerCall(lambda: FMT20.Overview(model), show_now=True)
+        self.visualizer.set_model(FMT20.OptimalMergerPolicy())
+
 
 class TestVisualizeRanges(CoreVisualizationTest):
     """
-    Tests Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.AssetRange, Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange and
+    Tests Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.AssetRange,
+    Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange and
     Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.Overview.
     """
 
