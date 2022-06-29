@@ -37,7 +37,15 @@ setup(
         "scipy>=1.8.1",
         "matplotlib>=3.5.2",
         "numpy>=1.22.4",
+        "ipython>=7.31.0",
+        "jupyter~=1.0.0"
     ],  # change with new version
+    extras_require={
+        'docs': 'pdoc~=12.0.2',
+        'style': 'SciencePlots>=1.0.9',
+        'black': ['black>=22.6.0', 'jupyter-black>=0.3.1'],
+        'interactive': 'ipywidgets>=7.7.1'
+    },
     package_data={
         "Fumagalli_Motta_Tarantino_2020.Configurations": ["params.csv"],
         "Fumagalli_Motta_Tarantino_2020.Notebooks": ["*.ipynb"],
