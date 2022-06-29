@@ -16,7 +16,7 @@ class IVisualize:
     Notes
     -----
     This module is compatible with python versions starting from 3.9, due to introduction of PEP 585. Therefore, the compatibility
-    with mybinder.org is not guaranteed (uses at the moment python 3.7).
+    with mybinder.org is not guaranteed (uses python 3.7 at the moment ).
     """
 
     colors: list[str] = [
@@ -34,7 +34,7 @@ class IVisualize:
     ]
     """Standard colors used in visualizations."""
     fontsize = "x-small"
-    """Default font size"""
+    """Default font size for all plots."""
 
     def __init__(
         self,
@@ -99,11 +99,11 @@ class IVisualize:
 
         model_one = FMT20.OptimalMergerPolicy()
         model_two = FMT20.OptimalMergerPolicy(development_success=False)
-        visualizer = FMT20.MergerPoliciesAssetRange(model_one)
+        visualizer = FMT20.Overview(model_one)
         visualizer.show()
         # set the new model
         visualizer.set_model(model_two)
-        # replot (overwrites the previous plot)
+        # overwrite the previous plot
         visualizer.show()
         ```
 
@@ -143,17 +143,19 @@ class IVisualize:
         Example
         -------
         ```
-        model = Models.OptimalMergerPolicy()
-        visualizer = MergerPoliciesAssetRange(m)
+        import Fumagalli_Motta_Tarantino_2020 as FMT20
+
+        model = FMT20.OptimalMergerPolicy()
+        visualizer = FMT20.MergerPoliciesAssetRange(m)
         fig, ax = visualizer.plot()
-        # use the figure and axes as you wish, but for example:
+        # use the figure and axes as you wish, for example:
         fig.show()
         ```
 
         Parameters
         ----------
-        kwargs
-            Options for the plots for further customization.
+        **kwargs
+            Options for further customization of the plots .
 
         Returns
         -------
@@ -178,7 +180,7 @@ class IVisualize:
 
         Parameters
         ----------
-        kwargs
+        **kwargs
             Same options as Fumagalli_Motta_Tarantino_2020.Visualize.IVisualize.plot.
         """
         self.plot(**kwargs)
@@ -380,7 +382,7 @@ class IVisualize:
             f"$\\Gamma(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_welfare)}${separator}"
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
-            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}$"
+            f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}${separator}"
             f"$\Lambda(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_shelving_approved)}$\n"
         )
 
@@ -436,6 +438,7 @@ class IVisualize:
 
 
 class Timeline(IVisualize):
+    # TODO: Adjust takeover labels -> smart labels for no takeover or early takeover
     """
     Visualizes the timeline of events for a specific model.
     """
@@ -572,6 +575,33 @@ class Timeline(IVisualize):
         return "Development was\nnot attempted."
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        """
+        Plots the visual representation for the object.
+
+        Example
+        -------
+        ```
+        import Fumagalli_Motta_Tarantino_2020 as FMT20
+
+        model = FMT20.OptimalMergerPolicy()
+        visualizer = FMT20.Timeline(m)
+        fig, ax = visualizer.plot()
+        # use the figure and axes as you wish, for example:
+        fig.show()
+        ```
+
+        Parameters
+        ----------
+        **kwargs
+            Options for further customization of the plots .
+
+        Returns
+        -------
+        Figure
+            Containing the axes with the plots (use Figure.show() to display).
+        Axes
+            Containing the plots (arrange custom summary).
+        """
         self.ax.set(title=kwargs.get("title", "Timeline"))
         self._set_parameter_legend(kwargs.get("parameters", True))
         self._draw_timeline(kwargs)
@@ -641,6 +671,33 @@ class Payoffs(IVisualize):
     """
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        """
+        Plots the visual representation for the object.
+
+        Example
+        -------
+        ```
+        import Fumagalli_Motta_Tarantino_2020 as FMT20
+
+        model = FMT20.OptimalMergerPolicy()
+        visualizer = FMT20.Payoffs(m)
+        fig, ax = visualizer.plot()
+        # use the figure and axes as you wish, for example:
+        fig.show()
+        ```
+
+        Parameters
+        ----------
+        **kwargs
+            Options for further customization of the plots .
+
+        Returns
+        -------
+        Figure
+            Containing the axes with the plots (use Figure.show() to display).
+        Axes
+            Containing the plots (arrange custom summary).
+        """
         payoffs: dict[str, float] = self._get_payoffs()
         bar_width = kwargs.get("width", 0.35)
         spacing = kwargs.get("spacing", 0.05)
