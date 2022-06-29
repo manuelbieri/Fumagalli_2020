@@ -445,7 +445,18 @@ class Timeline(IVisualize):
 
     def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs):
         super(Timeline, self).__init__(model, **kwargs)
-        self.stem_levels = [-1, 1, 0.6, -1, 1, -1, -0.6, 1]
+        self.high_stem = 0.6
+        self.low_stem = 0.4
+        self.stem_levels = [
+            -self.high_stem,
+            self.high_stem,
+            self.low_stem,
+            -self.high_stem,
+            self.high_stem,
+            -self.high_stem,
+            -self.low_stem,
+            self.high_stem,
+        ]
         self._x_ticks = list(range(len(self.stem_levels)))
 
     def _get_stem_labels(self) -> list[str]:
@@ -457,17 +468,53 @@ class Timeline(IVisualize):
         (list[str], list[str])
             List containing label for the events and list containing the points in time of the events.
         """
+        (
+            earl_takeover_attempt,
+            early_takeover,
+            late_takeover_attempt,
+            late_takeover,
+        ) = self._get_takeover_labels()
         return [
             "Competition authority\nestablishes "
-            + self._policy_str()
+            + self._policy_label()
             + "\nmerger policy",
-            self._takeover_attempt_str(self.model.early_bidding_type),
-            self._takeover_str(self.model.is_early_takeover),
-            self._development_str(),
+            earl_takeover_attempt,
+            early_takeover,
+            self._development_label(),
             self._success_str(),
-            self._takeover_attempt_str(self.model.late_bidding_type),
-            self._takeover_str(self.model.is_late_takeover),
-            "Payoffs",
+            late_takeover_attempt,
+            late_takeover,
+            self._get_payoff_label(),
+        ]
+
+    def _get_payoff_label(self):
+        label = "Payoffs\n"
+        if self.model.is_early_takeover or self.model.is_late_takeover:
+            if self.model.is_development_successful:
+                return label + "($CS^M$, $\\pi^M_I$)"
+            return label + "($CS^m$, $\\pi^m_I$)"
+        return label + "($CS^d$, $\\pi^d_I$, $\\pi^d_S$)"
+
+    def _get_takeover_labels(self) -> list[str, str, str, str]:
+        if self.model.is_early_takeover:
+            late_takeover_attempt = "Start-up already\nacquired"
+            late_takeover = ""
+            self.stem_levels[6] = 0
+        else:
+            late_takeover_attempt = self._takeover_attempt_label(
+                self.model.late_bidding_type
+            )
+            late_takeover = self._takeover_label(
+                self.model.early_bidding_type, self.model.is_late_takeover
+            )
+
+        return [
+            self._takeover_attempt_label(self.model.early_bidding_type),
+            self._takeover_label(
+                self.model.early_bidding_type, self.model.is_early_takeover
+            ),
+            late_takeover_attempt,
+            late_takeover,
         ]
 
     @staticmethod
@@ -484,7 +531,7 @@ class Timeline(IVisualize):
         ]
 
     @staticmethod
-    def _takeover_attempt_str(takeover: FMT20.Takeover) -> str:
+    def _takeover_attempt_label(takeover: FMT20.Takeover) -> str:
         """
         Generate label for takeover event.
 
@@ -500,7 +547,7 @@ class Timeline(IVisualize):
         """
         return str(takeover) + "\nby incumbent"
 
-    def _policy_str(self) -> str:
+    def _policy_label(self) -> str:
         """
         Generate label for establishing of merger policy event.
 
@@ -515,13 +562,17 @@ class Timeline(IVisualize):
         return policy_str
 
     @staticmethod
-    def _takeover_str(is_takeover: bool) -> str:
+    def _takeover_label(
+        takeover_attempt: FMT20.Takeover, is_takeover_accepted: bool
+    ) -> str:
         """
         Generates a label about the takeover event (option and approval).
 
         Parameters
         ----------
-        is_takeover: bool
+        takeover_attempt: FMT20.Takeover
+            Type of the bid by the incumbent.
+        is_takeover_accepted: bool
             If true, the takeover is approved by AA and the start-up.
 
         Returns
@@ -529,11 +580,14 @@ class Timeline(IVisualize):
         str
             Label about the takeover event (option and approval).
         """
-        if is_takeover:
+        is_takeover_attempt = takeover_attempt is not FMT20.Takeover.No
+        if is_takeover_attempt and is_takeover_accepted:
             return "Takeover\napproved"
+        if is_takeover_attempt and not is_takeover_accepted:
+            return "Takeover rejected\nby start-up"
         return "No takeover\noccurs"
 
-    def _development_str(self) -> str:
+    def _development_label(self) -> str:
         """
         Generates a label about the development event (attempt and shelving).
 
@@ -604,16 +658,16 @@ class Timeline(IVisualize):
         """
         self.ax.set(title=kwargs.get("title", "Timeline"))
         self._set_parameter_legend(kwargs.get("parameters", True))
-        self._draw_timeline(kwargs)
+        self._draw_timeline(**kwargs)
         self._set_x_axis()
         self._set_y_axis()
         self._set_tight_layout(y_spacing=0.45, x_spacing=0.02)
         return self.fig, self.ax
 
-    def _draw_timeline(self, kwargs):
+    def _draw_timeline(self, **kwargs):
+        self._annotate_stems(kwargs.get("x-offset", 0))
         self._draw_vertical_stems()
         self._draw_baseline()
-        self._annotate_stems(kwargs.get("x-offset", 0))
 
     def _annotate_stems(
         self,
@@ -658,7 +712,7 @@ class Timeline(IVisualize):
         if show_parameters:
             self.ax.annotate(
                 self._parameter_latex(),
-                xy=(x_coordinate, 1.9),
+                xy=(x_coordinate, self.high_stem * 1.8),
                 horizontalalignment="center",
                 verticalalignment="top",
                 fontsize=IVisualize.fontsize,
