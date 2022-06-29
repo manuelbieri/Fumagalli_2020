@@ -438,7 +438,6 @@ class IVisualize:
 
 
 class Timeline(IVisualize):
-    # TODO: Adjust takeover labels -> smart labels for no takeover or early takeover
     """
     Visualizes the timeline of events for a specific model.
     """
