@@ -441,6 +441,7 @@ class Overview(Visualize.IVisualize):
         self.timeline: Optional[Visualize.IVisualize] = None
         self.payoffs: Optional[Visualize.IVisualize] = None
         self.range: Optional[Visualize.IVisualize] = None
+        self.kwargs = kwargs
         self._clear_main_axes()
 
     def set_model(self, model: Models.OptimalMergerPolicy) -> None:
@@ -498,7 +499,9 @@ class Overview(Visualize.IVisualize):
         self.range = self._generate_visualizer(
             spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
         )
-        self._generate_characteristics_ax(spec[0, 0])
+        self._generate_characteristics_ax(
+            spec[0, 0], fontsize=kwargs.get("fontsize", 5)
+        )
         return self.fig, self.ax
 
     def _get_merger_policy_asset_range_type(self) -> Callable:
@@ -509,15 +512,17 @@ class Overview(Visualize.IVisualize):
         )
 
     def _generate_characteristics_ax(
-        self, coordinates: matplotlib.gridspec.GridSpec
+        self, coordinates: matplotlib.gridspec.GridSpec, fontsize
     ) -> None:
         ax = self.fig.add_subplot(coordinates)
-        self._get_model_characteristics_ax(ax, fontsize=5)
+        self._get_model_characteristics_ax(ax, fontsize=fontsize)
 
     def _generate_visualizer(
         self, coordinates: matplotlib.gridspec.GridSpec, visualizer: Callable, **kwargs
     ) -> Visualize.IVisualize:
         ax = self.fig.add_subplot(coordinates)
-        visualization: Visualize.IVisualize = visualizer(self.model, ax=ax)
+        visualization: Visualize.IVisualize = visualizer(
+            self.model, ax=ax, **self.kwargs
+        )
         visualization.plot(legend=False, parameters=False, **kwargs)
         return visualization
