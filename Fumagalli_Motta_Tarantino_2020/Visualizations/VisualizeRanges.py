@@ -1,4 +1,5 @@
 from typing import Callable, Optional
+from copy import deepcopy
 import matplotlib.gridspec
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
@@ -328,11 +329,11 @@ class AssetRange(Visualize.IVisualize):
             x_coordinate = self._get_x_max()
             y_coordinate = self._get_y_max()
             self.ax.annotate(
-                self._get_model_characteristics_latex(
+                self._get_model_characteristics(
                     separator="\n",
                     model_parameters=False,
                     thresholds_newline=False,
-                    thresholds_title="",
+                    threshold_title="",
                     optimal_policy=show_optimal_policy,
                 ),
                 xy=(x_coordinate, y_coordinate),
@@ -517,8 +518,9 @@ class Overview(Visualize.IVisualize):
         ----------
         **kwargs
             Options for further customization of the plots (Note: all subplots use the same kwargs).
-            - title(str): Title for plot.<br>
+            - figure_title(str): Title for plot.<br>
             - fontsize(int): Fontsize for model characteristics.<br>
+            - model_thresholds(bool): If true, the essential thresholds are shown in model characteristics.<br>
             $\\Rightarrow$ see the included visualizations for further arguments.
 
         Returns
@@ -529,7 +531,9 @@ class Overview(Visualize.IVisualize):
             Containing the plots (arrange custom summary).
         """
         spec = self.fig.add_gridspec(ncols=2, nrows=2)
-        self.fig.suptitle(kwargs.get("title", "${\\bf Model\\thickspace Overview}$"))
+        self.fig.suptitle(
+            kwargs.get("figure_title", "${\\bf Model\\thickspace Overview}$")
+        )
         self.timeline = self._generate_visualizer(
             spec[1, 0], Visualize.Timeline, **kwargs
         )
@@ -539,9 +543,7 @@ class Overview(Visualize.IVisualize):
         self.range = self._generate_visualizer(
             spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
         )
-        self._generate_characteristics_ax(
-            spec[0, 0], fontsize=kwargs.get("fontsize", 5)
-        )
+        self._generate_characteristics_ax(spec[0, 0], **kwargs)
         return self.fig, self.ax
 
     def _get_merger_policy_asset_range_type(self) -> Callable:
@@ -552,10 +554,15 @@ class Overview(Visualize.IVisualize):
         )
 
     def _generate_characteristics_ax(
-        self, coordinates: matplotlib.gridspec.GridSpec, fontsize
+        self, coordinates: matplotlib.gridspec.GridSpec, **kwargs
     ) -> None:
         ax = self.fig.add_subplot(coordinates)
-        self._get_model_characteristics_ax(ax, fontsize=fontsize)
+        characteristics_kwargs = deepcopy(kwargs)
+        characteristics_kwargs["model_thresholds"] = characteristics_kwargs.get(
+            "model_thresholds", not characteristics_kwargs.get("thresholds", False)
+        )
+        characteristics_kwargs["optimal_policy"] = False
+        self._get_model_characteristics_ax(ax, **characteristics_kwargs)
 
     def _generate_visualizer(
         self, coordinates: matplotlib.gridspec.GridSpec, visualizer: Callable, **kwargs

@@ -182,7 +182,7 @@ class IVisualize:
         self.plot(**kwargs)
         self.fig.show()
 
-    def _parameter_latex(self, **kwargs) -> str:
+    def _get_parameter_legend(self, **kwargs) -> str:
         """
         Generates a legend for the parameter values of a Fumagalli_Motta_Tarantino_2020.Models.BaseModel in latex format.
 
@@ -194,28 +194,32 @@ class IVisualize:
         separator_name_value = "="
         separator_parameters = kwargs.get("separator", " ; ")
         output_str = ""
-        for (parameter, value, separator) in [
-            ("A", self.model.startup_assets, separator_parameters),
-            ("B", self.model.private_benefit, separator_parameters),
-            ("K", self.model.development_costs, separator_parameters),
-            ("p", self.model.success_probability, "\n"),
-            ("CS^m", self.model.cs_without_innovation, separator_parameters),
-            (
-                "\\pi^m_I",
-                self.model.incumbent_profit_without_innovation,
-                separator_parameters,
-            ),
-            ("CS^M", self.model.cs_with_innovation, separator_parameters),
-            (
-                "\\pi^M_I",
-                self.model.incumbent_profit_with_innovation,
-                separator_parameters,
-            ),
-            ("CS^d", self.model.cs_duopoly, separator_parameters),
-            ("\\pi^d_I", self.model.incumbent_profit_duopoly, separator_parameters),
-            ("\\pi^d_S", self.model.startup_profit_duopoly, ""),
+        counter = 2
+        number_parameters_per_line = kwargs.get("parameter_number", 6)
+        for (parameter, value) in [
+            ("A", self.model.startup_assets),
+            ("B", self.model.private_benefit),
+            ("K", self.model.development_costs),
+            ("p", self.model.success_probability),
+            ("CS^m", self.model.cs_without_innovation),
+            ("\\pi^m_I", self.model.incumbent_profit_without_innovation),
+            ("CS^M", self.model.cs_with_innovation),
+            ("\\pi^M_I", self.model.incumbent_profit_with_innovation),
+            ("CS^d", self.model.cs_duopoly),
+            ("\\pi^d_I", self.model.incumbent_profit_duopoly),
+            ("\\pi^d_S", self.model.startup_profit_duopoly),
         ]:
+            separator = (
+                ""
+                if counter == 12
+                else (
+                    "\n"
+                    if counter % number_parameters_per_line == 0
+                    else separator_parameters
+                )
+            )
             output_str += f"${parameter}{separator_name_value}{round(value, ndigits=3)}${separator}"
+            counter += 1
         return output_str
 
     @staticmethod
@@ -334,23 +338,36 @@ class IVisualize:
             else ""
         )
         return (
+            "${\\bf Market\\thickspace configurations}$\n"
             f"{payoff_str}"
             "$m$: Monopoly without the innovation\n"
             "$M$: Monopoly (innovation in possession of incumbent)\n"
             "$d$: Duopoly (requires successful development by the start-up)\n"
         )
 
-    def _get_model_characteristics_latex(
+    def _get_model_characteristics(
         self,
         separator=" ; ",
         model_parameters=True,
+        model_thresholds=True,
         thresholds_newline=True,
-        thresholds_title="Thresholds for the Start-up Assets",
         optimal_policy=False,
+        **kwargs,
     ) -> str:
+        newline = "\n" if thresholds_newline else separator
         parameter_text = (
-            f"${{\\bf Parameters}}$\n{self._parameter_latex(separator=separator)}\n\n"
+            f"${{\\bf Parameters}}$\n{self._get_parameter_legend(separator=separator, **kwargs)}\n"
             if model_parameters
+            else ""
+        )
+        threshold_title = kwargs.get(
+            "threshold_title",
+            "Thresholds\\thickspace for\\thickspace the\\thickspace Start-up\\thickspace Assets",
+        )
+        thresholds = (
+            f"${{\\bf {threshold_title}}}$\n"
+            f"{self._get_model_characteristics_thresholds(separator, newline)}"
+            if model_thresholds
             else ""
         )
         optimal = (
@@ -358,14 +375,7 @@ class IVisualize:
             if optimal_policy
             else ""
         )
-        thresholds_title = thresholds_title.replace(" ", "\\thickspace ")
-        newline = "\n" if thresholds_newline else separator
-        return (
-            f"{parameter_text}"
-            f"${{\\bf {thresholds_title}}}$\n"
-            f"{self._get_model_characteristics_thresholds(separator, newline)}"
-            f"{optimal}"
-        )
+        return f"{parameter_text}{thresholds}{optimal}"
 
     def _get_model_characteristics_thresholds(
         self, separator: str, newline: str
@@ -397,33 +407,16 @@ class IVisualize:
         return f"{value:.{digits}f}"
 
     def _get_model_characteristics_ax(self, ax: plt.Axes, **kwargs) -> None:
-        ax.set_title("Model Characteristics")
+        ax.set_title(kwargs.get("title", "Model Characteristics"))
         ax.axis("off")
-        self._annotate_model_characteristics(ax, **kwargs)
-        self._annotate_payoff_legend(ax, **kwargs)
-        self._annotate_symbol_legend(ax, **kwargs)
-
-    def _annotate_symbol_legend(self, ax: plt.Axes, **kwargs) -> None:
-        ax.annotate(
-            self._get_symbol_legend(),
-            xy=(0.5, 0.57),
-            horizontalalignment="center",
-            verticalalignment="top",
-            fontsize=kwargs.get("fontsize", IVisualize.fontsize),
+        model_characteristics = self._get_model_characteristics(**kwargs)
+        text_to_annotate = (
+            f"{model_characteristics}"
+            f"{self._get_payoff_legend(market_situations_only=True)}"
+            f"{self._get_symbol_legend()}"
         )
-
-    def _annotate_payoff_legend(self, ax: plt.Axes, **kwargs) -> None:
         ax.annotate(
-            self._get_payoff_legend(market_situations_only=True),
-            xy=(0.5, 0.7),
-            horizontalalignment="center",
-            verticalalignment="top",
-            fontsize=kwargs.get("fontsize", IVisualize.fontsize),
-        )
-
-    def _annotate_model_characteristics(self, ax: plt.Axes, **kwargs) -> None:
-        ax.annotate(
-            self._get_model_characteristics_latex(),
+            text_to_annotate,
             xy=(0.5, 1),
             xytext=(0, 0),
             textcoords="offset points",
@@ -709,7 +702,7 @@ class Timeline(IVisualize):
         x_coordinate = math.fsum(self._x_ticks) / len(self._x_ticks)
         if show_parameters:
             self.ax.annotate(
-                self._parameter_latex(),
+                self._get_parameter_legend(),
                 xy=(x_coordinate, self.high_stem * 1.8),
                 horizontalalignment="center",
                 verticalalignment="top",

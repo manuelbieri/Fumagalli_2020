@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import Fumagalli_Motta_Tarantino_2020 as FMT20
+from Fumagalli_Motta_Tarantino_2020 import OptimalMergerPolicy
 
 
 def configure_two_axes(
@@ -12,7 +13,7 @@ def configure_two_axes(
     c2: int = 2,
     v1=FMT20.MergerPoliciesAssetRange,
     v2=FMT20.MergerPoliciesAssetRange,
-    **kwargs
+    **kwargs,
 ) -> plt.Figure:
     """
     Creates a figure with two subplots in a row.
@@ -58,7 +59,7 @@ def get_model_by_id(
                     "distribution", FMT20.Distributions.NormalDistribution
                 ),
                 **p(),
-                **kwargs
+                **kwargs,
             )
 
 
@@ -67,7 +68,7 @@ def _get_model_by_type(model_type, **kwargs) -> FMT20.OptimalMergerPolicy:
         asset_distribution=kwargs.get(
             "distribution", FMT20.Distributions.UniformDistribution
         ),
-        **kwargs
+        **kwargs,
     )
 
 
@@ -83,3 +84,32 @@ def _get_model(
     ), get_model_by_id(
         c2, policy=kwargs.get("policy2", FMT20.MergerPolicies.Strict), **kwargs
     )
+
+
+def get_model_label(m: type(FMT20.OptimalMergerPolicy)) -> str:
+    if m == FMT20.OptimalMergerPolicy:
+        return "Optimal Merger Policy"
+    if m == FMT20.ProCompetitive:
+        return "Pro-Competitive"
+    if m == FMT20.ResourceWaste:
+        return "Resource Waste"
+    if m == FMT20.PerfectInformation:
+        return "Perfect Information"
+
+
+def get_distribution_labels(distribution: FMT20.Distributions) -> str:
+    if distribution == FMT20.Distributions.NormalDistribution:
+        return "Normal Distribution"
+    if distribution == FMT20.Distributions.UniformDistribution:
+        return "Uniform Distribution"
+
+
+def get_configurations() -> list[str]:
+    output = []
+    for i in range(0, 60):
+        try:
+            m = get_model_by_id(i)
+            output.append(f"{i} - {get_model_label(type(m))}")
+        except FMT20.IDNotAvailableError:
+            pass
+    return output
