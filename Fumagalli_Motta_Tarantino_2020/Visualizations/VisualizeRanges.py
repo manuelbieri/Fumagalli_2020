@@ -201,6 +201,40 @@ class AssetRange(Visualize.IVisualize):
         return [self._get_outcomes_asset_range()]
 
     def plot(self, **kwargs) -> (plt.Figure, plt.Axes):
+        """
+        Plots the outcome of a model over a range of assets.
+
+        Example
+        -------
+        ```
+        import Fumagalli_Motta_Tarantino_2020 as FMT20
+
+        model = FMT20.OptimalMergerPolicy()
+        visualizer = FMT20.MergerPoliciesAssetRange(m)
+        fig, ax = visualizer.plot()
+        # use the figure and axes as you wish, for example:
+        fig.show()
+        ```
+
+        Parameters
+        ----------
+        **kwargs
+            Options for further customization of the plots.
+            - title(str): Title for plot<br>
+            - x_label(str): Title for x-axis.<br>
+            - y_label(str): Title for y-axis.<br>
+            - legend(bool): If true, a secondary legend is shown.<br>
+            - thresholds(bool): If true, the essential thresholds are shown.<br>
+            - optimal_policy(bool): If true, the optimal policy is shown.
+            - y_offset(int): Moves the threshold legend vertically.
+
+        Returns
+        -------
+        Figure
+            Containing the axes with the plots (use Figure.show() to display).
+        Axes
+            Containing the plots (arrange custom summary).
+        """
         merger_policies_summaries = self._get_summaries()
         assert merger_policies_summaries is not None
         self._clear_legend_list()
@@ -333,18 +367,6 @@ class AssetRange(Visualize.IVisualize):
 
 
 class MergerPoliciesAssetRange(AssetRange):
-    def __init__(self, model: Models.OptimalMergerPolicy, **kwargs):
-        """
-        Uses a Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation for the visualization. See
-        Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel for other parameters.
-
-        Parameters
-        ----------
-        model: Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation
-            Model to create the visualization from.
-        """
-        super(MergerPoliciesAssetRange, self).__init__(model, **kwargs)
-
     def _get_outcomes_different_merger_policies(
         self,
     ) -> list[list[Models.OptimalMergerPolicySummary]]:
@@ -363,6 +385,15 @@ class MergerPoliciesAssetRange(AssetRange):
 
 class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
     def __init__(self, model: Models.PerfectInformation, **kwargs):
+        """
+        Uses a Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation for the visualization. See
+        Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel for other parameters.
+
+        Parameters
+        ----------
+        model: Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation
+            Model to create the visualization from.
+        """
         super(MergerPoliciesAssetRangePerfectInformation, self).__init__(
             model, **kwargs
         )
@@ -396,7 +427,7 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
         Parameters
         ----------
         **kwargs
-            Options for further customization of the plots .
+            Options for further customization of the plots (see Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.AssetRange.plot).
 
         Returns
         -------
@@ -436,6 +467,12 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
 
 
 class Overview(Visualize.IVisualize):
+    """
+    Combines Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline, Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs,
+    Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange as well as a legend for the
+    model characteristics.
+    """
+
     def __init__(self, model: Models.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
         super().__init__(model, figsize=figsize, constrained_layout=True, **kwargs)
         self.timeline: Optional[Visualize.IVisualize] = None
@@ -479,7 +516,10 @@ class Overview(Visualize.IVisualize):
         Parameters
         ----------
         **kwargs
-            Options for further customization of the plots .
+            Options for further customization of the plots (Note: all subplots use the same kwargs).
+            - title(str): Title for plot.<br>
+            - fontsize(int): Fontsize for model characteristics.<br>
+            $\\Rightarrow$ see the included visualizations for further arguments.
 
         Returns
         -------
@@ -489,7 +529,7 @@ class Overview(Visualize.IVisualize):
             Containing the plots (arrange custom summary).
         """
         spec = self.fig.add_gridspec(ncols=2, nrows=2)
-        self.fig.suptitle("${\\bf Model\\thickspace Overview}$")
+        self.fig.suptitle(kwargs.get("title", "${\\bf Model\\thickspace Overview}$"))
         self.timeline = self._generate_visualizer(
             spec[1, 0], Visualize.Timeline, **kwargs
         )

@@ -646,7 +646,10 @@ class Timeline(IVisualize):
         Parameters
         ----------
         **kwargs
-            Options for further customization of the plots .
+            Options for further customization of the plots.
+            - title(str): Title for timeline<br>
+            - parameters(bool): If true, a legend containing the parameters is shown.
+            - x_offset(int): Moves the text at the stems horizontally.
 
         Returns
         -------
@@ -664,7 +667,7 @@ class Timeline(IVisualize):
         return self.fig, self.ax
 
     def _draw_timeline(self, **kwargs):
-        self._annotate_stems(kwargs.get("x-offset", 0))
+        self._annotate_stems(kwargs.get("x_offset", 0))
         self._draw_vertical_stems()
         self._draw_baseline()
 
@@ -742,7 +745,13 @@ class Payoffs(IVisualize):
         Parameters
         ----------
         **kwargs
-            Options for further customization of the plots .
+            Options for further customization of the plots.
+            - title(str): Title for plot<br>
+            - legend(bool): If true, a secondary legend is shown.<br>
+            - width(float): Width of the bars.<br>
+            - spacing(float): Spacing between the bars.<br>
+            - max_opacity(float): Opacity of the optimal payoffs.<br>
+            - min_opacity(float): Opacity of the not optimal payoffs.<br>
 
         Returns
         -------
@@ -755,7 +764,9 @@ class Payoffs(IVisualize):
         bar_width = kwargs.get("width", 0.35)
         spacing = kwargs.get("spacing", 0.05)
         self._plot_payoffs_bars(payoffs, bar_width, spacing, **kwargs)
-        self.ax.set_title("Payoffs for different Market Configurations")
+        self.ax.set_title(
+            kwargs.get("title", "Payoffs for different Market Configurations")
+        )
         self._set_primary_legend()
         self._set_secondary_legend(bar_width, kwargs.get("legend", True))
         self._set_tight_layout(x_spacing=spacing)
@@ -788,7 +799,8 @@ class Payoffs(IVisualize):
             Spacing between the bars on the plot.
         **kwargs
             Optional key word arguments for the payoff plot.<br>
-            - opacity : Opacity of the not optimal payoffs.<br>
+            - max_opacity(float): Opacity of the optimal payoffs.<br>
+            - min_opacity(float): Opacity of the not optimal payoffs.<br>
         """
         max_values: list[int] = self._set_max_values(list(payoffs.values()))
         for number_bar, (label, height) in enumerate(payoffs.items()):
