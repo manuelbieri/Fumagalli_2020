@@ -500,7 +500,7 @@ class Timeline(IVisualize):
                 self.model.late_bidding_type
             )
             late_takeover = self._takeover_label(
-                self.model.early_bidding_type, self.model.is_late_takeover
+                self.model.late_bidding_type, self.model.is_late_takeover
             )
 
         return [
