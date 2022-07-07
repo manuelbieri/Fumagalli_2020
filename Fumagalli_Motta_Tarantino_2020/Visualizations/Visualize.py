@@ -20,16 +20,12 @@ class IVisualize:
     """
 
     colors: list[str] = [
-        "indianred",
         "salmon",
         "khaki",
-        "greenyellow",
         "limegreen",
         "turquoise",
         "powderblue",
-        "lavender",
         "thistle",
-        "lavenderblush",
         "pink",
     ]
     """Standard colors used in visualizations."""
@@ -818,7 +814,7 @@ class Payoffs(IVisualize):
                 color=self._get_color(number_bar),
                 alpha=kwargs.get("max_opacity", 1)
                 if number_bar in max_values
-                else kwargs.get("min_opacity", 0.6),
+                else kwargs.get("min_opacity", 0.5),
             )
         self._set_x_ticks()
 
