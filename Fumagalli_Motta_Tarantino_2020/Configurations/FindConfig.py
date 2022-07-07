@@ -163,7 +163,7 @@ class RandomConfig:
     @staticmethod
     def _check_condition(value: bool, check: bool) -> bool:
         if check is not None:
-            if value is check:
+            if value == check:
                 return True
             else:
                 return False

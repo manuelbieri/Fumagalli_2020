@@ -147,3 +147,28 @@ class TestFindParameters(unittest.TestCase):
         ).find_config()
         model = self.setUpModel(config)
         self.assertTrue(model.development_costs < 0.5)
+
+    def test_two_conditions(self):
+        config = FMT20.RandomConfig(
+            parameter_generator=Mock.mock_parameter_model_generator(
+                two_conditions=True, killer_acquisition=True
+            ),
+            intermediate_optimal=True,
+            is_killer_acquisition=True,
+            merger_policy=FMT20.MergerPolicies.Laissez_faire,
+        ).find_config()
+        model = self.setUpModel(config)
+        self.assertTrue(model.is_intermediate_optimal())
+        self.assertTrue(model.is_killer_acquisition())
+
+    def test_two_conditions_callable(self):
+        config = FMT20.RandomConfig(
+            parameter_generator=Mock.mock_parameter_model_generator(
+                two_conditions=True
+            ),
+            laissez_faire_optimal=True,
+            callable_condition=lambda m: m.development_costs > 0.4,
+        ).find_config()
+        model = self.setUpModel(config)
+        self.assertTrue(model.development_costs > 0.4)
+        self.assertTrue(model.is_laissez_faire_optimal())

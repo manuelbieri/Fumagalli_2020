@@ -144,7 +144,7 @@ def mock_parameter_model_generator(
     killer_acquisition=False,
     invalid_parameter_model=False,
     callable_condition=False,
-    **kwargs
+    two_conditions=False,
 ) -> Configurations.ParameterModelGenerator:
     """
     Creates a mock model of Fumagalli_Motta_Tarantino_2020.Configurations.FindConfig.ParameterModelGenerator.
@@ -161,6 +161,15 @@ def mock_parameter_model_generator(
     elif intermediate_optimal:
         when(generator).get_parameter_model().thenReturn(config10).thenReturn(config15)
     elif laissez_faire_optimal or callable_condition:
+        when(generator).get_parameter_model().thenReturn(config10).thenReturn(config16)
+    elif two_conditions and killer_acquisition:
+        config10.set_merger_policy(Models.MergerPolicies.Laissez_faire)
+        config11.set_merger_policy(Models.MergerPolicies.Laissez_faire)
+        config15.set_merger_policy(Models.MergerPolicies.Laissez_faire)
+        when(generator).get_parameter_model(
+            merger_policy=Models.MergerPolicies.Laissez_faire
+        ).thenReturn(config11).thenReturn(config10).thenReturn(config15)
+    elif two_conditions:
         when(generator).get_parameter_model().thenReturn(config10).thenReturn(config16)
     elif killer_acquisition:
         config10.set_merger_policy(Models.MergerPolicies.Laissez_faire)
