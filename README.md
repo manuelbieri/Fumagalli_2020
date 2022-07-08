@@ -8,7 +8,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/manuelbieri/Fumagalli_2020)](https://github.com/manuelbieri/Fumagalli_2020/releases)
 ![PyPI - Status](https://img.shields.io/pypi/status/Fumagalli-Motta-Tarantino-2020)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Fumagalli-Motta-Tarantino-2020)
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/manuelbieri/fmt20web/fmt20_app.py)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://manuelbieri-fmt20web-fmt20-app-hryht2.streamlitapp.com/)
 
 This package implements the models presented in [Fumagalli et al. (2020)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3674889) (note, that the version from 2020 is implemented).
 Additionally, extensions from the models are explained in [Extension of Fumagalli et al (2020).pdf](<./Extension of Fumagalli et al (2020).pdf>).
