@@ -51,3 +51,55 @@ class TestThresholdItem(unittest.TestCase):
         ]
         include_items = [item for item in threshold_items if item.include]
         self.assertEqual(1, len(include_items))
+
+
+class TestPossibleOutcomes(unittest.TestCase):
+    """
+    Tests Fumagalli_Motta_Tarantino_2020.Models.Types.PossibleOutcomes.
+    """
+
+    def test_no_takeover_successful_development(self):
+        outcome: Types.Outcome = (
+            Types.PossibleOutcomes.NoTakeoversSuccessfulDevelopment.outcome
+        )
+        self.assertEqual(Types.Takeover.No, outcome.early_bidding_type)
+        self.assertTrue(outcome.development_attempt)
+        self.assertTrue(outcome.development_outcome)
+        self.assertEqual(Types.Takeover.No, outcome.late_bidding_type)
+
+    def test_early_separating(self):
+        outcome: Types.Outcome = (
+            Types.PossibleOutcomes.EarlySeparatingUnsuccessfulDevelopment.outcome
+        )
+        self.assertEqual(Types.Takeover.Separating, outcome.early_bidding_type)
+        self.assertTrue(outcome.development_attempt)
+        self.assertFalse(outcome.development_outcome)
+        self.assertEqual(Types.Takeover.No, outcome.late_bidding_type)
+
+    def test__rejected_early_separating(self):
+        outcome: Types.Outcome = (
+            Types.PossibleOutcomes.RejectedEarlySeparatingUnsuccessfulDevelopment.outcome
+        )
+        self.assertEqual(Types.Takeover.Separating, outcome.early_bidding_type)
+        self.assertFalse(outcome.early_takeover)
+        self.assertTrue(outcome.development_attempt)
+        self.assertFalse(outcome.development_outcome)
+        self.assertEqual(Types.Takeover.No, outcome.late_bidding_type)
+
+    def test_early_pooling(self):
+        outcome: Types.Outcome = (
+            Types.PossibleOutcomes.EarlyPoolingDevelopmentNotAttempted.outcome
+        )
+        self.assertEqual(Types.Takeover.Pooling, outcome.early_bidding_type)
+        self.assertFalse(outcome.development_attempt)
+        self.assertFalse(outcome.development_outcome)
+        self.assertEqual(Types.Takeover.No, outcome.late_bidding_type)
+
+    def test_late_takeover(self):
+        outcome: Types.Outcome = (
+            Types.PossibleOutcomes.LatePoolingSuccessfulDevelopment.outcome
+        )
+        self.assertEqual(Types.Takeover.No, outcome.early_bidding_type)
+        self.assertTrue(outcome.development_attempt)
+        self.assertTrue(outcome.development_outcome)
+        self.assertEqual(Types.Takeover.Pooling, outcome.late_bidding_type)

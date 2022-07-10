@@ -194,9 +194,13 @@ class AssetRange(Visualize.IVisualize):
         """
         if label in self.labels:
             return "_nolegend_", self.colors[label]
-        self.colors[label] = Visualize.IVisualize.colors[len(self.labels)]
+        self.colors[label] = self._get_label_specific_color(label)
         self.labels.append(label)
         return label, self.colors[label]
+
+    def _get_label_specific_color(self, label: str) -> str:
+        # TODO: Add  color for outcomes
+        return Visualize.IVisualize.colors[len(self.labels)]
 
     def _get_summaries(self) -> list[list[Models.OptimalMergerPolicySummary]]:
         return [self._get_outcomes_asset_range()]

@@ -223,7 +223,7 @@ class IVisualize:
         return output_str
 
     @staticmethod
-    def _get_summary_latex(summary: FMT20.OptimalMergerPolicySummary) -> str:
+    def _get_summary_latex(summary: FMT20.Outcome) -> str:
         """
         Generates a chronological entry for the legend based on the input model.
 
@@ -235,15 +235,15 @@ class IVisualize:
         separator: str = "$\\to$"
         return (
             f"{summary.early_bidding_type.abbreviation()}"
-            f"{IVisualize._get_is_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
+            f"{IVisualize._get_takeover_legend(summary.early_bidding_type, summary.early_takeover)}{separator}"
             f"{IVisualize._get_development_attempt_legend(summary.development_attempt)}"
             f"{IVisualize._get_development_outcome_legend(summary.development_attempt, summary.development_outcome)}{separator}"
             f"{summary.late_bidding_type.abbreviation()}"
-            f"{IVisualize._get_is_takeover_legend(summary.late_bidding_type, summary.late_takeover)}"
+            f"{IVisualize._get_takeover_legend(summary.late_bidding_type, summary.late_takeover)}"
         )
 
     @staticmethod
-    def _get_is_takeover_legend(bid_attempt: FMT20.Takeover, is_takeover: bool) -> str:
+    def _get_takeover_legend(bid_attempt: FMT20.Takeover, is_takeover: bool) -> str:
         """
         Generates a string representation for legend about the takeover (option and approval).
 
