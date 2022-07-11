@@ -104,6 +104,15 @@ class TestVisualize(CoreVisualizationTest):
         self.setUpMock(set_outcome=True, is_early_takeover=False)
         self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
 
+    def test_timeline_late_takeover(self):
+        self.setUpMock(
+            policy=FMT20.MergerPolicies.Laissez_faire,
+            set_outcome=True,
+            is_early_takeover=False,
+            is_late_takeover=True,
+        )
+        self.setUpVisualizerCall(lambda: FMT20.Timeline(self.mock))
+
     def test_timeline_set_model(self):
         mock1: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy()
         mock2: FMT20.OptimalMergerPolicy = Mock.mock_optimal_merger_policy(

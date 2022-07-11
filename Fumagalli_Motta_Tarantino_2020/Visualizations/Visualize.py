@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Optional
+from typing import Final, Optional
 import warnings
 
 import math
@@ -19,12 +19,11 @@ class IVisualize:
     with mybinder.org is not guaranteed (uses python 3.7 at the moment ).
     """
 
-    colors: list[str] = [
+    COLORS: Final[list[str]] = [
         "salmon",
         "khaki",
         "limegreen",
         "turquoise",
-        "powderblue",
         "thistle",
         "pink",
     ]
@@ -119,12 +118,13 @@ class IVisualize:
         except AttributeError:
             pass
 
-    def _set_primary_legend(self) -> None:
+    def _set_primary_legend(self, equal_opacity=True) -> None:
         legend = self.ax.legend(
             bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0
         )
-        for entry in legend.legendHandles:
-            entry.set_alpha(1)
+        if equal_opacity:
+            for entry in legend.legendHandles:
+                entry.set_alpha(1)
 
     def _set_tight_layout(self, y_spacing: float = None, x_spacing: float = 0) -> None:
         if y_spacing is not None or x_spacing is not None:
@@ -487,6 +487,15 @@ class Timeline(IVisualize):
         if self.model.is_early_takeover:
             late_takeover_attempt = "Start-up already\nacquired"
             late_takeover = ""
+            self.stem_levels[5] = -self.low_stem
+            self.stem_levels[6] = 0
+        elif self.model.merger_policy in [
+            FMT20.MergerPolicies.Strict,
+            FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
+        ]:
+            late_takeover_attempt = "Competition authority\nblocks late\ntakeovers"
+            late_takeover = ""
+            self.stem_levels[5] = -self.low_stem
             self.stem_levels[6] = 0
         else:
             late_takeover_attempt = self._takeover_attempt_label(
@@ -866,8 +875,8 @@ class Payoffs(IVisualize):
     @staticmethod
     def _get_color(number_bar: int, reverse_cycle=True) -> str:
         color_id = number_bar % 4
-        color_id = len(IVisualize.colors) - color_id - 1 if reverse_cycle else color_id
-        return IVisualize.colors[color_id]
+        color_id = len(IVisualize.COLORS) - color_id - 1 if reverse_cycle else color_id
+        return IVisualize.COLORS[color_id]
 
     def _get_payoffs(self) -> dict[str, float]:
         return {

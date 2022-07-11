@@ -1,14 +1,14 @@
-from typing import Callable, Optional
+from typing import Callable
 from copy import deepcopy
 import matplotlib.gridspec
-import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
 
 import Fumagalli_Motta_Tarantino_2020.Models as Models
-import Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize as Visualize
+from Fumagalli_Motta_Tarantino_2020.Models.Types import *
+from Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize import *
 
 
-class AssetRange(Visualize.IVisualize):
+class AssetRange(IVisualize):
     """
     Visualizes the outcomes over an assets range for a specific model.
     """
@@ -16,9 +16,49 @@ class AssetRange(Visualize.IVisualize):
     def __init__(self, model: Models.OptimalMergerPolicy, **kwargs) -> None:
         super(AssetRange, self).__init__(model, **kwargs)
         self.labels: list[str] = []
-        self.colors: dict[str, str] = {}
+        self.colors: dict[str, dict] = {}
         self._thresholds: list[Models.ThresholdItem] = self._get_essential_thresholds()
         self._check_thresholds()
+        self._label_colors: dict[str:dict] = self._init_label_colors()
+
+    @staticmethod
+    def _init_label_colors() -> dict[str, dict]:
+        o = PossibleOutcomes
+        d = {}
+        vis_success = 1.0
+        vis_fail = 0.7
+        vis_no_att = 0.4
+        for l in [
+            (o.NoTakeoversSuccessfulDevelopment, 0, vis_success),
+            (o.NoTakeoversFailedDevelopment, 0, vis_fail),
+            (o.NoTakeoversDevelopmentNotAttempted, 0, vis_no_att),
+            (o.RejectedEarlySeparatingUnsuccessfulDevelopment, 1, vis_success),
+            (o.RejectedEarlySeparatingSuccessfulDevelopment, 1, vis_fail),
+            (o.EarlySeparatingSuccessfulDevelopment, 2, vis_success),
+            (o.EarlySeparatingUnsuccessfulDevelopment, 2, vis_fail),
+            (o.EarlySeparatingDevelopmentNotAttempted, 2, vis_no_att),
+            (o.EarlyPoolingSuccessfulDevelopment, 3, vis_success),
+            (o.EarlyPoolingUnsuccessfulDevelopment, 3, vis_fail),
+            (o.EarlyPoolingDevelopmentNotAttempted, 3, vis_no_att),
+            (o.LatePoolingSuccessfulDevelopment, 4, vis_success),
+        ]:
+            d.update(
+                AssetRange._init_label_color(
+                    outcome_type=l[0], color_id=l[1], opacity=l[2]
+                ),
+            )
+        return d
+
+    @staticmethod
+    def _init_label_color(
+        outcome_type: Models.PossibleOutcomes, color_id: int, opacity: float
+    ) -> dict[dict]:
+        return {
+            IVisualize._get_summary_latex(outcome_type.outcome): {
+                "color": IVisualize.COLORS[color_id],
+                "opacity": opacity,
+            }
+        }
 
     def _check_thresholds(self) -> None:
         assert (
@@ -144,9 +184,9 @@ class AssetRange(Visualize.IVisualize):
         self.ax.tick_params(which="both", bottom=False, top=False, length=6, axis="x")
 
     def _set_x_labels(self, x_labels: list[str]) -> None:
-        self.ax.set_xticklabels(x_labels[::2], fontsize=Visualize.IVisualize.fontsize)
+        self.ax.set_xticklabels(x_labels[::2], fontsize=IVisualize.fontsize)
         self.ax.set_xticklabels(
-            x_labels[1::2], minor=True, fontsize=Visualize.IVisualize.fontsize
+            x_labels[1::2], minor=True, fontsize=IVisualize.fontsize
         )
 
     def _set_x_locators(self, x_ticks: list[float]) -> None:
@@ -174,10 +214,10 @@ class AssetRange(Visualize.IVisualize):
     def _set_y_ticks(self, bar_height: float, spacing: float, y_labels: list[str]):
         y_ticks = self._get_y_ticks(spacing, bar_height, y_labels)
         self.ax.set_yticks(y_ticks)
-        self.ax.set_yticklabels(y_labels, fontsize=Visualize.IVisualize.fontsize)
+        self.ax.set_yticklabels(y_labels, fontsize=IVisualize.fontsize)
         self.ax.yaxis.set_ticks_position("none")
 
-    def _get_label_color(self, label) -> (str, str):
+    def _get_label_color(self, label) -> (str, str, float):
         """
         Returns the color and the final label for a legend entry.
 
@@ -189,18 +229,23 @@ class AssetRange(Visualize.IVisualize):
 
         Returns
         -------
-        (str, str)
-            String representing the final label and a string representing the color.
+        (str, str, float)
+            String representing the final label, a string representing the color and a float representing the opacity.
         """
         if label in self.labels:
-            return "_nolegend_", self.colors[label]
+            return (
+                "_nolegend_",
+                self.colors[label]["color"],
+                self.colors[label]["opacity"],
+            )
         self.colors[label] = self._get_label_specific_color(label)
         self.labels.append(label)
-        return label, self.colors[label]
+        return label, self.colors[label]["color"], self.colors[label]["opacity"]
 
-    def _get_label_specific_color(self, label: str) -> str:
-        # TODO: Add  color for outcomes
-        return Visualize.IVisualize.colors[len(self.labels)]
+    def _get_label_specific_color(self, label: str) -> dict:
+        if label in self._label_colors.keys():
+            return self._label_colors[label]
+        return {"color": IVisualize.COLORS[5], "opacity": 1}
 
     def _get_summaries(self) -> list[list[Models.OptimalMergerPolicySummary]]:
         return [self._get_outcomes_asset_range()]
@@ -259,7 +304,7 @@ class AssetRange(Visualize.IVisualize):
         self.ax.set_ylabel(kwargs.get("y_label", "Merger Policy"))
 
     def _set_asset_range_legends(self, **kwargs):
-        self._set_primary_legend()
+        self._set_primary_legend(equal_opacity=False)
         self._set_secondary_legend(
             self._thresholds[0].value, kwargs.get("legend", True)
         )
@@ -316,7 +361,7 @@ class AssetRange(Visualize.IVisualize):
         length: float,
         label: str,
     ) -> None:
-        label, color = self._get_label_color(label)
+        label, color, opacity = self._get_label_color(label)
         self.ax.barh(
             y=y_coordinate,
             width=length,
@@ -324,6 +369,7 @@ class AssetRange(Visualize.IVisualize):
             height=bar_height,
             color=color,
             label=label,
+            alpha=opacity,
         )
 
     def _set_threshold_legend(
@@ -345,7 +391,7 @@ class AssetRange(Visualize.IVisualize):
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
-                fontsize=Visualize.IVisualize.fontsize,
+                fontsize=IVisualize.fontsize,
             )
 
     @staticmethod
@@ -367,7 +413,7 @@ class AssetRange(Visualize.IVisualize):
                 textcoords="offset points",
                 horizontalalignment="left",
                 verticalalignment="top",
-                fontsize=Visualize.IVisualize.fontsize,
+                fontsize=IVisualize.fontsize,
             )
 
 
@@ -471,7 +517,7 @@ class MergerPoliciesAssetRangePerfectInformation(MergerPoliciesAssetRange):
         )
 
 
-class Overview(Visualize.IVisualize):
+class Overview(IVisualize):
     """
     Combines Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline, Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs,
     Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange as well as a legend for the
@@ -480,9 +526,9 @@ class Overview(Visualize.IVisualize):
 
     def __init__(self, model: Models.OptimalMergerPolicy, figsize=(14, 10), **kwargs):
         super().__init__(model, figsize=figsize, constrained_layout=True, **kwargs)
-        self.timeline: Optional[Visualize.IVisualize] = None
-        self.payoffs: Optional[Visualize.IVisualize] = None
-        self.range: Optional[Visualize.IVisualize] = None
+        self.timeline: Optional[IVisualize] = None
+        self.payoffs: Optional[IVisualize] = None
+        self.range: Optional[IVisualize] = None
         self.kwargs = kwargs
         self._clear_main_axes()
 
@@ -538,12 +584,8 @@ class Overview(Visualize.IVisualize):
         self.fig.suptitle(
             kwargs.get("figure_title", "${\\bf Model\\thickspace Overview}$")
         )
-        self.timeline = self._generate_visualizer(
-            spec[1, 0], Visualize.Timeline, **kwargs
-        )
-        self.payoffs = self._generate_visualizer(
-            spec[0, 1], Visualize.Payoffs, **kwargs
-        )
+        self.timeline = self._generate_visualizer(spec[1, 0], Timeline, **kwargs)
+        self.payoffs = self._generate_visualizer(spec[0, 1], Payoffs, **kwargs)
         self.range = self._generate_visualizer(
             spec[1, 1], self._get_merger_policy_asset_range_type(), **kwargs
         )
@@ -570,10 +612,8 @@ class Overview(Visualize.IVisualize):
 
     def _generate_visualizer(
         self, coordinates: matplotlib.gridspec.GridSpec, visualizer: Callable, **kwargs
-    ) -> Visualize.IVisualize:
+    ) -> IVisualize:
         ax = self.fig.add_subplot(coordinates)
-        visualization: Visualize.IVisualize = visualizer(
-            self.model, ax=ax, **self.kwargs
-        )
+        visualization: IVisualize = visualizer(self.model, ax=ax, **self.kwargs)
         visualization.plot(legend=False, parameters=False, **kwargs)
         return visualization
