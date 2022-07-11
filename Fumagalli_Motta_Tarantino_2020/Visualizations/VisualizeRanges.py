@@ -28,7 +28,7 @@ class AssetRange(IVisualize):
         vis_success = 1.0
         vis_fail = 0.7
         vis_no_att = 0.4
-        for l in [
+        for i in [
             (o.NoTakeoversSuccessfulDevelopment, 0, vis_success),
             (o.NoTakeoversFailedDevelopment, 0, vis_fail),
             (o.NoTakeoversDevelopmentNotAttempted, 0, vis_no_att),
@@ -44,7 +44,7 @@ class AssetRange(IVisualize):
         ]:
             d.update(
                 AssetRange._init_label_color(
-                    outcome_type=l[0], color_id=l[1], opacity=l[2]
+                    outcome_type=i[0], color_id=i[1], opacity=i[2]
                 ),
             )
         return d
