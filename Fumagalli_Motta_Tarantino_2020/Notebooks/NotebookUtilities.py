@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import Fumagalli_Motta_Tarantino_2020 as FMT20
-from Fumagalli_Motta_Tarantino_2020 import OptimalMergerPolicy
 
 
 def configure_two_axes(
@@ -97,7 +96,9 @@ def get_model_label(m: type(FMT20.OptimalMergerPolicy)) -> str:
         return "Perfect Information"
 
 
-def get_distribution_labels(distribution: FMT20.Distributions) -> str:
+def get_distribution_labels(
+    distribution: FMT20.Distributions.NormalDistribution,
+) -> str:
     if distribution == FMT20.Distributions.NormalDistribution:
         return "Normal Distribution"
     if distribution == FMT20.Distributions.UniformDistribution:

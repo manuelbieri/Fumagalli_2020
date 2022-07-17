@@ -76,6 +76,27 @@
                 </ul>
 
             </li>
+            <li>
+                    <a class="class" href="#TestPossibleOutcomes">TestPossibleOutcomes</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#TestPossibleOutcomes.test_no_takeover_successful_development">test_no_takeover_successful_development</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestPossibleOutcomes.test_early_separating">test_early_separating</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestPossibleOutcomes.test__rejected_early_separating">test__rejected_early_separating</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestPossibleOutcomes.test_early_pooling">test_early_pooling</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestPossibleOutcomes.test_late_takeover">test_late_takeover</a>
+                        </li>
+                </ul>
+
+            </li>
     </ul>
 
 
@@ -98,59 +119,111 @@
 
                         <label class="view-source-button" for="Test_Types-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">import</span> <span class="nn">unittest</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Types</span> <span class="k">as</span> <span class="nn">Types</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="k">class</span> <span class="nc">TestThresholdItem</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="sd">    Tests Fumagalli_Motta_Tarantino_2020.Models.Types.ThresholdItem.</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>    <span class="k">def</span> <span class="nf">test_comparison_true_unequal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">)</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="k">def</span> <span class="nf">test_comparison_false_unequal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">)</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="k">def</span> <span class="nf">test_comparison_true_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="k">def</span> <span class="nf">test_comparison_false_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="k">def</span> <span class="nf">test_max_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>        <span class="n">threshold_items</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>        <span class="p">]</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">threshold_items</span><span class="p">))</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="k">def</span> <span class="nf">test_min_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="n">threshold_items</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>        <span class="p">]</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">threshold_items</span><span class="p">))</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="k">def</span> <span class="nf">test_include</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>        <span class="n">threshold_items</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>        <span class="p">]</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>        <span class="n">include_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">threshold_items</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">include</span><span class="p">]</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">include_items</span><span class="p">))</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">import</span> <span class="nn">unittest</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020.Models.Types</span> <span class="k">as</span> <span class="nn">Types</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="k">class</span> <span class="nc">TestThresholdItem</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">    Tests Fumagalli_Motta_Tarantino_2020.Models.Types.ThresholdItem.</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>    <span class="k">def</span> <span class="nf">test_comparison_true_unequal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">)</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>    <span class="k">def</span> <span class="nf">test_comparison_false_unequal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">)</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>    <span class="k">def</span> <span class="nf">test_comparison_true_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="k">def</span> <span class="nf">test_comparison_false_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="n">a</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>        <span class="n">b</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>    <span class="k">def</span> <span class="nf">test_max_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>        <span class="n">threshold_items</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="p">]</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">threshold_items</span><span class="p">))</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="nf">test_min_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="n">threshold_items</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>        <span class="p">]</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">threshold_items</span><span class="p">))</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="k">def</span> <span class="nf">test_include</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>        <span class="n">threshold_items</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>        <span class="p">]</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>        <span class="n">include_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">threshold_items</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">include</span><span class="p">]</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">include_items</span><span class="p">))</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="k">class</span> <span class="nc">TestPossibleOutcomes</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">    Tests Fumagalli_Motta_Tarantino_2020.Models.Types.PossibleOutcomes.</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="k">def</span> <span class="nf">test_no_takeover_successful_development</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">NoTakeoversSuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>        <span class="p">)</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="k">def</span> <span class="nf">test_early_separating</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">EarlySeparatingUnsuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="p">)</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="k">def</span> <span class="nf">test__rejected_early_separating</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">RejectedEarlySeparatingUnsuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="p">)</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">early_takeover</span><span class="p">)</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>    <span class="k">def</span> <span class="nf">test_early_pooling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">EarlyPoolingDevelopmentNotAttempted</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>        <span class="p">)</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>    <span class="k">def</span> <span class="nf">test_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">LatePoolingSuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="p">)</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -452,6 +525,280 @@
                 <dd id="TestThresholdItem.assertNotAlmostEquals" class="function">assertNotAlmostEquals</dd>
                 <dd id="TestThresholdItem.failUnless" class="function">failUnless</dd>
                 <dd id="TestThresholdItem.assert_" class="function">assert_</dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="TestPossibleOutcomes">
+                            <input id="TestPossibleOutcomes-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">TestPossibleOutcomes</span><wbr>(<span class="base">unittest.case.TestCase</span>):
+
+                <label class="view-source-button" for="TestPossibleOutcomes-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestPossibleOutcomes"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestPossibleOutcomes-57"><a href="#TestPossibleOutcomes-57"><span class="linenos"> 57</span></a><span class="k">class</span> <span class="nc">TestPossibleOutcomes</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes-58"><a href="#TestPossibleOutcomes-58"><span class="linenos"> 58</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="TestPossibleOutcomes-59"><a href="#TestPossibleOutcomes-59"><span class="linenos"> 59</span></a><span class="sd">    Tests Fumagalli_Motta_Tarantino_2020.Models.Types.PossibleOutcomes.</span>
+</span><span id="TestPossibleOutcomes-60"><a href="#TestPossibleOutcomes-60"><span class="linenos"> 60</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="TestPossibleOutcomes-61"><a href="#TestPossibleOutcomes-61"><span class="linenos"> 61</span></a>
+</span><span id="TestPossibleOutcomes-62"><a href="#TestPossibleOutcomes-62"><span class="linenos"> 62</span></a>    <span class="k">def</span> <span class="nf">test_no_takeover_successful_development</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes-63"><a href="#TestPossibleOutcomes-63"><span class="linenos"> 63</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes-64"><a href="#TestPossibleOutcomes-64"><span class="linenos"> 64</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">NoTakeoversSuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes-65"><a href="#TestPossibleOutcomes-65"><span class="linenos"> 65</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes-66"><a href="#TestPossibleOutcomes-66"><span class="linenos"> 66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-67"><a href="#TestPossibleOutcomes-67"><span class="linenos"> 67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-68"><a href="#TestPossibleOutcomes-68"><span class="linenos"> 68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-69"><a href="#TestPossibleOutcomes-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-70"><a href="#TestPossibleOutcomes-70"><span class="linenos"> 70</span></a>
+</span><span id="TestPossibleOutcomes-71"><a href="#TestPossibleOutcomes-71"><span class="linenos"> 71</span></a>    <span class="k">def</span> <span class="nf">test_early_separating</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes-72"><a href="#TestPossibleOutcomes-72"><span class="linenos"> 72</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes-73"><a href="#TestPossibleOutcomes-73"><span class="linenos"> 73</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">EarlySeparatingUnsuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes-74"><a href="#TestPossibleOutcomes-74"><span class="linenos"> 74</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes-75"><a href="#TestPossibleOutcomes-75"><span class="linenos"> 75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-76"><a href="#TestPossibleOutcomes-76"><span class="linenos"> 76</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-77"><a href="#TestPossibleOutcomes-77"><span class="linenos"> 77</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-78"><a href="#TestPossibleOutcomes-78"><span class="linenos"> 78</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-79"><a href="#TestPossibleOutcomes-79"><span class="linenos"> 79</span></a>
+</span><span id="TestPossibleOutcomes-80"><a href="#TestPossibleOutcomes-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">test__rejected_early_separating</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes-81"><a href="#TestPossibleOutcomes-81"><span class="linenos"> 81</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes-82"><a href="#TestPossibleOutcomes-82"><span class="linenos"> 82</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">RejectedEarlySeparatingUnsuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes-83"><a href="#TestPossibleOutcomes-83"><span class="linenos"> 83</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes-84"><a href="#TestPossibleOutcomes-84"><span class="linenos"> 84</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-85"><a href="#TestPossibleOutcomes-85"><span class="linenos"> 85</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">early_takeover</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-86"><a href="#TestPossibleOutcomes-86"><span class="linenos"> 86</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-87"><a href="#TestPossibleOutcomes-87"><span class="linenos"> 87</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-88"><a href="#TestPossibleOutcomes-88"><span class="linenos"> 88</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-89"><a href="#TestPossibleOutcomes-89"><span class="linenos"> 89</span></a>
+</span><span id="TestPossibleOutcomes-90"><a href="#TestPossibleOutcomes-90"><span class="linenos"> 90</span></a>    <span class="k">def</span> <span class="nf">test_early_pooling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes-91"><a href="#TestPossibleOutcomes-91"><span class="linenos"> 91</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes-92"><a href="#TestPossibleOutcomes-92"><span class="linenos"> 92</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">EarlyPoolingDevelopmentNotAttempted</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes-93"><a href="#TestPossibleOutcomes-93"><span class="linenos"> 93</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes-94"><a href="#TestPossibleOutcomes-94"><span class="linenos"> 94</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-95"><a href="#TestPossibleOutcomes-95"><span class="linenos"> 95</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-96"><a href="#TestPossibleOutcomes-96"><span class="linenos"> 96</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-97"><a href="#TestPossibleOutcomes-97"><span class="linenos"> 97</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-98"><a href="#TestPossibleOutcomes-98"><span class="linenos"> 98</span></a>
+</span><span id="TestPossibleOutcomes-99"><a href="#TestPossibleOutcomes-99"><span class="linenos"> 99</span></a>    <span class="k">def</span> <span class="nf">test_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes-100"><a href="#TestPossibleOutcomes-100"><span class="linenos">100</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes-101"><a href="#TestPossibleOutcomes-101"><span class="linenos">101</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">LatePoolingSuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes-102"><a href="#TestPossibleOutcomes-102"><span class="linenos">102</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes-103"><a href="#TestPossibleOutcomes-103"><span class="linenos">103</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-104"><a href="#TestPossibleOutcomes-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-105"><a href="#TestPossibleOutcomes-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes-106"><a href="#TestPossibleOutcomes-106"><span class="linenos">106</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Tests <a href="../Models/Types.html#PossibleOutcomes">Fumagalli_Motta_Tarantino_2020.Models.Types.PossibleOutcomes</a>.</p>
+</div>
+
+
+                            <div id="TestPossibleOutcomes.test_no_takeover_successful_development" class="classattr">
+                                        <input id="TestPossibleOutcomes.test_no_takeover_successful_development-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test_no_takeover_successful_development</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestPossibleOutcomes.test_no_takeover_successful_development-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestPossibleOutcomes.test_no_takeover_successful_development"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-62"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-62"><span class="linenos">62</span></a>    <span class="k">def</span> <span class="nf">test_no_takeover_successful_development</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-63"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-63"><span class="linenos">63</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-64"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-64"><span class="linenos">64</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">NoTakeoversSuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-65"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-65"><span class="linenos">65</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-66"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-66"><span class="linenos">66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-67"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-67"><span class="linenos">67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-68"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-68"><span class="linenos">68</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_no_takeover_successful_development-69"><a href="#TestPossibleOutcomes.test_no_takeover_successful_development-69"><span class="linenos">69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div id="TestPossibleOutcomes.test_early_separating" class="classattr">
+                                        <input id="TestPossibleOutcomes.test_early_separating-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test_early_separating</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestPossibleOutcomes.test_early_separating-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestPossibleOutcomes.test_early_separating"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestPossibleOutcomes.test_early_separating-71"><a href="#TestPossibleOutcomes.test_early_separating-71"><span class="linenos">71</span></a>    <span class="k">def</span> <span class="nf">test_early_separating</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-72"><a href="#TestPossibleOutcomes.test_early_separating-72"><span class="linenos">72</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-73"><a href="#TestPossibleOutcomes.test_early_separating-73"><span class="linenos">73</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">EarlySeparatingUnsuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-74"><a href="#TestPossibleOutcomes.test_early_separating-74"><span class="linenos">74</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-75"><a href="#TestPossibleOutcomes.test_early_separating-75"><span class="linenos">75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-76"><a href="#TestPossibleOutcomes.test_early_separating-76"><span class="linenos">76</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-77"><a href="#TestPossibleOutcomes.test_early_separating-77"><span class="linenos">77</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_separating-78"><a href="#TestPossibleOutcomes.test_early_separating-78"><span class="linenos">78</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div id="TestPossibleOutcomes.test__rejected_early_separating" class="classattr">
+                                        <input id="TestPossibleOutcomes.test__rejected_early_separating-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test__rejected_early_separating</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestPossibleOutcomes.test__rejected_early_separating-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestPossibleOutcomes.test__rejected_early_separating"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestPossibleOutcomes.test__rejected_early_separating-80"><a href="#TestPossibleOutcomes.test__rejected_early_separating-80"><span class="linenos">80</span></a>    <span class="k">def</span> <span class="nf">test__rejected_early_separating</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-81"><a href="#TestPossibleOutcomes.test__rejected_early_separating-81"><span class="linenos">81</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-82"><a href="#TestPossibleOutcomes.test__rejected_early_separating-82"><span class="linenos">82</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">RejectedEarlySeparatingUnsuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-83"><a href="#TestPossibleOutcomes.test__rejected_early_separating-83"><span class="linenos">83</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-84"><a href="#TestPossibleOutcomes.test__rejected_early_separating-84"><span class="linenos">84</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Separating</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-85"><a href="#TestPossibleOutcomes.test__rejected_early_separating-85"><span class="linenos">85</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">early_takeover</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-86"><a href="#TestPossibleOutcomes.test__rejected_early_separating-86"><span class="linenos">86</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-87"><a href="#TestPossibleOutcomes.test__rejected_early_separating-87"><span class="linenos">87</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test__rejected_early_separating-88"><a href="#TestPossibleOutcomes.test__rejected_early_separating-88"><span class="linenos">88</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div id="TestPossibleOutcomes.test_early_pooling" class="classattr">
+                                        <input id="TestPossibleOutcomes.test_early_pooling-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test_early_pooling</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestPossibleOutcomes.test_early_pooling-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestPossibleOutcomes.test_early_pooling"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestPossibleOutcomes.test_early_pooling-90"><a href="#TestPossibleOutcomes.test_early_pooling-90"><span class="linenos">90</span></a>    <span class="k">def</span> <span class="nf">test_early_pooling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-91"><a href="#TestPossibleOutcomes.test_early_pooling-91"><span class="linenos">91</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-92"><a href="#TestPossibleOutcomes.test_early_pooling-92"><span class="linenos">92</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">EarlyPoolingDevelopmentNotAttempted</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-93"><a href="#TestPossibleOutcomes.test_early_pooling-93"><span class="linenos">93</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-94"><a href="#TestPossibleOutcomes.test_early_pooling-94"><span class="linenos">94</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-95"><a href="#TestPossibleOutcomes.test_early_pooling-95"><span class="linenos">95</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-96"><a href="#TestPossibleOutcomes.test_early_pooling-96"><span class="linenos">96</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_early_pooling-97"><a href="#TestPossibleOutcomes.test_early_pooling-97"><span class="linenos">97</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div id="TestPossibleOutcomes.test_late_takeover" class="classattr">
+                                        <input id="TestPossibleOutcomes.test_late_takeover-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test_late_takeover</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestPossibleOutcomes.test_late_takeover-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestPossibleOutcomes.test_late_takeover"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestPossibleOutcomes.test_late_takeover-99"><a href="#TestPossibleOutcomes.test_late_takeover-99"><span class="linenos"> 99</span></a>    <span class="k">def</span> <span class="nf">test_late_takeover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-100"><a href="#TestPossibleOutcomes.test_late_takeover-100"><span class="linenos">100</span></a>        <span class="n">outcome</span><span class="p">:</span> <span class="n">Types</span><span class="o">.</span><span class="n">Outcome</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-101"><a href="#TestPossibleOutcomes.test_late_takeover-101"><span class="linenos">101</span></a>            <span class="n">Types</span><span class="o">.</span><span class="n">PossibleOutcomes</span><span class="o">.</span><span class="n">LatePoolingSuccessfulDevelopment</span><span class="o">.</span><span class="n">outcome</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-102"><a href="#TestPossibleOutcomes.test_late_takeover-102"><span class="linenos">102</span></a>        <span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-103"><a href="#TestPossibleOutcomes.test_late_takeover-103"><span class="linenos">103</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">No</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">early_bidding_type</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-104"><a href="#TestPossibleOutcomes.test_late_takeover-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_attempt</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-105"><a href="#TestPossibleOutcomes.test_late_takeover-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">outcome</span><span class="o">.</span><span class="n">development_outcome</span><span class="p">)</span>
+</span><span id="TestPossibleOutcomes.test_late_takeover-106"><a href="#TestPossibleOutcomes.test_late_takeover-106"><span class="linenos">106</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Types</span><span class="o">.</span><span class="n">Takeover</span><span class="o">.</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">outcome</span><span class="o">.</span><span class="n">late_bidding_type</span><span class="p">)</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt>unittest.case.TestCase</dt>
+                                <dd id="TestPossibleOutcomes.__init__" class="function">TestCase</dd>
+                <dd id="TestPossibleOutcomes.failureException" class="class">failureException</dd>
+                <dd id="TestPossibleOutcomes.longMessage" class="variable">longMessage</dd>
+                <dd id="TestPossibleOutcomes.maxDiff" class="variable">maxDiff</dd>
+                <dd id="TestPossibleOutcomes.addTypeEqualityFunc" class="function">addTypeEqualityFunc</dd>
+                <dd id="TestPossibleOutcomes.addCleanup" class="function">addCleanup</dd>
+                <dd id="TestPossibleOutcomes.addClassCleanup" class="function">addClassCleanup</dd>
+                <dd id="TestPossibleOutcomes.setUp" class="function">setUp</dd>
+                <dd id="TestPossibleOutcomes.tearDown" class="function">tearDown</dd>
+                <dd id="TestPossibleOutcomes.setUpClass" class="function">setUpClass</dd>
+                <dd id="TestPossibleOutcomes.tearDownClass" class="function">tearDownClass</dd>
+                <dd id="TestPossibleOutcomes.countTestCases" class="function">countTestCases</dd>
+                <dd id="TestPossibleOutcomes.defaultTestResult" class="function">defaultTestResult</dd>
+                <dd id="TestPossibleOutcomes.shortDescription" class="function">shortDescription</dd>
+                <dd id="TestPossibleOutcomes.id" class="function">id</dd>
+                <dd id="TestPossibleOutcomes.subTest" class="function">subTest</dd>
+                <dd id="TestPossibleOutcomes.run" class="function">run</dd>
+                <dd id="TestPossibleOutcomes.doCleanups" class="function">doCleanups</dd>
+                <dd id="TestPossibleOutcomes.doClassCleanups" class="function">doClassCleanups</dd>
+                <dd id="TestPossibleOutcomes.debug" class="function">debug</dd>
+                <dd id="TestPossibleOutcomes.skipTest" class="function">skipTest</dd>
+                <dd id="TestPossibleOutcomes.fail" class="function">fail</dd>
+                <dd id="TestPossibleOutcomes.assertFalse" class="function">assertFalse</dd>
+                <dd id="TestPossibleOutcomes.assertTrue" class="function">assertTrue</dd>
+                <dd id="TestPossibleOutcomes.assertRaises" class="function">assertRaises</dd>
+                <dd id="TestPossibleOutcomes.assertWarns" class="function">assertWarns</dd>
+                <dd id="TestPossibleOutcomes.assertLogs" class="function">assertLogs</dd>
+                <dd id="TestPossibleOutcomes.assertNoLogs" class="function">assertNoLogs</dd>
+                <dd id="TestPossibleOutcomes.assertEqual" class="function">assertEqual</dd>
+                <dd id="TestPossibleOutcomes.assertNotEqual" class="function">assertNotEqual</dd>
+                <dd id="TestPossibleOutcomes.assertAlmostEqual" class="function">assertAlmostEqual</dd>
+                <dd id="TestPossibleOutcomes.assertNotAlmostEqual" class="function">assertNotAlmostEqual</dd>
+                <dd id="TestPossibleOutcomes.assertSequenceEqual" class="function">assertSequenceEqual</dd>
+                <dd id="TestPossibleOutcomes.assertListEqual" class="function">assertListEqual</dd>
+                <dd id="TestPossibleOutcomes.assertTupleEqual" class="function">assertTupleEqual</dd>
+                <dd id="TestPossibleOutcomes.assertSetEqual" class="function">assertSetEqual</dd>
+                <dd id="TestPossibleOutcomes.assertIn" class="function">assertIn</dd>
+                <dd id="TestPossibleOutcomes.assertNotIn" class="function">assertNotIn</dd>
+                <dd id="TestPossibleOutcomes.assertIs" class="function">assertIs</dd>
+                <dd id="TestPossibleOutcomes.assertIsNot" class="function">assertIsNot</dd>
+                <dd id="TestPossibleOutcomes.assertDictEqual" class="function">assertDictEqual</dd>
+                <dd id="TestPossibleOutcomes.assertDictContainsSubset" class="function">assertDictContainsSubset</dd>
+                <dd id="TestPossibleOutcomes.assertCountEqual" class="function">assertCountEqual</dd>
+                <dd id="TestPossibleOutcomes.assertMultiLineEqual" class="function">assertMultiLineEqual</dd>
+                <dd id="TestPossibleOutcomes.assertLess" class="function">assertLess</dd>
+                <dd id="TestPossibleOutcomes.assertLessEqual" class="function">assertLessEqual</dd>
+                <dd id="TestPossibleOutcomes.assertGreater" class="function">assertGreater</dd>
+                <dd id="TestPossibleOutcomes.assertGreaterEqual" class="function">assertGreaterEqual</dd>
+                <dd id="TestPossibleOutcomes.assertIsNone" class="function">assertIsNone</dd>
+                <dd id="TestPossibleOutcomes.assertIsNotNone" class="function">assertIsNotNone</dd>
+                <dd id="TestPossibleOutcomes.assertIsInstance" class="function">assertIsInstance</dd>
+                <dd id="TestPossibleOutcomes.assertNotIsInstance" class="function">assertNotIsInstance</dd>
+                <dd id="TestPossibleOutcomes.assertRaisesRegex" class="function">assertRaisesRegex</dd>
+                <dd id="TestPossibleOutcomes.assertWarnsRegex" class="function">assertWarnsRegex</dd>
+                <dd id="TestPossibleOutcomes.assertRegex" class="function">assertRegex</dd>
+                <dd id="TestPossibleOutcomes.assertNotRegex" class="function">assertNotRegex</dd>
+                <dd id="TestPossibleOutcomes.failUnlessRaises" class="function">failUnlessRaises</dd>
+                <dd id="TestPossibleOutcomes.failIf" class="function">failIf</dd>
+                <dd id="TestPossibleOutcomes.assertRaisesRegexp" class="function">assertRaisesRegexp</dd>
+                <dd id="TestPossibleOutcomes.assertRegexpMatches" class="function">assertRegexpMatches</dd>
+                <dd id="TestPossibleOutcomes.assertNotRegexpMatches" class="function">assertNotRegexpMatches</dd>
+                <dd id="TestPossibleOutcomes.failUnlessEqual" class="function">failUnlessEqual</dd>
+                <dd id="TestPossibleOutcomes.assertEquals" class="function">assertEquals</dd>
+                <dd id="TestPossibleOutcomes.failIfEqual" class="function">failIfEqual</dd>
+                <dd id="TestPossibleOutcomes.assertNotEquals" class="function">assertNotEquals</dd>
+                <dd id="TestPossibleOutcomes.failUnlessAlmostEqual" class="function">failUnlessAlmostEqual</dd>
+                <dd id="TestPossibleOutcomes.assertAlmostEquals" class="function">assertAlmostEquals</dd>
+                <dd id="TestPossibleOutcomes.failIfAlmostEqual" class="function">failIfAlmostEqual</dd>
+                <dd id="TestPossibleOutcomes.assertNotAlmostEquals" class="function">assertNotAlmostEquals</dd>
+                <dd id="TestPossibleOutcomes.failUnless" class="function">failUnless</dd>
+                <dd id="TestPossibleOutcomes.assert_" class="function">assert_</dd>
 
             </div>
                                 </dl>

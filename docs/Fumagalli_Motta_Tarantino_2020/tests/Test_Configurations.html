@@ -106,6 +106,12 @@
                         <li>
                                 <a class="function" href="#TestFindParameters.test_callable_condition">test_callable_condition</a>
                         </li>
+                        <li>
+                                <a class="function" href="#TestFindParameters.test_two_conditions">test_two_conditions</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#TestFindParameters.test_two_conditions_callable">test_two_conditions_callable</a>
+                        </li>
                 </ul>
 
             </li>
@@ -280,6 +286,31 @@
 </span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
 </span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>    <span class="k">def</span> <span class="nf">test_two_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>            <span class="n">parameter_generator</span><span class="o">=</span><span class="n">Mock</span><span class="o">.</span><span class="n">mock_parameter_model_generator</span><span class="p">(</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>                <span class="n">two_conditions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">killer_acquisition</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>            <span class="p">),</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>            <span class="n">intermediate_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>            <span class="n">is_killer_acquisition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>            <span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">,</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">())</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_killer_acquisition</span><span class="p">())</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="k">def</span> <span class="nf">test_two_conditions_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>        <span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>            <span class="n">parameter_generator</span><span class="o">=</span><span class="n">Mock</span><span class="o">.</span><span class="n">mock_parameter_model_generator</span><span class="p">(</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>                <span class="n">two_conditions</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>            <span class="p">),</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>            <span class="n">laissez_faire_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>            <span class="n">callable_condition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">,</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">)</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -691,6 +722,31 @@
 </span><span id="TestFindParameters-148"><a href="#TestFindParameters-148"><span class="linenos">148</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
 </span><span id="TestFindParameters-149"><a href="#TestFindParameters-149"><span class="linenos">149</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </span><span id="TestFindParameters-150"><a href="#TestFindParameters-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
+</span><span id="TestFindParameters-151"><a href="#TestFindParameters-151"><span class="linenos">151</span></a>
+</span><span id="TestFindParameters-152"><a href="#TestFindParameters-152"><span class="linenos">152</span></a>    <span class="k">def</span> <span class="nf">test_two_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestFindParameters-153"><a href="#TestFindParameters-153"><span class="linenos">153</span></a>        <span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+</span><span id="TestFindParameters-154"><a href="#TestFindParameters-154"><span class="linenos">154</span></a>            <span class="n">parameter_generator</span><span class="o">=</span><span class="n">Mock</span><span class="o">.</span><span class="n">mock_parameter_model_generator</span><span class="p">(</span>
+</span><span id="TestFindParameters-155"><a href="#TestFindParameters-155"><span class="linenos">155</span></a>                <span class="n">two_conditions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">killer_acquisition</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="TestFindParameters-156"><a href="#TestFindParameters-156"><span class="linenos">156</span></a>            <span class="p">),</span>
+</span><span id="TestFindParameters-157"><a href="#TestFindParameters-157"><span class="linenos">157</span></a>            <span class="n">intermediate_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="TestFindParameters-158"><a href="#TestFindParameters-158"><span class="linenos">158</span></a>            <span class="n">is_killer_acquisition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="TestFindParameters-159"><a href="#TestFindParameters-159"><span class="linenos">159</span></a>            <span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">,</span>
+</span><span id="TestFindParameters-160"><a href="#TestFindParameters-160"><span class="linenos">160</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+</span><span id="TestFindParameters-161"><a href="#TestFindParameters-161"><span class="linenos">161</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="TestFindParameters-162"><a href="#TestFindParameters-162"><span class="linenos">162</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">())</span>
+</span><span id="TestFindParameters-163"><a href="#TestFindParameters-163"><span class="linenos">163</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_killer_acquisition</span><span class="p">())</span>
+</span><span id="TestFindParameters-164"><a href="#TestFindParameters-164"><span class="linenos">164</span></a>
+</span><span id="TestFindParameters-165"><a href="#TestFindParameters-165"><span class="linenos">165</span></a>    <span class="k">def</span> <span class="nf">test_two_conditions_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestFindParameters-166"><a href="#TestFindParameters-166"><span class="linenos">166</span></a>        <span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+</span><span id="TestFindParameters-167"><a href="#TestFindParameters-167"><span class="linenos">167</span></a>            <span class="n">parameter_generator</span><span class="o">=</span><span class="n">Mock</span><span class="o">.</span><span class="n">mock_parameter_model_generator</span><span class="p">(</span>
+</span><span id="TestFindParameters-168"><a href="#TestFindParameters-168"><span class="linenos">168</span></a>                <span class="n">two_conditions</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="TestFindParameters-169"><a href="#TestFindParameters-169"><span class="linenos">169</span></a>            <span class="p">),</span>
+</span><span id="TestFindParameters-170"><a href="#TestFindParameters-170"><span class="linenos">170</span></a>            <span class="n">laissez_faire_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="TestFindParameters-171"><a href="#TestFindParameters-171"><span class="linenos">171</span></a>            <span class="n">callable_condition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">,</span>
+</span><span id="TestFindParameters-172"><a href="#TestFindParameters-172"><span class="linenos">172</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+</span><span id="TestFindParameters-173"><a href="#TestFindParameters-173"><span class="linenos">173</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="TestFindParameters-174"><a href="#TestFindParameters-174"><span class="linenos">174</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">)</span>
+</span><span id="TestFindParameters-175"><a href="#TestFindParameters-175"><span class="linenos">175</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -926,6 +982,63 @@
 </span><span id="TestFindParameters.test_callable_condition-148"><a href="#TestFindParameters.test_callable_condition-148"><span class="linenos">148</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
 </span><span id="TestFindParameters.test_callable_condition-149"><a href="#TestFindParameters.test_callable_condition-149"><span class="linenos">149</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </span><span id="TestFindParameters.test_callable_condition-150"><a href="#TestFindParameters.test_callable_condition-150"><span class="linenos">150</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div id="TestFindParameters.test_two_conditions" class="classattr">
+                                        <input id="TestFindParameters.test_two_conditions-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test_two_conditions</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestFindParameters.test_two_conditions-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestFindParameters.test_two_conditions"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestFindParameters.test_two_conditions-152"><a href="#TestFindParameters.test_two_conditions-152"><span class="linenos">152</span></a>    <span class="k">def</span> <span class="nf">test_two_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestFindParameters.test_two_conditions-153"><a href="#TestFindParameters.test_two_conditions-153"><span class="linenos">153</span></a>        <span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+</span><span id="TestFindParameters.test_two_conditions-154"><a href="#TestFindParameters.test_two_conditions-154"><span class="linenos">154</span></a>            <span class="n">parameter_generator</span><span class="o">=</span><span class="n">Mock</span><span class="o">.</span><span class="n">mock_parameter_model_generator</span><span class="p">(</span>
+</span><span id="TestFindParameters.test_two_conditions-155"><a href="#TestFindParameters.test_two_conditions-155"><span class="linenos">155</span></a>                <span class="n">two_conditions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">killer_acquisition</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="TestFindParameters.test_two_conditions-156"><a href="#TestFindParameters.test_two_conditions-156"><span class="linenos">156</span></a>            <span class="p">),</span>
+</span><span id="TestFindParameters.test_two_conditions-157"><a href="#TestFindParameters.test_two_conditions-157"><span class="linenos">157</span></a>            <span class="n">intermediate_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="TestFindParameters.test_two_conditions-158"><a href="#TestFindParameters.test_two_conditions-158"><span class="linenos">158</span></a>            <span class="n">is_killer_acquisition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="TestFindParameters.test_two_conditions-159"><a href="#TestFindParameters.test_two_conditions-159"><span class="linenos">159</span></a>            <span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">,</span>
+</span><span id="TestFindParameters.test_two_conditions-160"><a href="#TestFindParameters.test_two_conditions-160"><span class="linenos">160</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+</span><span id="TestFindParameters.test_two_conditions-161"><a href="#TestFindParameters.test_two_conditions-161"><span class="linenos">161</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="TestFindParameters.test_two_conditions-162"><a href="#TestFindParameters.test_two_conditions-162"><span class="linenos">162</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_intermediate_optimal</span><span class="p">())</span>
+</span><span id="TestFindParameters.test_two_conditions-163"><a href="#TestFindParameters.test_two_conditions-163"><span class="linenos">163</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_killer_acquisition</span><span class="p">())</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
+                            <div id="TestFindParameters.test_two_conditions_callable" class="classattr">
+                                        <input id="TestFindParameters.test_two_conditions_callable-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">test_two_conditions_callable</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span>)</span>
+
+                <label class="view-source-button" for="TestFindParameters.test_two_conditions_callable-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#TestFindParameters.test_two_conditions_callable"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="TestFindParameters.test_two_conditions_callable-165"><a href="#TestFindParameters.test_two_conditions_callable-165"><span class="linenos">165</span></a>    <span class="k">def</span> <span class="nf">test_two_conditions_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-166"><a href="#TestFindParameters.test_two_conditions_callable-166"><span class="linenos">166</span></a>        <span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-167"><a href="#TestFindParameters.test_two_conditions_callable-167"><span class="linenos">167</span></a>            <span class="n">parameter_generator</span><span class="o">=</span><span class="n">Mock</span><span class="o">.</span><span class="n">mock_parameter_model_generator</span><span class="p">(</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-168"><a href="#TestFindParameters.test_two_conditions_callable-168"><span class="linenos">168</span></a>                <span class="n">two_conditions</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-169"><a href="#TestFindParameters.test_two_conditions_callable-169"><span class="linenos">169</span></a>            <span class="p">),</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-170"><a href="#TestFindParameters.test_two_conditions_callable-170"><span class="linenos">170</span></a>            <span class="n">laissez_faire_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-171"><a href="#TestFindParameters.test_two_conditions_callable-171"><span class="linenos">171</span></a>            <span class="n">callable_condition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">,</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-172"><a href="#TestFindParameters.test_two_conditions_callable-172"><span class="linenos">172</span></a>        <span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-173"><a href="#TestFindParameters.test_two_conditions_callable-173"><span class="linenos">173</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setUpModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-174"><a href="#TestFindParameters.test_two_conditions_callable-174"><span class="linenos">174</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">development_costs</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">)</span>
+</span><span id="TestFindParameters.test_two_conditions_callable-175"><a href="#TestFindParameters.test_two_conditions_callable-175"><span class="linenos">175</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">is_laissez_faire_optimal</span><span class="p">())</span>
 </span></pre></div>
 
 
