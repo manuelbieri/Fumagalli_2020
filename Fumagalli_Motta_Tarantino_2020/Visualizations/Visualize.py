@@ -120,7 +120,7 @@ class IVisualize:
 
     def _set_primary_legend(self, equal_opacity=True) -> None:
         legend = self.ax.legend(
-            bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0
+            bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0, framealpha=0
         )
         if equal_opacity:
             for entry in legend.legendHandles:

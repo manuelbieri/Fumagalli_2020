@@ -1167,6 +1167,8 @@ class OptimalMergerPolicy(MergerPolicy):
         """
         Returns whether an intermediate (with late takeovers) merger policy is feasible.
 
+        An intermediate policy, which authorizes late takeovers, is feasible if condition 5 is not satisfied.
+
         Returns
         -------
         True
