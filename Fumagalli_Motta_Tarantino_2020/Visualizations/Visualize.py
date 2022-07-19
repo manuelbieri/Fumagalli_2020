@@ -21,11 +21,10 @@ class IVisualize:
 
     COLORS: Final[list[str]] = [
         "salmon",
-        "khaki",
-        "limegreen",
+        "gold",
+        "lawngreen",
         "turquoise",
-        "thistle",
-        "pink",
+        "thistle"
     ]
     """Standard colors used in visualizations."""
     fontsize = "x-small"
