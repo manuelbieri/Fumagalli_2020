@@ -1,6 +1,6 @@
 # necessary for the package
 scipy~=1.8.1
-numpy~=1.23.0
+numpy~=1.23.1
 matplotlib~=3.5.2
 ## necessary for tests
 mockito~=1.3.3
