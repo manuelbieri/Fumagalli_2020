@@ -19,13 +19,7 @@ class IVisualize:
     with mybinder.org is not guaranteed (uses python 3.7 at the moment ).
     """
 
-    COLORS: Final[list[str]] = [
-        "salmon",
-        "gold",
-        "lawngreen",
-        "turquoise",
-        "thistle"
-    ]
+    COLORS: Final[list[str]] = ["salmon", "gold", "lawngreen", "turquoise", "thistle"]
     """Standard colors used in visualizations."""
     fontsize = "x-small"
     """Default font size for all plots."""

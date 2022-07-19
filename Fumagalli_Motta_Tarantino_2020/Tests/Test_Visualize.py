@@ -238,3 +238,6 @@ class TestVisualizeRanges(CoreVisualizationTest):
             optimal_policy=True,
             y_offset=-25,
         )
+
+    def test_label_colors_asset_range(self):
+        FMT20.AssetRange.plot_label_colors()

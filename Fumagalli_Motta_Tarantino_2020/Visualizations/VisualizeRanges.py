@@ -1,7 +1,10 @@
 from typing import Callable
 from copy import deepcopy
+import warnings
 import matplotlib.gridspec
+import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
+from matplotlib.patches import Rectangle
 
 import Fumagalli_Motta_Tarantino_2020.Models as Models
 from Fumagalli_Motta_Tarantino_2020.Models.Types import *
@@ -59,6 +62,46 @@ class AssetRange(IVisualize):
                 "opacity": opacity,
             }
         }
+
+    @staticmethod
+    def plot_label_colors(show_plot=True) -> plt.Axes:
+        """
+        Plots the colors used in the legend for asset ranges matched to the outcome.
+
+        Returns
+        -------
+        plt.Axes
+            Axis containing the plot.
+        """
+        label_colors = AssetRange._init_label_colors()
+        fig, ax = plt.subplots()
+        ax.set_axis_off()
+        height = 0.1
+        width = 0.1
+        ax.set_ylim(bottom=0, top=len(label_colors) * height)
+        ax.set_xlim(left=0, right=width * 1.05 + 0.02)
+        for i, label in enumerate(label_colors):
+            ax.text(
+                width * 1.1,
+                (i + 0.5) * height,
+                label,
+                horizontalalignment="left",
+                verticalalignment="center",
+            )
+
+            ax.add_patch(
+                Rectangle(
+                    xy=(0, i * height),
+                    width=width,
+                    height=height,
+                    facecolor=label_colors[label]["color"],
+                    alpha=label_colors[label]["opacity"],
+                )
+            )
+        fig.tight_layout()
+        if show_plot:
+            fig.show()
+        return ax
 
     def _check_thresholds(self) -> None:
         assert (
@@ -245,7 +288,7 @@ class AssetRange(IVisualize):
     def _get_label_specific_color(self, label: str) -> dict:
         if label in self._label_colors.keys():
             return self._label_colors[label]
-        return {"color": IVisualize.COLORS[5], "opacity": 1}
+        return {"color": IVisualize.COLORS[4], "opacity": 0.5}
 
     def _get_summaries(self) -> list[list[Models.OptimalMergerPolicySummary]]:
         return [self._get_outcomes_asset_range()]
