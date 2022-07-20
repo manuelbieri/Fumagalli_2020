@@ -175,6 +175,36 @@ class IVisualize:
         self.plot(**kwargs)
         self.fig.show()
 
+    @staticmethod
+    def get_model_label(m: type(FMT20.OptimalMergerPolicy)) -> str:
+        """
+        Returns a label for a given model extending Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy.
+
+        Parameters
+        ----------
+        m: type(FMT20.OptimalMergerPolicy)
+            Type of the model
+        """
+
+        def _check_type(model_to_check, type_to_check):
+            return (
+                isinstance(model_to_check, type_to_check)
+                or model_to_check == type_to_check
+            )
+
+        if _check_type(m, FMT20.OptimalMergerPolicy):
+            return "Optimal Merger Policy"
+        if _check_type(m, FMT20.ProCompetitive):
+            return "Pro-Competitive"
+        if _check_type(m, FMT20.ResourceWaste):
+            return "Resource Waste"
+        if _check_type(m, FMT20.PerfectInformation):
+            return "Perfect Information"
+        if _check_type(m, FMT20.CournotCompetition):
+            return "Cournot Competition"
+        if _check_type(m, FMT20.EquityContract):
+            return "Equity Contract"
+
     def _get_parameter_legend(self, **kwargs) -> str:
         """
         Generates a legend for the parameter values of a Fumagalli_Motta_Tarantino_2020.Models.BaseModel in latex format.

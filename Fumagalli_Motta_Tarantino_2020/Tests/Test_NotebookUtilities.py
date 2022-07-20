@@ -43,16 +43,6 @@ class TestNotebookUtilities(unittest.TestCase):
         fig = configure_two_axes()
         self.assertEqual(2, len(fig.axes))
 
-    def test_model_labels(self):
-        self.assertEqual(
-            "Optimal Merger Policy", get_model_label(FMT20.OptimalMergerPolicy)
-        )
-        self.assertEqual("Pro-Competitive", get_model_label(FMT20.ProCompetitive))
-        self.assertEqual("Resource Waste", get_model_label(FMT20.ResourceWaste))
-        self.assertEqual(
-            "Perfect Information", get_model_label(FMT20.PerfectInformation)
-        )
-
     def test_distribution_labels(self):
         self.assertEqual(
             "Normal Distribution",

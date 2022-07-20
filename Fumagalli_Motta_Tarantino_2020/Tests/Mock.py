@@ -1,17 +1,16 @@
 import unittest.mock as mock
 from mockito import when
 
-import Fumagalli_Motta_Tarantino_2020.Models as Models
-import Fumagalli_Motta_Tarantino_2020.Configurations as Configurations
+import Fumagalli_Motta_Tarantino_2020 as FMT20
 
 
 def mock_optimal_merger_policy(
     asset_threshold: float = 0.5,
     asset_threshold_late_takeover: float = -1,
     credit_constrained: bool = False,
-    policy: Models.MergerPolicies = Models.MergerPolicies.Intermediate_late_takeover_prohibited,
+    policy: FMT20.MergerPolicies = FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
     **kwargs
-) -> Models.OptimalMergerPolicy:
+) -> FMT20.OptimalMergerPolicy:
     """
     Creates a mock model of Fumagalli_Motta_Tarantino_2020.Models.OptimalMergerPolicy.
     """
@@ -40,18 +39,18 @@ def mock_optimal_merger_policy(
 
     def set_summary(
         credit_rationed=False,
-        early_bidding_type=Models.Takeover.No,
-        late_bidding_type=Models.Takeover.No,
+        early_bidding_type=FMT20.Takeover.No,
+        late_bidding_type=FMT20.Takeover.No,
         development_attempt=True,
         development_outcome=True,
         early_takeover=False,
         late_takeover=False,
         set_policy=policy,
-    ) -> Models.OptimalMergerPolicySummary:
+    ) -> FMT20.OptimalMergerPolicySummary:
         """
         Sets the returned summary for the model.
         """
-        return Models.OptimalMergerPolicySummary(
+        return FMT20.OptimalMergerPolicySummary(
             credit_rationed=credit_rationed,
             set_policy=set_policy,
             early_bidding_type=early_bidding_type,
@@ -64,7 +63,7 @@ def mock_optimal_merger_policy(
         )
 
     def summary(
-        merger_policy: Models.MergerPolicies = Models.MergerPolicies.Intermediate_late_takeover_prohibited,
+        merger_policy: FMT20.MergerPolicies = FMT20.MergerPolicies.Intermediate_late_takeover_prohibited,
     ):
         """
         Regulates the returned summaries given the asset thresholds.
@@ -74,7 +73,7 @@ def mock_optimal_merger_policy(
                 credit_rationed=True,
                 development_attempt=False,
                 development_outcome=False,
-                early_bidding_type=Models.Takeover.Separating,
+                early_bidding_type=FMT20.Takeover.Separating,
                 early_takeover=True,
                 set_policy=merger_policy,
             )
@@ -82,13 +81,13 @@ def mock_optimal_merger_policy(
             return set_summary(
                 credit_rationed=False,
                 development_outcome=False,
-                early_bidding_type=Models.Takeover.Pooling,
+                early_bidding_type=FMT20.Takeover.Pooling,
                 early_takeover=False,
                 set_policy=merger_policy,
             )
         return set_summary(set_policy=merger_policy, credit_rationed=credit_constrained)
 
-    model: Models.OptimalMergerPolicy = mock.Mock(spec=Models.OptimalMergerPolicy)
+    model: FMT20.OptimalMergerPolicy = mock.Mock(spec=FMT20.OptimalMergerPolicy)
     type(model).merger_policy = policy
     type(model).startup_assets = 3.5
     type(model).private_benefit = 0.18
@@ -123,15 +122,15 @@ def mock_optimal_merger_policy(
     type(model).asset_threshold_cdf = 0.9
     type(model).asset_distribution_threshold_unprofitable_without_late_takeover = 1
     type(model).asset_distribution_threshold_shelving_approved = 0.91
-    type(model).early_bidding_type = Models.Takeover.Separating
-    type(model).late_bidding_type = Models.Takeover.Pooling
-    model.asset_distribution = Models.Distributions.NormalDistribution
+    type(model).early_bidding_type = FMT20.Takeover.Separating
+    type(model).late_bidding_type = FMT20.Takeover.Pooling
+    model.asset_distribution = FMT20.Distributions.NormalDistribution
     model.asset_distribution_kwargs = {}
 
     set_outcome(model, **kwargs)
 
     model.get_optimal_merger_policy = (
-        lambda: Models.MergerPolicies.Intermediate_late_takeover_prohibited
+        lambda: FMT20.MergerPolicies.Intermediate_late_takeover_prohibited
     )
     model.summary = lambda: summary(merger_policy=model.merger_policy)
     return model
@@ -145,17 +144,17 @@ def mock_parameter_model_generator(
     invalid_parameter_model=False,
     callable_condition=False,
     two_conditions=False,
-) -> Configurations.ParameterModelGenerator:
+) -> FMT20.ParameterModelGenerator:
     """
     Creates a mock model of Fumagalli_Motta_Tarantino_2020.Configurations.FindConfig.ParameterModelGenerator.
     """
-    generator: Configurations.ParameterModelGenerator = mock.Mock(
-        spec=Configurations.ParameterModelGenerator
+    generator: FMT20.ParameterModelGenerator = mock.Mock(
+        spec=FMT20.ParameterModelGenerator
     )
-    config10 = Configurations.LoadParameters(10)
-    config11 = Configurations.LoadParameters(11)
-    config15 = Configurations.LoadParameters(15)
-    config16 = Configurations.LoadParameters(16)
+    config10 = FMT20.LoadParameters(10)
+    config11 = FMT20.LoadParameters(11)
+    config15 = FMT20.LoadParameters(15)
+    config16 = FMT20.LoadParameters(16)
     if strict_optimal:
         when(generator).get_parameter_model().thenReturn(config15).thenReturn(config10)
     elif intermediate_optimal:
@@ -163,18 +162,18 @@ def mock_parameter_model_generator(
     elif laissez_faire_optimal or callable_condition:
         when(generator).get_parameter_model().thenReturn(config10).thenReturn(config16)
     elif two_conditions and killer_acquisition:
-        config10.set_merger_policy(Models.MergerPolicies.Laissez_faire)
-        config11.set_merger_policy(Models.MergerPolicies.Laissez_faire)
-        config15.set_merger_policy(Models.MergerPolicies.Laissez_faire)
+        config10.set_merger_policy(FMT20.MergerPolicies.Laissez_faire)
+        config11.set_merger_policy(FMT20.MergerPolicies.Laissez_faire)
+        config15.set_merger_policy(FMT20.MergerPolicies.Laissez_faire)
         when(generator).get_parameter_model(
-            merger_policy=Models.MergerPolicies.Laissez_faire
+            merger_policy=FMT20.MergerPolicies.Laissez_faire
         ).thenReturn(config11).thenReturn(config10).thenReturn(config15)
     elif two_conditions:
         when(generator).get_parameter_model().thenReturn(config10).thenReturn(config16)
     elif killer_acquisition:
-        config10.set_merger_policy(Models.MergerPolicies.Laissez_faire)
+        config10.set_merger_policy(FMT20.MergerPolicies.Laissez_faire)
         when(generator).get_parameter_model(
-            merger_policy=Models.MergerPolicies.Laissez_faire
+            merger_policy=FMT20.MergerPolicies.Laissez_faire
         ).thenReturn(config11).thenReturn(config10)
     elif invalid_parameter_model:
         config16.adjust_parameters(development_costs=10)

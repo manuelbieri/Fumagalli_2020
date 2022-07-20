@@ -1,6 +1,5 @@
 from typing import Callable
 from copy import deepcopy
-import warnings
 import matplotlib.gridspec
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
@@ -624,9 +623,7 @@ class Overview(IVisualize):
             Containing the plots (arrange custom summary).
         """
         spec = self.fig.add_gridspec(ncols=2, nrows=2)
-        self.fig.suptitle(
-            kwargs.get("figure_title", "${\\bf Model\\thickspace Overview}$")
-        )
+        self._set_fig_title(**kwargs)
         self.timeline = self._generate_visualizer(spec[1, 0], Timeline, **kwargs)
         self.payoffs = self._generate_visualizer(spec[0, 1], Payoffs, **kwargs)
         self.range = self._generate_visualizer(
@@ -634,6 +631,12 @@ class Overview(IVisualize):
         )
         self._generate_characteristics_ax(spec[0, 0], **kwargs)
         return self.fig, self.ax
+
+    def _set_fig_title(self, **kwargs):
+        self.fig.suptitle(
+            kwargs.get("figure_title", "Model Overview"),
+            fontsize=18,
+        )
 
     def _get_merger_policy_asset_range_type(self) -> Callable:
         return (

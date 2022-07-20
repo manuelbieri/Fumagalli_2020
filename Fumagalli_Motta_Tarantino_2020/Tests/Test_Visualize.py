@@ -85,6 +85,33 @@ class CoreVisualizationTest(unittest.TestCase):
         self.setUpMock()
         self.assertRaises(NotImplementedError, FMT20.IVisualize(self.mock).plot)
 
+    def test_model_labels(self):
+        self.assertEqual(
+            "Optimal Merger Policy",
+            FMT20.IVisualize.get_model_label(FMT20.OptimalMergerPolicy),
+        )
+        self.assertEqual(
+            "Optimal Merger Policy",
+            FMT20.IVisualize.get_model_label(FMT20.OptimalMergerPolicy()),
+        )
+        self.assertEqual(
+            "Pro-Competitive", FMT20.IVisualize.get_model_label(FMT20.ProCompetitive)
+        )
+        self.assertEqual(
+            "Resource Waste", FMT20.IVisualize.get_model_label(FMT20.ResourceWaste)
+        )
+        self.assertEqual(
+            "Perfect Information",
+            FMT20.IVisualize.get_model_label(FMT20.PerfectInformation),
+        )
+        self.assertEqual(
+            "Equity Contract", FMT20.IVisualize.get_model_label(FMT20.EquityContract)
+        )
+        self.assertEqual(
+            "Cournot Competition",
+            FMT20.IVisualize.get_model_label(FMT20.CournotCompetition),
+        )
+
 
 class TestVisualize(CoreVisualizationTest):
     """

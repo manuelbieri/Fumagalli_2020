@@ -85,19 +85,8 @@ def _get_model(
     )
 
 
-def get_model_label(m: type(FMT20.OptimalMergerPolicy)) -> str:
-    if m == FMT20.OptimalMergerPolicy:
-        return "Optimal Merger Policy"
-    if m == FMT20.ProCompetitive:
-        return "Pro-Competitive"
-    if m == FMT20.ResourceWaste:
-        return "Resource Waste"
-    if m == FMT20.PerfectInformation:
-        return "Perfect Information"
-
-
 def get_distribution_labels(
-    distribution: FMT20.Distributions.NormalDistribution,
+    distribution: type(FMT20.Distributions.NormalDistribution),
 ) -> str:
     if distribution == FMT20.Distributions.NormalDistribution:
         return "Normal Distribution"
@@ -110,7 +99,7 @@ def get_configurations() -> list[str]:
     for i in range(0, 60):
         try:
             m = get_model_by_id(i)
-            output.append(f"{i} - {get_model_label(type(m))}")
+            output.append(f"{i} - {FMT20.IVisualize.get_model_label(type(m))}")
         except FMT20.IDNotAvailableError:
             pass
     return output
