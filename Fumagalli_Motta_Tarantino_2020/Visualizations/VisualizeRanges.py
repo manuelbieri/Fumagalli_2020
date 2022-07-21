@@ -42,7 +42,8 @@ class AssetRange(IVisualize):
             (o.EarlyPoolingSuccessfulDevelopment, 3, vis_success),
             (o.EarlyPoolingUnsuccessfulDevelopment, 3, vis_fail),
             (o.EarlyPoolingDevelopmentNotAttempted, 3, vis_no_att),
-            (o.LatePoolingSuccessfulDevelopment, 4, vis_success),
+            (o.LatePooling, 4, vis_success),
+            (o.LatePoolingRejectedEarlySeparating, 4, vis_fail),
         ]:
             d.update(
                 AssetRange._init_label_color(

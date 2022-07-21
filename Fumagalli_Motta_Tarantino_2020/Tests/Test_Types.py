@@ -96,9 +96,7 @@ class TestPossibleOutcomes(unittest.TestCase):
         self.assertEqual(Types.Takeover.No, outcome.late_bidding_type)
 
     def test_late_takeover(self):
-        outcome: Types.Outcome = (
-            Types.PossibleOutcomes.LatePoolingSuccessfulDevelopment.outcome
-        )
+        outcome: Types.Outcome = Types.PossibleOutcomes.LatePooling.outcome
         self.assertEqual(Types.Takeover.No, outcome.early_bidding_type)
         self.assertTrue(outcome.development_attempt)
         self.assertTrue(outcome.development_outcome)

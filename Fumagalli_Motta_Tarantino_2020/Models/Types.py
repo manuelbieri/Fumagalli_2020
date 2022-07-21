@@ -195,8 +195,10 @@ class PossibleOutcomes(Enum):
         False,
     )
     """Neither an early or late takeover occurs and the development is successful."""
+
     NoTakeoversFailedDevelopment = (Takeover.No, False, True, False, Takeover.No, False)
     """Neither an early or late takeover occurs and the development is unsuccessful."""
+
     NoTakeoversDevelopmentNotAttempted = (
         Takeover.No,
         False,
@@ -206,6 +208,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """Neither an early or late takeover occurs and the development is not attempted."""
+
     RejectedEarlySeparatingSuccessfulDevelopment = (
         Takeover.Separating,
         False,
@@ -215,6 +218,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early separating bid is rejected by the start-up and the development is successful."""
+
     RejectedEarlySeparatingUnsuccessfulDevelopment = (
         Takeover.Separating,
         False,
@@ -224,6 +228,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early separating bid is rejected by the start-up and the development is unsuccessful."""
+
     EarlySeparatingSuccessfulDevelopment = (
         Takeover.Separating,
         True,
@@ -233,6 +238,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early separating bid is accepted by the start-up and the development is successful."""
+
     EarlySeparatingUnsuccessfulDevelopment = (
         Takeover.Separating,
         True,
@@ -242,6 +248,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early separating bid is accepted by the start-up and the development is unsuccessful."""
+
     EarlySeparatingDevelopmentNotAttempted = (
         Takeover.Separating,
         True,
@@ -251,6 +258,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early separating bid is accepted by the start-up and the development is not attempted."""
+
     EarlyPoolingSuccessfulDevelopment = (
         Takeover.Pooling,
         True,
@@ -260,6 +268,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early pooling bid is accepted by the start-up and the development is successful."""
+
     EarlyPoolingUnsuccessfulDevelopment = (
         Takeover.Pooling,
         True,
@@ -269,6 +278,7 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early pooling bid is accepted by the start-up and the development is unsuccessful."""
+
     EarlyPoolingDevelopmentNotAttempted = (
         Takeover.Pooling,
         True,
@@ -278,7 +288,8 @@ class PossibleOutcomes(Enum):
         False,
     )
     """An early pooling bid is accepted by the start-up and the development is not attempted."""
-    LatePoolingSuccessfulDevelopment = (
+
+    LatePooling = (
         Takeover.No,
         False,
         True,
@@ -287,3 +298,13 @@ class PossibleOutcomes(Enum):
         True,
     )
     """A late pooling bid is accepted by the start-up after a successful development."""
+
+    LatePoolingRejectedEarlySeparating = (
+        Takeover.Separating,
+        False,
+        True,
+        True,
+        Takeover.Pooling,
+        True,
+    )
+    """An early separating bid is rejected by the start-up and the development is successful with subsequent late takeover."""
