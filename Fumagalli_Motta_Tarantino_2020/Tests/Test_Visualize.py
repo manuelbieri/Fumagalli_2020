@@ -236,6 +236,12 @@ class TestVisualizeRanges(CoreVisualizationTest):
         self.visualizer.set_model(mock2)
         self.assertEqual(3, len(self.visualizer._thresholds))
 
+    def test_reset_startup_assets(self):
+        self.setUpMock()
+        original_assets = self.mock.startup_assets
+        FMT20.AssetRange(model=self.mock).plot()
+        self.assertEqual(original_assets, self.mock.startup_assets)
+
     def test_outcomes_merger_policies(self):
         self.setUpMock(
             asset_threshold=1.2815515655446004,
@@ -265,6 +271,12 @@ class TestVisualizeRanges(CoreVisualizationTest):
             optimal_policy=True,
             y_offset=-25,
         )
+
+    def test_reset_merger_policy(self):
+        self.setUpMock()
+        original_policy = self.mock.merger_policy
+        FMT20.MergerPoliciesAssetRange(model=self.mock).plot()
+        self.assertEqual(original_policy, self.mock.merger_policy)
 
     def test_label_colors_asset_range(self):
         FMT20.AssetRange.plot_label_colors()

@@ -125,10 +125,12 @@ class AssetRange(IVisualize):
         (list[Fumagalli_Motta_Tarantino_2020.FMT20.ThresholdItem], list[Fumagalli_Motta_Tarantino_2020.FMT20.OptimalMergerPolicySummary])
             List containing the essential asset thresholds in the model and list containing the summaries of the outcomes of the model.
         """
+        original_assets = self.model.startup_assets
         summaries: list[Models.OptimalMergerPolicySummary] = []
         for i in range(len(self._thresholds) - 1):
             self._set_model_startup_assets(self._thresholds[i], self._thresholds[i + 1])
             summaries.append(self.model.summary())
+        self.model.startup_assets = original_assets
         return summaries
 
     def _set_model_startup_assets(
@@ -219,12 +221,14 @@ class AssetRange(IVisualize):
         self.ax.tick_params(
             which="minor",
             bottom=False,
-            top=False,
+            top=True,
             labelbottom=False,
             labeltop=True,
             axis="x",
+            pad=0,
         )
-        self.ax.tick_params(which="both", bottom=False, top=False, length=6, axis="x")
+        self.ax.tick_params(which="major", pad=2, axis="x")
+        self.ax.tick_params(which="both", length=2, axis="x")
 
     def _set_x_labels(self, x_labels: list[str]) -> None:
         self.ax.set_xticklabels(x_labels[::2], fontsize=IVisualize.fontsize)
@@ -464,6 +468,7 @@ class MergerPoliciesAssetRange(AssetRange):
     def _get_outcomes_different_merger_policies(
         self,
     ) -> list[list[Models.OptimalMergerPolicySummary]]:
+        original_policy = self.model.merger_policy
         outcomes: list[list[Models.OptimalMergerPolicySummary]] = []
         for merger_policy in Models.MergerPolicies:
             try:
@@ -471,6 +476,7 @@ class MergerPoliciesAssetRange(AssetRange):
                 outcomes.append(self._get_outcomes_asset_range())
             except Models.Exceptions.MergerPolicyNotAvailable:
                 pass
+        self.model.merger_policy = original_policy
         return outcomes
 
     def _get_summaries(self) -> list[list[Models.OptimalMergerPolicySummary]]:

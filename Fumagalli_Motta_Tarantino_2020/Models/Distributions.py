@@ -55,7 +55,7 @@ class UniformDistribution:
 
     Parameters for the distribution:
     - loc: start of distribution
-    - scale: difference added to the start of the beginning of the distribution (-> defining the end of the distribution)
+    - scale: difference added to the start of the beginning of the distribution (-> defines the end of the distribution)
     """
 
     @staticmethod

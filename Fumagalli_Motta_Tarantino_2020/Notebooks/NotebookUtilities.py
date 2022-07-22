@@ -12,14 +12,15 @@ def configure_two_axes(
     c2: int = 2,
     v1=FMT20.MergerPoliciesAssetRange,
     v2=FMT20.MergerPoliciesAssetRange,
+    figsize=(10, 4),
     **kwargs,
 ) -> plt.Figure:
     """
     Creates a figure with two subplots in a row.
     """
-    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
+    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=figsize)
     fig.suptitle(main, fontweight="bold", fontsize="x-large")
-    fig.supylabel(kwargs.get("sub_x_label", "Merger Policy"))
+    fig.supylabel(kwargs.get("sub_y_label", "Merger Policy"))
     m1, m2 = _get_model(m1, m2, c1, c2, **kwargs)
     v1(model=m1, ax=ax1).plot(**get_plot_kwargs(title=sub1, **kwargs))
     v2(model=m2, ax=ax2).plot(**get_plot_kwargs(title=sub2, **kwargs))
@@ -39,7 +40,7 @@ def get_plot_kwargs(title: str, **kwargs):
 
 
 def get_model_by_id(
-    c: int, prefered_type=FMT20.OptimalMergerPolicy, **kwargs
+    c: int, preferred_type=FMT20.OptimalMergerPolicy, **kwargs
 ) -> FMT20.OptimalMergerPolicy:
     """
     Returns a valid model from a preset configuration, which is identified by an integer id.
@@ -47,7 +48,7 @@ def get_model_by_id(
     p = FMT20.LoadParameters(config_id=c)
     p.set_merger_policy(kwargs.get("policy", FMT20.MergerPolicies.Strict))
     try:
-        return _get_model_by_type(prefered_type, **p(), **kwargs)
+        return _get_model_by_type(preferred_type, **p(), **kwargs)
     except AssertionError:
         try:
             return _get_model_by_type(FMT20.ProCompetitive, **p(), **kwargs)
@@ -86,12 +87,12 @@ def _get_model(
 
 
 def get_distribution_labels(
-    distribution: type(FMT20.Distributions.NormalDistribution),
+    distribution: type(FMT20.Distributions.NormalDistribution), long_label=False
 ) -> str:
     if distribution == FMT20.Distributions.NormalDistribution:
-        return "Normal Distribution"
+        return "Normal" + (" Distribution" if long_label else "")
     if distribution == FMT20.Distributions.UniformDistribution:
-        return "Uniform Distribution"
+        return "Uniform" + (" Distribution" if long_label else "")
 
 
 def get_configurations() -> list[str]:

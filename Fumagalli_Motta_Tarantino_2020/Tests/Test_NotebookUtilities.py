@@ -20,7 +20,7 @@ class TestNotebookUtilities(unittest.TestCase):
         self.assertEqual(FMT20.ResourceWaste, type(m))
 
     def test_get_model_by_id_custom_type(self):
-        m = get_model_by_id(51, prefered_type=FMT20.PerfectInformation)
+        m = get_model_by_id(51, preferred_type=FMT20.PerfectInformation)
         self.assertEqual(FMT20.PerfectInformation, type(m))
 
     def test_configure_axes_first_model_invalid(self):
@@ -46,10 +46,12 @@ class TestNotebookUtilities(unittest.TestCase):
     def test_distribution_labels(self):
         self.assertEqual(
             "Normal Distribution",
-            get_distribution_labels(FMT20.Distributions.NormalDistribution),
+            get_distribution_labels(
+                FMT20.Distributions.NormalDistribution, long_label=True
+            ),
         )
         self.assertEqual(
-            "Uniform Distribution",
+            "Uniform",
             get_distribution_labels(FMT20.Distributions.UniformDistribution),
         )
 

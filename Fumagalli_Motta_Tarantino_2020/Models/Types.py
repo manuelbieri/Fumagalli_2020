@@ -8,7 +8,10 @@ class MergerPolicies(Enum):
     """
 
     Strict = "Strict"
-    """The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total welfare."""
+    """
+    The AA authorises only takeovers that, at the moment in which they are reviewed, are expected to increase total 
+    welfare.
+    """
     Intermediate_late_takeover_prohibited = "Intermediate (late takeover prohibited)"
     """The AA blocks late takeovers, but is more lenient with early takeovers."""
     Intermediate_late_takeover_allowed = "Intermediate (late takeover allowed)"
@@ -54,8 +57,10 @@ class MergerPolicies(Enum):
         """
         return (
             f"{MergerPolicies.Strict.abbreviation()}: Strict\n"
-            f"{MergerPolicies.Intermediate_late_takeover_prohibited.abbreviation()}: Intermediate (late takeover prohibited)\n"
-            f"{MergerPolicies.Intermediate_late_takeover_allowed.abbreviation()}: Intermediate (late takeover allowed)\n"
+            f"{MergerPolicies.Intermediate_late_takeover_prohibited.abbreviation()}:"
+            f" Intermediate (late takeover prohibited)\n"
+            f"{MergerPolicies.Intermediate_late_takeover_allowed.abbreviation()}:"
+            f" Intermediate (late takeover allowed)\n"
             f"{MergerPolicies.Laissez_faire.abbreviation()}: Laissez-faire"
         )
 
@@ -70,7 +75,10 @@ class Takeover(Enum):
     Separating = "Separating bid"
     """The incumbent offers a low takeover price targeting only the credit-rationed start-ups."""
     Pooling = "Pooling bid"
-    """The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of own assets."""
+    """
+    The incumbent offers a high takeover price such that a start-up would always accept, irrespective of the amount of 
+    its own assets.
+    """
 
     def abbreviation(self) -> str:
         """
@@ -307,4 +315,6 @@ class PossibleOutcomes(Enum):
         Takeover.Pooling,
         True,
     )
-    """An early separating bid is rejected by the start-up and the development is successful with subsequent late takeover."""
+    """
+    An early separating bid is rejected by the start-up and the development is successful with subsequent late takeover.
+    """
