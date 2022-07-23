@@ -1,5 +1,62 @@
 ## Project Structure
 
+```
+.github
+   |-- workflows
+   |   |-- Black.yml  # Checks the code style for errors
+   |   |-- CodeCov.yml  # Pushes the latest CI results to codecov.io
+   |   |-- PyPI.yml  # Publishes releases automatically on PyPI
+   |   |-- codeql-analysis.yml  # Checks the code for weaknesses
+Fumagalli_Motta_Tarantino_2020  # Package as published on PyPI
+   |-- Configurations  # Package to load preset configurations
+   |-- Models
+   |   |-- Base.py  # Provides the implementation of the base model
+   |   |-- BaseExtended.py  # CournotCompetition, EquityContract and PerfectInformation
+   |   |-- Distributions.py  # Provides a uniform and normal distribution
+   |   |-- Exceptions.py  # Provides useful custom exceptions
+   |   |-- Extension.py  # ProCompetitive and ResourceWaste
+   |   |-- README.md
+   |   |-- Types.py  # Provides Enum (merger policies and bidding types) and dataclasses
+   |   |-- __init__.py
+   |-- Notebooks
+   |   |-- Analysis.ipynb  # Contains an analysis of the models
+   |   |-- Configurations.ipynb  # Plots all available configurations
+   |   |-- Figures.ipynb  # Generates all figures used in thesis
+   |   |-- Interactive.ipynb  # Interactive use of visualizations
+   |   |-- NotebookUtilities.py  # Functions used in Notebooks
+   |   |-- README.md
+   |   |-- Tutorial.ipynb  # Contains a tutorial for the package
+   |   |-- __init__.py
+   |-- Project.py  # Contains information about the project
+   |-- Tests  # Test package, which tests all classes in the main package
+   |-- Visualizations
+   |   |-- README.md
+   |   |-- Visualize.py  # Provides visualization interface and Timeline and payoff plots
+   |   |-- VisualizeRanges.py  # Provides plots for ranges and an overview plot
+   |   |-- __init__.py
+   |-- __init__.py
+assets  # Additional ressources regarding the code
+   |-- Structure  # Contains informations about the project and code structure
+   |   |-- README.md
+   |   |-- class_diagram.drawio  # UML class diagram
+   |   |-- tree.sh  # Generates this tree of the project structure
+   |-- code style  # Scripts for automatic check and enforcement of code style
+   |   |-- check_black.sh
+   |   |-- run_black.sh
+   |-- visual  # Contains graphics
+   |   |-- class_diagram.svg
+   |   |-- logo.svg
+docs  # Automatically generated documentation page with pdoc
+   |-- build.sh
+CITATION.cff  # Citation of the repository
+Extension of Fumagalli et al (2020).pdf
+Fumagalli et al (2020) - Shelving or developing.pdf
+LICENSE  # MIT
+README.md  # Introduction to the repository
+requirements.txt  # Dependcies for the repository
+setup.py  # Setup script for publication on PyPI
+```
+
 Build the folder structure with the following command (or execute `assets/Structure/tree.sh`):
 
 ```bash
@@ -8,55 +65,6 @@ git tree
 ```
 
 This command just works for Git - repositories and not for folder structures in general.
-
-
-This is the annotated folder structure:
-```
-.github
-   |-- workflows
-   |   |-- Black.yml  # Checks the code style on errors
-   |   |-- CodeCov.yml  # Pushes the newest CI results to codecov.io
-   |   |-- PyPI.yml  # Publishes releases automatically on PyPI
-   |   |-- codeql-analysis.yml  # Checks for weaknesses in code
-Fumagalli_Motta_Tarantino_2020  # Package as published on PyPI
-   |-- Configurations  # Package to load preset configurations
-   |-- Notebooks
-   |   |-- Analysis.ipynb  # Contains a narrative analysis of the models
-   |   |-- Configurations.ipynb  # Plots all preset configurations
-   |   |-- Figures.ipynb  # Generates all figures used in thesis
-   |   |-- Tutorial.ipynb  # Contains a tutorial for the package
-   |   |-- __init__.py
-   |-- tests  # Test package, which tests all classes in the main package
-   |-- AdditionalModels.py  # Models: CournotCompetition, EquityContract and PerfectInformation
-   |-- Distributions.py  # Provides a uniform and normal distribution (respective their cumulative function and inverse)
-   |-- Exceptions.py  # Provides useful custom exceptions
-   |-- ExtensionModels.py  # Models: ProCompetitive and ResourceWaste
-   |-- Models.py  # Provides the implementation of the base model
-   |-- Project.py  # Contains information about the project
-   |-- Types.py  # Provides Enum (merger policies and bidding types) and dataclasses
-   |-- Visualize.py  # Provides visualization interface and Timeline and payoff plots
-   |-- VisualizeRanges.py  # Provides plots for ranges and an overview plot
-   |-- __init__.py
-assets  # Additional ressources regarding the code
-   |-- Structure  # Contains informations about the project and code structure
-   |   |-- README.md  # This file
-   |   |-- class_diagram.drawio  # UML class diagram
-   |   |-- tree.sh  # Generates this tree of the project structure
-   |-- code style  # Bash scripts for automatic check and enforcement of code style
-   |   |-- check_black.sh
-   |   |-- run_black.sh
-   |-- visual  # Contains graphics
-   |   |-- class_diagram.svg
-   |   |-- logo.svg
-docs  # Contains the files for the documentation page (automatically generated with pdoc)
-   |-- build.sh  # Bash script for automatic build of documentation
-CITATION.cff  # Citation of the repository
-Fumagalli et al (2020) - Shelving or developing The Aquisition of potential competitors under financial constraints.pdf
-LICENSE  # MIT
-README.md  # Introduction to the repository
-requirements.txt  # Dependcies for the repository
-setup.py  # Setup script for publication on PyPI
-```
 
 ## Class diagram
 
