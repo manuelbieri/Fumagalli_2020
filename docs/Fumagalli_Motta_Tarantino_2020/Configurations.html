@@ -51,6 +51,7 @@
   <ul>
     <li><a href="#how-to-use">How to use</a></li>
     <li><a href="#available-configurations">Available Configurations</a></li>
+    <li><a href="#find-configuration">Find Configuration</a></li>
   </ul></li>
 </ul>
 
@@ -229,6 +230,25 @@
 </ul>
 
 <p>Find the full set of configurations and their visualization in Notebooks/Configurations.ipynb.</p>
+
+<h2 id="find-configuration">Find Configuration</h2>
+
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
+
+<span class="c1"># Find the configuration</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">RandomConfig</span><span class="p">(</span>
+    <span class="n">merger_policy</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">MergerPolicies</span><span class="o">.</span><span class="n">Laissez_faire</span><span class="p">,</span>
+    <span class="n">is_killer_acquisition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">intermediate_optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">find_config</span><span class="p">()</span>
+
+<span class="c1"># Use the configuration to set up a model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span>
+    <span class="o">**</span><span class="n">config</span><span class="p">(),</span> <span class="n">asset_distribution</span><span class="o">=</span><span class="n">FMT20</span><span class="o">.</span><span class="n">Distributions</span><span class="o">.</span><span class="n">UniformDistribution</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>See <a href="Configurations/FindConfig.html#RandomConfig">Fumagalli_Motta_Tarantino_2020.Configurations.FindConfig.RandomConfig</a> for the available settings.</p>
 </div>
 
                         <input id="Configurations-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">

@@ -28,6 +28,9 @@ def configure_two_axes(
 
 
 def get_plot_kwargs(title: str, **kwargs):
+    """
+    Returns a standardized set of kwargs for the plots.
+    """
     return {
         "title": title,
         "legend": kwargs.get("legend", False),
@@ -89,6 +92,9 @@ def _get_model(
 def get_distribution_labels(
     distribution: type(FMT20.Distributions.NormalDistribution), long_label=False
 ) -> str:
+    """
+    Returns labels for the available distributions.
+    """
     if distribution == FMT20.Distributions.NormalDistribution:
         return "Normal" + (" Distribution" if long_label else "")
     if distribution == FMT20.Distributions.UniformDistribution:
@@ -96,6 +102,9 @@ def get_distribution_labels(
 
 
 def get_configurations() -> list[str]:
+    """
+    Returns a list with all available configurations and their labels.
+    """
     output = []
     for i in range(0, 60):
         try:

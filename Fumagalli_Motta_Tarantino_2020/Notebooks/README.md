@@ -7,5 +7,7 @@ Includes the following notebooks:
   - Plots all preset configurations
 - [Figures.ipynb](https://github.com/manuelbieri/Fumagalli_2020/blob/master/Fumagalli_Motta_Tarantino_2020/Notebooks/Figures.ipynb)
   - Generates all figures used in thesis
+- [Interactive.ipynb](https://github.com/manuelbieri/Fumagalli_2020/blob/master/Fumagalli_Motta_Tarantino_2020/Notebooks/Interactive.ipynb)
+  - Interactive use of the visualizations
 - [Tutorial.ipynb](https://github.com/manuelbieri/Fumagalli_2020/blob/master/Fumagalli_Motta_Tarantino_2020/Notebooks/Tutorial.ipynb)
   - Contains a tutorial for the package

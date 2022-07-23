@@ -46,3 +46,23 @@ Further ranges of configurations are:
 - 50-59: Configurations for Fumagalli_Motta_Tarantino_2020.AdditionalModels.PerfectInformation used in Figures.ipynb and tests
 
 Find the full set of configurations and their visualization in Notebooks/Configurations.ipynb.
+
+## Find Configuration
+
+```python
+import Fumagalli_Motta_Tarantino_2020 as FMT20
+
+# Find the configuration
+config = FMT20.RandomConfig(
+    merger_policy=FMT20.MergerPolicies.Laissez_faire,
+    is_killer_acquisition=True,
+    intermediate_optimal=True,
+).find_config()
+
+# Use the configuration to set up a model
+model = FMT20.OptimalMergerPolicy(
+    **config(), asset_distribution=FMT20.Distributions.UniformDistribution
+)
+```
+See Fumagalli_Motta_Tarantino_2020.Configurations.FindConfig.RandomConfig for the available settings.
+

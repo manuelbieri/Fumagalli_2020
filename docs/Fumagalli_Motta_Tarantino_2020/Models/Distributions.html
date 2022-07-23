@@ -152,13 +152,13 @@
 </span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>
 </span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="k">class</span> <span class="nc">UniformDistribution</span><span class="p">:</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="k">class</span> <span class="nc">UniformDistribution</span><span class="p">(</span><span class="n">NormalDistribution</span><span class="p">):</span>
 </span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>    <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a><span class="sd">    Represents a uniform distribution function ($U_{[loc, loc+scale]}$).</span>
 </span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>
 </span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a><span class="sd">    Parameters for the distribution:</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a><span class="sd">    - loc: start of distribution</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a><span class="sd">    - scale: difference added to the start of the beginning of the distribution (-&gt; defining the end of the distribution)</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a><span class="sd">    - scale: difference added to the start of the beginning of the distribution (-&gt; defines the end of the distribution)</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>
 </span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>    <span class="nd">@staticmethod</span>
@@ -365,19 +365,19 @@ Value to get the corresponding value of the inverse cumulative distribution func
 <div class="attr class">
             
     <span class="def">class</span>
-    <span class="name">UniformDistribution</span>:
+    <span class="name">UniformDistribution</span><wbr>(<span class="base"><a href="#NormalDistribution">NormalDistribution</a></span>):
 
                 <label class="view-source-button" for="UniformDistribution-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#UniformDistribution"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="UniformDistribution-53"><a href="#UniformDistribution-53"><span class="linenos">53</span></a><span class="k">class</span> <span class="nc">UniformDistribution</span><span class="p">:</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="UniformDistribution-53"><a href="#UniformDistribution-53"><span class="linenos">53</span></a><span class="k">class</span> <span class="nc">UniformDistribution</span><span class="p">(</span><span class="n">NormalDistribution</span><span class="p">):</span>
 </span><span id="UniformDistribution-54"><a href="#UniformDistribution-54"><span class="linenos">54</span></a>    <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="UniformDistribution-55"><a href="#UniformDistribution-55"><span class="linenos">55</span></a><span class="sd">    Represents a uniform distribution function ($U_{[loc, loc+scale]}$).</span>
 </span><span id="UniformDistribution-56"><a href="#UniformDistribution-56"><span class="linenos">56</span></a>
 </span><span id="UniformDistribution-57"><a href="#UniformDistribution-57"><span class="linenos">57</span></a><span class="sd">    Parameters for the distribution:</span>
 </span><span id="UniformDistribution-58"><a href="#UniformDistribution-58"><span class="linenos">58</span></a><span class="sd">    - loc: start of distribution</span>
-</span><span id="UniformDistribution-59"><a href="#UniformDistribution-59"><span class="linenos">59</span></a><span class="sd">    - scale: difference added to the start of the beginning of the distribution (-&gt; defining the end of the distribution)</span>
+</span><span id="UniformDistribution-59"><a href="#UniformDistribution-59"><span class="linenos">59</span></a><span class="sd">    - scale: difference added to the start of the beginning of the distribution (-&gt; defines the end of the distribution)</span>
 </span><span id="UniformDistribution-60"><a href="#UniformDistribution-60"><span class="linenos">60</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="UniformDistribution-61"><a href="#UniformDistribution-61"><span class="linenos">61</span></a>
 </span><span id="UniformDistribution-62"><a href="#UniformDistribution-62"><span class="linenos">62</span></a>    <span class="nd">@staticmethod</span>
@@ -396,7 +396,7 @@ Value to get the corresponding value of the inverse cumulative distribution func
 
 <ul>
 <li>loc: start of distribution</li>
-<li>scale: difference added to the start of the beginning of the distribution (-> defining the end of the distribution)</li>
+<li>scale: difference added to the start of the beginning of the distribution (-> defines the end of the distribution)</li>
 </ul>
 </div>
 
@@ -431,7 +431,23 @@ Value to get the corresponding value of the inverse cumulative distribution func
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Returns the value of the cumulative distribution function.</p>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>x</strong> (float):
+Value to get the corresponding value of the cumulative distribution function.</li>
+<li><strong>kwargs</strong>: Parameters for the distribution (-> see class documentation)</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>float</strong>: Value of the cumulative distribution function.</li>
+</ul>
+</div>
+
 
                             </div>
                             <div id="UniformDistribution.inverse_cumulative" class="classattr">
@@ -452,7 +468,23 @@ Value to get the corresponding value of the inverse cumulative distribution func
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Returns the value of the inverse cumulative distribution function (percent point function).</p>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>q</strong> (float):
+Value to get the corresponding value of the inverse cumulative distribution function.</li>
+<li><strong>kwargs</strong>: Parameters for the distribution (-> see class documentation)</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>float</strong>: Value of the inverse cumulative distribution function.</li>
+</ul>
+</div>
+
 
                             </div>
                 </section>
