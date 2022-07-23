@@ -457,7 +457,7 @@ class Timeline(IVisualize):
     def __init__(self, model: FMT20.OptimalMergerPolicy, **kwargs):
         super(Timeline, self).__init__(model, **kwargs)
         self.high_stem = 0.6
-        self.low_stem = 0.4
+        self.low_stem = 0.3
         self.stem_levels = [
             -self.high_stem,
             self.high_stem,
