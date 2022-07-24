@@ -227,7 +227,7 @@ class AssetRange(IVisualize):
             axis="x",
             pad=0,
         )
-        self.ax.tick_params(which="major", pad=3, axis="x")
+        self.ax.tick_params(which="major", top=False, pad=3, axis="x")
         self.ax.tick_params(which="both", length=2, axis="x")
 
     def _set_x_labels(self, x_labels: list[str]) -> None:
