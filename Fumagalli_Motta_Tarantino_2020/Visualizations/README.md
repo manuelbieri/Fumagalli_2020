@@ -16,7 +16,7 @@ visualizer.show()
 # exceptional use for Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation
 model = FMT20.PerfectInformation()
 
-# for the outcome for different merger policies over range of assets
+# for the outcome for different merger policies over a range of assets
 visualizer_perfect_information = FMT20.MergerPoliciesAssetRangePerfectInformation(model)
 visualizer_perfect_information.show()
 ```

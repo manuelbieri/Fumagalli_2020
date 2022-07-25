@@ -69,9 +69,3 @@ This command just works for Git - repositories and not for folder structures in 
 ## Class diagram
 
 ![Class diagram](../visual/class_diagram.svg) (If the class diagram is not shown, follow this [link](https://github.com/manuelbieri/Fumagalli_2020/blob/master/assets/visual/class_diagram.svg))
-
-
-## Code style
-
-As default code style [Black](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html) is used and
-automatically checked and enforced by GitHub - workflows.
