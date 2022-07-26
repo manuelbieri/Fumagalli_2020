@@ -15,7 +15,7 @@ Additionally, extensions from the models are explained in [Extension of Fumagall
 
 ## Installation
 
-You can either [install the package](#Package) (functionality only) or [download the whole repository](#Repository) (with docs and assets).
+You can either [install the package](#Package) (functionality only) or [download the whole repository](#Repository) (with documentation and assets).
 
 <h3 id="Package">Package</h3>
 
@@ -29,7 +29,7 @@ Or install this package directly from source:
 ```shell
 $ pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
 ```
-The necessary dependencies are automatically during the installation.
+The necessary dependencies are automatically installed during the setup.
 
 <h3 id="Repository">Repository</h3>
 
@@ -61,10 +61,10 @@ print(model.summary())
 # plot a model overview
 FMT20.Overview(model).show()
 
-# open API-documentation
+# open the API-documentation
 FMT20.docs()
 
-# open GitHub-repository
+# open the GitHub-repository
 FMT20.repo()
 ```
 
@@ -102,8 +102,8 @@ For explanations about the tests, have a look at Fumagalli_Motta_Tarantino_2020.
 
 ## Code style
 
-As default code style [Black](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html) is used and
-automatically checked and enforced by GitHub - workflows. To run black in the terminal use the following command or run `assets/code style/run_black.sh`:
+As the default code style [Black](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html) is used and
+automatically checked and enforced by GitHub - workflows. To run black in the terminal either run `assets/code style/run_black.sh` or use the following command:
 ```shell
 $ python -m black ./Fumagalli_Motta_Tarantino_2020
 ```
@@ -113,7 +113,7 @@ $ python -m black ./../../Fumagalli_Motta_Tarantino_2020 --diff
 ```
 
 <h2 id="docs">Generate Documentation</h2>
-Generate the documentation with the following command:
+Generate the documentation with the following command (as always be aware of the working directory):
 
 ```shell
 $ pdoc -o docs Fumagalli_Motta_Tarantino_2020 --docformat numpy --math

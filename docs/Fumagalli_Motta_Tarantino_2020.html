@@ -102,7 +102,7 @@ Additionally, extensions from the models are explained in <a href="https://githu
 
 <h2 id="installation">Installation</h2>
 
-<p>You can either <a href="#Package">install the package</a> (functionality only) or <a href="#Repository">download the whole repository</a> (with docs and assets).</p>
+<p>You can either <a href="#Package">install the package</a> (functionality only) or <a href="#Repository">download the whole repository</a> (with documentation and assets).</p>
 
 <h3 id="Package">Package</h3>
 
@@ -116,7 +116,7 @@ Additionally, extensions from the models are explained in <a href="https://githu
 <div class="pdoc-code codehilite"><pre><span></span><code>$ pip install git+https://github.com/manuelbieri/Fumagalli_2020.git
 </code></pre></div>
 
-<p>The necessary dependencies are automatically during the installation.</p>
+<p>The necessary dependencies are automatically installed during the setup.</p>
 
 <h3 id="Repository">Repository</h3>
 
@@ -146,10 +146,10 @@ or clone it with GIT (requires GIT installation):</p>
 <span class="c1"># plot a model overview</span>
 <span class="n">FMT20</span><span class="o">.</span><span class="n">Overview</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="c1"># open API-documentation</span>
+<span class="c1"># open the API-documentation</span>
 <span class="n">FMT20</span><span class="o">.</span><span class="n">docs</span><span class="p">()</span>
 
-<span class="c1"># open GitHub-repository</span>
+<span class="c1"># open the GitHub-repository</span>
 <span class="n">FMT20</span><span class="o">.</span><span class="n">repo</span><span class="p">()</span>
 </code></pre></div>
 
@@ -186,8 +186,8 @@ the available models and visualization options. In <a href="Fumagalli_Motta_Tara
 
 <h2 id="code-style">Code style</h2>
 
-<p>As default code style <a href="https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html">Black</a> is used and
-automatically checked and enforced by GitHub - workflows. To run black in the terminal use the following command or run <code>assets/code style/run_black.sh</code>:</p>
+<p>As the default code style <a href="https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html">Black</a> is used and
+automatically checked and enforced by GitHub - workflows. To run black in the terminal either run <code>assets/code style/run_black.sh</code> or use the following command:</p>
 
 <div class="pdoc-code codehilite"><pre><span></span><code>$ python -m black ./Fumagalli_Motta_Tarantino_2020
 </code></pre></div>
@@ -199,7 +199,7 @@ automatically checked and enforced by GitHub - workflows. To run black in the te
 
 <h2 id="docs">Generate Documentation</h2>
 
-<p>Generate the documentation with the following command:</p>
+<p>Generate the documentation with the following command (as always be aware of the working directory):</p>
 
 <div class="pdoc-code codehilite"><pre><span></span><code>$ pdoc -o docs Fumagalli_Motta_Tarantino_2020 --docformat numpy --math
 </code></pre></div>
