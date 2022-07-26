@@ -10,7 +10,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 setup(
     name="Fumagalli_Motta_Tarantino_2020",
     packages=find_packages(),
-    version="1.0.0",  # adjust
+    version="1.0.1",  # adjust
     license="MIT",
     description="Implements the models presented in Fumagalli et al. (2020)",
     long_description=long_description,
@@ -23,7 +23,7 @@ setup(
         "Download": "https://github.com/manuelbieri/Fumagalli_2020/releases",
         "Source": "https://github.com/manuelbieri/Fumagalli_2020",
     },
-    download_url="https://github.com/manuelbieri/Fumagalli_2020/archive/refs/tags/v1.0.0.tar.gz",  # adjust
+    download_url="https://github.com/manuelbieri/Fumagalli_2020/archive/refs/tags/v1.0.1.tar.gz",  # adjust
     keywords=["Killer Acquisition", "Competition", "Innovation"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",  # "3 - Alpha" / "4 - Beta" / "5 - Production/Stable"

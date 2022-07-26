@@ -7,7 +7,7 @@ authors:
     family-names: Bieri
     email: mail@manuelbieri.ch
     orcid: "https://orcid.org/0000-0002-1530-423X"
-version: 1.0.0
-date-released: "2022-07-23"
+version: 1.0.1
+date-released: "2022-07-26"
 license: MIT
 repository-code: "https://github.com/manuelbieri/Fumagalli_2020"
