@@ -94,8 +94,8 @@ class LoadParameters:
         """
         Changes the value of the development success (if attempted) to the exact opposite.
 
-        - False $\Rightarrow$ True
-        - True $\Rightarrow$ False
+        - False $\\Rightarrow$ True
+        - True $\\Rightarrow$ False
         """
         self.params.set(
             "development_success", not self.params.get("development_success")
