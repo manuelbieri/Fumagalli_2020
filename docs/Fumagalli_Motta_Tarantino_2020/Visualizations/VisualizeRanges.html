@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 12.0.2"/>
+    <meta name="generator" content="pdoc 14.7.0"/>
     <title>Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges API documentation</title>
             <link rel="icon" href="https://raw.githubusercontent.com/manuelbieri/Fumagalli_2020/64591aee9856c7163fb62434445546acda099f38/assets/visual/logo.svg"/>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
     <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
     <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
-    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent }nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
-    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .pdoc-alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:1rem center;margin-bottom:1rem;}.pdoc .pdoc-alert > *:last-child{margin-bottom:0;}.pdoc .pdoc-alert-note {color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .pdoc-alert-warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .pdoc-alert-danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--code);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:35px;vertical-align:middle;width:70px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;z-index:999;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;opacity:0;}nav.pdoc{--pad:clamp(0.5rem, 2vw, 1.75rem);--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent; z-index:1}nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc > div > ul{margin-left:calc(0px - var(--pad));}nav.pdoc li a{padding:.2rem 0 .2rem calc(var(--pad) + var(--indent));}nav.pdoc > div > ul > li > a{padding-left:var(--pad);}nav.pdoc li{transition:all 100ms;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{cursor:pointer;display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .alert{padding:1rem 1rem 1rem calc(1.5rem + 24px);border:1px solid transparent;border-radius:.25rem;background-repeat:no-repeat;background-position:.75rem center;margin-bottom:1rem;}.pdoc .alert > em{display:none;}.pdoc .alert > *:last-child{margin-bottom:0;}.pdoc .alert.note {color:#084298;background-color:#cfe2ff;border-color:#b6d4fe;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23084298%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%2016A8%208%200%201%200%208%200a8%208%200%200%200%200%2016zm.93-9.412-1%204.705c-.07.34.029.533.304.533.194%200%20.487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703%200-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381%202.29-.287zM8%205.5a1%201%200%201%201%200-2%201%201%200%200%201%200%202z%22/%3E%3C/svg%3E");}.pdoc .alert.warning{color:#664d03;background-color:#fff3cd;border-color:#ffecb5;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23664d03%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8.982%201.566a1.13%201.13%200%200%200-1.96%200L.165%2013.233c-.457.778.091%201.767.98%201.767h13.713c.889%200%201.438-.99.98-1.767L8.982%201.566zM8%205c.535%200%20.954.462.9.995l-.35%203.507a.552.552%200%200%201-1.1%200L7.1%205.995A.905.905%200%200%201%208%205zm.002%206a1%201%200%201%201%200%202%201%201%200%200%201%200-2z%22/%3E%3C/svg%3E");}.pdoc .alert.danger{color:#842029;background-color:#f8d7da;border-color:#f5c2c7;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23842029%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5.52.359A.5.5%200%200%201%206%200h4a.5.5%200%200%201%20.474.658L8.694%206H12.5a.5.5%200%200%201%20.395.807l-7%209a.5.5%200%200%201-.873-.454L6.823%209.5H3.5a.5.5%200%200%201-.48-.641l2.5-8.5z%22/%3E%3C/svg%3E");}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc > section:not(.module-info) h1{font-size:1.5rem;font-weight:500;}.pdoc > section:not(.module-info) h2{font-size:1.4rem;font-weight:500;}.pdoc > section:not(.module-info) h3{font-size:1.3rem;font-weight:500;}.pdoc > section:not(.module-info) h4{font-size:1.2rem;}.pdoc > section:not(.module-info) h5{font-size:1.1rem;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--accent);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc > section:not(.module-info){margin-bottom:1.5rem;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.view-source-toggle-state,.view-source-toggle-state ~ .pdoc-code{display:none;}.view-source-toggle-state:checked ~ .pdoc-code{display:block;}.view-source-button{display:inline-block;float:right;font-size:.75rem;line-height:1.5rem;color:var(--muted);padding:0 .4rem 0 1.3rem;cursor:pointer;text-indent:-2px;}.view-source-button > span{visibility:hidden;}.module-info .view-source-button{float:none;display:flex;justify-content:flex-end;margin:-1.2rem .4rem -.2rem 0;}.view-source-button::before{position:absolute;content:"View Source";display:list-item;list-style-type:disclosure-closed;}.view-source-toggle-state:checked ~ .attr .view-source-button::before,.view-source-toggle-state:checked ~ .view-source-button::before{list-style-type:disclosure-open;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc section:not(.module-info) .docstring{margin-left:clamp(0rem, 5vw - 2rem, 1rem);}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target,.pdoc .pdoc-code > pre > span:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc .pdoc-code > pre > span:target{display:block;}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc *{scroll-margin:2rem;}.pdoc .pdoc-code .linenos{user-select:none;}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc section, .pdoc .classattr{position:relative;}.pdoc .headerlink{--width:clamp(1rem, 3vw, 2rem);position:absolute;top:0;left:calc(0rem - var(--width));transition:all 100ms ease-in-out;opacity:0;}.pdoc .headerlink::before{content:"#";display:block;text-align:center;width:var(--width);height:2.3rem;line-height:2.3rem;font-size:1.5rem;}.pdoc .attr:hover ~ .headerlink,.pdoc *:target > .headerlink,.pdoc .headerlink:hover{opacity:1;}.pdoc .attr{display:block;margin:.5rem 0 .5rem;padding:.4rem .4rem .4rem 1rem;background-color:var(--accent);overflow-x:auto;}.pdoc .classattr{margin-left:2rem;}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{background-color:transparent;}.pdoc .param, .pdoc .return-annotation{white-space:pre;}.pdoc .signature.multiline .param{display:block;}.pdoc .signature.condensed .param{display:inline-block;}.pdoc .annotation{color:var(--annotation);}.pdoc .view-value-toggle-state,.pdoc .view-value-toggle-state ~ .default_value{display:none;}.pdoc .view-value-toggle-state:checked ~ .default_value{display:inherit;}.pdoc .view-value-button{font-size:.5rem;vertical-align:middle;border-style:dashed;margin-top:-0.1rem;}.pdoc .view-value-button:hover{background:white;}.pdoc .view-value-button::before{content:"show";text-align:center;width:2.2em;display:inline-block;}.pdoc .view-value-toggle-state:checked ~ .view-value-button::before{content:"hide";}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:35px;vertical-align:middle;width:70px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
     <style>/*! custom.css */</style><script>
     window.MathJax = {
         tex: {
@@ -19,7 +19,6 @@
         }
     };
 </script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script>
     /* Re-invoke MathJax when DOM content changes, for example during search. */
@@ -29,7 +28,13 @@
             {childList: true}
         );
     })
-</script></head>
+</script>
+<style>
+    mjx-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+</style></head>
 <body>
     <nav class="pdoc">
         <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
@@ -47,13 +52,19 @@
 
 
 
-        <h2>API Documentation</h2>
-            <ul class="memberlist">
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
             <li>
                     <a class="class" href="#AssetRange">AssetRange</a>
                             <ul class="memberlist">
                         <li>
                                 <a class="function" href="#AssetRange.__init__">AssetRange</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#AssetRange.labels">labels</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#AssetRange.colors">colors</a>
                         </li>
                         <li>
                                 <a class="function" href="#AssetRange.plot_label_colors">plot_label_colors</a>
@@ -92,6 +103,18 @@
                                 <a class="function" href="#Overview.__init__">Overview</a>
                         </li>
                         <li>
+                                <a class="variable" href="#Overview.timeline">timeline</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Overview.payoffs">payoffs</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Overview.range">range</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Overview.kwargs">kwargs</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#Overview.set_model">set_model</a>
                         </li>
                         <li>
@@ -103,7 +126,7 @@
     </ul>
 
 
-            <footer>2022 Manuel Bieri</footer>
+            <footer>2024 Manuel Bieri</footer>
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span><img
@@ -118,9 +141,9 @@
 <a href="./../../Fumagalli_Motta_Tarantino_2020.html">Fumagalli_Motta_Tarantino_2020</a><wbr>.<a href="./../Visualizations.html">Visualizations</a><wbr>.VisualizeRanges    </h1>
 
                 
-                        <input id="VisualizeRanges-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                        <input id="mod-VisualizeRanges-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
-                        <label class="view-source-button" for="VisualizeRanges-view-source"><span>View Source</span></label>
+                        <label class="view-source-button" for="mod-VisualizeRanges-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
@@ -135,7 +158,7 @@
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="k">class</span> <span class="nc">AssetRange</span><span class="p">(</span><span class="n">IVisualize</span><span class="p">):</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">    Visualizes the outcomes over an assets range for a specific model.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
@@ -188,8 +211,8 @@
 </span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>        <span class="p">}</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="k">def</span> <span class="nf">plot_label_colors</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="k">def</span> <span class="nf">plot_label_colors</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        Plots the colors used in the legend for asset ranges matched to the outcome.</span>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        Returns</span>
@@ -240,7 +263,7 @@
 </span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>    <span class="k">def</span> <span class="nf">_get_outcomes_asset_range</span><span class="p">(</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Models</span><span class="o">.</span><span class="n">OptimalMergerPolicySummary</span><span class="p">]:</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">        Generates a list with all essential threshold concerning the assets of a start-up and an additional list with</span>
 </span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">        summaries of the outcomes of the model in between the thresholds.</span>
 </span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
@@ -268,7 +291,7 @@
 </span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 </span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>
 </span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>    <span class="k">def</span> <span class="nf">_get_essential_thresholds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Models</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">]:</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">        Generates a list with all essential threshold concerning the assets of a start-up.</span>
 </span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
 </span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        Returns</span>
@@ -317,7 +340,7 @@
 </span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>        <span class="p">]</span>
 </span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>
 </span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>    <span class="k">def</span> <span class="nf">_get_x_labels_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">        Generates the locations of the ticks on the x-axis and the corresponding labels on the x-axis.</span>
 </span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
 </span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">        Returns</span>
@@ -389,7 +412,7 @@
 </span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
 </span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>
 </span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>    <span class="k">def</span> <span class="nf">_get_label_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a><span class="sd">        Returns the color and the final label for a legend entry.</span>
 </span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>
 </span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a><span class="sd">        Through this method, duplications in the legend are avoided.</span>
@@ -422,7 +445,7 @@
 </span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_outcomes_asset_range</span><span class="p">()]</span>
 </span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a>
 </span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a><span class="sd">        Plots the outcome of a model over a range of assets.</span>
 </span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>
 </span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a><span class="sd">        Example</span>
@@ -609,7 +632,7 @@
 </span><span id="L-485"><a href="#L-485"><span class="linenos">485</span></a>
 </span><span id="L-486"><a href="#L-486"><span class="linenos">486</span></a><span class="k">class</span> <span class="nc">MergerPoliciesAssetRangePerfectInformation</span><span class="p">(</span><span class="n">MergerPoliciesAssetRange</span><span class="p">):</span>
 </span><span id="L-487"><a href="#L-487"><span class="linenos">487</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Models</span><span class="o">.</span><span class="n">PerfectInformation</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-488"><a href="#L-488"><span class="linenos">488</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-488"><a href="#L-488"><span class="linenos">488</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-489"><a href="#L-489"><span class="linenos">489</span></a><span class="sd">        Uses a Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation for the visualization. See</span>
 </span><span id="L-490"><a href="#L-490"><span class="linenos">490</span></a><span class="sd">        Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel for other parameters.</span>
 </span><span id="L-491"><a href="#L-491"><span class="linenos">491</span></a>
@@ -633,7 +656,7 @@
 </span><span id="L-509"><a href="#L-509"><span class="linenos">509</span></a>        <span class="p">]</span>
 </span><span id="L-510"><a href="#L-510"><span class="linenos">510</span></a>
 </span><span id="L-511"><a href="#L-511"><span class="linenos">511</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="L-512"><a href="#L-512"><span class="linenos">512</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-512"><a href="#L-512"><span class="linenos">512</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-513"><a href="#L-513"><span class="linenos">513</span></a><span class="sd">        Plots the visual representation for the object.</span>
 </span><span id="L-514"><a href="#L-514"><span class="linenos">514</span></a>
 </span><span id="L-515"><a href="#L-515"><span class="linenos">515</span></a><span class="sd">        Example</span>
@@ -691,7 +714,7 @@
 </span><span id="L-567"><a href="#L-567"><span class="linenos">567</span></a>
 </span><span id="L-568"><a href="#L-568"><span class="linenos">568</span></a>
 </span><span id="L-569"><a href="#L-569"><span class="linenos">569</span></a><span class="k">class</span> <span class="nc">Overview</span><span class="p">(</span><span class="n">IVisualize</span><span class="p">):</span>
-</span><span id="L-570"><a href="#L-570"><span class="linenos">570</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-570"><a href="#L-570"><span class="linenos">570</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-571"><a href="#L-571"><span class="linenos">571</span></a><span class="sd">    Combines Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline, Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs,</span>
 </span><span id="L-572"><a href="#L-572"><span class="linenos">572</span></a><span class="sd">    Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange as well as a legend for the</span>
 </span><span id="L-573"><a href="#L-573"><span class="linenos">573</span></a><span class="sd">    model characteristics.</span>
@@ -722,7 +745,7 @@
 </span><span id="L-598"><a href="#L-598"><span class="linenos">598</span></a>        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 </span><span id="L-599"><a href="#L-599"><span class="linenos">599</span></a>
 </span><span id="L-600"><a href="#L-600"><span class="linenos">600</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="L-601"><a href="#L-601"><span class="linenos">601</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-601"><a href="#L-601"><span class="linenos">601</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-602"><a href="#L-602"><span class="linenos">602</span></a><span class="sd">        Plots the visual representation for the object.</span>
 </span><span id="L-603"><a href="#L-603"><span class="linenos">603</span></a>
 </span><span id="L-604"><a href="#L-604"><span class="linenos">604</span></a><span class="sd">        Example</span>
@@ -810,7 +833,7 @@
     </div>
     <a class="headerlink" href="#AssetRange"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="AssetRange-14"><a href="#AssetRange-14"><span class="linenos"> 14</span></a><span class="k">class</span> <span class="nc">AssetRange</span><span class="p">(</span><span class="n">IVisualize</span><span class="p">):</span>
-</span><span id="AssetRange-15"><a href="#AssetRange-15"><span class="linenos"> 15</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-15"><a href="#AssetRange-15"><span class="linenos"> 15</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-16"><a href="#AssetRange-16"><span class="linenos"> 16</span></a><span class="sd">    Visualizes the outcomes over an assets range for a specific model.</span>
 </span><span id="AssetRange-17"><a href="#AssetRange-17"><span class="linenos"> 17</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="AssetRange-18"><a href="#AssetRange-18"><span class="linenos"> 18</span></a>
@@ -863,8 +886,8 @@
 </span><span id="AssetRange-65"><a href="#AssetRange-65"><span class="linenos"> 65</span></a>        <span class="p">}</span>
 </span><span id="AssetRange-66"><a href="#AssetRange-66"><span class="linenos"> 66</span></a>
 </span><span id="AssetRange-67"><a href="#AssetRange-67"><span class="linenos"> 67</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="AssetRange-68"><a href="#AssetRange-68"><span class="linenos"> 68</span></a>    <span class="k">def</span> <span class="nf">plot_label_colors</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
-</span><span id="AssetRange-69"><a href="#AssetRange-69"><span class="linenos"> 69</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-68"><a href="#AssetRange-68"><span class="linenos"> 68</span></a>    <span class="k">def</span> <span class="nf">plot_label_colors</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+</span><span id="AssetRange-69"><a href="#AssetRange-69"><span class="linenos"> 69</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-70"><a href="#AssetRange-70"><span class="linenos"> 70</span></a><span class="sd">        Plots the colors used in the legend for asset ranges matched to the outcome.</span>
 </span><span id="AssetRange-71"><a href="#AssetRange-71"><span class="linenos"> 71</span></a>
 </span><span id="AssetRange-72"><a href="#AssetRange-72"><span class="linenos"> 72</span></a><span class="sd">        Returns</span>
@@ -915,7 +938,7 @@
 </span><span id="AssetRange-117"><a href="#AssetRange-117"><span class="linenos">117</span></a>    <span class="k">def</span> <span class="nf">_get_outcomes_asset_range</span><span class="p">(</span>
 </span><span id="AssetRange-118"><a href="#AssetRange-118"><span class="linenos">118</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="AssetRange-119"><a href="#AssetRange-119"><span class="linenos">119</span></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Models</span><span class="o">.</span><span class="n">OptimalMergerPolicySummary</span><span class="p">]:</span>
-</span><span id="AssetRange-120"><a href="#AssetRange-120"><span class="linenos">120</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-120"><a href="#AssetRange-120"><span class="linenos">120</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-121"><a href="#AssetRange-121"><span class="linenos">121</span></a><span class="sd">        Generates a list with all essential threshold concerning the assets of a start-up and an additional list with</span>
 </span><span id="AssetRange-122"><a href="#AssetRange-122"><span class="linenos">122</span></a><span class="sd">        summaries of the outcomes of the model in between the thresholds.</span>
 </span><span id="AssetRange-123"><a href="#AssetRange-123"><span class="linenos">123</span></a>
@@ -943,7 +966,7 @@
 </span><span id="AssetRange-145"><a href="#AssetRange-145"><span class="linenos">145</span></a>        <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 </span><span id="AssetRange-146"><a href="#AssetRange-146"><span class="linenos">146</span></a>
 </span><span id="AssetRange-147"><a href="#AssetRange-147"><span class="linenos">147</span></a>    <span class="k">def</span> <span class="nf">_get_essential_thresholds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Models</span><span class="o">.</span><span class="n">ThresholdItem</span><span class="p">]:</span>
-</span><span id="AssetRange-148"><a href="#AssetRange-148"><span class="linenos">148</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-148"><a href="#AssetRange-148"><span class="linenos">148</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-149"><a href="#AssetRange-149"><span class="linenos">149</span></a><span class="sd">        Generates a list with all essential threshold concerning the assets of a start-up.</span>
 </span><span id="AssetRange-150"><a href="#AssetRange-150"><span class="linenos">150</span></a>
 </span><span id="AssetRange-151"><a href="#AssetRange-151"><span class="linenos">151</span></a><span class="sd">        Returns</span>
@@ -992,7 +1015,7 @@
 </span><span id="AssetRange-194"><a href="#AssetRange-194"><span class="linenos">194</span></a>        <span class="p">]</span>
 </span><span id="AssetRange-195"><a href="#AssetRange-195"><span class="linenos">195</span></a>
 </span><span id="AssetRange-196"><a href="#AssetRange-196"><span class="linenos">196</span></a>    <span class="k">def</span> <span class="nf">_get_x_labels_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-</span><span id="AssetRange-197"><a href="#AssetRange-197"><span class="linenos">197</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-197"><a href="#AssetRange-197"><span class="linenos">197</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-198"><a href="#AssetRange-198"><span class="linenos">198</span></a><span class="sd">        Generates the locations of the ticks on the x-axis and the corresponding labels on the x-axis.</span>
 </span><span id="AssetRange-199"><a href="#AssetRange-199"><span class="linenos">199</span></a>
 </span><span id="AssetRange-200"><a href="#AssetRange-200"><span class="linenos">200</span></a><span class="sd">        Returns</span>
@@ -1064,7 +1087,7 @@
 </span><span id="AssetRange-266"><a href="#AssetRange-266"><span class="linenos">266</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
 </span><span id="AssetRange-267"><a href="#AssetRange-267"><span class="linenos">267</span></a>
 </span><span id="AssetRange-268"><a href="#AssetRange-268"><span class="linenos">268</span></a>    <span class="k">def</span> <span class="nf">_get_label_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-</span><span id="AssetRange-269"><a href="#AssetRange-269"><span class="linenos">269</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-269"><a href="#AssetRange-269"><span class="linenos">269</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-270"><a href="#AssetRange-270"><span class="linenos">270</span></a><span class="sd">        Returns the color and the final label for a legend entry.</span>
 </span><span id="AssetRange-271"><a href="#AssetRange-271"><span class="linenos">271</span></a>
 </span><span id="AssetRange-272"><a href="#AssetRange-272"><span class="linenos">272</span></a><span class="sd">        Through this method, duplications in the legend are avoided.</span>
@@ -1097,7 +1120,7 @@
 </span><span id="AssetRange-299"><a href="#AssetRange-299"><span class="linenos">299</span></a>        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_outcomes_asset_range</span><span class="p">()]</span>
 </span><span id="AssetRange-300"><a href="#AssetRange-300"><span class="linenos">300</span></a>
 </span><span id="AssetRange-301"><a href="#AssetRange-301"><span class="linenos">301</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="AssetRange-302"><a href="#AssetRange-302"><span class="linenos">302</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange-302"><a href="#AssetRange-302"><span class="linenos">302</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange-303"><a href="#AssetRange-303"><span class="linenos">303</span></a><span class="sd">        Plots the outcome of a model over a range of assets.</span>
 </span><span id="AssetRange-304"><a href="#AssetRange-304"><span class="linenos">304</span></a>
 </span><span id="AssetRange-305"><a href="#AssetRange-305"><span class="linenos">305</span></a><span class="sd">        Example</span>
@@ -1304,21 +1327,43 @@ If true, default matplotlib style is used.</li>
 
 
                             </div>
+                            <div id="AssetRange.labels" class="classattr">
+                                <div class="attr variable">
+            <span class="name">labels</span><span class="annotation">: list[str]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#AssetRange.labels"></a>
+    
+    
+
+                            </div>
+                            <div id="AssetRange.colors" class="classattr">
+                                <div class="attr variable">
+            <span class="name">colors</span><span class="annotation">: dict[str, dict]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#AssetRange.colors"></a>
+    
+    
+
+                            </div>
                             <div id="AssetRange.plot_label_colors" class="classattr">
                                         <input id="AssetRange.plot_label_colors-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">plot_label_colors</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span></span><span class="return-annotation">) -> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span>:</span></span>
+        <span class="name">plot_label_colors</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">show_plot</span><span class="o">=</span><span class="kc">False</span></span><span class="return-annotation">) -> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span>:</span></span>
 
                 <label class="view-source-button" for="AssetRange.plot_label_colors-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#AssetRange.plot_label_colors"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="AssetRange.plot_label_colors-67"><a href="#AssetRange.plot_label_colors-67"><span class="linenos"> 67</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="AssetRange.plot_label_colors-68"><a href="#AssetRange.plot_label_colors-68"><span class="linenos"> 68</span></a>    <span class="k">def</span> <span class="nf">plot_label_colors</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
-</span><span id="AssetRange.plot_label_colors-69"><a href="#AssetRange.plot_label_colors-69"><span class="linenos"> 69</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange.plot_label_colors-68"><a href="#AssetRange.plot_label_colors-68"><span class="linenos"> 68</span></a>    <span class="k">def</span> <span class="nf">plot_label_colors</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+</span><span id="AssetRange.plot_label_colors-69"><a href="#AssetRange.plot_label_colors-69"><span class="linenos"> 69</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange.plot_label_colors-70"><a href="#AssetRange.plot_label_colors-70"><span class="linenos"> 70</span></a><span class="sd">        Plots the colors used in the legend for asset ranges matched to the outcome.</span>
 </span><span id="AssetRange.plot_label_colors-71"><a href="#AssetRange.plot_label_colors-71"><span class="linenos"> 71</span></a>
 </span><span id="AssetRange.plot_label_colors-72"><a href="#AssetRange.plot_label_colors-72"><span class="linenos"> 72</span></a><span class="sd">        Returns</span>
@@ -1391,7 +1436,8 @@ If true, default matplotlib style is used.</li>
 
 <h6 id="example">Example</h6>
 
-<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
 
 <span class="n">model_one</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
 <span class="n">model_two</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1401,7 +1447,8 @@ If true, default matplotlib style is used.</li>
 <span class="n">visualizer</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">model_two</span><span class="p">)</span>
 <span class="c1"># overwrite the previous plot</span>
 <span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</code></pre>
+</div>
 
 <h6 id="parameters">Parameters</h6>
 
@@ -1418,14 +1465,14 @@ New model to generate the plots from.</li>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">plot</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> (<class 'matplotlib.figure.Figure'>, <class 'matplotlib.axes._axes.Axes'>):</span></span>
+        <span class="name">plot</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> (&lt;class &#x27;matplotlib.figure.Figure&#x27;&gt;, &lt;class &#x27;matplotlib.axes._axes.Axes&#x27;&gt;):</span></span>
 
                 <label class="view-source-button" for="AssetRange.plot-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#AssetRange.plot"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="AssetRange.plot-301"><a href="#AssetRange.plot-301"><span class="linenos">301</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="AssetRange.plot-302"><a href="#AssetRange.plot-302"><span class="linenos">302</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AssetRange.plot-302"><a href="#AssetRange.plot-302"><span class="linenos">302</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="AssetRange.plot-303"><a href="#AssetRange.plot-303"><span class="linenos">303</span></a><span class="sd">        Plots the outcome of a model over a range of assets.</span>
 </span><span id="AssetRange.plot-304"><a href="#AssetRange.plot-304"><span class="linenos">304</span></a>
 </span><span id="AssetRange.plot-305"><a href="#AssetRange.plot-305"><span class="linenos">305</span></a><span class="sd">        Example</span>
@@ -1519,6 +1566,7 @@ fig.show()
                                     <div><dt><a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a></dt>
                                 <dd id="AssetRange.COLORS" class="variable"><a href="Visualize.html#IVisualize.COLORS">COLORS</a></dd>
                 <dd id="AssetRange.fontsize" class="variable"><a href="Visualize.html#IVisualize.fontsize">fontsize</a></dd>
+                <dd id="AssetRange.model" class="variable"><a href="Visualize.html#IVisualize.model">model</a></dd>
                 <dd id="AssetRange.show" class="function"><a href="Visualize.html#IVisualize.show">show</a></dd>
                 <dd id="AssetRange.get_model_label" class="function"><a href="Visualize.html#IVisualize.get_model_label">get_model_label</a></dd>
 
@@ -1566,6 +1614,8 @@ fig.show()
                                 <dl>
                                     <div><dt><a href="#AssetRange">AssetRange</a></dt>
                                 <dd id="MergerPoliciesAssetRange.__init__" class="function"><a href="#AssetRange.__init__">AssetRange</a></dd>
+                <dd id="MergerPoliciesAssetRange.labels" class="variable"><a href="#AssetRange.labels">labels</a></dd>
+                <dd id="MergerPoliciesAssetRange.colors" class="variable"><a href="#AssetRange.colors">colors</a></dd>
                 <dd id="MergerPoliciesAssetRange.plot_label_colors" class="function"><a href="#AssetRange.plot_label_colors">plot_label_colors</a></dd>
                 <dd id="MergerPoliciesAssetRange.set_model" class="function"><a href="#AssetRange.set_model">set_model</a></dd>
                 <dd id="MergerPoliciesAssetRange.plot" class="function"><a href="#AssetRange.plot">plot</a></dd>
@@ -1574,6 +1624,7 @@ fig.show()
             <div><dt><a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a></dt>
                                 <dd id="MergerPoliciesAssetRange.COLORS" class="variable"><a href="Visualize.html#IVisualize.COLORS">COLORS</a></dd>
                 <dd id="MergerPoliciesAssetRange.fontsize" class="variable"><a href="Visualize.html#IVisualize.fontsize">fontsize</a></dd>
+                <dd id="MergerPoliciesAssetRange.model" class="variable"><a href="Visualize.html#IVisualize.model">model</a></dd>
                 <dd id="MergerPoliciesAssetRange.show" class="function"><a href="Visualize.html#IVisualize.show">show</a></dd>
                 <dd id="MergerPoliciesAssetRange.get_model_label" class="function"><a href="Visualize.html#IVisualize.get_model_label">get_model_label</a></dd>
 
@@ -1594,7 +1645,7 @@ fig.show()
     <a class="headerlink" href="#MergerPoliciesAssetRangePerfectInformation"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="MergerPoliciesAssetRangePerfectInformation-487"><a href="#MergerPoliciesAssetRangePerfectInformation-487"><span class="linenos">487</span></a><span class="k">class</span> <span class="nc">MergerPoliciesAssetRangePerfectInformation</span><span class="p">(</span><span class="n">MergerPoliciesAssetRange</span><span class="p">):</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-488"><a href="#MergerPoliciesAssetRangePerfectInformation-488"><span class="linenos">488</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Models</span><span class="o">.</span><span class="n">PerfectInformation</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="MergerPoliciesAssetRangePerfectInformation-489"><a href="#MergerPoliciesAssetRangePerfectInformation-489"><span class="linenos">489</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MergerPoliciesAssetRangePerfectInformation-489"><a href="#MergerPoliciesAssetRangePerfectInformation-489"><span class="linenos">489</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-490"><a href="#MergerPoliciesAssetRangePerfectInformation-490"><span class="linenos">490</span></a><span class="sd">        Uses a Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation for the visualization. See</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-491"><a href="#MergerPoliciesAssetRangePerfectInformation-491"><span class="linenos">491</span></a><span class="sd">        Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel for other parameters.</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-492"><a href="#MergerPoliciesAssetRangePerfectInformation-492"><span class="linenos">492</span></a>
@@ -1618,7 +1669,7 @@ fig.show()
 </span><span id="MergerPoliciesAssetRangePerfectInformation-510"><a href="#MergerPoliciesAssetRangePerfectInformation-510"><span class="linenos">510</span></a>        <span class="p">]</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-511"><a href="#MergerPoliciesAssetRangePerfectInformation-511"><span class="linenos">511</span></a>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-512"><a href="#MergerPoliciesAssetRangePerfectInformation-512"><span class="linenos">512</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="MergerPoliciesAssetRangePerfectInformation-513"><a href="#MergerPoliciesAssetRangePerfectInformation-513"><span class="linenos">513</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MergerPoliciesAssetRangePerfectInformation-513"><a href="#MergerPoliciesAssetRangePerfectInformation-513"><span class="linenos">513</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-514"><a href="#MergerPoliciesAssetRangePerfectInformation-514"><span class="linenos">514</span></a><span class="sd">        Plots the visual representation for the object.</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-515"><a href="#MergerPoliciesAssetRangePerfectInformation-515"><span class="linenos">515</span></a>
 </span><span id="MergerPoliciesAssetRangePerfectInformation-516"><a href="#MergerPoliciesAssetRangePerfectInformation-516"><span class="linenos">516</span></a><span class="sd">        Example</span>
@@ -1691,7 +1742,7 @@ fig.show()
     </div>
     <a class="headerlink" href="#MergerPoliciesAssetRangePerfectInformation.__init__"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="MergerPoliciesAssetRangePerfectInformation.__init__-488"><a href="#MergerPoliciesAssetRangePerfectInformation.__init__-488"><span class="linenos">488</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Models</span><span class="o">.</span><span class="n">PerfectInformation</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="MergerPoliciesAssetRangePerfectInformation.__init__-489"><a href="#MergerPoliciesAssetRangePerfectInformation.__init__-489"><span class="linenos">489</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MergerPoliciesAssetRangePerfectInformation.__init__-489"><a href="#MergerPoliciesAssetRangePerfectInformation.__init__-489"><span class="linenos">489</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation.__init__-490"><a href="#MergerPoliciesAssetRangePerfectInformation.__init__-490"><span class="linenos">490</span></a><span class="sd">        Uses a Fumagalli_Motta_Tarantino_2020.Models.BaseExtended.PerfectInformation for the visualization. See</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation.__init__-491"><a href="#MergerPoliciesAssetRangePerfectInformation.__init__-491"><span class="linenos">491</span></a><span class="sd">        Fumagalli_Motta_Tarantino_2020.Models.Base.CoreModel for other parameters.</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation.__init__-492"><a href="#MergerPoliciesAssetRangePerfectInformation.__init__-492"><span class="linenos">492</span></a>
@@ -1724,14 +1775,14 @@ Model to create the visualization from.</li>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">plot</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> (<class 'matplotlib.figure.Figure'>, <class 'matplotlib.axes._axes.Axes'>):</span></span>
+        <span class="name">plot</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> (&lt;class &#x27;matplotlib.figure.Figure&#x27;&gt;, &lt;class &#x27;matplotlib.axes._axes.Axes&#x27;&gt;):</span></span>
 
                 <label class="view-source-button" for="MergerPoliciesAssetRangePerfectInformation.plot-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#MergerPoliciesAssetRangePerfectInformation.plot"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="MergerPoliciesAssetRangePerfectInformation.plot-512"><a href="#MergerPoliciesAssetRangePerfectInformation.plot-512"><span class="linenos">512</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="MergerPoliciesAssetRangePerfectInformation.plot-513"><a href="#MergerPoliciesAssetRangePerfectInformation.plot-513"><span class="linenos">513</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MergerPoliciesAssetRangePerfectInformation.plot-513"><a href="#MergerPoliciesAssetRangePerfectInformation.plot-513"><span class="linenos">513</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation.plot-514"><a href="#MergerPoliciesAssetRangePerfectInformation.plot-514"><span class="linenos">514</span></a><span class="sd">        Plots the visual representation for the object.</span>
 </span><span id="MergerPoliciesAssetRangePerfectInformation.plot-515"><a href="#MergerPoliciesAssetRangePerfectInformation.plot-515"><span class="linenos">515</span></a>
 </span><span id="MergerPoliciesAssetRangePerfectInformation.plot-516"><a href="#MergerPoliciesAssetRangePerfectInformation.plot-516"><span class="linenos">516</span></a><span class="sd">        Example</span>
@@ -1796,13 +1847,16 @@ fig.show()
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="#AssetRange">AssetRange</a></dt>
-                                <dd id="MergerPoliciesAssetRangePerfectInformation.plot_label_colors" class="function"><a href="#AssetRange.plot_label_colors">plot_label_colors</a></dd>
+                                <dd id="MergerPoliciesAssetRangePerfectInformation.labels" class="variable"><a href="#AssetRange.labels">labels</a></dd>
+                <dd id="MergerPoliciesAssetRangePerfectInformation.colors" class="variable"><a href="#AssetRange.colors">colors</a></dd>
+                <dd id="MergerPoliciesAssetRangePerfectInformation.plot_label_colors" class="function"><a href="#AssetRange.plot_label_colors">plot_label_colors</a></dd>
                 <dd id="MergerPoliciesAssetRangePerfectInformation.set_model" class="function"><a href="#AssetRange.set_model">set_model</a></dd>
 
             </div>
             <div><dt><a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a></dt>
                                 <dd id="MergerPoliciesAssetRangePerfectInformation.COLORS" class="variable"><a href="Visualize.html#IVisualize.COLORS">COLORS</a></dd>
                 <dd id="MergerPoliciesAssetRangePerfectInformation.fontsize" class="variable"><a href="Visualize.html#IVisualize.fontsize">fontsize</a></dd>
+                <dd id="MergerPoliciesAssetRangePerfectInformation.model" class="variable"><a href="Visualize.html#IVisualize.model">model</a></dd>
                 <dd id="MergerPoliciesAssetRangePerfectInformation.show" class="function"><a href="Visualize.html#IVisualize.show">show</a></dd>
                 <dd id="MergerPoliciesAssetRangePerfectInformation.get_model_label" class="function"><a href="Visualize.html#IVisualize.get_model_label">get_model_label</a></dd>
 
@@ -1822,7 +1876,7 @@ fig.show()
     </div>
     <a class="headerlink" href="#Overview"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Overview-570"><a href="#Overview-570"><span class="linenos">570</span></a><span class="k">class</span> <span class="nc">Overview</span><span class="p">(</span><span class="n">IVisualize</span><span class="p">):</span>
-</span><span id="Overview-571"><a href="#Overview-571"><span class="linenos">571</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Overview-571"><a href="#Overview-571"><span class="linenos">571</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Overview-572"><a href="#Overview-572"><span class="linenos">572</span></a><span class="sd">    Combines Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Timeline, Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.Payoffs,</span>
 </span><span id="Overview-573"><a href="#Overview-573"><span class="linenos">573</span></a><span class="sd">    Fumagalli_Motta_Tarantino_2020.Visualizations.VisualizeRanges.MergerPoliciesAssetRange as well as a legend for the</span>
 </span><span id="Overview-574"><a href="#Overview-574"><span class="linenos">574</span></a><span class="sd">    model characteristics.</span>
@@ -1853,7 +1907,7 @@ fig.show()
 </span><span id="Overview-599"><a href="#Overview-599"><span class="linenos">599</span></a>        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 </span><span id="Overview-600"><a href="#Overview-600"><span class="linenos">600</span></a>
 </span><span id="Overview-601"><a href="#Overview-601"><span class="linenos">601</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="Overview-602"><a href="#Overview-602"><span class="linenos">602</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Overview-602"><a href="#Overview-602"><span class="linenos">602</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Overview-603"><a href="#Overview-603"><span class="linenos">603</span></a><span class="sd">        Plots the visual representation for the object.</span>
 </span><span id="Overview-604"><a href="#Overview-604"><span class="linenos">604</span></a>
 </span><span id="Overview-605"><a href="#Overview-605"><span class="linenos">605</span></a><span class="sd">        Example</span>
@@ -1970,6 +2024,50 @@ If true, default matplotlib style is used.</li>
 
 
                             </div>
+                            <div id="Overview.timeline" class="classattr">
+                                <div class="attr variable">
+            <span class="name">timeline</span><span class="annotation">: Optional[<a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a>]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Overview.timeline"></a>
+    
+    
+
+                            </div>
+                            <div id="Overview.payoffs" class="classattr">
+                                <div class="attr variable">
+            <span class="name">payoffs</span><span class="annotation">: Optional[<a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a>]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Overview.payoffs"></a>
+    
+    
+
+                            </div>
+                            <div id="Overview.range" class="classattr">
+                                <div class="attr variable">
+            <span class="name">range</span><span class="annotation">: Optional[<a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a>]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Overview.range"></a>
+    
+    
+
+                            </div>
+                            <div id="Overview.kwargs" class="classattr">
+                                <div class="attr variable">
+            <span class="name">kwargs</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Overview.kwargs"></a>
+    
+    
+
+                            </div>
                             <div id="Overview.set_model" class="classattr">
                                         <input id="Overview.set_model-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -1999,7 +2097,8 @@ If true, default matplotlib style is used.</li>
 
 <h6 id="example">Example</h6>
 
-<div class="pdoc-code codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">import</span> <span class="nn">Fumagalli_Motta_Tarantino_2020</span> <span class="k">as</span> <span class="nn">FMT20</span>
 
 <span class="n">model_one</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">()</span>
 <span class="n">model_two</span> <span class="o">=</span> <span class="n">FMT20</span><span class="o">.</span><span class="n">OptimalMergerPolicy</span><span class="p">(</span><span class="n">development_success</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2009,7 +2108,8 @@ If true, default matplotlib style is used.</li>
 <span class="n">visualizer</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">model_two</span><span class="p">)</span>
 <span class="c1"># overwrite the previous plot</span>
 <span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
+</code></pre>
+</div>
 
 <h6 id="parameters">Parameters</h6>
 
@@ -2026,14 +2126,14 @@ New model to generate the plots from.</li>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">plot</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> (<class 'matplotlib.figure.Figure'>, <class 'matplotlib.axes._axes.Axes'>):</span></span>
+        <span class="name">plot</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> (&lt;class &#x27;matplotlib.figure.Figure&#x27;&gt;, &lt;class &#x27;matplotlib.axes._axes.Axes&#x27;&gt;):</span></span>
 
                 <label class="view-source-button" for="Overview.plot-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#Overview.plot"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Overview.plot-601"><a href="#Overview.plot-601"><span class="linenos">601</span></a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">):</span>
-</span><span id="Overview.plot-602"><a href="#Overview.plot-602"><span class="linenos">602</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Overview.plot-602"><a href="#Overview.plot-602"><span class="linenos">602</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Overview.plot-603"><a href="#Overview.plot-603"><span class="linenos">603</span></a><span class="sd">        Plots the visual representation for the object.</span>
 </span><span id="Overview.plot-604"><a href="#Overview.plot-604"><span class="linenos">604</span></a>
 </span><span id="Overview.plot-605"><a href="#Overview.plot-605"><span class="linenos">605</span></a><span class="sd">        Example</span>
@@ -2117,6 +2217,7 @@ $\Rightarrow$ see the included visualizations for further arguments.</li>
                                     <div><dt><a href="Visualize.html#IVisualize">Fumagalli_Motta_Tarantino_2020.Visualizations.Visualize.IVisualize</a></dt>
                                 <dd id="Overview.COLORS" class="variable"><a href="Visualize.html#IVisualize.COLORS">COLORS</a></dd>
                 <dd id="Overview.fontsize" class="variable"><a href="Visualize.html#IVisualize.fontsize">fontsize</a></dd>
+                <dd id="Overview.model" class="variable"><a href="Visualize.html#IVisualize.model">model</a></dd>
                 <dd id="Overview.show" class="function"><a href="Visualize.html#IVisualize.show">show</a></dd>
                 <dd id="Overview.get_model_label" class="function"><a href="Visualize.html#IVisualize.get_model_label">get_model_label</a></dd>
 
@@ -2225,9 +2326,13 @@ $\Rightarrow$ see the included visualizations for further arguments.</li>
                 }
 
                 let heading;
-                switch (result.doc.type) {
+                switch (result.doc.kind) {
                     case "function":
-                        heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span><span class="signature">${doc.signature}:</span>`;
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
                         break;
                     case "class":
                         heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
@@ -2240,7 +2345,7 @@ $\Rightarrow$ see the included visualizations for further arguments.</li>
                         if (doc.annotation)
                             heading += `<span class="annotation">${doc.annotation}</span>`;
                         if (doc.default_value)
-                            heading += `<span class="default_value">${doc.default_value}</span>`;
+                            heading += `<span class="default_value"> = ${doc.default_value}</span>`;
                         break;
                     default:
                         heading = `<span class="name">${doc.fullname}</span>`;
@@ -2248,7 +2353,7 @@ $\Rightarrow$ see the included visualizations for further arguments.</li>
                 }
                 html += `
                         <section class="search-result">
-                        <a href="${url}" class="attr ${doc.type}">${heading}</a>
+                        <a href="${url}" class="attr ${doc.kind}">${heading}</a>
                         <div class="docstring">${doc.doc}</div>
                         </section>
                     `;

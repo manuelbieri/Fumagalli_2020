@@ -49,7 +49,7 @@ class LoadParameters:
         **kwargs
           Form: {"name_of_parameter": new_value_of_parameter, ...}
         """
-        for (key, value) in kwargs.items():
+        for key, value in kwargs.items():
             self.params.set(key, value)
 
     def _select_configuration(self) -> StoreConfig.ParameterModel:

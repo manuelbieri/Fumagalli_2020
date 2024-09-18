@@ -112,11 +112,11 @@ class IVisualize:
             pass
 
     def _set_primary_legend(self, equal_opacity=True) -> None:
-        legend = self.ax.legend(
+        legend: plt.legend = self.ax.legend(
             bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0, framealpha=0
         )
         if equal_opacity:
-            for entry in legend.legendHandles:
+            for entry in legend.legend_handles:
                 entry.set_alpha(1)
 
     def _set_tight_layout(self, y_spacing: float = None, x_spacing: float = 0) -> None:
@@ -219,7 +219,7 @@ class IVisualize:
         output_str = ""
         counter = 2
         number_parameters_per_line = kwargs.get("parameter_number", 6)
-        for (parameter, value) in [
+        for parameter, value in [
             ("A", self.model.startup_assets),
             ("B", self.model.private_benefit),
             ("K", self.model.development_costs),
@@ -412,7 +412,7 @@ class IVisualize:
             f"$\\Phi(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_profitable_without_late_takeover)}${separator}"
             f"$\\Phi'(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_unprofitable_without_late_takeover)}${separator}"
             f"$\\Phi^T(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_with_late_takeover)}${separator}"
-            f"$\Lambda(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_shelving_approved)}$\n"
+            f"$\\Lambda(\\cdot) = {self._round_floats(self.model.asset_distribution_threshold_shelving_approved)}$\n"
         )
 
     def _get_asset_distribution_value(self, value: float) -> float:
@@ -837,9 +837,11 @@ class Payoffs(IVisualize):
                 height=height,
                 label=label,
                 color=self._get_color(number_bar),
-                alpha=kwargs.get("max_opacity", 1)
-                if number_bar in max_values
-                else kwargs.get("min_opacity", 0.5),
+                alpha=(
+                    kwargs.get("max_opacity", 1)
+                    if number_bar in max_values
+                    else kwargs.get("min_opacity", 0.5)
+                ),
             )
         self._set_x_ticks()
 

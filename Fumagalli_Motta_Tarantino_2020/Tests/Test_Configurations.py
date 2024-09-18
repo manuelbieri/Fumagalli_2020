@@ -71,11 +71,11 @@ class TestFindParameters(unittest.TestCase):
         return 0 < value < 1
 
     def test_parameter_generator(self):
-        params: FMT20.ParameterModel = (
-            FMT20.ParameterModelGenerator().get_parameter_model(
-                merger_policy=FMT20.MergerPolicies.Laissez_faire,
-                development_success=False,
-            )
+        params: (
+            FMT20.ParameterModel
+        ) = FMT20.ParameterModelGenerator().get_parameter_model(
+            merger_policy=FMT20.MergerPolicies.Laissez_faire,
+            development_success=False,
         )
         self.assertEqual(FMT20.MergerPolicies.Laissez_faire, params.merger_policy)
         self.assertTrue(self.parameter_in_range(params.get("development_costs")))

@@ -64,7 +64,7 @@ class AssetRange(IVisualize):
         }
 
     @staticmethod
-    def plot_label_colors(show_plot=True) -> plt.Axes:
+    def plot_label_colors(show_plot=False) -> plt.Axes:
         """
         Plots the colors used in the legend for asset ranges matched to the outcome.
 
