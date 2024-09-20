@@ -36,11 +36,11 @@ class TestNotebookUtilities(unittest.TestCase):
         )
 
     def test_configure_valid_models(self):
-        fig = configure_two_axes(m1=FMT20.ProCompetitive(), m2=FMT20.ResourceWaste())
+        fig, _ = configure_two_axes(m1=FMT20.ProCompetitive(), m2=FMT20.ResourceWaste())
         self.assertEqual(2, len(fig.axes))
 
     def test_configure_default(self):
-        fig = configure_two_axes()
+        fig, _ = configure_two_axes()
         self.assertEqual(2, len(fig.axes))
 
     def test_distribution_labels(self):
