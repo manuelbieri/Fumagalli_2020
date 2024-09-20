@@ -12,19 +12,20 @@ def configure_two_axes(
     c2: int = 2,
     v1=FMT20.MergerPoliciesAssetRange,
     v2=FMT20.MergerPoliciesAssetRange,
-    figsize=(10, 4),
+    figsize=(11, 5),
     **kwargs,
-) -> plt.Figure:
+) -> (plt.Figure, plt.Axes, plt.Axes):
     """
     Creates a figure with two subplots in a row.
     """
-    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=figsize)
+    fig = plt.figure(layout="constrained", figsize=figsize)
+    axes = fig.subplot_mosaic("""AB""")
     fig.suptitle(main, fontweight="bold", fontsize="x-large")
     fig.supylabel(kwargs.get("sub_y_label", "Merger Policy"))
     m1, m2 = _get_model(m1, m2, c1, c2, **kwargs)
-    v1(model=m1, ax=ax1).plot(**get_plot_kwargs(title=sub1, **kwargs))
-    v2(model=m2, ax=ax2).plot(**get_plot_kwargs(title=sub2, **kwargs))
-    return fig
+    v1(model=m1, ax=axes["A"]).plot(**get_plot_kwargs(title=sub1, **kwargs))
+    v2(model=m2, ax=axes["B"]).plot(**get_plot_kwargs(title=sub2, **kwargs))
+    return fig, axes
 
 
 def get_plot_kwargs(title: str, **kwargs):
