@@ -46,7 +46,7 @@ Install the dependencies for the repository with the following command (Note: Ma
 $ pip install -r requirements.txt
 ```
 
-Note: This package requires a working latex installation for the plots!_
+Note: This package requires a working latex installation for the plots!
 
 ## Basic Usage
 
