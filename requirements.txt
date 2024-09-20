@@ -3,7 +3,6 @@ scipy==1.14.1
 numpy==2.1.1
 matplotlib==3.9.2
 ipympl==0.9.4
-mpl_interactions==0.24.2
 
 ## necessary for tests
 mockito==1.5.1
@@ -19,7 +18,7 @@ ipython==8.27.0
 jupyter==1.1.1
 
 ## necessary for interactive plots in jupyter notebooks
-ipywidgets==8.1.5
+ipywidgets==7.8.4
 
 # necessary for the documentation
 pdoc==14.7.0
