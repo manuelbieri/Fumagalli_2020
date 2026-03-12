@@ -8,7 +8,7 @@ ipympl==0.9.4
 mockito==1.5.1
 
 # necessary for code formatting
-black==24.8.0
+black==26.3.1
 
 ## code formatting in jupyter notebooks
 jupyter-black==0.4.0
